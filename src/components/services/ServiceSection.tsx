@@ -7,7 +7,7 @@ const ServiceSection: React.FC<any> = () => {
     return (
         <Box>
             <Box p={4}>
-                <TitleSection title="Cư dân" />
+                <TitleSection title="Hộ dân" />
                 <ServiceList />
             </Box>
         </Box>

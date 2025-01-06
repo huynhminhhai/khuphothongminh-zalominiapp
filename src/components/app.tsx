@@ -4,6 +4,7 @@ import { App, ZMPRouter, SnackbarProvider } from "zmp-ui";
 import { RecoilRoot } from "recoil";
 import HomePage from "pages/homepage";
 import { Navigation } from "./navigation";
+import ResidentPage from "pages/resident";
 
 const MyApp = () => {
   return (
@@ -13,6 +14,9 @@ const MyApp = () => {
           <ZMPRouter>
             <Routes>
               <Route path="/" element={<HomePage></HomePage>}></Route>
+              
+              {/* RESIDENT */}
+              <Route path="/resident" element={<ResidentPage></ResidentPage>}></Route>
             </Routes>
             <Navigation />
           </ZMPRouter>

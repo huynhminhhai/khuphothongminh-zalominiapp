@@ -31,7 +31,7 @@ export type ServicesType = {
 export const SERVICES: ServicesType[] = [
     {
         label: 'Thông tin hộ dân',
-        url: '/',
+        url: '/resident',
         icon: images.home
     },
     {

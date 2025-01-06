@@ -75,6 +75,15 @@ body {
   }
 }
 
+.zaui-header.sub {
+  background-color: #731611;
+
+  & .zaui-icon,
+  & .zaui-header-title {
+    color: white;
+  }
+}
+
 .zaui-input-affix-wrapper {
   margin: 0;
   border-radius: 4px;
