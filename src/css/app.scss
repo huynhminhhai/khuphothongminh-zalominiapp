@@ -55,6 +55,9 @@ body {
 
 .zaui-page {
   min-height: calc(100vh);
+}
+
+.zaui-page.home {
   background-color: #731611;
 }
 
@@ -77,4 +80,12 @@ body {
 
 .border-inset {
   border: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+// CUSTOM
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
