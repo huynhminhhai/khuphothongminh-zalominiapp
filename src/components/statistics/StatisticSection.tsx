@@ -5,7 +5,7 @@ import StatisticMain from "./StatisticMain"
 
 const StatisticSection: React.FC<any> = () => {
     return (
-        <Box>
+        <Box p={4}>
             <StatisticList />
             <StatisticMain/>
         </Box>
