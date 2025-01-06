@@ -77,14 +77,14 @@ export type MeetingType = {
 
 export const MEETING: MeetingType[] = [
     {
-        date: '07/07/2024',
+        date: '09/07/2024',
         title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',
         status: 1
     },
     {
-        date: '07/07/2024',
+        date: '08/07/2024',
         title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',

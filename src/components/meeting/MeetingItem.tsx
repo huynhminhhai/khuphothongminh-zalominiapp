@@ -1,7 +1,7 @@
 import React from "react";
 import { meetingColor, meetingStatus, MeetingType } from "constants/utinities";
 import { Box } from "zmp-ui";
-import { Icon } from "@iconify/react";
+import { renderDayOfWeek } from "utils/date";
 
 type MeetingItemProps = {
     data: MeetingType
@@ -14,7 +14,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                 <div className="flex gap-4">
                     <Box px={4} py={6} className="bg-[#e9ca9433] text-[#731611] rounded-tl-2xl rounded-br-2xl">
                         <div className="flex-center flex-col h-[100%]">
-                            <div className="text-[18px] leading-[1] font-semibold text-center mb-2">Thứ 2</div>
+                            <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(data.date)}</div>
                             <div className="text-[14px] leading-[1] font-medium text-center">{data.date}</div>
                         </div>
                     </Box>

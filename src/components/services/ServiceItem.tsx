@@ -12,7 +12,7 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
         <Box>
             <div className="flex-center flex-col gap-2">
                 <Box>
-                    <div className="bg-[#e9ca9433] rounded-full flex-center p-4 w-[65px] h-[65px]">
+                    <div className="bg-[#731611] rounded-full flex-center p-4 w-[65px] h-[65px]">
                         <img src={data.icon} alt={data.label} />
                     </div>
                 </Box>
