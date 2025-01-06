@@ -5,6 +5,7 @@ import { RecoilRoot } from "recoil";
 import HomePage from "pages/homepage";
 import { Navigation } from "./navigation";
 import ResidentPage from "pages/resident";
+import ResidentMemberPage from "pages/resident/resident-member";
 
 const MyApp = () => {
   return (
@@ -17,6 +18,7 @@ const MyApp = () => {
               
               {/* RESIDENT */}
               <Route path="/resident" element={<ResidentPage></ResidentPage>}></Route>
+              <Route path="/resident-member" element={<ResidentMemberPage></ResidentMemberPage>}></Route>
             </Routes>
             <Navigation />
           </ZMPRouter>

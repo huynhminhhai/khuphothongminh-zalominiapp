@@ -56,6 +56,7 @@ body {
 }
 
 .zaui-page {
+  background-color: white;
   min-height: calc(100vh);
 }
 
@@ -147,4 +148,8 @@ body {
 .meeting-item:not(:last-child) {
   border-bottom: 1px solid #e5e7eb;
   padding-bottom: 16px;
+}
+
+.resident-item:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
 }

@@ -98,3 +98,94 @@ export const MEETING: MeetingType[] = [
         status: 3
     },
 ]
+
+export type genderType = {
+    [key: number]: string;
+}
+
+export const genderLabel = {
+    1: 'Nam',
+    2: 'Nữ'
+}
+
+export type ResidentType = {
+    fullname: string;
+    numberCard: string;
+    gender: number;
+    birthDate: string;
+    nation: string;
+    religion: string;
+    nationality: string;
+    hometown: string;
+    relationship: string;
+}
+
+export const RESIDENT: ResidentType[] = [
+    {
+        fullname: "Huỳnh Minh Hải",
+        numberCard: "0123456789",
+        gender: 1,
+        birthDate: "1995-03-15",
+        nation: "Kinh",
+        religion: "Không",
+        nationality: "Việt Nam",
+        hometown: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: "Chủ hộ"
+    },
+    {
+        fullname: "Lê Thị Hoa",
+        numberCard: "9876543210",
+        gender: 2,
+        birthDate: "1998-06-21",
+        nation: "Kinh",
+        religion: "Phật giáo",
+        nationality: "Việt Nam",
+        hometown: "Hải Phòng",
+        relationship: "Vợ"
+    },
+    {
+        fullname: "Trần Quốc Bảo",
+        numberCard: "1234567890",
+        gender: 1,
+        birthDate: "1992-01-10",
+        nation: "Kinh",
+        religion: "Thiên Chúa giáo",
+        nationality: "Việt Nam",
+        hometown: "Đà Nẵng",
+        relationship: "Con trai"
+    },
+    {
+        fullname: "Phạm Thị Mai",
+        numberCard: "2345678901",
+        gender: 2,
+        birthDate: "2000-09-12",
+        nation: "Kinh",
+        religion: "Không",
+        nationality: "Việt Nam",
+        hometown: "Cần Thơ",
+        relationship: "Con gái"
+    },
+    {
+        fullname: "Nguyễn Văn An",
+        numberCard: "3456789012",
+        gender: 1,
+        birthDate: "1988-12-05",
+        nation: "Kinh",
+        religion: "Không",
+        nationality: "Việt Nam",
+        hometown: "Hồ Chí Minh",
+        relationship: "Anh trai"
+    }
+]
+
+export const RESIDENTMAIN = {
+    fullname: "Huỳnh Minh Hải",
+    numberCard: "0123456789",
+    gender: 1,
+    birthDate: "1995-03-15",
+    nation: "Kinh",
+    religion: "Không",
+    nationality: "Việt Nam",
+    hometown: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+    relationship: "Chủ hộ"
+}
