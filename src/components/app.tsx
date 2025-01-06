@@ -10,11 +10,11 @@ const MyApp = () => {
       <App>
         <SnackbarProvider>
           <ZMPRouter>
-            <AnimationRoutes>
+            {/* <AnimationRoutes> */}
               <Routes>
                 <Route path="/" element={<HomePage></HomePage>}></Route>
               </Routes>
-            </AnimationRoutes>
+            {/* </AnimationRoutes> */}
           </ZMPRouter>
         </SnackbarProvider>
       </App>
