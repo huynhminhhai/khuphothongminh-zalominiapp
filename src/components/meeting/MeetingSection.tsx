@@ -1,17 +1,17 @@
 import TitleSection from "components/titleSection"
 import React from "react"
 import { Box } from "zmp-ui"
-import ServiceList from "./ServiceList"
+import MeetingList from "./MeetingList"
 
-const ServiceSection: React.FC<any> = () => {
+const MeetingSection: React.FC<any> = () => {
     return (
         <Box>
             <Box p={4}>
-                <TitleSection title="Cư dân" />
-                <ServiceList />
+                <TitleSection title="Cuộc họp" />
+                <MeetingList />
             </Box>
         </Box>
     )
 }
 
-export default ServiceSection
+export default MeetingSection

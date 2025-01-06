@@ -50,3 +50,51 @@ export const SERVICES: ServicesType[] = [
         icon: images.meeting
     },
 ]
+
+export type MeetingStatusType = {
+    [key: number]: string;
+}
+
+export const meetingStatus = {
+    1: "Đã diễn ra",
+    2: "Sắp/Đang diễn ra",
+    3: "Đã hủy"
+}
+
+export const meetingColor = {
+    1: '#28a745',
+    2: '#FFC107',
+    3: '#DC3545'
+}
+
+export type MeetingType = {
+    date: string;
+    title: string;
+    location: string;
+    time: string;
+    status: number;
+}
+
+export const MEETING: MeetingType[] = [
+    {
+        date: '07/07/2024',
+        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        location: 'Phòng họp số 1',
+        time: '08:30 - 10:00',
+        status: 1
+    },
+    {
+        date: '07/07/2024',
+        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        location: 'Phòng họp số 1',
+        time: '08:30 - 10:00',
+        status: 2
+    },
+    {
+        date: '07/07/2024',
+        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        location: 'Phòng họp số 1',
+        time: '08:30 - 10:00',
+        status: 3
+    },
+]
