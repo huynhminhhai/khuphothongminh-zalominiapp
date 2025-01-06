@@ -84,7 +84,9 @@ body {
   border: 0.5px solid rgba(0, 0, 0, 0.1);
 }
 
-// CUSTOM
+/**
+* CUSTOM
+**/
 
 .flex-center {
   display: flex;
@@ -108,4 +110,32 @@ body {
 
 .clip-path-1 {
   clip-path: polygon(5% 0, 100% 0%, 95% 100%, 0% 100%);
+}
+
+/**
+* BOTTOM NAVIGATION
+**/
+
+.zaui-bottom-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+
+#footer .zaui-bottom-navigation-content {
+  padding-block: 12px;
+  height: fit-content;
+}
+
+.zaui-bottom-navigation-item-active {
+  color: #731611;
+}
+
+/**
+* MEETING
+**/ 
+
+.meeting-item:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 16px;
 }

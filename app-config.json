@@ -4,7 +4,7 @@
     "headerColor": "#1843EF",
     "textColor": "white",
     "leftButton": "back",
-    "statusBar": "normal",
+    "statusBar": "transparent",
     "actionBarHidden": true,
     "hideAndroidBottomNavigationBar": false,
     "hideIOSSafeAreaBottom": false

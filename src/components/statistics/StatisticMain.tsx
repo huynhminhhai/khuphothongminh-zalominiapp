@@ -5,7 +5,7 @@ import { Box } from "zmp-ui";
 const StatisticMain: React.FC<any> = () => {
     return (
         <Box mt={3}>
-            <div className="bg-[#218838] text-white w-[100%] p-3 py-4 rounded-xl">
+            <div className="bg-[#6F42C1] text-white w-[100%] p-3 py-4 rounded-xl">
                 <div className="flex flex-col gap-3">
                     <Box>
                         <div className="grid grid-cols-2 gap-2 gap-y-3">

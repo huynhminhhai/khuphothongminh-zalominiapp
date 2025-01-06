@@ -10,9 +10,9 @@ export type StatisticsType = {
 export const STATISTICS: StatisticsType[] = [
     {
         label: 'Khu phố',
-        value: 'Long Bình',
+        value: 'Mỹ Yên',
         iconUrl: 'fluent:building-48-filled',
-        color: '#6F42C1'
+        color: '#218838'
     },
     {
         label: 'Hộ dân',
