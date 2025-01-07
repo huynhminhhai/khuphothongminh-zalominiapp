@@ -1,7 +1,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: url('/src/assets/fonts/Montserrat-Light.woff2') format('woff2'),
-      url('/src/assets/fonts/Montserrat-Light.woff') format('woff');
+    url('/src/assets/fonts/Montserrat-Light.woff') format('woff');
   font-weight: 300;
   font-style: normal;
   font-display: swap;
@@ -10,7 +10,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: url('/src/assets/fonts/Montserrat-Bold.woff2') format('woff2'),
-      url('/src/assets/fonts/Montserrat-Bold.woff') format('woff');
+    url('/src/assets/fonts/Montserrat-Bold.woff') format('woff');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -19,7 +19,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: url('/src/assets/fonts/Montserrat-Medium.woff2') format('woff2'),
-      url('/src/assets/fonts/Montserrat-Medium.woff') format('woff');
+    url('/src/assets/fonts/Montserrat-Medium.woff') format('woff');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -28,7 +28,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: url('/src/assets/fonts/Montserrat-SemiBold.woff2') format('woff2'),
-      url('/src/assets/fonts/Montserrat-SemiBold.woff') format('woff');
+    url('/src/assets/fonts/Montserrat-SemiBold.woff') format('woff');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -37,7 +37,7 @@
 @font-face {
   font-family: 'Montserrat';
   src: url('/src/assets/fonts/Montserrat-Regular.woff2') format('woff2'),
-      url('/src/assets/fonts/Montserrat-Regular.woff') format('woff');
+    url('/src/assets/fonts/Montserrat-Regular.woff') format('woff');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -143,7 +143,7 @@ body {
 
 /**
 * MEETING
-**/ 
+**/
 
 .meeting-item:not(:last-child) {
   border-bottom: 1px solid #e5e7eb;
@@ -152,4 +152,46 @@ body {
 
 .resident-item:not(:last-child) {
   border-bottom: 1px solid #e5e7eb;
+}
+
+/**
+* BUTTON
+**/
+.zaui-btn .zaui-btn-container {
+  display: block;
+}
+
+.zaui-btn-primary {
+  background-color: #731611;
+}
+
+.zaui-btn-primary:active {
+  background-color: #731611;
+}
+
+/**
+* INPUT
+**/
+
+.zaui-input {
+  height: 38px;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.zaui-input::placeholder {
+  color: #777777;
+}
+
+textarea[name="address"] {
+  min-height: unset;
+}
+
+.zaui-radio-checked .zaui-radio-checkmark {
+  background-color: #731611;
+}
+
+.flexCol .radio-group {
+  flex-direction: column;
+  align-items: self-start;
 }

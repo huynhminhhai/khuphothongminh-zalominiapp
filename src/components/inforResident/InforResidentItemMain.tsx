@@ -22,7 +22,7 @@ const InforResidentItemMain: React.FC = () => {
             <Box>
                 <Box>
                     <div className="flex items-center justify-between mb-1">
-                        <h4 className="text-[18px] font-semibold">Thông tin chi tiết</h4>
+                        <h4 className="text-[18px] leading-[1] font-medium">Thông tin chi tiết</h4>
                     </div>
                 </Box>
                 <Box>

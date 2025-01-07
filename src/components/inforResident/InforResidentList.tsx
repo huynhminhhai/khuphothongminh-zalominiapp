@@ -1,8 +1,8 @@
 import React from "react"
 import { Box } from "zmp-ui"
-import InforResidentItem from "./InforResidentItem"
 import { RESIDENT, ResidentType } from "constants/utinities"
 import { Divider } from "components/divider"
+import InforResidentItem from "./InforResidentItem"
 
 const InforResidentList: React.FC = () => {
     return (

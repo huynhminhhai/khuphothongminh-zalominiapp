@@ -29,17 +29,17 @@ const tabs: Record<string, MenuItem> = {
 
 export type TabKeys = keyof typeof tabs;
 
-export const NO_BOTTOM_NAVIGATION_PAGES = ["/test"];
+export const HAS_BOTTOM_NAVIGATION_PAGES = ["/"];
 
 export const Navigation: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const noBottomNav = useMemo(() => {
-    return NO_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
+  const hasBottomNav = useMemo(() => {
+    return HAS_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
   }, [location]);
 
-    if (noBottomNav) {
+    if (!hasBottomNav) {
       return <></>;
     }
 

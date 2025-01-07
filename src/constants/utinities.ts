@@ -55,7 +55,7 @@ export type MeetingStatusType = {
     [key: number]: string;
 }
 
-export const meetingStatus = {
+export const meetingStatus: MeetingStatusType = {
     1: "Đã diễn ra",
     2: "Sắp/Đang diễn ra",
     3: "Đã hủy"
@@ -103,10 +103,20 @@ export type genderType = {
     [key: number]: string;
 }
 
-export const genderLabel = {
+export const genderLabel: genderType = {
     1: 'Nam',
     2: 'Nữ'
 }
+
+export const relationships = [
+    { value: 1, label: "Chồng" },
+    { value: 2, label: "Vợ" },
+    { value: 3, label: "Con" },
+    { value: 4, label: "Anh/Chị ruột" },
+    { value: 5, label: "Em ruột" },
+    { value: 6, label: "Cháu nội" },
+    { value: 7, label: "Cháu ngoại" },
+]
 
 export type ResidentType = {
     fullname: string;
@@ -117,7 +127,7 @@ export type ResidentType = {
     religion: string;
     nationality: string;
     hometown: string;
-    relationship: string;
+    relationship: number;
 }
 
 export const RESIDENT: ResidentType[] = [
@@ -125,56 +135,56 @@ export const RESIDENT: ResidentType[] = [
         fullname: "Huỳnh Minh Hải",
         numberCard: "0123456789",
         gender: 1,
-        birthDate: "1995-03-15",
+        birthDate: "15-3-1995",
         nation: "Kinh",
         religion: "Không",
         nationality: "Việt Nam",
         hometown: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
-        relationship: "Chủ hộ"
+        relationship: 0
     },
     {
         fullname: "Lê Thị Hoa",
         numberCard: "9876543210",
         gender: 2,
-        birthDate: "1998-06-21",
+        birthDate: "21-6-1998",
         nation: "Kinh",
         religion: "Phật giáo",
         nationality: "Việt Nam",
         hometown: "Hải Phòng",
-        relationship: "Vợ"
+        relationship: 2
     },
     {
         fullname: "Trần Quốc Bảo",
         numberCard: "1234567890",
         gender: 1,
-        birthDate: "1992-01-10",
+        birthDate: "10-01-2020",
         nation: "Kinh",
         religion: "Thiên Chúa giáo",
         nationality: "Việt Nam",
         hometown: "Đà Nẵng",
-        relationship: "Con trai"
+        relationship: 3
     },
     {
         fullname: "Phạm Thị Mai",
         numberCard: "2345678901",
         gender: 2,
-        birthDate: "2000-09-12",
+        birthDate: "12-9-2018",
         nation: "Kinh",
         religion: "Không",
         nationality: "Việt Nam",
         hometown: "Cần Thơ",
-        relationship: "Con gái"
+        relationship: 3
     },
     {
         fullname: "Nguyễn Văn An",
         numberCard: "3456789012",
         gender: 1,
-        birthDate: "1988-12-05",
+        birthDate: "05-12-1994",
         nation: "Kinh",
         religion: "Không",
         nationality: "Việt Nam",
         hometown: "Hồ Chí Minh",
-        relationship: "Anh trai"
+        relationship: 4
     }
 ]
 
@@ -182,7 +192,7 @@ export const RESIDENTMAIN = {
     fullname: "Huỳnh Minh Hải",
     numberCard: "0123456789",
     gender: 1,
-    birthDate: "1995-03-15",
+    birthDate: "15-03-1995",
     nation: "Kinh",
     religion: "Không",
     nationality: "Việt Nam",
