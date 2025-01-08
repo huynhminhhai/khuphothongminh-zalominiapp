@@ -2,14 +2,11 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { App, ZMPRouter, SnackbarProvider } from "zmp-ui";
 import { RecoilRoot } from "recoil";
-import HomePage from "pages/homepage";
 import { Navigation } from "./navigation";
-import ResidentPage from "pages/resident";
-import ResidentMemberPage from "pages/resident/resident-member";
-import ResidentAddPage from "pages/resident/resident-add";
-import ResidentEditPage from "pages/resident/resident-edit";
 import ScrollToTop from "./scroll-top";
-import NewsPage from "pages/news";
+import { NewsDetailPage, NewsPage } from "pages/news";
+import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
+import { HomePage } from "pages/homepage";
 
 const MyApp = () => {
   return (
@@ -29,6 +26,7 @@ const MyApp = () => {
 
               {/* NEWS */}
               <Route path="/news" element={<NewsPage></NewsPage>}></Route>
+              <Route path="/news-detail" element={<NewsDetailPage></NewsDetailPage>}></Route>
               
             </Routes>
             <Navigation />
