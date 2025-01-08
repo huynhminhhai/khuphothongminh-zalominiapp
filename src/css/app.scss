@@ -77,6 +77,10 @@ body {
   &::after {
     display: none;
   }
+
+  & .zaui-header-title {
+    line-height: 1;
+  }
 }
 
 .zaui-header.sub {

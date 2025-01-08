@@ -36,7 +36,7 @@ export const SERVICES: ServicesType[] = [
     },
     {
         label: 'Tin tức',
-        url: '/',
+        url: '/news',
         icon: images.news
     },
     {
@@ -270,3 +270,67 @@ export const RESIDENTMAIN = {
     status: 1,
     bhyt: '123'
 }
+
+export type News = {
+    id: number;
+    title: string;             // Tiêu đề
+    description: string;       // Mô tả
+    content: string;           // Nội dung
+    imageUrl?: string;         // Ảnh minh họa (tuỳ chọn)
+    publishedDate: string;     // Ngày đăng (ISO string hoặc dạng khác)
+    author: string;            // Tác giả
+    views: number;             // Số lượt xem
+};
+
+export const NEWSDATA: News[] = [
+    {
+        id: 1,
+        title: "Cải tạo đường giao thông",
+        description: "Đã hoàn thành dự án nâng cấp cơ sở hạ tầng, bao gồm việc mở rộng và làm mới các tuyến đường chính.",
+        content: "Dự án cải tạo đường giao thông tại đã hoàn thành sau 6 tháng thi công. Các tuyến đường chính đã được mở rộng, giúp giảm ùn tắc giao thông và tạo điều kiện thuận lợi hơn cho việc di chuyển của người dân.",
+        imageUrl: "",
+        publishedDate: "08/01/2025",
+        author: "Phan Minh T",
+        views: 1200,
+    },
+    {
+        id: 2,
+        title: "Sự kiện tổ chức tại nhà văn hóa",
+        description: "Nhà văn hóa sẽ tổ chức một sự kiện văn hóa đặc biệt vào cuối tuần này.",
+        imageUrl: "",
+        content: "Vào cuối tuần này, nhà văn hóa sẽ tổ chức sự kiện giao lưu văn hóa với các hoạt động như hát karaoke, thi đấu thể thao và triển lãm nghệ thuật. Đây là cơ hội để cư dân khu phố giao lưu, kết nối và tham gia các hoạt động giải trí.",
+        publishedDate: "07/01/2025",
+        author: "Lê Thị B",
+        views: 800,
+    },
+    {
+        id: 3,
+        title: "Tình hình dân số và phát triển tại khu phố",
+        description: "Đã ghi nhận sự tăng trưởng đáng kể về dân số trong năm 2024. Với nhiều dự án nhà ở mới được xây dựng, khu vực này đã thu hút một lượng lớn cư dân mới, đồng thời các dịch vụ công cộng như trường học, bệnh viện cũng được nâng cấp.",
+        content: "Đã ghi nhận sự tăng trưởng đáng kể về dân số trong năm 2024. Với nhiều dự án nhà ở mới được xây dựng, khu vực này đã thu hút một lượng lớn cư dân mới, đồng thời các dịch vụ công cộng như trường học, bệnh viện cũng được nâng cấp.",
+        imageUrl: "",
+        publishedDate: "06/01/2025",
+        author: "Trần Quốc D",
+        views: 1500,
+    },
+    {
+        id: 4,
+        title: "Tội phạm trộm chó đang rất manh động",
+        description: "Đã ghi nhận sự tăng trưởng đáng kể về dân số trong năm 2024. Với nhiều dự án nhà ở mới được xây dựng, khu vực này đã thu hút một lượng lớn cư dân mới, đồng thời các dịch vụ công cộng như trường học, bệnh viện cũng được nâng cấp.",
+        content: "Đã ghi nhận sự tăng trưởng đáng kể về dân số trong năm 2024. Với nhiều dự án nhà ở mới được xây dựng, khu vực này đã thu hút một lượng lớn cư dân mới, đồng thời các dịch vụ công cộng như trường học, bệnh viện cũng được nâng cấp.",
+        imageUrl: "",
+        publishedDate: "05/01/2025",
+        author: "Trần Quốc D",
+        views: 1500,
+    },
+    {
+        id: 5,
+        title: "Bệnh dịch sởi đang lây lang mạnh",
+        description: "Đã ghi nhận sự tăng trưởng đáng kể về dân số trong năm 2024. Với nhiều dự án nhà ở mới được xây dựng, khu vực này đã thu hút một lượng lớn cư dân mới, đồng thời các dịch vụ công cộng như trường học, bệnh viện cũng được nâng cấp.",
+        content: "Đã ghi nhận sự tăng trưởng đáng kể về dân số trong năm 2024. Với nhiều dự án nhà ở mới được xây dựng, khu vực này đã thu hút một lượng lớn cư dân mới, đồng thời các dịch vụ công cộng như trường học, bệnh viện cũng được nâng cấp.",
+        imageUrl: "",
+        publishedDate: "04/01/2025",
+        author: "Trần Quốc D",
+        views: 1500,
+    }
+];
