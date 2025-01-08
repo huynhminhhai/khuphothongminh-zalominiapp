@@ -7,6 +7,7 @@ import Label from "./Label";
 type InputFieldProps = {
     label: string;
     name: string;
+    type?: 'text' | 'number' | 'password';
     error?: string;
     field: ControllerRenderProps<any, string>;
     required?: boolean;
@@ -21,7 +22,8 @@ export const InputField: React.FC<InputFieldProps> = ({
     field,
     required = false,
     placeholder,
-    disabled=false
+    disabled=false,
+    type='text'
 }) => {
     return (
         <Box pb={4} className="relative">
@@ -33,6 +35,7 @@ export const InputField: React.FC<InputFieldProps> = ({
                 style={{borderColor: error ? 'red': '#b9bdc1'}}
                 placeholder={placeholder}
                 disabled={disabled}
+                type={type}
             />
             {error && <ErrorMessage message={error} />}
         </Box>
@@ -42,6 +45,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 type FormInputFieldProps = {
     name: string;
     label: string;
+    type?: 'text' | 'number' | 'password';
     placeholder: string;
     control: Control<any>;  // Type for the `control` prop
     error?: string;
@@ -50,7 +54,7 @@ type FormInputFieldProps = {
 };
 
 
-const FormInputField: React.FC<FormInputFieldProps> = ({ name, label, placeholder, control, error, required, disabled }) => {
+const FormInputField: React.FC<FormInputFieldProps> = ({ name, label, placeholder, control, error, required, disabled, type }) => {
     return (
         <Controller
             name={name}
@@ -60,6 +64,7 @@ const FormInputField: React.FC<FormInputFieldProps> = ({ name, label, placeholde
                     label={label}
                     placeholder={placeholder}
                     name={name}
+                    type={type}
                     required={required}
                     field={field}
                     error={error}

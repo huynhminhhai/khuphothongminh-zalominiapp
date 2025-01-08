@@ -14,12 +14,12 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
         <Box onClick={() => navigate(data.url)}>
             <div className="flex-center flex-col gap-2">
                 <Box>
-                    <div className="bg-[#731611] rounded-full flex-center p-4 w-[65px] h-[65px]">
+                    <div className="bg-[#731611] rounded-full flex-center p-4 w-[60px] h-[60px] relative">
                         <img src={data.icon} alt={data.label} />
                     </div>
                 </Box>
                 <Box>
-                    <h4 className="text-[14px] leading-[20px] text-center font-medium">{data.label}</h4>
+                    <h4 className="text-[14px] leading-[18px] text-center font-medium">{data.label}</h4>
                 </Box>
             </div>
         </Box>

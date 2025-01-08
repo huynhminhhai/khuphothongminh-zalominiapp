@@ -53,7 +53,7 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({
     const dateValue = parseDate(value, dateFormat); // Chuyển giá trị chuỗi thành `Date`
 
     return (
-        <Box pb={4} className="relative">
+        <Box pb={4} className={`relative ${error && 'borderRed'}`}>
             <Label required={required} text={label} name={name} />
 
             <DatePicker

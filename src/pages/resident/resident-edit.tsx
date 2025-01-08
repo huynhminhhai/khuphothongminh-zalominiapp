@@ -1,19 +1,19 @@
 import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { Box, Page } from "zmp-ui"
-import ResidentAddForm from "./ResidentAddForm"
+import ResidentEditForm from "./ResidentEditForm"
 
-const ResidentAddPage: React.FC = () => {
+const ResidentEditPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
-            <HeaderSub title="Yêu cầu thêm thành viên" />
+            <HeaderSub title="Cập nhật thông tin thành viên" />
             <Box>
                 <Box>
-                    <ResidentAddForm />
+                    <ResidentEditForm />
                 </Box>
             </Box>
         </Page>
     )
 }
 
-export default ResidentAddPage
+export default ResidentEditPage

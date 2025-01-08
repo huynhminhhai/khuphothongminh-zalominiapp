@@ -58,15 +58,18 @@ body {
 .zaui-page {
   background-color: white;
   min-height: calc(100vh);
+  // margin-top: 104px;
+  margin-top: 56px;
 }
 
 .zaui-page.home {
   background-color: #731611;
+  margin-top: 0;
 }
 
 .zaui-header {
   background-color: transparent;
-  position: sticky;
+  position: relative;
   height: auto;
   margin-bottom: 0;
   flex: none;
@@ -78,6 +81,7 @@ body {
 
 .zaui-header.sub {
   background-color: #731611;
+  position: fixed;
 
   & .zaui-icon,
   & .zaui-header-title {
@@ -194,4 +198,12 @@ textarea[name="address"] {
 .flexCol .radio-group {
   flex-direction: column;
   align-items: self-start;
+}
+
+.borderRed .zaui-input-affix-wrapper  {
+  border: 1px solid red;
+}
+
+.zaui-modal-content-main > div {
+  padding: 0 !important;
 }

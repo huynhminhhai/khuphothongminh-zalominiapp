@@ -9,7 +9,7 @@ import { Box, Page } from "zmp-ui";
 const HomePage: React.FunctionComponent = () => {
 
   return (
-    <Page className="relative flex-1 flex flex-col bg-white pb-[65px] home">
+    <Page className="relative flex-1 flex flex-col bg-white pb-[66px] home">
       <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-[460px] h-auto opacity-10 z-0" />
       <HeaderHome />
       <Box className="relative z-[1]">

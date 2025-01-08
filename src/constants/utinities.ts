@@ -109,6 +109,7 @@ export const genderLabel: genderType = {
 }
 
 export const relationships = [
+    { value: 0, label: "Chủ hộ" },
     { value: 1, label: "Chồng" },
     { value: 2, label: "Vợ" },
     { value: 3, label: "Con" },
@@ -119,83 +120,153 @@ export const relationships = [
 ]
 
 export type ResidentType = {
+    id: number;
     fullname: string;
+    phoneNumber: string;
     numberCard: string;
+    dateCard: string;
     gender: number;
     birthDate: string;
     nation: string;
     religion: string;
     nationality: string;
-    hometown: string;
+    address: string;
     relationship: number;
+    residenceStatus: number;
+    residenceType: number;
+    status: number;
+    bhyt: string;
 }
 
 export const RESIDENT: ResidentType[] = [
     {
+        id: 1,
         fullname: "Huỳnh Minh Hải",
+        phoneNumber: '0848551555',
+        dateCard: '21/06/2022',
         numberCard: "0123456789",
         gender: 1,
-        birthDate: "15-3-1995",
+        birthDate: "15/3/1995",
         nation: "Kinh",
         religion: "Không",
         nationality: "Việt Nam",
-        hometown: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
-        relationship: 0
+        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 0,
+        residenceStatus: 0,
+        residenceType: 1,
+        status: 1,
+        bhyt: '123'
     },
     {
+        id: 2,
         fullname: "Lê Thị Hoa",
+        phoneNumber: '0848551444',
+        dateCard: '21/6/2022',
         numberCard: "9876543210",
         gender: 2,
-        birthDate: "21-6-1998",
+        birthDate: "21/6/1998",
         nation: "Kinh",
-        religion: "Phật giáo",
+        religion: "Không",
         nationality: "Việt Nam",
-        hometown: "Hải Phòng",
-        relationship: 2
+        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 2,
+        residenceStatus: 0,
+        residenceType: 1,
+        status: 1,
+        bhyt: '123ewe'
     },
     {
+        id: 3,
         fullname: "Trần Quốc Bảo",
+        phoneNumber: '0848551333',
+        dateCard: '21/6/2022',
         numberCard: "1234567890",
         gender: 1,
-        birthDate: "10-01-2020",
+        birthDate: "10/01/2020",
         nation: "Kinh",
-        religion: "Thiên Chúa giáo",
+        religion: "Không",
         nationality: "Việt Nam",
-        hometown: "Đà Nẵng",
-        relationship: 3
+        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 3,
+        residenceStatus: 2,
+        residenceType: 2,
+        status: 1,
+        bhyt: '122323'
     },
     {
+        id: 4,
         fullname: "Phạm Thị Mai",
+        phoneNumber: '0848551222',
+        dateCard: '21/6/2022',
         numberCard: "2345678901",
         gender: 2,
-        birthDate: "12-9-2018",
+        birthDate: "12/9/2018",
         nation: "Kinh",
         religion: "Không",
         nationality: "Việt Nam",
-        hometown: "Cần Thơ",
-        relationship: 3
+        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 3,
+        residenceStatus: 0,
+        residenceType: 1,
+        status: 3,
+        bhyt: '123ưew'
     },
     {
+        id: 5,
         fullname: "Nguyễn Văn An",
+        phoneNumber: '0848551111',
+        dateCard: '21/6/2022',
         numberCard: "3456789012",
         gender: 1,
-        birthDate: "05-12-1994",
+        birthDate: "05/12/1994",
         nation: "Kinh",
         religion: "Không",
         nationality: "Việt Nam",
-        hometown: "Hồ Chí Minh",
-        relationship: 4
+        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 4,
+        residenceStatus: 0,
+        residenceType: 2,
+        status: 1,
+        bhyt: '123sdsd'
+    }
+]
+
+export const RESIDENTCRAFT: ResidentType[] = [
+    {
+        id: 6,
+        fullname: "Huỳnh Hồng Hưng",
+        phoneNumber: '',
+        dateCard: '21/6/2022',
+        numberCard: "2345678902",
+        gender: 1,
+        birthDate: "12/9/2026",
+        nation: "Kinh",
+        religion: "Không",
+        nationality: "Việt Nam",
+        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 3,
+        residenceStatus: 0,
+        residenceType: 1,
+        status: 2,
+        bhyt: '123sds'
     }
 ]
 
 export const RESIDENTMAIN = {
+    id: 1,
     fullname: "Huỳnh Minh Hải",
+    phoneNumber: '0848551555',
+    dateCard: '21/6/2022',
     numberCard: "0123456789",
     gender: 1,
-    birthDate: "15-03-1995",
+    birthDate: "15/3/1995",
     nation: "Kinh",
     religion: "Không",
     nationality: "Việt Nam",
-    hometown: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
-    relationship: "Chủ hộ"
+    address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+    relationship: 0,
+    residenceStatus: 0,
+    residenceType: 1,
+    status: 1,
+    bhyt: '123'
 }

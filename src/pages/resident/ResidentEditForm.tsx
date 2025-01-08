@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, useNavigate, useSnackbar } from "zmp-ui";
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,6 +7,8 @@ import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelec
 import { gender, residentRealationships, residentStatus, residentType } from "constants/mock";
 import FormControllerRadioGroup from "components/form/FormRadioGroup";
 import { ConfirmModal } from "components/modal";
+import { useSearchParams } from "react-router-dom";
+import { RESIDENT } from "constants/utinities";
 import { FormDataResident, schemaResident } from "./type";
 
 const defaultValues: FormDataResident = {
@@ -25,19 +27,63 @@ const defaultValues: FormDataResident = {
     bhyt: '',
 };
 
-const ResidentAddForm: React.FC = () => {
+const ResidentEditForm: React.FC = () => {
 
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [formData, setFormData] = useState<FormDataResident>(defaultValues)
+    const [formData, setFormData] = useState({})
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataResident>({
+    const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm<FormDataResident>({
         resolver: yupResolver(schemaResident),
         defaultValues
     });
+
+    const [searchParams] = useSearchParams();
+
+    const residentId = searchParams.get("id");
+
+    useEffect(() => {
+        // Hàm gọi API để lấy thông tin thành viên
+        const fetchResidentData = async () => {
+            setLoading(true);
+            try {
+                // Giả sử API trả về thông tin thành viên
+                // const response = await fetch(`/api/residents/${residentId}`);
+                // const data = await response.json();
+
+                const data = RESIDENT.find(resident => resident.id === Number(residentId))
+
+                reset({
+                    fullname: data?.fullname || '',
+                    phoneNumber: data?.phoneNumber || '',
+                    residenceType: data?.residenceType || 1,
+                    address: data?.address || '',
+                    relationship: data?.relationship || 0,
+                    birthDate: data?.birthDate || '',
+                    gender: data?.gender || 0,
+                    numberCard: data?.numberCard || '',
+                    dateCard: data?.dateCard || '',
+                    religion: data?.religion || '',
+                    nation: data?.nation || '',
+                    bhyt: data?.bhyt || '',
+                });
+            } catch (error) {
+                console.error("Failed to fetch resident data:", error);
+                openSnackbar({
+                    text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
+                    type: "error",
+                    duration: 5000,
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchResidentData();
+    }, [residentId]);
 
     const onSubmit: SubmitHandler<FormDataResident> = (data) => {
         setConfirmVisible(true);
@@ -48,11 +94,11 @@ const ResidentAddForm: React.FC = () => {
         setLoading(true);
         try {
             // Gọi API thêm thành viên
-            console.log('call api add with: ', { ...formData });
+            console.log('call api update with: ', formData);
             // Thành công
             openSnackbar({
                 icon: true,
-                text: "Yêu cầu thêm thành viên thành công",
+                text: "Yêu cầu cập nhật thông tin thành viên thành công",
                 type: 'success',
                 action: { text: "Đóng", close: true },
                 duration: 5000,
@@ -91,9 +137,10 @@ const ResidentAddForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormSelectField
+                            disabled={getValues().relationship === 0}
                             name="relationship"
                             label="Quan hệ với chủ hộ"
-                            placeholder="Chọn quan hệ với chủ hộ"
+                            placeholder={getValues().relationship === 0 ? 'Chủ hộ' : "Chọn quan hệ với chủ hộ"}
                             control={control}
                             options={residentRealationships}
                             error={errors.relationship?.message}
@@ -140,8 +187,8 @@ const ResidentAddForm: React.FC = () => {
                     </div>
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="address"
                             disabled
+                            name="address"
                             label="Địa chỉ"
                             placeholder="Nhập địa chỉ"
                             control={control}
@@ -225,7 +272,7 @@ const ResidentAddForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} flex alignItems="center" justifyContent="center">
-                            <PrimaryButton label={loading ? "Đang xử lý..." : "Gửi yêu cầu thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton label={loading ? "Đang xử lý..." : "Gửi yêu cầu cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -233,7 +280,7 @@ const ResidentAddForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn gửi yêu cầu thêm thành viên này không?"
+                message="Bạn có chắc chắn muốn gửi yêu cầu cập nhật thông tin thành viên này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
@@ -241,4 +288,4 @@ const ResidentAddForm: React.FC = () => {
     )
 }
 
-export default ResidentAddForm;
+export default ResidentEditForm;

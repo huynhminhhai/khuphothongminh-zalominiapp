@@ -18,7 +18,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                             <div className="text-[14px] leading-[1] font-medium text-center">{data.date}</div>
                         </div>
                     </Box>
-                    <Box py={3}>
+                    <Box py={2}>
                         <h3 className="text-[16px] leading-[22px] font-semibold line-clamp-2 mb-1">{data.title}</h3>
                         <div className="flex">
                             <Box>

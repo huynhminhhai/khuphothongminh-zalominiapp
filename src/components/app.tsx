@@ -7,6 +7,7 @@ import { Navigation } from "./navigation";
 import ResidentPage from "pages/resident";
 import ResidentMemberPage from "pages/resident/resident-member";
 import ResidentAddPage from "pages/resident/resident-add";
+import ResidentEditPage from "pages/resident/resident-edit";
 
 const MyApp = () => {
   return (
@@ -21,6 +22,7 @@ const MyApp = () => {
               <Route path="/resident" element={<ResidentPage></ResidentPage>}></Route>
               <Route path="/resident-member" element={<ResidentMemberPage></ResidentMemberPage>}></Route>
               <Route path="/resident-add" element={<ResidentAddPage></ResidentAddPage>}></Route>
+              <Route path="/resident-edit" element={<ResidentEditPage></ResidentEditPage>}></Route>
               
             </Routes>
             <Navigation />

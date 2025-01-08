@@ -6,14 +6,13 @@ type ButtonProps = {
     handleClick: () => void;
     iconLeft?: React.ReactElement;
     iconRight?: React.ReactElement;
-    size?: 'small' | 'large' | 'medium';
-    disabled?: boolean;
+    size?: 'small' | 'large' | 'medium'
 }
 
-const PrimaryButton: React.FC<ButtonProps> = ({label, handleClick, iconLeft, iconRight, size='large', disabled=false}) => {
+const SecondaryButton: React.FC<ButtonProps> = ({label, handleClick, iconLeft, iconRight, size='large'}) => {
     return (
         <Box>
-            <Button variant="primary" size={size} onClick={handleClick} disabled={disabled}>
+            <Button variant="secondary" size={size} onClick={handleClick}>
                 <div className="flex items-center justify-center gap-2 h-[100%]">
                     {iconLeft}
                     <div className="text-[14px] leading-[1]">{label}</div>
@@ -24,4 +23,4 @@ const PrimaryButton: React.FC<ButtonProps> = ({label, handleClick, iconLeft, ico
     )
 }
 
-export default PrimaryButton
+export default SecondaryButton
