@@ -8,6 +8,7 @@ import ResidentPage from "pages/resident";
 import ResidentMemberPage from "pages/resident/resident-member";
 import ResidentAddPage from "pages/resident/resident-add";
 import ResidentEditPage from "pages/resident/resident-edit";
+import ScrollToTop from "./scroll-top";
 
 const MyApp = () => {
   return (
@@ -15,6 +16,7 @@ const MyApp = () => {
       <App>
         <SnackbarProvider>
           <ZMPRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<HomePage></HomePage>}></Route>
               

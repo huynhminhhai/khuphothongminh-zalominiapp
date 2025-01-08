@@ -19,7 +19,7 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
                     </div>
                 </Box>
                 <Box>
-                    <h4 className="text-[14px] leading-[18px] text-center font-medium">{data.label}</h4>
+                    <h4 className="text-[14px] leading-[18px] text-center font-normal">{data.label}</h4>
                 </Box>
             </div>
         </Box>
