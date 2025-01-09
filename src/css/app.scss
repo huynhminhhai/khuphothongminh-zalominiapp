@@ -77,20 +77,22 @@ body {
   &::after {
     display: none;
   }
+  
+}
+
+.zaui-header.sub {
+  background-color: white;
+  position: fixed;
 
   & .zaui-header-title {
     line-height: 1;
   }
-}
 
-.zaui-header.sub {
-  background-color: #731611;
-  position: fixed;
-
-  & .zaui-icon,
-  & .zaui-header-title {
-    color: white;
-  }
+  // & .zaui-icon,
+  // & .zaui-header-title {
+  //   // color: #731611;
+  //   // font-weight: 600;
+  // }
 }
 
 .zaui-input-affix-wrapper {
@@ -208,6 +210,22 @@ textarea[name="address"] {
   border: 1px solid red;
 }
 
+/**
+* MODAL
+**/ 
+
 .zaui-modal-content-main > div {
   padding: 0 !important;
+}
+
+/**
+* NEWS
+**/ 
+
+.news-detail p {
+  margin-bottom: 8px;
+}
+
+.news-detail img {
+  height: auto !important;
 }

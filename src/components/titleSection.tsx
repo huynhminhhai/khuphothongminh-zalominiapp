@@ -1,14 +1,23 @@
+import { Icon } from "@iconify/react";
 import React from "react"
 import { Box } from "zmp-ui"
 
 type TitleSectionType = {
     title: string;
+    mB?: number;
+    handleClick?: () => void;
 }
 
-const TitleSection: React.FC<TitleSectionType> = ({title}) => {
+const TitleSection: React.FC<TitleSectionType> = ({title, mB=4, handleClick}) => {
     return (
-        <Box>
-            <h3 className="text-[18px] font-semibold mb-4">{title}</h3>
+        <Box mb={mB}>
+            <div className="flex items-center justify-between">
+                <h3 className="text-[18px] font-semibold">{title}</h3>
+                <div
+                    className="text-[#731611] leading-[1] font-medium flex items-center gap-1"
+                    onClick={handleClick}
+                ><span>Xem tất cả</span> <Icon fontSize={14} icon='mingcute:right-line' /></div>
+            </div>
         </Box>
     )
 }
