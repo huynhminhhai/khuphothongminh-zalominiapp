@@ -33,7 +33,8 @@ const InforResidentItemMain: React.FC = () => {
                     <InforItemMain label="Dân tộc" value={RESIDENTMAIN.nation} />
                     <InforItemMain label="Tôn giáo" value={RESIDENTMAIN.religion} />
                     <InforItemMain label="Quốc tịch" value={RESIDENTMAIN.nationality} />
-                    <InforItemMain label="Quê quán" value={RESIDENTMAIN.hometown} />
+                    <InforItemMain label="Quê quán" value={RESIDENTMAIN.address} />
+                    <InforItemMain label="Bảo hiểm y tế" value={RESIDENTMAIN.bhyt} />
                 </Box>
             </Box>
             <Box p={4} mt={4} className="border-[1px] rounded-lg" onClick={() => navigate('/resident-member')}>

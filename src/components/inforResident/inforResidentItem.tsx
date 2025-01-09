@@ -62,6 +62,7 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({data, isCraft=fals
                                         value={`${ getLabelOptions(data.residenceStatus, residentStatus)}`}
                                     />
                                 }
+                                <InforItemMain label="Bảo hiểm y tế" value={data.bhyt} />
                             </Box>
                             <Box mt={2}>
                                 <div className=" flex items-center justify-end gap-3">
