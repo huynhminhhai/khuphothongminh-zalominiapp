@@ -226,12 +226,29 @@ textarea[name="address"] {
 * NEWS
 **/ 
 
-.news-detail p {
+.detail-content {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.detail-content p {
   margin-bottom: 8px;
 }
 
-.news-detail img {
+.detail-content img {
   height: auto !important;
+}
+
+.detail-content ol {
+  list-style: decimal;
+  padding-left: 20px;
+  margin-bottom: 8px;
+}
+
+.detail-content ul {
+  list-style: disc;
+  padding-left: 20px;
+  margin-bottom: 8px;
 }
 
 /**
@@ -244,4 +261,12 @@ textarea[name="address"] {
 
 .filter .zaui-input-affix-wrapper .zaui-input {
   height: 32px;
+}
+
+/**
+* SWIPER
+**/ 
+
+.zaui-swiper img {
+  width: 100%;
 }

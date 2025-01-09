@@ -83,8 +83,8 @@ const NewsDetailPage: React.FC = () => {
                             </div>
                         </li>
                     </ul> */}
-                    <Box className="news-detail text-[14px] leading-[24px]" mt={6}>
-                        <div dangerouslySetInnerHTML={{__html: detailData?.content || ''}}></div>
+                    <Box mt={6}>
+                        <div className="detail-content" dangerouslySetInnerHTML={{__html: detailData?.content || ''}}></div>
                     </Box>
                     <div className="block h-[1px] w-[100%] bg-[#731611] my-4"></div>
                 </Box>

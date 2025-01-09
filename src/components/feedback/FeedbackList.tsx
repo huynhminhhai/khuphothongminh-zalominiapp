@@ -9,6 +9,7 @@ const NewsList: React.FC = () => {
 
     return (
         <Box>
+            
             <div className="grid grid-cols-1">
                 {
                     feedbackWithStatus2.map((item, index) => (
