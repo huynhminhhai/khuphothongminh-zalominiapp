@@ -8,6 +8,7 @@ import { NewsDetailPage, NewsPage } from "pages/news";
 import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
 import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
+import { FeedbackPage } from "pages/feedback";
 
 const MyApp = () => {
   return (
@@ -31,6 +32,9 @@ const MyApp = () => {
 
               {/* MEETING */}
               <Route path="/meeting" element={<MeetingPage></MeetingPage>}></Route>
+
+              {/* FEEDBACK */}
+              <Route path="/feedback" element={<FeedbackPage></FeedbackPage>}></Route>
               
             </Routes>
             <Navigation />

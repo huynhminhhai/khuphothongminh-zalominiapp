@@ -41,7 +41,7 @@ export const SERVICES: ServicesType[] = [
     },
     {
         label: 'Góp ý kiến',
-        url: '/',
+        url: '/feedback',
         icon: images.idea
     },
     {
@@ -444,4 +444,69 @@ export const NEWSDATA: News[] = [
         author: "Trần Quốc D",
         views: 1500,
     }
+];
+
+export type feedbackType = {
+    [key: number]: string;
+}
+
+export const feedbackStatus = [
+    { value: 1, label: "Chưa đăng tải" },
+    { value: 2, label: "Đã đăng tải" }
+]
+
+export type Feedback = {
+    id: number;
+    title: string;
+    content: string;
+    imageUrl?: string;
+    status: number;
+    timestamp: string;
+}
+
+export const feedbackColor = {
+    1: '#FFC107',
+    2: '#28a745'
+}
+
+export const FEEDBACKDATA: Feedback[] = [
+    {
+      id: 1,
+      title: "Phản ánh về việc dựng rạp đám cưới đường Phạm Hùng, phường Long Hoa, thị xã Hòa Thành",
+      content: "Rạp đám cưới dựng trên vỉa hè gây cản trở giao thông và mất mỹ quan khu vực.",
+      imageUrl: "https://nld.mediacdn.vn/291774122806476800/2023/6/26/z4461875447574a5a34083b8d92b895cc769347040f03e-1687750514245873334494.jpg",
+      status: 1, // Trạng thái đã được xử lý
+      timestamp: "2025-01-07 10:14"
+    },
+    {
+      id: 2,
+      title: "Đề xuất cải thiện hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa",
+      content: "Hệ thống đèn chiếu sáng tại chợ Long Hoa không đủ sáng vào buổi tối, cần thay mới đèn.",
+      status: 1, // Trạng thái chưa xử lý
+      timestamp: "2025-01-08 14:30"
+    },
+    {
+      id: 3,
+      title: "Góp ý về việc tăng cường bảo vệ môi trường tại công viên",
+      content: "Công viên cần có thêm thùng rác để giữ gìn vệ sinh chung.",
+      imageUrl: 'https://1022-api.tayninh.gov.vn/Upload/PhanAnh/2710/hinhanh/6376124582091266512602.jpg',
+      status: 2, // Trạng thái chưa xử lý
+      timestamp: "2025-01-09 09:00"
+    },
+    {
+        id: 4,
+        title: "Phản ánh đèn đường chiếu sáng không hoạt động",
+        content: "Dạ em xin gửi thông tin đèn đường không hoạt động đường Huỳnh Văn Thanh. Kính gửi và nhờ quý cơ quan xem xét và xử lý sớm. Vị trí đèn không hoạt động giống vị trí hình em gửi. Em xin cảm ơn",
+        imageUrl: 'https://api.paht-phuly.vn/Upload/PhanAnh/84370/hinhanh/6384043033904145152310_0.png',
+        status: 2, // Trạng thái chưa xử lý
+        timestamp: "2025-01-09 09:00"
+    },
+    {
+        id: 5,
+        title: "Phản ánh đội ngũ thu gom rác",
+        content: "Nhờ cơ quan quản lý Đô thị xử lý giúp. Đội ngũ thu gom rác thường xuyên không thu rác gây ô nhiễm khu vực 152 30/4 kp4 Phường 3.",
+        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPnmw5URfZVe2CIiqOPycvWoJl8BTDiy0-Qfz9hqL5cs125hTJgfsO-tv7hVE3giC3rGA&usqp=CAU',
+        status: 2, // Trạng thái chưa xử lý
+        timestamp: "2025-01-09 09:00"
+    },
 ];
