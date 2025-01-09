@@ -4,7 +4,7 @@ import { HeaderSub } from "components/header-sub"
 import { MeetingItem } from "components/meeting"
 import { MEETING, MeetingType } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Page, Select } from "zmp-ui"
+import { Box, Button, Page, Select } from "zmp-ui"
 
 const MeetingPage: React.FC = () => {
 
@@ -54,6 +54,9 @@ const MeetingPage: React.FC = () => {
                                     <MeetingItem key={index} data={item} />
                                 ))
                             }
+                        </div>
+                        <div className="flex items-center justify-center gap-3 pt-6 pb-2 border-t-[1px] border-[#e5e7eb] mt-4">
+                            <Button onClick={() => console.log('call api list news')} size="medium">Xem thêm</Button>
                         </div>
                     </Box>
                 </Box>

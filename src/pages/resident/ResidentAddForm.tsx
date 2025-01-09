@@ -224,8 +224,8 @@ const ResidentAddForm: React.FC = () => {
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
-                        <Box py={3} flex alignItems="center" justifyContent="center">
-                            <PrimaryButton label={loading ? "Đang xử lý..." : "Gửi yêu cầu thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
+                        <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
+                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Gửi yêu cầu thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
