@@ -7,6 +7,7 @@ import ScrollToTop from "./scroll-top";
 import { NewsDetailPage, NewsPage } from "pages/news";
 import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
 import { HomePage } from "pages/homepage";
+import { MeetingPage } from "pages/meeting";
 
 const MyApp = () => {
   return (
@@ -27,6 +28,9 @@ const MyApp = () => {
               {/* NEWS */}
               <Route path="/news" element={<NewsPage></NewsPage>}></Route>
               <Route path="/news-detail" element={<NewsDetailPage></NewsDetailPage>}></Route>
+
+              {/* MEETING */}
+              <Route path="/meeting" element={<MeetingPage></MeetingPage>}></Route>
               
             </Routes>
             <Navigation />

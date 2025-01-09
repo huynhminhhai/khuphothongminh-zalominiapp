@@ -11,7 +11,7 @@ export const HeaderSub: React.FC<HeaderSubProps> = ({title}) => {
             className="sub"
             title={
                 (
-                    <Box flex alignItems="center" justifyContent="center">
+                    <Box flex alignItems="center">
                         <h4 className="text-[18px] font-semibold mt-1 mr-6">{title}</h4>
                     </Box>
                 ) as unknown as string

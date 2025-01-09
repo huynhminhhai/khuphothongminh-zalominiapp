@@ -4,11 +4,14 @@ import { Box } from "zmp-ui"
 import MeetingItem from "./MeetingItem"
 
 const MeetingList: React.FC = () => {
+
+    const firstTwoMeetings = MEETING.slice(0, 2);
+
     return (
         <Box>
             <div className="grid grid-cols-1 gap-4">
                 {
-                    MEETING.map((item: MeetingType, index: React.Key ) => (
+                    firstTwoMeetings.map((item: MeetingType, index: React.Key ) => (
                         <MeetingItem key={index} data={item} />
                     ))
                 }

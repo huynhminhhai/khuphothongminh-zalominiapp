@@ -7,7 +7,7 @@ const MeetingSection: React.FC<any> = () => {
     return (
         <Box>
             <Box p={4}>
-                <TitleSection title="Cuộc họp" />
+                <TitleSection title="Cuộc họp hôm nay" />
                 <MeetingList />
             </Box>
         </Box>

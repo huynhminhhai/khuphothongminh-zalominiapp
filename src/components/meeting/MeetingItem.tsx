@@ -24,10 +24,10 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                             <Box>
                                 <ul className="text-[14px] font-normal text-[#7c7c7c]">
                                     <li>
-                                        Địa điểm: {data.location}
+                                        Địa điểm: <span className="font-medium">{data.location}</span>
                                     </li>
                                     <li>
-                                        Thời gian: {data.time}
+                                        Thời gian: <span className="font-medium">{data.time}</span>
                                     </li>
                                 </ul>
                                 <div style={{backgroundColor: meetingColor[data.status]}} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">

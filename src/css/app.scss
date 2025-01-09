@@ -57,7 +57,7 @@ body {
 
 .zaui-page {
   background-color: white;
-  min-height: calc(100vh);
+  min-height: calc(100vh - 56px);
   // margin-top: 104px;
   margin-top: 56px;
 }
@@ -228,4 +228,16 @@ textarea[name="address"] {
 
 .news-detail img {
   height: auto !important;
+}
+
+/**
+* FILTER
+**/
+
+.filter .zaui-input-affix-wrapper {
+  border-radius: 24px;
+}
+
+.filter .zaui-input-affix-wrapper .zaui-input {
+  height: 32px;
 }

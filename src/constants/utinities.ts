@@ -10,7 +10,7 @@ export type StatisticsType = {
 export const STATISTICS: StatisticsType[] = [
     {
         label: 'Khu phố',
-        value: 'Mỹ Yên',
+        value: '9',
         iconUrl: 'fluent:building-48-filled',
         color: '#218838'
     },
@@ -46,7 +46,7 @@ export const SERVICES: ServicesType[] = [
     },
     {
         label: 'Thông tin cuộc họp',
-        url: '/',
+        url: '/meeting',
         icon: images.meeting
     },
 ]
@@ -79,16 +79,30 @@ export const MEETING: MeetingType[] = [
     {
         date: '09/07/2024',
         title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        location: 'Cổng làng',
+        time: '17:30 - 19:00',
+        status: 2
+    },
+    {
+        date: '09/07/2024',
+        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',
-        status: 1
+        status: 2
     },
     {
         date: '08/07/2024',
         title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',
-        status: 2
+        status: 1
+    },
+    {
+        date: '07/07/2024',
+        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        location: 'Phòng họp số 1',
+        time: '08:30 - 10:00',
+        status: 3
     },
     {
         date: '07/07/2024',

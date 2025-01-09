@@ -8,15 +8,18 @@ type TitleSectionType = {
     handleClick?: () => void;
 }
 
-const TitleSection: React.FC<TitleSectionType> = ({title, mB=4, handleClick}) => {
+const TitleSection: React.FC<TitleSectionType> = ({ title, mB = 4, handleClick }) => {
     return (
         <Box mb={mB}>
             <div className="flex items-center justify-between">
                 <h3 className="text-[18px] font-semibold">{title}</h3>
-                <div
-                    className="text-[#731611] leading-[1] font-medium flex items-center gap-1"
-                    onClick={handleClick}
-                ><span>Xem tất cả</span> <Icon fontSize={14} icon='mingcute:right-line' /></div>
+                {
+                    handleClick &&
+                    <div
+                        className="text-[#731611] text-[16px] leading-[1] font-medium flex items-center gap-1"
+                        onClick={handleClick}
+                    ><span>Xem tất cả</span> <Icon fontSize={16} icon='mingcute:right-line' /></div>
+                }
             </div>
         </Box>
     )

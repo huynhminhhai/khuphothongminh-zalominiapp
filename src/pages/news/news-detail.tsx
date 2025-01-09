@@ -52,15 +52,15 @@ const NewsDetailPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Chi tiết tin tức" />
                 <Box p={4}>
-                    <div className="flex items-center gap-2 mb-3">
-                        <div className="h-[30px] w-[5px] bg-[#731611] block"></div>
-                        <h3 className="text-[18px] leading-[1] font-medium">Tin tức</h3>
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="h-[24px] w-[5px] bg-[#731611] block"></div>
+                        <h3 className="text-[16px] leading-[1] font-medium">Tin tức</h3>
                     </div>
-                    <h2 className="text-[20px] leading-[28px] font-semibold mb-2">
+                    <h2 className="text-[22px] leading-[28px] font-semibold mb-2 text-[#731611]">
                         {detailData?.title}
                     </h2>
-                    <div className="block h-[1px] w-[100%] bg-[#731611] my-4"></div>
-                    <ul className="text-[#555555] mt-6">
+                    <h4 className="text-[14px] leading-[1] font-medium">{detailData?.publishedDate}</h4>
+                    {/* <ul className="text-[#555555] mt-6">
                         <li className="flex items-start gap-3 mb-4">
                             <Icon fontSize={28} icon='icon-park-solid:people' />
                             <div>
@@ -82,7 +82,7 @@ const NewsDetailPage: React.FC = () => {
                                 <Text size="small">{detailData?.views} lượt xem</Text>
                             </div>
                         </li>
-                    </ul>
+                    </ul> */}
                     <Box className="news-detail text-[14px] leading-[24px]" mt={6}>
                         <div dangerouslySetInnerHTML={{__html: detailData?.content || ''}}></div>
                     </Box>
