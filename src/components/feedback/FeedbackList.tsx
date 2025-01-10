@@ -1,19 +1,19 @@
 import React from "react"
 import { Box, Button } from "zmp-ui"
 import FeedbackItem from "./FeedbackItem"
-import { FEEDBACKDATA } from "constants/utinities"
-import FeedbackMenu from "./FeedbackMenu"
+import { Feedback } from "constants/utinities"
 
-const NewsList: React.FC = () => {
+type FeedbackListProps = {
+    data: Feedback[]
+}
 
-    const feedbackWithStatus2 = FEEDBACKDATA.filter(feedback => feedback.status === 2);
+const FeedbackList: React.FC<FeedbackListProps> = ({data}) => {
 
     return (
         <Box>
-            <FeedbackMenu />
             <div className="grid grid-cols-1">
                 {
-                    feedbackWithStatus2.map((item, index) => (
+                    data.map((item, index) => (
                         <FeedbackItem key={index} data={item} />
                     ))
                 }
@@ -25,4 +25,4 @@ const NewsList: React.FC = () => {
     )
 }
 
-export default NewsList
+export default FeedbackList
