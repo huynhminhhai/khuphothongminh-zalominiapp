@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react"
 import { Divider } from "components/divider"
 import { HeaderSub } from "components/header-sub"
-import { MeetingItem } from "components/meeting"
+import { MeetingList } from "components/meeting"
 import { MEETING, MeetingType } from "constants/utinities"
 import React, { useState } from "react"
 import { Box, Button, Page, Select } from "zmp-ui"
@@ -49,11 +49,7 @@ const MeetingPage: React.FC = () => {
                     <Divider />
                     <Box p={4}>
                         <div className="grid grid-cols-1 gap-4">
-                            {
-                                filteredMeetings.map((item: MeetingType, index: React.Key) => (
-                                    <MeetingItem key={index} data={item} />
-                                ))
-                            }
+                            <MeetingList data={filteredMeetings} />
                         </div>
                         <div className="flex items-center justify-center gap-3 pt-6 pb-2 border-t-[1px] border-[#e5e7eb] mt-4">
                             <Button onClick={() => console.log('call api list news')} size="medium">Xem thêm</Button>

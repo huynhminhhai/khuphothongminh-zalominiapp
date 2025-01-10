@@ -2,7 +2,7 @@ import React from "react"
 import { Box } from "zmp-ui"
 import { RESIDENT, RESIDENTCRAFT, ResidentType } from "constants/utinities"
 import { Divider } from "components/divider"
-import InforResidentItem from "./InforResidentItem"
+import { InforResidentItemSub } from "."
 
 const InforResidentList: React.FC = () => {
     return (
@@ -11,7 +11,7 @@ const InforResidentList: React.FC = () => {
                 {
                     RESIDENT.map((item: ResidentType, index: React.Key) => (
                         <Box key={index}>
-                            <InforResidentItem data={item}/>
+                            <InforResidentItemSub data={item}/>
                             <Divider />
                         </Box>
                     ))
@@ -19,7 +19,7 @@ const InforResidentList: React.FC = () => {
                 {
                     RESIDENTCRAFT.map((item: ResidentType, index: React.Key) => (
                         <Box key={index}>
-                            <InforResidentItem data={item} isCraft/>
+                            <InforResidentItemSub data={item} isCraft/>
                             <Divider />
                         </Box>
                     ))
