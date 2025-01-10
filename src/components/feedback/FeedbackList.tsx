@@ -2,6 +2,7 @@ import React from "react"
 import { Box, Button } from "zmp-ui"
 import FeedbackItem from "./FeedbackItem"
 import { FEEDBACKDATA } from "constants/utinities"
+import FeedbackMenu from "./FeedbackMenu"
 
 const NewsList: React.FC = () => {
 
@@ -9,7 +10,7 @@ const NewsList: React.FC = () => {
 
     return (
         <Box>
-            
+            <FeedbackMenu />
             <div className="grid grid-cols-1">
                 {
                     feedbackWithStatus2.map((item, index) => (

@@ -78,7 +78,7 @@ const FeedbackDetailPage: React.FC = () => {
                             </Box>
                             <Box p={4}>
                                 <Box pb={3} mb={3} className="border-b-[1px]">
-                                    <h3 className="text-[18px] leading-[22px] font-medium line-clamp-2 mb-1">{feedbackData.title}</h3>
+                                    <h3 className="text-[18px] leading-[24px] font-medium line-clamp-2 mb-1">{feedbackData.title}</h3>
                                     <div>{feedbackData.timestamp}</div>
                                 </Box>
                                 <Box py={3}>
@@ -89,7 +89,7 @@ const FeedbackDetailPage: React.FC = () => {
                             <Divider />
                             <Box p={4}>
                                 <Box pb={3} mb={3} className="border-b-[1px]">
-                                    <h3 className="text-[18px] leading-[22px] font-medium line-clamp-2 mb-1">Trung tâm điều hành trả lời</h3>
+                                    <h3 className="text-[18px] leading-[24px] font-medium line-clamp-2 mb-1">Trung tâm điều hành trả lời</h3>
                                     <div>10/01/2025 9:00</div>
                                 </Box>
                                 <Box py={3}>

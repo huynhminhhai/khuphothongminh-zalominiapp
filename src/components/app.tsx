@@ -8,8 +8,7 @@ import { NewsDetailPage, NewsPage } from "pages/news";
 import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
 import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
-import { FeedbackPage } from "pages/feedback";
-import FeedbackDetailPage from "pages/feedback/feedback-detail";
+import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 
 const MyApp = () => {
   return (
@@ -37,6 +36,8 @@ const MyApp = () => {
               {/* FEEDBACK */}
               <Route path="/feedback" element={<FeedbackPage></FeedbackPage>}></Route>
               <Route path="/feedback-detail" element={<FeedbackDetailPage></FeedbackDetailPage>}></Route>
+              <Route path="/feedback-add" element={<FeedbackAddPage></FeedbackAddPage>}></Route>
+              <Route path="/feedback-history" element={<FeedbackHistoryPage></FeedbackHistoryPage>}></Route>
               
             </Routes>
             <Navigation />
