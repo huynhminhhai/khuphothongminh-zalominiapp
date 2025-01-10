@@ -518,3 +518,64 @@ export const FEEDBACKDATA: Feedback[] = [
         timestamp: "09/01/2025 09:00"
     },
 ];
+
+export type FeedbackResponse = {
+    id: number;
+    feedbackId: number; 
+    content: string;     
+    timestamp: string;   
+    files: string[];     
+  }
+
+export const FEEDBACKRESPONSES: FeedbackResponse[] = [
+    {
+      id: 1,
+      feedbackId: 1,
+      content: "Cảm ơn bạn đã phản ánh. Chúng tôi đã xử lý và yêu cầu tháo dỡ rạp đám cưới trên vỉa hè để đảm bảo giao thông và mỹ quan khu vực.",
+      timestamp: "07/01/2025 12:00",
+      files: [
+        "https://example.com/file1.jpg",
+      ],
+    },
+    {
+      id: 2,
+      feedbackId: 2,
+      content: "Chúng tôi đã ghi nhận phản ánh và sẽ tiến hành thay mới hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa trong thời gian sớm nhất.",
+      timestamp: "08/01/2025 16:00",
+      files: [],
+    },
+    {
+      id: 3,
+      feedbackId: 3,
+      content: `
+        <p>Cảm ơn anh/chị đã gửi ý kiến đóng góp về việc cần bổ sung thùng rác tại công viên để giữ gìn vệ sinh chung. Đây là một ý kiến rất thiết thực và hữu ích trong việc nâng cao chất lượng môi trường sống của khu vực chúng ta.</p>
+        <p>Hiện tại, chúng tôi đã ghi nhận phản ánh này và sẽ nhanh chóng làm việc với các cơ quan liên quan để:</p>
+        <ol>
+            <li>Đánh giá tình hình hiện tại về số lượng và vị trí các thùng rác trong công viên.</li>
+            <li>Lập kế hoạch bổ sung thêm thùng rác tại các khu vực còn thiếu.</li>
+            <li>Triển khai giải pháp trong thời gian sớm nhất nhằm đảm bảo công viên luôn sạch đẹp và thuận tiện cho người dân.</li>
+        </ol>
+        <p>Chúng tôi rất mong nhận được thêm các ý kiến đóng góp từ phía anh/chị để cùng nhau xây dựng một môi trường sống văn minh và sạch đẹp hơn.</p>
+      `,
+      timestamp: "09/01/2025 10:30",
+      files: [
+        'https://example.com/file2.jpg',
+      ],
+    },
+    {
+      id: 4,
+      feedbackId: 4,
+      content: "Cảm ơn bạn đã phản ánh. Chúng tôi sẽ kiểm tra và sửa chữa đèn đường không hoạt động tại đường Huỳnh Văn Thanh.",
+      timestamp: "09/01/2025 10:45",
+      files: [
+        'https://example.com/file3.jpg',
+      ],
+    },
+    {
+      id: 5,
+      feedbackId: 5,
+      content: "Chúng tôi đã tiếp nhận phản ánh về đội ngũ thu gom rác và sẽ xử lý vấn đề này trong thời gian tới.",
+      timestamp: "09/01/2025 11:00",
+      files: [],
+    },
+  ];
