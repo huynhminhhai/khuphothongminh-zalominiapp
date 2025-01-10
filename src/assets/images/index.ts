@@ -7,6 +7,7 @@ import news from './newspaper.png'
 import idea from './idea.png'
 import meeting from './online-meeting.png'
 import thumbnailNews from './news.png'
+import empty from './empty.png'
 
 const images = {
     logo,
@@ -17,7 +18,8 @@ const images = {
     news,
     idea,
     meeting,
-    thumbnailNews
+    thumbnailNews,
+    empty
 }
 
 export default images

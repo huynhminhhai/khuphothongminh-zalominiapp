@@ -80,8 +80,8 @@ const FeedbackAddForm: React.FC = () => {
                     <div className="col-span-12">
                         <FormTextEditorField
                             name="content"
-                            label="Noi dung phan anh"
-                            placeholder="Nhap noi dung phan anh"
+                            label="Nội dung phản ánh"
+                            placeholder="Nhập nội dung phản ánh..."
                             control={control}
                             error={errors.content?.message}
                             required

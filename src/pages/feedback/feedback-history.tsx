@@ -10,7 +10,7 @@ const FeedbackHistoryPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Phản ánh đã gửi" />
                 <Box p={4}>
-                    <FeedbackList data={FEEDBACKDATA} />
+                    <FeedbackList data={[]} />
                 </Box>
             </Box>
         </Page>
