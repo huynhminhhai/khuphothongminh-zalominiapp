@@ -6,7 +6,7 @@ import ServiceItem from "./ServiceItem"
 const ServiceList: React.FC<any> = () => {
     return (
         <Box>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-4 gap-x-3 gap-y-4">
                 {
                     SERVICES.map((item: ServicesType, index: React.Key) => (
                         <ServiceItem key={index} data={item} />

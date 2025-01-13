@@ -49,6 +49,11 @@ export const SERVICES: ServicesType[] = [
         url: '/meeting',
         icon: images.meeting
     },
+    {
+        label: 'Khảo sát ý kiến',
+        url: '/survey',
+        icon: images.checklist
+    },
 ]
 
 export type MeetingStatusType = {
@@ -471,31 +476,31 @@ export const feedbackColor = {
 
 export const FEEDBACKDATA: Feedback[] = [
     {
-      id: 1,
-      title: "Phản ánh về việc dựng rạp đám cưới đường Phạm Hùng, phường Long Hoa, thị xã Hòa Thành",
-      content: "Rạp đám cưới dựng trên vỉa hè gây cản trở giao thông và mất mỹ quan khu vực.",
-      imageUrl: [
-        "https://nld.mediacdn.vn/291774122806476800/2023/6/26/z4461875447574a5a34083b8d92b895cc769347040f03e-1687750514245873334494.jpg",
-      ],
-      status: 1, // Trạng thái đã được xử lý
-      timestamp: "07/01/2025 10:14"
+        id: 1,
+        title: "Phản ánh về việc dựng rạp đám cưới đường Phạm Hùng, phường Long Hoa, thị xã Hòa Thành",
+        content: "Rạp đám cưới dựng trên vỉa hè gây cản trở giao thông và mất mỹ quan khu vực.",
+        imageUrl: [
+            "https://nld.mediacdn.vn/291774122806476800/2023/6/26/z4461875447574a5a34083b8d92b895cc769347040f03e-1687750514245873334494.jpg",
+        ],
+        status: 1, // Trạng thái đã được xử lý
+        timestamp: "07/01/2025 10:14"
     },
     {
-      id: 2,
-      title: "Đề xuất cải thiện hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa",
-      content: "Hệ thống đèn chiếu sáng tại chợ Long Hoa không đủ sáng vào buổi tối, cần thay mới đèn.",
-      status: 1, // Trạng thái chưa xử lý
-      timestamp: "08/01/2025 14:30"
+        id: 2,
+        title: "Đề xuất cải thiện hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa",
+        content: "Hệ thống đèn chiếu sáng tại chợ Long Hoa không đủ sáng vào buổi tối, cần thay mới đèn.",
+        status: 1, // Trạng thái chưa xử lý
+        timestamp: "08/01/2025 14:30"
     },
     {
-      id: 3,
-      title: "Góp ý về việc tăng cường bảo vệ môi trường tại công viên",
-      content: "Công viên cần có thêm thùng rác để giữ gìn vệ sinh chung.",
-      imageUrl: [
-        'https://1022-api.tayninh.gov.vn/Upload/PhanAnh/2710/hinhanh/6376124582091266512602.jpg'
-      ],
-      status: 2, // Trạng thái chưa xử lý
-      timestamp: "09/01/2025 09:00"
+        id: 3,
+        title: "Góp ý về việc tăng cường bảo vệ môi trường tại công viên",
+        content: "Công viên cần có thêm thùng rác để giữ gìn vệ sinh chung.",
+        imageUrl: [
+            'https://1022-api.tayninh.gov.vn/Upload/PhanAnh/2710/hinhanh/6376124582091266512602.jpg'
+        ],
+        status: 2, // Trạng thái chưa xử lý
+        timestamp: "09/01/2025 09:00"
     },
     {
         id: 4,
@@ -521,33 +526,33 @@ export const FEEDBACKDATA: Feedback[] = [
 
 export type FeedbackResponse = {
     id: number;
-    feedbackId: number; 
-    content: string;     
-    timestamp: string;   
-    files: string[];     
-  }
+    feedbackId: number;
+    content: string;
+    timestamp: string;
+    files: string[];
+}
 
 export const FEEDBACKRESPONSES: FeedbackResponse[] = [
     {
-      id: 1,
-      feedbackId: 1,
-      content: "Cảm ơn bạn đã phản ánh. Chúng tôi đã xử lý và yêu cầu tháo dỡ rạp đám cưới trên vỉa hè để đảm bảo giao thông và mỹ quan khu vực.",
-      timestamp: "07/01/2025 12:00",
-      files: [
-        "https://example.com/file1.jpg",
-      ],
+        id: 1,
+        feedbackId: 1,
+        content: "Cảm ơn bạn đã phản ánh. Chúng tôi đã xử lý và yêu cầu tháo dỡ rạp đám cưới trên vỉa hè để đảm bảo giao thông và mỹ quan khu vực.",
+        timestamp: "07/01/2025 12:00",
+        files: [
+            "https://example.com/file1.jpg",
+        ],
     },
     {
-      id: 2,
-      feedbackId: 2,
-      content: "Chúng tôi đã ghi nhận phản ánh và sẽ tiến hành thay mới hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa trong thời gian sớm nhất.",
-      timestamp: "08/01/2025 16:00",
-      files: [],
+        id: 2,
+        feedbackId: 2,
+        content: "Chúng tôi đã ghi nhận phản ánh và sẽ tiến hành thay mới hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa trong thời gian sớm nhất.",
+        timestamp: "08/01/2025 16:00",
+        files: [],
     },
     {
-      id: 3,
-      feedbackId: 3,
-      content: `
+        id: 3,
+        feedbackId: 3,
+        content: `
         <p>Cảm ơn anh/chị đã gửi ý kiến đóng góp về việc cần bổ sung thùng rác tại công viên để giữ gìn vệ sinh chung. Đây là một ý kiến rất thiết thực và hữu ích trong việc nâng cao chất lượng môi trường sống của khu vực chúng ta.</p>
         <p>Hiện tại, chúng tôi đã ghi nhận phản ánh này và sẽ nhanh chóng làm việc với các cơ quan liên quan để:</p>
         <ol>
@@ -557,25 +562,65 @@ export const FEEDBACKRESPONSES: FeedbackResponse[] = [
         </ol>
         <p>Chúng tôi rất mong nhận được thêm các ý kiến đóng góp từ phía anh/chị để cùng nhau xây dựng một môi trường sống văn minh và sạch đẹp hơn.</p>
       `,
-      timestamp: "09/01/2025 10:30",
-      files: [
-        'https://example.com/file2.jpg',
-      ],
+        timestamp: "09/01/2025 10:30",
+        files: [
+            'https://example.com/file2.jpg',
+        ],
     },
     {
-      id: 4,
-      feedbackId: 4,
-      content: "Cảm ơn bạn đã phản ánh. Chúng tôi sẽ kiểm tra và sửa chữa đèn đường không hoạt động tại đường Huỳnh Văn Thanh.",
-      timestamp: "09/01/2025 10:45",
-      files: [
-        'https://example.com/file3.jpg',
-      ],
+        id: 4,
+        feedbackId: 4,
+        content: "Cảm ơn bạn đã phản ánh. Chúng tôi sẽ kiểm tra và sửa chữa đèn đường không hoạt động tại đường Huỳnh Văn Thanh.",
+        timestamp: "09/01/2025 10:45",
+        files: [
+            'https://example.com/file3.jpg',
+        ],
     },
     {
-      id: 5,
-      feedbackId: 5,
-      content: "Chúng tôi đã tiếp nhận phản ánh về đội ngũ thu gom rác và sẽ xử lý vấn đề này trong thời gian tới.",
-      timestamp: "09/01/2025 11:00",
-      files: [],
+        id: 5,
+        feedbackId: 5,
+        content: "Chúng tôi đã tiếp nhận phản ánh về đội ngũ thu gom rác và sẽ xử lý vấn đề này trong thời gian tới.",
+        timestamp: "09/01/2025 11:00",
+        files: [],
     },
-  ];
+];
+
+export type SurveyType = {
+    id: number;
+    title: string;
+    status: number;
+    timestamp: string;
+}
+
+export const SURVEYDATA: SurveyType[] = [
+    {
+        id: 1,
+        title: "Khảo sát ý kiến về vệ sinh môi trường tại khu dân cư",
+        status: 2, // Trạng thái: 1 - Đang diễn ra
+        timestamp: "10/01/2025 08:00",
+    },
+    {
+        id: 2,
+        title: "Khảo sát nhu cầu cải thiện hệ thống giao thông công cộng",
+        status: 1, // Trạng thái: 0 - Đã kết thúc
+        timestamp: "05/01/2025 14:30",
+    },
+    {
+        id: 3,
+        title: "Khảo sát mức độ hài lòng về dịch vụ hành chính công",
+        status: 2, // Trạng thái: 1 - Đang diễn ra
+        timestamp: "09/01/2025 09:00",
+    },
+    {
+        id: 4,
+        title: "Khảo sát nhu cầu xây dựng công viên mới",
+        status: 1, // Trạng thái: 0 - Đã kết thúc
+        timestamp: "03/01/2025 16:45",
+    },
+    {
+        id: 5,
+        title: "Khảo sát ý kiến về chất lượng nước sinh hoạt",
+        status: 2, // Trạng thái: 1 - Đang diễn ra
+        timestamp: "10/01/2025 07:30",
+    },
+];

@@ -5,6 +5,7 @@ import shape2 from './shape2.png'
 import home from './home.png'
 import news from './newspaper.png'
 import idea from './idea.png'
+import checklist from './checklist.png'
 import meeting from './online-meeting.png'
 import thumbnailNews from './news.png'
 import empty from './empty.png'
@@ -19,7 +20,8 @@ const images = {
     idea,
     meeting,
     thumbnailNews,
-    empty
+    empty,
+    checklist
 }
 
 export default images

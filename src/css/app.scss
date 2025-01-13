@@ -77,7 +77,7 @@ body {
   &::after {
     display: none;
   }
-  
+
 }
 
 .zaui-header.sub {
@@ -134,6 +134,10 @@ body {
 
 .clip-path-1 {
   clip-path: polygon(5% 0, 100% 0%, 95% 100%, 0% 100%);
+}
+
+.box-shadow-1 {
+  box-shadow: 0px -4px 3px rgb(243 243 243);
 }
 
 /**
@@ -210,21 +214,21 @@ textarea[name="address"] {
   align-items: self-start;
 }
 
-.borderRed .zaui-input-affix-wrapper  {
+.borderRed .zaui-input-affix-wrapper {
   border: 1px solid red;
 }
 
 /**
 * MODAL
-**/ 
+**/
 
-.zaui-modal-content-main > div {
+.zaui-modal-content-main>div {
   padding: 0 !important;
 }
 
 /**
 * NEWS
-**/ 
+**/
 
 .detail-content {
   font-size: 14px;
@@ -265,7 +269,7 @@ textarea[name="address"] {
 
 /**
 * SWIPER
-**/ 
+**/
 
 .zaui-swiper img {
   width: 100%;
@@ -273,8 +277,22 @@ textarea[name="address"] {
 
 /**
 * TEXT EDITOR
-**/ 
+**/
 
 div.ql-editor {
   height: 200px;
+}
+
+/**
+* MODAL
+**/
+
+.zaui-modal-content-description {
+  font-size: 18px;
+  line-height: 24px;
+  text-align: center;
+}
+
+.zaui-modal-content .zaui-modal-content-title {
+  font-weight: 600;
 }

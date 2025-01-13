@@ -1,4 +1,3 @@
-import { FeedbackSection } from "components/feedback"
 import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { Box, Page } from "zmp-ui"
