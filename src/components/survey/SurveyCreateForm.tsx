@@ -132,6 +132,7 @@ const CreateSurveyForm: React.FC = () => {
 
     const handlePreview = () => {
         if (!formData.title.trim() || !formData.description.trim() || formData.questions.length === 0) {
+            setDescModal('Chưa đầy đủ thông tin để xem trước khảo sát')
             setPopupVisible(true);
             return;
         }

@@ -588,39 +588,72 @@ export const FEEDBACKRESPONSES: FeedbackResponse[] = [
 export type SurveyType = {
     id: number;
     title: string;
+    description: string;
     status: number;
     timestamp: string;
+    expiryDate: string;
+    questions: any[]
 }
 
 export const SURVEYDATA: SurveyType[] = [
     {
         id: 1,
-        title: "Khảo sát ý kiến về vệ sinh môi trường tại khu dân cư",
-        status: 2, // Trạng thái: 1 - Đang diễn ra
+        title: "Lấy ý kiến mở rộng đường vào thôn",
+        description: "Để xin ý kiến hiến đất đường vào thôn. Xin Ông/Bà/DN vui lòng chọn vào phiếu khảo sát dưới đây",
+        status: 2,
         timestamp: "10/01/2025 08:00",
+        expiryDate: '15/01/2025',
+        questions: [
+            {
+                id: "q1",
+                type: "one-choice",
+                question: "Ông/Bà có đồng ý tự nguyện hiến đất để mở rộng đường dẫn vào thôn không?",
+                options: ["Đồng ý", "Không đồng ý"],
+                answer: "",
+            },
+            {
+                id: "q2",
+                type: "one-choice",
+                question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?",
+                options: ["< 2 mét", "< 3 mét", "< 4 mét", "< 5 mét"],
+                answer: "",
+            },{
+                id: "q3",
+                type: "one-choice",
+                question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?",
+                options: ["Trước 30/4/1975", "Từ 30/4/1975 đến năm 1994", "Từ năm 1995 đến năm 2004", "Từ năm 2005 đến nay"],
+                answer: "",
+            },
+        ],
     },
     {
         id: 2,
-        title: "Khảo sát nhu cầu cải thiện hệ thống giao thông công cộng",
-        status: 1, // Trạng thái: 0 - Đã kết thúc
+        title: "Khảo sát 1",
+        description: "Mô tả khảo sát",
+        status: 1,
         timestamp: "05/01/2025 14:30",
-    },
-    {
-        id: 3,
-        title: "Khảo sát mức độ hài lòng về dịch vụ hành chính công",
-        status: 2, // Trạng thái: 1 - Đang diễn ra
-        timestamp: "09/01/2025 09:00",
-    },
-    {
-        id: 4,
-        title: "Khảo sát nhu cầu xây dựng công viên mới",
-        status: 1, // Trạng thái: 0 - Đã kết thúc
-        timestamp: "03/01/2025 16:45",
-    },
-    {
-        id: 5,
-        title: "Khảo sát ý kiến về chất lượng nước sinh hoạt",
-        status: 2, // Trạng thái: 1 - Đang diễn ra
-        timestamp: "10/01/2025 07:30",
+        expiryDate: '15/01/2025',
+        questions: [
+            {
+                id: "q1",
+                type: "text",
+                question: "Câu hỏi văn bản",
+                answer: "",
+            },
+            {
+                id: "q2",
+                type: "multiple-choice",
+                question: "Câu hỏi nhiều chọn",
+                options: ["Giá vé", "Chất lượng phương tiện", "Thời gian hoạt động", "An toàn"],
+                answer: [],
+            },
+            {
+                id: "q3",
+                type: "one-choice",
+                question: "Câu hỏi một chọn",
+                options: ["Có", "Không"],
+                answer: "",
+            },
+        ],
     },
 ];

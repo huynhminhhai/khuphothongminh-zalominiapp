@@ -10,6 +10,8 @@ import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyAddPage, SurveyPage } from "pages/survey";
+import { SurveyCreateForm } from "./survey";
+import SurveyDetailPage from "pages/survey/survey-detail";
 
 const MyApp = () => {
   return (
@@ -41,8 +43,9 @@ const MyApp = () => {
               <Route path="/feedback-history" element={<FeedbackHistoryPage></FeedbackHistoryPage>}></Route>
               
               {/* SURVEY */}
-              {/* <Route path="/survey" element={<SurveyPage></SurveyPage>}></Route> */}
-              <Route path="/survey" element={<SurveyAddPage></SurveyAddPage>}></Route>
+              <Route path="/survey" element={<SurveyPage></SurveyPage>}></Route>
+              <Route path="/survey-add" element={<SurveyAddPage></SurveyAddPage>}></Route>
+              <Route path="/survey-detail" element={<SurveyDetailPage></SurveyDetailPage>}></Route>
             </Routes>
             <Navigation />
           </ZMPRouter>
