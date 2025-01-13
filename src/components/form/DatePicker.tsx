@@ -16,7 +16,7 @@ interface FormDatePickerProps {
     onChange: (value: string) => void;
 }
 
-const formatDate = (date: Date | null, format: string): string => {
+export const formatDate = (date: Date | null, format: string): string => {
     if (!date) return "";
     const options: Intl.DateTimeFormatOptions = format
         .split("/")
@@ -29,7 +29,7 @@ const formatDate = (date: Date | null, format: string): string => {
     return new Intl.DateTimeFormat("en-GB", options).format(date);
 };
 
-const parseDate = (dateStr: string, format: string): Date | undefined => {
+export const parseDate = (dateStr: string, format: string): Date | undefined => {
     if (!dateStr) return undefined;
     const parts = dateStr.split("/");
     const formatParts = format.split("/");
