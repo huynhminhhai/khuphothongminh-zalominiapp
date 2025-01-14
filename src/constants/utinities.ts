@@ -586,11 +586,11 @@ export const FEEDBACKRESPONSES: FeedbackResponse[] = [
 ];
 
 export type SurveyType = {
-    id: number;
+    id?: number;
     title: string;
     description: string;
-    status: number;
-    timestamp: string;
+    status?: number;
+    timestamp?: string;
     expiryDate: string;
     questions: any[]
 }
@@ -617,12 +617,49 @@ export const SURVEYDATA: SurveyType[] = [
                 question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?",
                 options: ["< 2 mét", "< 3 mét", "< 4 mét", "< 5 mét"],
                 answer: "",
-            },{
+            }, {
                 id: "q3",
                 type: "one-choice",
                 question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?",
                 options: ["Trước 30/4/1975", "Từ 30/4/1975 đến năm 1994", "Từ năm 1995 đến năm 2004", "Từ năm 2005 đến nay"],
                 answer: "",
+            },
+        ],
+    },
+    {
+        id: 3,
+        title: "Khảo sát thành lập tổ quyên góp từ thiện",
+        description: "Chúng tôi muốn tìm kiếm các cá nhân cùng chí hướng để tham gia và đóng góp cho tổ chức từ thiện này. Vui lòng trả lời các câu hỏi dưới đây.",
+        expiryDate: "30/01/2025",
+        status: 2,
+        timestamp: "10/01/2025 08:00",
+        questions: [
+            {
+                id: 1,
+                question: "Họ và tên của bạn là gì?",
+                type: "text",
+            },
+            {
+                id: 2,
+                question: "Bạn có sẵn sàng tham gia tổ chức từ thiện không?",
+                type: "one-choice",
+                options: ["Có", "Không"],
+            },
+            {
+                id: 3,
+                question: "Bạn có thể đóng góp dưới hình thức nào?",
+                type: "multiple-choice",
+                options: [
+                    "Tiền mặt",
+                    "Vật phẩm (quần áo, thực phẩm, sách vở, ...)",
+                    "Thời gian và công sức (tình nguyện viên)",
+                    "Khác (vui lòng ghi rõ trong mục bên dưới)",
+                ],
+            },
+            {
+                id: 4,
+                question: "Nếu bạn có ý kiến đóng góp hoặc hình thức đóng góp khác, hãy ghi rõ:",
+                type: "text",
             },
         ],
     },

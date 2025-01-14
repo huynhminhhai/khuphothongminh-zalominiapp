@@ -9,9 +9,7 @@ import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } f
 import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
-import { SurveyAddPage, SurveyPage } from "pages/survey";
-import { SurveyCreateForm } from "./survey";
-import SurveyDetailPage from "pages/survey/survey-detail";
+import { SurveyAddPage, SurveyDetailPage, SurveyPage, SurveyUpdatePage } from "pages/survey";
 
 const MyApp = () => {
   return (
@@ -46,6 +44,7 @@ const MyApp = () => {
               <Route path="/survey" element={<SurveyPage></SurveyPage>}></Route>
               <Route path="/survey-add" element={<SurveyAddPage></SurveyAddPage>}></Route>
               <Route path="/survey-detail" element={<SurveyDetailPage></SurveyDetailPage>}></Route>
+              <Route path="/survey-update" element={<SurveyUpdatePage></SurveyUpdatePage>}></Route>
             </Routes>
             <Navigation />
           </ZMPRouter>

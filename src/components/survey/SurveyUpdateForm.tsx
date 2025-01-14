@@ -1,41 +1,79 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Button, DatePicker, Modal, useNavigate, useSnackbar } from 'zmp-ui';
 import { PrimaryButton } from 'components/button';
 import { Icon } from '@iconify/react';
 import SecondaryButton from 'components/button/SecondaryButton';
 import { formatDate, parseDate } from 'components/form/DatePicker';
+import { useSearchParams } from 'react-router-dom';
+import { SURVEYDATA } from 'constants/utinities';
 import SurveyPreviewModal from './SurveyPreviewModal';
 
 type QuestionType = {
     id: string;
-    type: 'text' | 'multiple-choice' | 'one-choice';  // Đổi 'rating' thành 'one-choice'
+    type: 'text' | 'multiple-choice' | 'one-choice';
     question: string;
     options?: string[];
+    answer?: string;
 };
 
 type SurveyType = {
+    id?: number;
     title: string;
     description: string;
     expiryDate: string;
-    questions: QuestionType[];
+    questions: any[];
 };
 
 const defaultValues: SurveyType = {
+    id: 1,
     title: '',
     description: '',
     expiryDate: '',
     questions: [],
 };
 
-const CreateSurveyForm: React.FC = () => {
-
-    const [formData, setFormData] = useState<SurveyType>(defaultValues)
+const SurveyUpdateForm: React.FC = () => {
+    const [formData, setFormData] = useState<SurveyType>(defaultValues);
     const [popupVisible, setPopupVisible] = useState<boolean>(false);
     const [previewVisible, setPreviewVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [descModal, setDescModal] = useState<string>('')
+    const [descModal, setDescModal] = useState<string>('');
     const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+
+    const [searchParams] = useSearchParams();
+
+    const surveyId = searchParams.get("id");
+
+    useEffect(() => {
+
+        const fetchSurveyData = async () => {
+            setLoading(true);
+            try {
+                // Giả sử API trả về thông tin thành viên
+                // const response = await fetch(`/api/surveys/${surveyId}`);
+                // const data = await response.json();
+
+                const data = SURVEYDATA.find(survey => survey.id === Number(surveyId))
+
+                if (data) {
+                    setFormData(data);
+                }
+
+            } catch (error) {
+                console.error("Failed to fetch survey data:", error);
+                openSnackbar({
+                    text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
+                    type: "error",
+                    duration: 5000,
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchSurveyData();
+    }, [surveyId]);
 
     const addQuestion = (type: 'text' | 'multiple-choice' | 'one-choice') => {
         // Kiểm tra các câu hỏi hiện có
@@ -65,9 +103,7 @@ const CreateSurveyForm: React.FC = () => {
     const handleQuestionChange = (id: string, field: 'question' | 'options', value: string) => {
         setFormData((prev) => ({
             ...prev,
-            questions: prev.questions.map((q) =>
-                q.id === id ? { ...q, [field]: value } : q
-            ),
+            questions: prev.questions.map((q) => (q.id === id ? { ...q, [field]: value } : q)),
         }));
     };
 
@@ -101,43 +137,42 @@ const CreateSurveyForm: React.FC = () => {
     };
 
     const handleSubmit = () => {
-
         if (!formData.title.trim() || !formData.description.trim()) {
-            setDescModal("Tiêu đề và mô tả không thể trống. Hãy điền đầy đủ thông tin để tiếp tục")
-            setPopupVisible(true)
+            setDescModal('Tiêu đề và mô tả không thể trống');
+            setPopupVisible(true);
             return;
         }
 
         if (formData.questions.length <= 0) {
-            setDescModal("Khảo sát phải có ít nhất một câu hỏi")
-            setPopupVisible(true)
+            setDescModal('Khảo sát phải có ít nhất một câu hỏi');
+            setPopupVisible(true);
             return;
         }
 
-        // Kiểm tra các câu hỏi hiện có
+        // Kiểm tra các câu hỏi
         for (const q of formData.questions) {
             if (!q.question.trim()) {
-                setDescModal('Câu hỏi chưa có tiêu đề')
+                setDescModal('Câu hỏi chưa có tiêu đề');
                 setPopupVisible(true);
                 return;
             }
 
             if ((q.type === 'multiple-choice' || q.type === 'one-choice') && q.options?.some(opt => !opt.trim())) {
-                setDescModal('Các lựa chọn không được để trống')
+                setDescModal('Các lựa chọn không được để trống');
                 setPopupVisible(true);
                 return;
             }
         }
 
         openSnackbar({
-            text: "Tạo khảo sát thành công",
-            type: "success",
+            text: 'Cập nhật khảo sát thành công',
+            type: 'success',
             duration: 5000,
         });
 
-        console.log('Survey submitted:', formData);
-        
-        navigate('/survey')
+        console.log('Survey updated:', formData);
+
+        navigate('/survey');
     };
 
     const handlePreview = () => {
@@ -156,23 +191,9 @@ const CreateSurveyForm: React.FC = () => {
                 onClose={() => setPreviewVisible(false)}
                 formData={formData}
             />
-            <Modal
-                visible={popupVisible}
-                title="Lỗi khi tạo khảo sát"
-                onClose={() => {
-                    setPopupVisible(false);
-                }}
-                verticalActions
-                description={descModal}
-            >
+            <Modal visible={popupVisible} title="Lỗi khi cập nhật khảo sát" onClose={() => setPopupVisible(false)} verticalActions description={descModal}>
                 <Box mt={6} p={6}>
-                    <Button
-                        variant='secondary'
-                        onClick={() => {
-                            setPopupVisible(false);
-                        }}
-                        fullWidth
-                    >
+                    <Button variant="secondary" onClick={() => setPopupVisible(false)} fullWidth>
                         Xác nhận
                     </Button>
                 </Box>
@@ -180,7 +201,6 @@ const CreateSurveyForm: React.FC = () => {
             <Box p={4}>
                 <div className="bg-white rounded-xl">
                     <Box>
-                        {/* Tiêu đề và mô tả khảo sát */}
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-[2px]">
                                 Tiêu đề khảo sát <span className="text-red-600">(*)</span>
@@ -190,17 +210,16 @@ const CreateSurveyForm: React.FC = () => {
                                 value={formData.title}
                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                 className="p-2 w-full border border-gray-300 rounded-lg"
-                            // required
                             />
                         </div>
 
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-[2px]">
-                                Tiêu đề khảo sát <span className="text-red-600">(*)</span>
+                                Ngày hết hạn <span className="text-red-600">(*)</span>
                             </label>
                             <DatePicker
                                 placeholder="Chọn ngày hết hạn"
-                                dateFormat='dd/mm/yyyy'
+                                dateFormat="dd/mm/yyyy"
                                 value={formData.expiryDate ? parseDate(formData.expiryDate, 'dd/mm/yyyy') : undefined}
                                 onChange={(date) => {
                                     if (date) {
@@ -209,7 +228,6 @@ const CreateSurveyForm: React.FC = () => {
                                             expiryDate: formatDate(date as Date | null, 'dd/mm/yyyy'),
                                         }));
                                     }
-
                                 }}
                             />
                         </div>
@@ -222,11 +240,9 @@ const CreateSurveyForm: React.FC = () => {
                                 value={formData.description}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                 className="p-2 h-[100px] w-full border border-gray-300 rounded-lg"
-                            // required
                             />
                         </div>
 
-                        {/* Câu hỏi */}
                         <div>
                             {formData.questions.map((q, index) => (
                                 <div key={q.id} className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm">
@@ -239,7 +255,6 @@ const CreateSurveyForm: React.FC = () => {
                                             value={q.question}
                                             onChange={(e) => handleQuestionChange(q.id, 'question', e.target.value)}
                                             className="p-2 w-full border border-gray-300 rounded-lg "
-                                            required
                                         />
                                     </div>
 
@@ -279,14 +294,14 @@ const CreateSurveyForm: React.FC = () => {
                                                         type="text"
                                                         value={opt}
                                                         onChange={(e) => handleOptionChange(q.id, index, e.target.value)}
-                                                        className="p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                                        className="p-2 w-full border border-gray-300 rounded-md shadow-sm"
                                                     />
                                                     <button
                                                         type="button"
                                                         onClick={() => handleRemoveOption(q.id, index)}
-                                                        className="ml-2 text-white bg-red-700 focus:outline-none p-2 rounded-lg"
+                                                        className="ml-2 text-white bg-red-700 p-2 rounded-lg"
                                                     >
-                                                        <Icon fontSize={18} icon='material-symbols:delete' />
+                                                        <Icon fontSize={18} icon="material-symbols:delete" />
                                                     </button>
                                                 </div>
                                             ))}
@@ -296,16 +311,13 @@ const CreateSurveyForm: React.FC = () => {
                                                     setFormData((prev) => ({
                                                         ...prev,
                                                         questions: prev.questions.map((qItem) =>
-                                                            qItem.id === q.id
-                                                                ? { ...qItem, options: [...(qItem.options || []), ''] }
-                                                                : qItem
+                                                            qItem.id === q.id ? { ...qItem, options: [...(qItem.options || []), ''] } : qItem
                                                         ),
                                                     }));
                                                 }}
-                                                className="mt-2 text-white flex items-center gap-1 bg-indigo-500 p-2 rounded-lg ml-auto"
+                                                className="mt-2 text-white bg-indigo-500 p-2 rounded-lg ml-auto flex items-center"
                                             >
-                                                <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                                {/* Thêm lựa chọn */}
+                                                <Icon fontSize={18} icon="material-symbols:add-rounded" />
                                             </button>
                                         </div>
                                     )}
@@ -316,14 +328,13 @@ const CreateSurveyForm: React.FC = () => {
                                         onClick={() => removeQuestion(q.id)}
                                         className="mt-2 text-white font-medium bg-red-700 flex items-center gap-1 p-2 rounded-lg ml-auto"
                                     >
-                                        <Icon fontSize={18} icon='material-symbols:delete' />
+                                        {/* <Icon fontSize={18} icon="material-symbols:delete" /> */}
                                         Xóa câu hỏi
                                     </button>
                                 </div>
                             ))}
                         </div>
 
-                        {/* Nút thêm câu hỏi */}
                         <div className="mt-4 mb-6">
                             <Button
                                 variant='secondary'
@@ -338,8 +349,8 @@ const CreateSurveyForm: React.FC = () => {
 
                         <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
                             <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                                <SecondaryButton fullWidth label='Xem trước' handleClick={() => handlePreview()} />
-                                <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Tạo khảo sát"} handleClick={() => handleSubmit()} />
+                                <SecondaryButton fullWidth label="Xem trước" handleClick={() => handlePreview()} />
+                                <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật khảo sát"} handleClick={() => handleSubmit()} />
                             </Box>
                         </div>
                     </Box>
@@ -349,4 +360,4 @@ const CreateSurveyForm: React.FC = () => {
     );
 };
 
-export default CreateSurveyForm;
+export default SurveyUpdateForm;

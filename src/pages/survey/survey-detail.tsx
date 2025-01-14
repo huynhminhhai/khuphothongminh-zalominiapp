@@ -107,6 +107,12 @@ const SurveyDetailPage: React.FC = () => {
 
         // const result = await response.json();
 
+        openSnackbar({
+            text: "Cập nhật khảo sát thành công",
+            type: "success",
+            duration: 5000,
+        });
+
         console.log('submit data:', payload)
 
         setLoading(false);
@@ -136,7 +142,7 @@ const SurveyDetailPage: React.FC = () => {
                 <HeaderSub title="Khảo sát" />
                 <Box>
                     <Box p={4} className="text-center text-gray-500 font-medium border-t border-b">
-                        <h3 className="text-[16px] text-black leading-[20px] font-semibold mb-1">{detailData?.title}</h3>
+                        <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-2">{detailData?.title}</h3>
                         <p className="text-[14px] leading-1 mb-1">Thời hạn: <span className="text-black font-semibold">{detailData?.expiryDate}</span></p>
                         <p className="text-[14px] leading-1">Thời hạn: {detailData?.description}</p>
                     </Box>
