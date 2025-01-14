@@ -3,6 +3,7 @@ import { HeaderSub } from "components/header-sub"
 import { SURVEYDATA, SurveyType } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
+import { isExpired } from "utils/date";
 import { Box, Button, Checkbox, Modal, Page, Radio, useSnackbar } from "zmp-ui"
 
 type QuestionType = {
@@ -214,7 +215,7 @@ const SurveyDetailPage: React.FC = () => {
                         </Box>
                         <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
                             <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                                <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật"} handleClick={() => handleSubmit()} />
+                                <PrimaryButton disabled={detailData && isExpired(detailData?.expiryDate) ? true : false} fullWidth label={loading ? "Đang xử lý..." : "Cập nhật"} handleClick={() => handleSubmit()} />
                             </Box>
                         </div>
                     </Box>

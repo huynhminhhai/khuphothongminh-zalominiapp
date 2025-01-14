@@ -22,3 +22,18 @@ export function renderDayOfWeek(dateString: string): string {
     // Trả về thứ trong tuần
     return daysOfWeek[dayOfWeekIndex];
 }
+
+export function isExpired(dateString: string): boolean {
+    // Tách ngày, tháng, năm từ chuỗi nhập vào
+    const [day, month, year] = dateString.split('/').map(Number);
+
+    // Tạo đối tượng Date từ chuỗi
+    const inputDate = new Date(year, month - 1, day);
+
+    // Lấy ngày hiện tại (chỉ lấy đến mức ngày, bỏ qua giờ/phút/giây)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    // So sánh ngày nhập vào với ngày hiện tại
+    return inputDate < today;
+}

@@ -669,7 +669,7 @@ export const SURVEYDATA: SurveyType[] = [
         description: "Mô tả khảo sát",
         status: 1,
         timestamp: "05/01/2025 14:30",
-        expiryDate: '15/01/2025',
+        expiryDate: '13/01/2025',
         questions: [
             {
                 id: "q1",

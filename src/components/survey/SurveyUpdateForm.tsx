@@ -7,6 +7,7 @@ import { formatDate, parseDate } from 'components/form/DatePicker';
 import { useSearchParams } from 'react-router-dom';
 import { SURVEYDATA } from 'constants/utinities';
 import SurveyPreviewModal from './SurveyPreviewModal';
+import { ConfirmModal } from 'components/modal';
 
 type QuestionType = {
     id: string;
@@ -33,9 +34,11 @@ const defaultValues: SurveyType = {
 };
 
 const SurveyUpdateForm: React.FC = () => {
+
     const [formData, setFormData] = useState<SurveyType>(defaultValues);
     const [popupVisible, setPopupVisible] = useState<boolean>(false);
     const [previewVisible, setPreviewVisible] = useState<boolean>(false);
+    const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [descModal, setDescModal] = useState<string>('');
     const { openSnackbar } = useSnackbar();
@@ -184,6 +187,28 @@ const SurveyUpdateForm: React.FC = () => {
         setPreviewVisible(true);
     };
 
+    const removeSurvey = () => {
+        setConfirmVisible(true);
+    }
+
+    const handleConfirm = () => {
+        setConfirmVisible(false);
+        console.log(console.log('Call api delete survey with id: ', formData.id))
+
+        openSnackbar({
+            text: 'Xóa khảo sát thành công',
+            type: 'success',
+            duration: 5000,
+        });
+
+        navigate('/survey-management')
+    };
+
+    const handleCancel = () => {
+        console.log("Cancelled!");
+        setConfirmVisible(false);
+    };
+
     return (
         <Box>
             <SurveyPreviewModal
@@ -301,7 +326,7 @@ const SurveyUpdateForm: React.FC = () => {
                                                         onClick={() => handleRemoveOption(q.id, index)}
                                                         className="ml-2 text-white bg-red-700 p-2 rounded-lg"
                                                     >
-                                                        <Icon fontSize={18} icon="material-symbols:delete" />
+                                                        <Icon fontSize={18} icon="material-symbols:close-rounded" />
                                                     </button>
                                                 </div>
                                             ))}
@@ -335,15 +360,28 @@ const SurveyUpdateForm: React.FC = () => {
                             ))}
                         </div>
 
-                        <div className="mt-4 mb-6">
+                        <div className="mt-4 mb-2">
                             <Button
                                 variant='secondary'
                                 onClick={() => addQuestion('text')}
                                 fullWidth
                                 className='flex'
                             >
-                                <div className='flex items-center justify-center gap-1'><Icon fontSize={18} icon='material-symbols:add-rounded' />
+                                <div className='flex items-center justify-center gap-1'>
                                     Thêm câu hỏi văn bản</div>
+                            </Button>
+                        </div>
+                        
+                        <div className="mb-6">
+                            <Button
+                                variant='secondary'
+                                type='danger'
+                                onClick={() => removeSurvey()}
+                                fullWidth
+                                className='flex'
+                            >
+                                <div className='flex items-center justify-center gap-1'>
+                                    Xóa khảo sát</div>
                             </Button>
                         </div>
 
@@ -356,6 +394,13 @@ const SurveyUpdateForm: React.FC = () => {
                     </Box>
                 </div>
             </Box>
+            <ConfirmModal
+                visible={isConfirmVisible}
+                title="Xác nhận"
+                message="Bạn có chắc chắn muốn xóa khảo sát này không?"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </Box>
     );
 };
