@@ -1,7 +1,6 @@
 import images from "assets/images"
 import { SurveyType } from "constants/utinities"
 import React from "react"
-import { useLocation } from "react-router-dom"
 import { isExpired } from "utils/date"
 import { Box, useNavigate } from "zmp-ui"
 
@@ -12,17 +11,10 @@ type SurveyItemProps = {
 const SurveyItem: React.FC<SurveyItemProps> = ({data}) => {
 
     const navigate = useNavigate()
-    const location = useLocation();
-
-    console.log(location.pathname)
 
     return (
         <Box
-            onClick={() => {
-                location.pathname === '/survey-management' ?
-                navigate(`/survey-update?id=${data.id}`) :
-                navigate(`/survey-detail?id=${data.id}`)
-            }}
+            onClick={() => navigate(`/survey-detail?id=${data.id}`)}
         >
             <Box py={4} className="border-b-[1px]" flex alignItems="center" justifyContent="space-between">
                 <Box flex alignItems="center" className="gap-3 w-[100%]">

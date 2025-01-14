@@ -1,56 +1,82 @@
 import { Icon } from "@iconify/react"
-import { Divider } from "components/divider"
+import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
-import { SurveyList } from "components/survey"
+import { ConfirmModal } from "components/modal"
+import { TableTanStack } from "components/table"
 import { SURVEYDATA, SurveyType } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Page, Select, useNavigate } from "zmp-ui"
+import { Box, Button, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
 
 const SurveyManagementPage: React.FC = () => {
 
-    const { Option } = Select
-
-    const [filteredMeetings, setFilteredMeetings] = useState<SurveyType[]>(SURVEYDATA);
     const navigate = useNavigate()
+    const { openSnackbar } = useSnackbar();
 
-    const handleFilterChange = (value: number) => {
-        let filtered = SURVEYDATA;
+    const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [surveyId, setSurveyId] = useState<number | undefined>(undefined);
 
-        if (value !== 4) {
-            filtered = SURVEYDATA.filter(meeting => meeting.status === value);
+    const removeSurvey = (id: number | undefined ) => {
+        setSurveyId(id)
+        setConfirmVisible(true);
+    }
+
+    const handleConfirm = () => {
+        if (surveyId !== null) {
+            setConfirmVisible(false);
+            console.log(console.log('Call api delete survey with id: ', 1))
+    
+            openSnackbar({
+                text: 'Xóa khảo sát thành công',
+                type: 'success',
+                duration: 5000,
+            });
         }
-
-        setFilteredMeetings(filtered);
     };
+
+    const handleCancel = () => {
+        console.log("Cancelled!");
+        setConfirmVisible(false);
+    };
+
+    const columns: ColumnDef<SurveyType>[] = [
+        {
+            accessorKey: 'title',
+            header: 'Title',
+            size: 300
+        },
+        {
+            id: 'actions', // Custom column for actions
+            header: 'Actions',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/survey-detail?id=${row.original.id}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
+                    <button
+                        onClick={() => navigate(`/survey-update?id=${row.original.id}`)}
+                        className="px-3 py-1 bg-blue-700 text-white rounded"
+                    >
+                        <Icon icon='ri:edit-line' fontSize={18} />
+                    </button>
+                    <button
+                        onClick={() => removeSurvey(row.original.id)}
+                        className="px-3 py-1 bg-red-700 text-white rounded"
+                    >
+                        <Icon icon='material-symbols:delete' fontSize={18} />
+                    </button>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý khảo sát" />
                 <Box>
-                    <Box p={4}>
-                        <div className="flex flex-col gap-3">
-                            <Box flex>
-                                <div className="text-[#731611] flex items-center gap-1 border-r-[1px] pr-2 mr-2">
-                                    <Icon fontSize={20} icon='mdi:filter-outline' />
-                                    <span className="text-[16px] font-semibold">Lọc</span>
-                                </div>
-                                <Box className="filter">
-                                    <Select
-                                        placeholder="Placeholder"
-                                        defaultValue={4}
-                                        onChange={(value) => handleFilterChange(value as number)}
-                                        closeOnSelect={true}
-                                    >
-                                        <Option value={4} title="Tất cả" />
-                                        <Option value={1} title="Đã đăng tải" />
-                                        <Option value={2} title="Chưa đăng tải" />
-                                    </Select>
-                                </Box>
-                            </Box>
-                        </div>
-                    </Box>
-                    <Divider />
                     <Box p={4}>
                         <Box flex justifyContent="flex-end">
                             <Button
@@ -65,16 +91,17 @@ const SurveyManagementPage: React.FC = () => {
                             </Button>
                         </Box>
                         <Box mt={4} className="border-t-[1px]">
-                            <SurveyList data={filteredMeetings} />
-                            {
-                                filteredMeetings.length > 0 &&
-                                <div className="flex items-center justify-center gap-3 pt-6 pb-2">
-                                    <Button onClick={() => console.log('call api')} size="medium">Xem thêm</Button>
-                                </div>
-                            }
+                            <TableTanStack data={SURVEYDATA} columns={columns} />
                         </Box>
                     </Box>
                 </Box>
+                <ConfirmModal
+                    visible={isConfirmVisible}
+                    title="Xác nhận"
+                    message="Bạn có chắc chắn muốn xóa khảo sát này không?"
+                    onConfirm={handleConfirm}
+                    onCancel={handleCancel}
+                />
             </Box>
         </Page>
     )

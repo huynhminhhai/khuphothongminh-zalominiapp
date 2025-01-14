@@ -7,7 +7,6 @@ import { formatDate, parseDate } from 'components/form/DatePicker';
 import { useSearchParams } from 'react-router-dom';
 import { SURVEYDATA } from 'constants/utinities';
 import SurveyPreviewModal from './SurveyPreviewModal';
-import { ConfirmModal } from 'components/modal';
 
 type QuestionType = {
     id: string;
@@ -38,7 +37,6 @@ const SurveyUpdateForm: React.FC = () => {
     const [formData, setFormData] = useState<SurveyType>(defaultValues);
     const [popupVisible, setPopupVisible] = useState<boolean>(false);
     const [previewVisible, setPreviewVisible] = useState<boolean>(false);
-    const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [descModal, setDescModal] = useState<string>('');
     const { openSnackbar } = useSnackbar();
@@ -185,28 +183,6 @@ const SurveyUpdateForm: React.FC = () => {
             return;
         }
         setPreviewVisible(true);
-    };
-
-    const removeSurvey = () => {
-        setConfirmVisible(true);
-    }
-
-    const handleConfirm = () => {
-        setConfirmVisible(false);
-        console.log(console.log('Call api delete survey with id: ', formData.id))
-
-        openSnackbar({
-            text: 'Xóa khảo sát thành công',
-            type: 'success',
-            duration: 5000,
-        });
-
-        navigate('/survey-management')
-    };
-
-    const handleCancel = () => {
-        console.log("Cancelled!");
-        setConfirmVisible(false);
     };
 
     return (
@@ -371,19 +347,6 @@ const SurveyUpdateForm: React.FC = () => {
                                     Thêm câu hỏi văn bản</div>
                             </Button>
                         </div>
-                        
-                        <div className="mb-6">
-                            <Button
-                                variant='secondary'
-                                type='danger'
-                                onClick={() => removeSurvey()}
-                                fullWidth
-                                className='flex'
-                            >
-                                <div className='flex items-center justify-center gap-1'>
-                                    Xóa khảo sát</div>
-                            </Button>
-                        </div>
 
                         <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
                             <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
@@ -394,13 +357,7 @@ const SurveyUpdateForm: React.FC = () => {
                     </Box>
                 </div>
             </Box>
-            <ConfirmModal
-                visible={isConfirmVisible}
-                title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa khảo sát này không?"
-                onConfirm={handleConfirm}
-                onCancel={handleCancel}
-            />
+
         </Box>
     );
 };
