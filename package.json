@@ -22,6 +22,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@iconify/react": "^5.2.0",
+    "@tanstack/react-table": "^8.20.6",
     "@tiptap/react": "^2.11.0",
     "@tiptap/starter-kit": "^2.11.0",
     "prop-types": "^15.8.1",

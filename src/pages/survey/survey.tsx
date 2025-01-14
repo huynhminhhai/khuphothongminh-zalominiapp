@@ -43,8 +43,8 @@ const SurveyPage: React.FC = () => {
                                         closeOnSelect={true}
                                     >
                                         <Option value={4} title="Tất cả" />
-                                        <Option value={1} title="Đã diễn ra" />
-                                        <Option value={2} title="Đang diễn ra" />
+                                        <Option value={1} title="Đã hoàn thành" />
+                                        <Option value={2} title="Chưa hoàn thành" />
                                     </Select>
                                 </Box>
                             </Box>

@@ -9,7 +9,7 @@ type NewsOthersProps = {
 
 const NewsOthers: React.FC<NewsOthersProps> = ({idNews}) => {
 
-    const othersNews = NEWSDATA.filter(item => item.id !== idNews);
+    const othersNews = NEWSDATA.filter(item => item.id !== idNews).slice(0, 4);
 
     return (
         <Box>

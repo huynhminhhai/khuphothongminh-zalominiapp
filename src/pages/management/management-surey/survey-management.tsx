@@ -26,7 +26,7 @@ const SurveyManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Khảo sát ý kiến" />
+                <HeaderSub title="Quản lý khảo sát" />
                 <Box>
                     <Box p={4}>
                         <div className="flex flex-col gap-3">
@@ -43,8 +43,8 @@ const SurveyManagementPage: React.FC = () => {
                                         closeOnSelect={true}
                                     >
                                         <Option value={4} title="Tất cả" />
-                                        <Option value={1} title="Đã diễn ra" />
-                                        <Option value={2} title="Đang diễn ra" />
+                                        <Option value={1} title="Đã đăng tải" />
+                                        <Option value={2} title="Chưa đăng tải" />
                                     </Select>
                                 </Box>
                             </Box>

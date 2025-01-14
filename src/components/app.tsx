@@ -12,6 +12,7 @@ import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage 
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { ManagementPage, SurveyAddPage, SurveyUpdatePage } from "pages/management";
 import SurveyManagementPage from "pages/management/management-surey/survey-management";
+import NewsManagementPage from "pages/management/management-news/news-management";
 
 const MyApp = () => {
   return (
@@ -52,6 +53,8 @@ const MyApp = () => {
               <Route path="/survey-add" element={<SurveyAddPage></SurveyAddPage>}></Route>
               <Route path="/survey-management" element={<SurveyManagementPage></SurveyManagementPage>}></Route>
               <Route path="/survey-update" element={<SurveyUpdatePage></SurveyUpdatePage>}></Route>
+
+              <Route path="/news-management" element={<NewsManagementPage></NewsManagementPage>}></Route>
             </Routes>
             <Navigation />
           </ZMPRouter>

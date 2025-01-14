@@ -52,7 +52,7 @@ export const SERVICES: ServicesType[] = [
     {
         label: 'Khảo sát ý kiến',
         url: '/survey',
-        icon: images.checklist
+        icon: images.survey
     },
 ]
 
@@ -448,6 +448,66 @@ export const NEWSDATA: News[] = [
         publishedDate: "04/01/2025",
         author: "Trần Quốc D",
         views: 1500,
+    },
+    {
+        id: 10,
+        title: "Hội thi thể thao khu phố năm 2025",
+        description: "Một trong những sự kiện thể thao lớn nhất trong khu phố sẽ diễn ra vào cuối tuần này với sự tham gia của các đội thể thao từ các khu vực lân cận.",
+        content: `
+          <p>Hội thi thể thao khu phố năm 2025 sẽ bao gồm các môn thi đấu như bóng đá, bóng chuyền, và cầu lông. Đây là cơ hội để các cư dân trong khu phố giao lưu, thể hiện tài năng và xây dựng tinh thần đoàn kết.</p>
+        `,
+        imageUrl: "",
+        publishedDate: "10/01/2025",
+        author: "Lê Minh Hải",
+        views: 350,
+    },
+    {
+        id: 11,
+        title: "Lễ hội mùa xuân của khu phố",
+        description: "Lễ hội mùa xuân sắp tới sẽ bao gồm các hoạt động văn hóa, ẩm thực và biểu diễn nghệ thuật. Đây là dịp để các gia đình trong khu phố quây quần bên nhau.",
+        content: `
+          <p>Lễ hội mùa xuân là sự kiện thường niên tại khu phố, với các hoạt động thú vị như thi nấu ăn, diễu hành, và các tiết mục văn nghệ. Sự kiện này luôn thu hút sự tham gia của nhiều gia đình trong khu vực.</p>
+        `,
+        imageUrl: "",
+        publishedDate: "12/01/2025",
+        author: "Nguyễn Thị Lan",
+        views: 450,
+    },
+    {
+        id: 12,
+        title: "Cải tạo công viên khu phố",
+        description: "Công viên khu phố sẽ được cải tạo với nhiều tiện ích mới như khu vui chơi cho trẻ em và các khu vực thể thao ngoài trời.",
+        content: `
+          <p>Dự án cải tạo công viên khu phố đang được triển khai, hứa hẹn mang đến một không gian sống xanh và lành mạnh cho cư dân trong khu vực. Các tiện ích mới sẽ bao gồm khu vui chơi cho trẻ em, các sân thể thao, và đường đi bộ rợp bóng cây.</p>
+        `,
+        imageUrl: "",
+        publishedDate: "14/01/2025",
+        author: "Trần Văn Bình",
+        views: 500,
+    },
+    {
+        id: 13,
+        title: "Lớp học miễn phí cho người lớn tuổi trong khu phố",
+        description: "Một lớp học miễn phí về kỹ năng sống và sử dụng công nghệ cho người lớn tuổi sẽ được tổ chức tại trung tâm cộng đồng khu phố.",
+        content: `
+          <p>Lớp học dành cho người lớn tuổi tại khu phố sẽ giúp các cư dân cao tuổi cải thiện kỹ năng sống và học cách sử dụng các thiết bị công nghệ thông minh. Chương trình này nhằm mục đích giúp họ tiếp cận với các tiện ích hiện đại trong đời sống hàng ngày.</p>
+        `,
+        imageUrl: "",
+        publishedDate: "16/01/2025",
+        author: "Phạm Minh Tuấn",
+        views: 550,
+    },
+    {
+        id: 14,
+        title: "Công tác bảo vệ môi trường khu phố",
+        description: "Chương trình dọn dẹp khu phố và nâng cao nhận thức về bảo vệ môi trường sẽ diễn ra vào cuối tuần này.",
+        content: `
+          <p>Chương trình bảo vệ môi trường khu phố sẽ bao gồm các hoạt động dọn dẹp đường phố, thu gom rác thải và trồng cây xanh. Đây là một hoạt động ý nghĩa giúp cải thiện môi trường sống trong khu phố và nâng cao ý thức cộng đồng về bảo vệ thiên nhiên.</p>
+        `,
+        imageUrl: "",
+        publishedDate: "18/01/2025",
+        author: "Nguyễn Minh Tâm",
+        views: 600,
     }
 ];
 

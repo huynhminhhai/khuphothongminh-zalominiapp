@@ -1,5 +1,5 @@
 import { HeaderSub } from "components/header-sub"
-import { SurveyCreateForm, SurveyUpdateForm } from "components/survey"
+import { SurveyUpdateForm } from "components/survey"
 import React from "react"
 import { Box, Page } from "zmp-ui"
 

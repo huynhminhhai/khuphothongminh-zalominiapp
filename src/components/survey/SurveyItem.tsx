@@ -27,7 +27,7 @@ const SurveyItem: React.FC<SurveyItemProps> = ({data}) => {
             <Box py={4} className="border-b-[1px]" flex alignItems="center" justifyContent="space-between">
                 <Box flex alignItems="center" className="gap-3 w-[100%]">
                     <Box>
-                        <img className="w-[40px]" src={images.checklist} alt={data.title} />
+                        <img className="w-[40px]" src={images.survey} alt={data.title} />
                     </Box>
                     <Box className="flex-1 w-[100%]">
                         <div className="flex flex-col">

@@ -1,0 +1,1 @@
+export { default as TableTanStack } from "./TableTanStack";

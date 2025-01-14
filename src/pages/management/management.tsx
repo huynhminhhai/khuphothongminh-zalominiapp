@@ -19,7 +19,8 @@ const ManagementPage: React.FC = () => {
                             title="Quản lý tin tức"
                             prefix={<img src={images.newss} alt='news' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            />
+                            onClick={() => navigate('/news-management')}
+                        />
                         <Item
                             title="Quản lý khảo sát"
                             prefix={<img src={images.survey} alt='survey' className="w-[30px] h-auto" />}
