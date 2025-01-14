@@ -9,6 +9,8 @@ import checklist from './checklist.png'
 import meeting from './online-meeting.png'
 import thumbnailNews from './news.png'
 import empty from './empty.png'
+import survey from './survey.png'
+import newss from './new.png'
 
 const images = {
     logo,
@@ -21,7 +23,9 @@ const images = {
     meeting,
     thumbnailNews,
     empty,
-    checklist
+    checklist,
+    survey,
+    newss
 }
 
 export default images

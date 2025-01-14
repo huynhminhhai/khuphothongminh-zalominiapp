@@ -121,6 +121,20 @@ input[type='radio'] {
   width: calc(100vw - 24px);
 }
 
+.zaui-list-item-right {
+  align-items: center;
+}
+
+.zaui-list-item-title {
+  font-size: 18px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.zaui-list .zaui-list-item:not(:last-child) {
+  margin-bottom: 0;
+}
+
 /**
 * CUSTOM
 **/

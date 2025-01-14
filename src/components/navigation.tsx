@@ -20,16 +20,16 @@ const tabs: Record<string, MenuItem> = {
     icon: <Icon icon="icon-park-solid:people" />,
     activeIcon: <Icon icon="icon-park-solid:people" />
   },
-  "/setting": {
-    label: "Cài đặt",
-    icon: <Icon icon="lsicon:setting-filled" />,
-    activeIcon: <Icon icon="lsicon:setting-filled" />
+  "/management": {
+    label: "Quản lý",
+    icon: <Icon icon="eos-icons:cluster-management" />,
+    activeIcon: <Icon icon="eos-icons:cluster-management" />
   },
 };
 
 export type TabKeys = keyof typeof tabs;
 
-export const HAS_BOTTOM_NAVIGATION_PAGES = ["/"];
+export const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/management"];
 
 export const Navigation: FC = () => {
   const navigate = useNavigate();

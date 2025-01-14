@@ -9,7 +9,9 @@ import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } f
 import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
-import { SurveyAddPage, SurveyDetailPage, SurveyPage, SurveyUpdatePage } from "pages/survey";
+import { SurveyDetailPage, SurveyPage } from "pages/survey";
+import { ManagementPage, SurveyAddPage, SurveyUpdatePage } from "pages/management";
+import SurveyManagementPage from "pages/management/management-surey/survey-management";
 
 const MyApp = () => {
   return (
@@ -42,8 +44,13 @@ const MyApp = () => {
               
               {/* SURVEY */}
               <Route path="/survey" element={<SurveyPage></SurveyPage>}></Route>
-              <Route path="/survey-add" element={<SurveyAddPage></SurveyAddPage>}></Route>
               <Route path="/survey-detail" element={<SurveyDetailPage></SurveyDetailPage>}></Route>
+
+              {/* MANAGEMENT */}
+              <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>
+
+              <Route path="/survey-add" element={<SurveyAddPage></SurveyAddPage>}></Route>
+              <Route path="/survey-management" element={<SurveyManagementPage></SurveyManagementPage>}></Route>
               <Route path="/survey-update" element={<SurveyUpdatePage></SurveyUpdatePage>}></Route>
             </Routes>
             <Navigation />

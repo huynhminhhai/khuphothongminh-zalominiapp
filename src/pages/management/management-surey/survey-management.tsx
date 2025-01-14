@@ -6,7 +6,7 @@ import { SURVEYDATA, SurveyType } from "constants/utinities"
 import React, { useState } from "react"
 import { Box, Button, Page, Select, useNavigate } from "zmp-ui"
 
-const SurveyPage: React.FC = () => {
+const SurveyManagementPage: React.FC = () => {
 
     const { Option } = Select
 
@@ -51,8 +51,20 @@ const SurveyPage: React.FC = () => {
                         </div>
                     </Box>
                     <Divider />
-                    <Box px={4} pb={4}>
-                        <Box>
+                    <Box p={4}>
+                        <Box flex justifyContent="flex-end">
+                            <Button
+                                size="small"
+                                variant="secondary"
+                                onClick={() => navigate('/survey-add')}
+                            >
+                                <div className="flex items-center gap-1">
+                                    <Icon fontSize={18} icon='material-symbols:add-rounded' />
+                                    Thêm khảo sát
+                                </div>
+                            </Button>
+                        </Box>
+                        <Box mt={4} className="border-t-[1px]">
                             <SurveyList data={filteredMeetings} />
                             {
                                 filteredMeetings.length > 0 &&
@@ -68,4 +80,4 @@ const SurveyPage: React.FC = () => {
     )
 }
 
-export default SurveyPage
+export default SurveyManagementPage
