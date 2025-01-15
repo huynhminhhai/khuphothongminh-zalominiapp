@@ -62,7 +62,7 @@ const NewsManagementPage: React.FC = () => {
                         <Button
                             size="small"
                             variant="secondary"
-                            onClick={() => navigate('/survey-add')}
+                            onClick={() => navigate('/news-add')}
                         >
                             <div className="flex items-center gap-1">
                                 <Icon fontSize={18} icon='material-symbols:add-rounded' />

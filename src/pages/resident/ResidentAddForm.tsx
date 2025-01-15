@@ -87,7 +87,7 @@ const ResidentAddForm: React.FC = () => {
 
     return (
         <Box p={4}>
-            <form>
+            <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormSelectField
@@ -229,7 +229,7 @@ const ResidentAddForm: React.FC = () => {
                         </Box>
                     </div>
                 </div>
-            </form>
+            </Box>
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
