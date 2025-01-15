@@ -135,6 +135,10 @@ input[type='radio'] {
   margin-bottom: 0;
 }
 
+tbody tr td:not(:first-child) {
+  text-align: center;
+}
+
 /**
 * CUSTOM
 **/

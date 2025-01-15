@@ -41,12 +41,16 @@ const SurveyManagementPage: React.FC = () => {
     const columns: ColumnDef<SurveyType>[] = [
         {
             accessorKey: 'title',
-            header: 'Title',
+            header: 'Tiêu đề',
             size: 300
         },
         {
+            accessorKey: 'expiryDate',
+            header: 'Thời hạn',
+        },
+        {
             id: 'actions', // Custom column for actions
-            header: 'Actions',
+            header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
@@ -90,7 +94,7 @@ const SurveyManagementPage: React.FC = () => {
                                 </div>
                             </Button>
                         </Box>
-                        <Box mt={4} className="border-t-[1px]">
+                        <Box mt={4}>
                             <TableTanStack data={SURVEYDATA} columns={columns} />
                         </Box>
                     </Box>

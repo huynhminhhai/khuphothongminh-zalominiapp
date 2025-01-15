@@ -4,7 +4,7 @@ import { HeaderSub } from "components/header-sub"
 import { TableTanStack } from "components/table"
 import { News, NEWSDATA } from "constants/utinities"
 import React from "react"
-import { Box, Page, useNavigate } from "zmp-ui"
+import { Box, Button, Page, useNavigate } from "zmp-ui"
 
 const NewsManagementPage: React.FC = () => {
 
@@ -13,40 +13,40 @@ const NewsManagementPage: React.FC = () => {
     const columns: ColumnDef<News>[] = [
         {
             accessorKey: 'title',
-            header: 'Title',
+            header: 'Tiêu đề',
             size: 300
         },
         {
             accessorKey: 'publishedDate',
-            header: 'Published Date',
+            header: 'Ngày tạo',
         },
         {
             accessorKey: 'views',
-            header: 'Views',
+            header: 'Lượt xem',
             size: 100
         },
         {
             id: 'actions', // Custom column for actions
-            header: 'Actions',
+            header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
                         onClick={() => navigate(`/news-detail?id=${row.original.id}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
-                        <Icon icon='mdi:eye' fontSize={18}/>
+                        <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
                         onClick={() => console.log(row.original.id)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
-                        <Icon icon='ri:edit-line' fontSize={18}/>
+                        <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
                     <button
                         onClick={() => console.log(row.original.id)}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
-                        <Icon icon='material-symbols:delete' fontSize={18}/>
+                        <Icon icon='material-symbols:delete' fontSize={18} />
                     </button>
                 </div>
             ),
@@ -58,7 +58,22 @@ const NewsManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Quản lý tin tức" />
                 <Box p={4}>
-                    <TableTanStack data={NEWSDATA} columns={columns} />
+                    <Box flex justifyContent="flex-end">
+                        <Button
+                            size="small"
+                            variant="secondary"
+                            onClick={() => navigate('/survey-add')}
+                        >
+                            <div className="flex items-center gap-1">
+                                <Icon fontSize={18} icon='material-symbols:add-rounded' />
+                                Thêm tin tức
+                            </div>
+                        </Button>
+                    </Box>
+                    <Box mt={4}>
+
+                        <TableTanStack data={NEWSDATA} columns={columns} />
+                    </Box>
                 </Box>
             </Box>
         </Page>

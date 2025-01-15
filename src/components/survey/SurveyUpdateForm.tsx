@@ -173,7 +173,7 @@ const SurveyUpdateForm: React.FC = () => {
 
         console.log('Survey updated:', formData);
 
-        navigate('/survey');
+        navigate('/survey-management');
     };
 
     const handlePreview = () => {

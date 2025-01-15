@@ -66,10 +66,10 @@ const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
         <div className="flex gap-2 justify-between w-full">
           <span className="flex items-center gap-1">
             <div>Page</div>
-            <strong>
+            <div className="font-medium">
               {table.getState().pagination.pageIndex + 1} of{' '}
               {table.getPageCount().toLocaleString()}
-            </strong>
+            </div>
           </span>
           <select
             value={table.getState().pagination.pageSize}
