@@ -84,6 +84,12 @@ const NewsDetailPage: React.FC = () => {
                         </li>
                     </ul> */}
                     <Box mt={6}>
+                        {
+                            detailData && detailData.imageUrl && 
+                            <div className="mb-3">
+                                <img src={detailData.imageUrl} alt={detailData.title} />
+                            </div>
+                        }
                         <div className="detail-content" dangerouslySetInnerHTML={{__html: detailData?.content || ''}}></div>
                     </Box>
                     <div className="block h-[1px] w-[100%] bg-[#731611] my-4"></div>

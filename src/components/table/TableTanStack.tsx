@@ -65,9 +65,9 @@ const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
       <div className="flex flex-col items-center gap-3 mt-5">
         <div className="flex gap-2 justify-between w-full">
           <span className="flex items-center gap-1">
-            <div>Page</div>
+            <div>Trang</div>
             <div className="font-medium">
-              {table.getState().pagination.pageIndex + 1} of{' '}
+              {table.getState().pagination.pageIndex + 1} trên{' '}
               {table.getPageCount().toLocaleString()}
             </div>
           </span>
@@ -78,7 +78,7 @@ const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
           >
             {[5, 10, 20, 50, 100].map(pageSize => (
               <option key={pageSize} value={pageSize}>
-                Show {pageSize}
+                Hiển thị {pageSize}
               </option>
             ))}
           </select>
