@@ -171,7 +171,7 @@ export const RESIDENT: ResidentType[] = [
         nationality: "Việt Nam",
         address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 0,
-        residenceStatus: 0,
+        residenceStatus: 1,
         residenceType: 1,
         status: 1,
         bhyt: '123'
@@ -189,7 +189,7 @@ export const RESIDENT: ResidentType[] = [
         nationality: "Việt Nam",
         address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 2,
-        residenceStatus: 0,
+        residenceStatus: 1,
         residenceType: 1,
         status: 1,
         bhyt: '123ewe'
@@ -225,7 +225,7 @@ export const RESIDENT: ResidentType[] = [
         nationality: "Việt Nam",
         address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 3,
-        residenceStatus: 0,
+        residenceStatus: 1,
         residenceType: 1,
         status: 3,
         bhyt: '123ưew'
@@ -243,7 +243,7 @@ export const RESIDENT: ResidentType[] = [
         nationality: "Việt Nam",
         address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 4,
-        residenceStatus: 0,
+        residenceStatus: 1,
         residenceType: 2,
         status: 1,
         bhyt: '123sdsd'

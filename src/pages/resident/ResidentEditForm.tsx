@@ -56,20 +56,11 @@ const ResidentEditForm: React.FC = () => {
 
                 const data = RESIDENT.find(resident => resident.id === Number(residentId))
 
-                reset({
-                    fullname: data?.fullname || '',
-                    phoneNumber: data?.phoneNumber || '',
-                    residenceType: data?.residenceType || 1,
-                    address: data?.address || '',
-                    relationship: data?.relationship || 0,
-                    birthDate: data?.birthDate || '',
-                    gender: data?.gender || 0,
-                    numberCard: data?.numberCard || '',
-                    dateCard: data?.dateCard || '',
-                    religion: data?.religion || '',
-                    nation: data?.nation || '',
-                    bhyt: data?.bhyt || '',
-                });
+                if (data) {
+                    setFormData(data)
+                    reset(data)
+                }
+
             } catch (error) {
                 console.error("Failed to fetch resident data:", error);
                 openSnackbar({
@@ -86,8 +77,32 @@ const ResidentEditForm: React.FC = () => {
     }, [residentId]);
 
     const onSubmit: SubmitHandler<FormDataResident> = (data) => {
+
+        const updatedData = {};
+
+        let hasChanges = false;
+
+        // Duyệt qua tất cả các trường và so sánh với giá trị mặc định
+        Object.keys(data).forEach((key) => {
+            if (data[key] !== formData[key]) {
+                updatedData[key] = data[key];
+                hasChanges = true;
+            }
+        });
+
+        if (!hasChanges) {
+            openSnackbar({
+                icon: true,
+                text: "Không có thay đổi nào để cập nhật.",
+                type: 'warning',
+                duration: 3000,
+            });
+            return; // Không thực hiện tiếp tục gửi yêu cầu
+        }
+
         setConfirmVisible(true);
-        setFormData(data)
+
+        setFormData(updatedData)
     };
 
     const fetchApi = () => {
@@ -270,7 +285,7 @@ const ResidentEditForm: React.FC = () => {
                             required
                         />
                     </div>
-                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
+                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
                             <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Gửi yêu cầu cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
