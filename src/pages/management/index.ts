@@ -5,3 +5,4 @@ export { default as SurveyUpdatePage } from "./management-surey/survey-update";
 export { default as NewsManagementPage } from "./management-news/news-management";
 export { default as NewsAddPage } from "./management-news/news-create";
 export { default as NewsUpdatePage } from "./management-news/news-update";
+export { default as FeedbackManagementPage } from "./management-feedback/feedback-management";

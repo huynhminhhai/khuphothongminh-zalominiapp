@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { ManagementPage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
+import { FeedbackManagementPage, ManagementPage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
 
 const MyApp = () => {
   return (
@@ -57,6 +57,10 @@ const MyApp = () => {
               <Route path="/news-management" element={<NewsManagementPage></NewsManagementPage>}></Route>
               <Route path="/news-add" element={<NewsAddPage></NewsAddPage>}></Route>
               <Route path="/news-update" element={<NewsUpdatePage></NewsUpdatePage>}></Route>
+
+              {/* MANAGEMENT FEEDBACK */}
+              <Route path="/feedback-management" element={<FeedbackManagementPage></FeedbackManagementPage>}></Route>
+              
             </Routes>
             <Navigation />
           </ZMPRouter>

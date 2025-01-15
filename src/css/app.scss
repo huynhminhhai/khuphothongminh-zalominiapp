@@ -327,3 +327,11 @@ div.ql-editor {
 .zaui-modal-content .zaui-modal-content-title {
   font-weight: 600;
 }
+
+/**
+* FEEDBACK
+**/ 
+
+.feedback-switch .zaui-switch:checked {
+  background-color: #28a745;
+}

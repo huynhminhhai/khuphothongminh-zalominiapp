@@ -1,11 +1,12 @@
 import { Icon } from "@iconify/react";
+import images from "assets/images";
 import { Divider } from "components/divider";
 import { HeaderSub } from "components/header-sub"
 import { Feedback, FEEDBACKDATA, FeedbackResponse, FEEDBACKRESPONSES } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import { openUrlInWebview } from "services/zalo";
-import { Box, Page, Swiper, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Button, Page, Swiper, useNavigate, useSnackbar } from "zmp-ui"
 
 const FeedbackDetailPage: React.FC = () => {
 
@@ -14,6 +15,7 @@ const FeedbackDetailPage: React.FC = () => {
     const [responseData, setResponseData] = useState<FeedbackResponse>()
 
     const { openSnackbar } = useSnackbar();
+    const navigate = useNavigate()
     const [searchParams] = useSearchParams();
 
     const feedbackId = searchParams.get("id");
@@ -111,7 +113,7 @@ const FeedbackDetailPage: React.FC = () => {
                                     <div>{feedbackData.timestamp}</div>
                                 </Box>
                                 <Box py={3}>
-                                    <div dangerouslySetInnerHTML={{__html: feedbackData?.content || ''}}>
+                                    <div dangerouslySetInnerHTML={{ __html: feedbackData?.content || '' }}>
                                     </div>
                                 </Box>
                             </Box>
@@ -121,22 +123,38 @@ const FeedbackDetailPage: React.FC = () => {
                                     <h3 className="text-[18px] leading-[24px] font-medium line-clamp-2 mb-1">Trung tâm điều hành trả lời</h3>
                                     <div>{responseData?.timestamp}</div>
                                 </Box>
-                                <Box py={3}>
-                                    <div className="detail-content" dangerouslySetInnerHTML={{__html: `
-                                        ${responseData?.content}
-                                    `}}>
-                                    </div>
-                                </Box>
-                                <Box className="text-[blue] border-t-[1px]">
-                                    <div
-                                        className="border-b-[1px] py-3 flex items-center gap-1"
-                                        onClick={() => openUrlInWebview('https://1022-api.tayninh.gov.vn/Upload/PhanAnh/122797/hinhanh/ 6387196537674946091205.png?typeInapp=1')}
-                                    ><Icon icon='mingcute:download-line' /> Biên bản 1.png</div>
-                                    <div
-                                        className="border-b-[1px] py-3 flex items-center gap-1"
-                                        onClick={() => openUrlInWebview('https://1022-api.tayninh.gov.vn/Upload/PhanAnh/122797/hinhanh/ 6387196537674946091205.png?typeInapp=1')}
-                                    ><Icon icon='mingcute:download-line' /> Biên bản 2.png</div>
-                                </Box>
+                                {
+                                    responseData
+                                        ?
+                                        <Box>
+                                            <Box py={3}>
+                                                <div className="detail-content" dangerouslySetInnerHTML={{
+                                                    __html: `
+                                                ${responseData?.content}
+                                            `}}>
+                                                </div>
+                                            </Box>
+                                            <Box className="text-[blue] border-t-[1px]">
+                                                <div
+                                                    className="border-b-[1px] py-3 flex items-center gap-1"
+                                                    onClick={() => openUrlInWebview('https://1022-api.tayninh.gov.vn/Upload/PhanAnh/122797/hinhanh/ 6387196537674946091205.png?typeInapp=1')}
+                                                ><Icon icon='mingcute:download-line' /> Biên bản 1.png</div>
+                                                <div
+                                                    className="border-b-[1px] py-3 flex items-center gap-1"
+                                                    onClick={() => openUrlInWebview('https://1022-api.tayninh.gov.vn/Upload/PhanAnh/122797/hinhanh/ 6387196537674946091205.png?typeInapp=1')}
+                                                ><Icon icon='mingcute:download-line' /> Biên bản 2.png</div>
+                                            </Box>
+                                        </Box>
+                                        :
+                                        <Box mt={10}>
+                                            <Box flex justifyContent="center">
+                                                <img className="w-[120px] h-auto" src={images.empty} alt="Không có dữ liệu" />
+                                            </Box>
+                                            <Box mt={4} flex justifyContent="center">
+                                                <Button size="medium" onClick={() => navigate('/feedback-add')}>Trả lời phản ánh</Button>
+                                            </Box>
+                                        </Box>
+                                }
                             </Box>
                         </Box>
                         :

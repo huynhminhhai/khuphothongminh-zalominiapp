@@ -24,7 +24,7 @@ const NewsManagementPage: React.FC = () => {
     const handleConfirm = () => {
         if (newsId !== null) {
             setConfirmVisible(false);
-            console.log(console.log('Call api delete survey with id: ', 1))
+            console.log(console.log('Call api delete survey with id: ', newsId))
 
             openSnackbar({
                 text: 'Xóa tin tức thành công',

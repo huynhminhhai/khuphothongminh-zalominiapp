@@ -27,6 +27,12 @@ const ManagementPage: React.FC = () => {
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/survey-management')}
                         />
+                        <Item
+                            title="Quản lý phản ánh"
+                            prefix={<img src={images.idea} alt='feedback' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/feedback-management')}
+                        />
                     </List>
                 </Box>
             </Box>

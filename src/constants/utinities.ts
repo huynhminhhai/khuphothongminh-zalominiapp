@@ -488,22 +488,22 @@ export type FeedbackResponse = {
 }
 
 export const FEEDBACKRESPONSES: FeedbackResponse[] = [
-    {
-        id: 1,
-        feedbackId: 1,
-        content: "Cảm ơn bạn đã phản ánh. Chúng tôi đã xử lý và yêu cầu tháo dỡ rạp đám cưới trên vỉa hè để đảm bảo giao thông và mỹ quan khu vực.",
-        timestamp: "07/01/2025 12:00",
-        files: [
-            "https://example.com/file1.jpg",
-        ],
-    },
-    {
-        id: 2,
-        feedbackId: 2,
-        content: "Chúng tôi đã ghi nhận phản ánh và sẽ tiến hành thay mới hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa trong thời gian sớm nhất.",
-        timestamp: "08/01/2025 16:00",
-        files: [],
-    },
+    // {
+    //     id: 1,
+    //     feedbackId: 1,
+    //     content: "Cảm ơn bạn đã phản ánh. Chúng tôi đã xử lý và yêu cầu tháo dỡ rạp đám cưới trên vỉa hè để đảm bảo giao thông và mỹ quan khu vực.",
+    //     timestamp: "07/01/2025 12:00",
+    //     files: [
+    //         "https://example.com/file1.jpg",
+    //     ],
+    // },
+    // {
+    //     id: 2,
+    //     feedbackId: 2,
+    //     content: "Chúng tôi đã ghi nhận phản ánh và sẽ tiến hành thay mới hệ thống đèn chiếu sáng tại khu vực chợ Long Hoa trong thời gian sớm nhất.",
+    //     timestamp: "08/01/2025 16:00",
+    //     files: [],
+    // },
     {
         id: 3,
         feedbackId: 3,
