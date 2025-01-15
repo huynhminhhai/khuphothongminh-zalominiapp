@@ -450,6 +450,8 @@ export const FEEDBACKDATA: Feedback[] = [
         title: "Góp ý về việc tăng cường bảo vệ môi trường tại công viên",
         content: "Công viên cần có thêm thùng rác để giữ gìn vệ sinh chung.",
         imageUrl: [
+            'https://1022-api.tayninh.gov.vn/Upload/PhanAnh/2710/hinhanh/6376124582091266512602.jpg',
+            'https://1022-api.tayninh.gov.vn/Upload/PhanAnh/2710/hinhanh/6376124582091266512602.jpg',
             'https://1022-api.tayninh.gov.vn/Upload/PhanAnh/2710/hinhanh/6376124582091266512602.jpg'
         ],
         status: 2, // Trạng thái chưa xử lý

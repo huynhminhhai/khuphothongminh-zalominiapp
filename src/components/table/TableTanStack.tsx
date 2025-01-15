@@ -10,7 +10,7 @@ type TableTanStackProps<T> = {
 const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
   const [pagination, setPagination] = React.useState({
     pageIndex: 0,
-    pageSize: 5,
+    pageSize: 10,
   });
 
   const table = useReactTable({
@@ -50,15 +50,24 @@ const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row, rowIndex) => (
-              <tr key={row.id} className={`hover:bg-gray-50 ${rowIndex % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
-                {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="px-4 py-4">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            {
+              table.getRowModel().rows.length === 0 ? (
+                <tr>
+                  <td colSpan={columns.length} className="text-center py-4">
+                    Không có dữ liệu để hiển thị.
                   </td>
-                ))}
-              </tr>
-            ))}
+                </tr>
+              ) :
+                table.getRowModel().rows.map((row, rowIndex) => (
+                  <tr key={row.id} className={`hover:bg-gray-50 ${rowIndex % 2 === 0 ? 'bg-gray-100' : 'bg-white'}`}>
+                    {row.getVisibleCells().map(cell => (
+                      <td key={cell.id} className="px-4 py-4">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+            }
           </tbody>
         </table>
       </div>
@@ -76,7 +85,7 @@ const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
             onChange={e => table.setPageSize(Number(e.target.value))}
             className="border p-2 font-medium"
           >
-            {[5, 10, 20, 50, 100].map(pageSize => (
+            {[10, 20, 50, 100].map(pageSize => (
               <option key={pageSize} value={pageSize}>
                 Hiển thị {pageSize}
               </option>
@@ -89,28 +98,28 @@ const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
-            <Icon icon='fluent:previous-16-filled' fontSize={16}/>
+            <Icon icon='fluent:previous-16-filled' fontSize={16} />
           </button>
           <button
             className="border rounded p-2"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
           >
-            <Icon icon='bxs:left-arrow' fontSize={16}/>
+            <Icon icon='bxs:left-arrow' fontSize={16} />
           </button>
           <button
             className="border rounded p-2"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
           >
-            <Icon icon='bxs:right-arrow' fontSize={16}/>
+            <Icon icon='bxs:right-arrow' fontSize={16} />
           </button>
           <button
             className="border rounded p-2"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
-            <Icon icon='fluent:next-16-filled' fontSize={16}/>
+            <Icon icon='fluent:next-16-filled' fontSize={16} />
           </button>
         </div>
       </div>

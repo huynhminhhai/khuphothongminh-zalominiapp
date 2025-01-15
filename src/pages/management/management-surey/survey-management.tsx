@@ -5,7 +5,7 @@ import { ConfirmModal } from "components/modal"
 import { TableTanStack } from "components/table"
 import { SURVEYDATA, SurveyType } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const SurveyManagementPage: React.FC = () => {
 
@@ -14,8 +14,9 @@ const SurveyManagementPage: React.FC = () => {
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [surveyId, setSurveyId] = useState<number | undefined>(undefined);
+    const [searchValue, setSearchValue] = useState('');
 
-    const removeSurvey = (id: number | undefined ) => {
+    const removeSurvey = (id: number | undefined) => {
         setSurveyId(id)
         setConfirmVisible(true);
     }
@@ -24,7 +25,7 @@ const SurveyManagementPage: React.FC = () => {
         if (surveyId !== null) {
             setConfirmVisible(false);
             console.log(console.log('Call api delete survey with id: ', 1))
-    
+
             openSnackbar({
                 text: 'Xóa khảo sát thành công',
                 type: 'success',
@@ -76,26 +77,37 @@ const SurveyManagementPage: React.FC = () => {
         },
     ];
 
+    const filteredData = SURVEYDATA.filter(item =>
+        item.title.toLowerCase().includes(searchValue.toLowerCase())
+    );
+
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý khảo sát" />
                 <Box>
                     <Box p={4}>
-                        <Box flex justifyContent="flex-end">
+                        <Box flex justifyContent="space-between">
+                            <Box>
+                                <Input
+                                    placeholder="Tìm kiếm..."
+                                    value={searchValue}
+                                    onChange={(e) => setSearchValue(e.target.value)}
+                                />
+                            </Box>
                             <Button
-                                size="small"
+                                size="medium"
                                 variant="secondary"
                                 onClick={() => navigate('/survey-add')}
                             >
                                 <div className="flex items-center gap-1">
                                     <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                    Thêm khảo sát
+                                    Thêm
                                 </div>
                             </Button>
                         </Box>
                         <Box mt={4}>
-                            <TableTanStack data={SURVEYDATA} columns={columns} />
+                            <TableTanStack data={filteredData} columns={columns} />
                         </Box>
                     </Box>
                 </Box>
