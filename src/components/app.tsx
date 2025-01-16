@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackManagementPage, ManagementPage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
 
 const MyApp = () => {
   return (
@@ -60,6 +60,7 @@ const MyApp = () => {
 
               {/* MANAGEMENT FEEDBACK */}
               <Route path="/feedback-management" element={<FeedbackManagementPage></FeedbackManagementPage>}></Route>
+              <Route path="/feedback-answer" element={<FeedbackAnswerPage></FeedbackAnswerPage>}></Route>
               
             </Routes>
             <Navigation />

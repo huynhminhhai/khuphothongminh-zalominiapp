@@ -519,7 +519,7 @@ export const FEEDBACKRESPONSES: FeedbackResponse[] = [
       `,
         timestamp: "09/01/2025 10:30",
         files: [
-            'https://example.com/file2.jpg',
+            'https://trithucviet.net/wp-content/uploads/2019/10/ban-cam-ket-moi-nhat-729x1024.png',
         ],
     },
     {
@@ -528,7 +528,8 @@ export const FEEDBACKRESPONSES: FeedbackResponse[] = [
         content: "Cảm ơn bạn đã phản ánh. Chúng tôi sẽ kiểm tra và sửa chữa đèn đường không hoạt động tại đường Huỳnh Văn Thanh.",
         timestamp: "09/01/2025 10:45",
         files: [
-            'https://example.com/file3.jpg',
+            'https://cdn1.123job.vn/123job//uploads/images/mau-bien-ban-lam-viec.jpg',
+            'https://trithucviet.net/wp-content/uploads/2019/10/ban-cam-ket-moi-nhat-729x1024.png',
         ],
     },
     {

@@ -7,3 +7,4 @@ export { default as FormControllerRadioGroupProps } from "./FormRadioGroup";
 export { default as FormTextEditorField } from "./TextEditorField";
 export { default as FormImageUploader } from "./ImageUploaderField";
 export { default as FormImageUploaderSingle } from "./ImageUploaderSingle";
+export { default as FormImagePickerMultiple } from "./ImagePickerMultiple";

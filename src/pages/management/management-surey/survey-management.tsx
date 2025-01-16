@@ -50,6 +50,22 @@ const SurveyManagementPage: React.FC = () => {
             header: 'Thời hạn',
         },
         {
+            id: 'count',
+            header: 'Lượt khảo sát',
+            cell: ({row}) => (
+                <span>55</span>
+            )
+        },
+        {
+            id: 'count',
+            header: 'Biểu đồ',
+            cell: ({row}) => (
+                <div className="flex items-center justify-center">
+                    <Icon icon='mdi:chart-line' fontSize={22}/>
+                </div>
+            )
+        },
+        {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (

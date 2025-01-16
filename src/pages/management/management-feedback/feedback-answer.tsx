@@ -1,26 +1,24 @@
-import { Icon } from "@iconify/react";
-import images from "assets/images";
 import { Divider } from "components/divider";
+import { FeedbackAnswerForm } from "components/feedback";
 import { HeaderSub } from "components/header-sub"
 import { Feedback, FEEDBACKDATA, FeedbackResponse, FEEDBACKRESPONSES } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
-import { openUrlInWebview } from "services/zalo";
 import { Box, Page, Swiper, useSnackbar } from "zmp-ui"
 
-const FeedbackDetailPage: React.FC = () => {
+const FeedbackAnswerPage: React.FC = () => {
 
     const [loading, setLoading] = useState(false);
     const [feedbackData, setFeedbackData] = useState<Feedback>()
     const [responseData, setResponseData] = useState<FeedbackResponse>()
 
     const { openSnackbar } = useSnackbar();
+
     const [searchParams] = useSearchParams();
 
     const feedbackId = searchParams.get("id");
 
     useEffect(() => {
-        // Hàm gọi API để lấy thông tin thành viên
         const fetchFeedbackData = async () => {
             setLoading(true);
             try {
@@ -48,7 +46,6 @@ const FeedbackDetailPage: React.FC = () => {
     }, [feedbackId]);
 
     useEffect(() => {
-        // Hàm gọi API để lấy thông tin thành viên
         const fetchResponseData = async () => {
             setLoading(true);
             try {
@@ -76,11 +73,12 @@ const FeedbackDetailPage: React.FC = () => {
     }, [feedbackId]);
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[30px]">
+        <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
-                <HeaderSub title="Chi tiết Góp ý - Phản ánh" />
-                {
-                    feedbackData && !loading ?
+                <HeaderSub title="Phản hồi phản ánh" />
+                <Box>
+                    {
+                        feedbackData && !loading &&
                         <Box>
                             <Box>
                                 <Swiper autoplay duration={8000} style={{ borderRadius: 0 }}>
@@ -89,7 +87,6 @@ const FeedbackDetailPage: React.FC = () => {
                                             feedbackData.imageUrl.map((item, index) => (
                                                 <Swiper.Slide key={index}>
                                                     <img
-                                                        onClick={() => openUrlInWebview(item)}
                                                         className="slide-img"
                                                         src={item}
                                                         alt={feedbackData.title}
@@ -117,58 +114,25 @@ const FeedbackDetailPage: React.FC = () => {
                                     </div>
                                 </Box>
                             </Box>
-                            <Divider />
                             <Box p={4}>
                                 <Box pb={3} mb={3} className="border-b-[1px]">
                                     <h3 className="text-[18px] leading-[24px] font-medium line-clamp-2 mb-1">Trung tâm điều hành trả lời</h3>
-                                    <div>{responseData?.timestamp}</div>
                                 </Box>
-                                {
-                                    responseData
-                                        ?
-                                        <Box>
-                                            <Box py={3}>
-                                                <div className="detail-content" dangerouslySetInnerHTML={{
-                                                    __html: `
-                                                ${responseData?.content}
-                                            `}}>
-                                                </div>
-                                            </Box>
-                                            {
-                                                responseData.files.length > 0 &&
-                                                <Box>
-                                                    <Swiper autoplay duration={8000} style={{ borderRadius: 0 }}>
-                                                        {
-                                                            responseData.files.map((item, index) => (
-                                                                <Swiper.Slide key={index}>
-                                                                    <img
-                                                                        onClick={() => openUrlInWebview(item)}
-                                                                        className="slide-img"
-                                                                        src={item}
-                                                                        alt={feedbackData.title}
-                                                                    />
-                                                                </Swiper.Slide>
-                                                            ))
-                                                        }
-                                                    </Swiper>
-                                                </Box>
-                                            }
-                                        </Box>
-                                        :
-                                        <Box mt={10}>
-                                            <Box flex justifyContent="center">
-                                                <img className="w-[120px] h-auto" src={images.empty} alt="Không có dữ liệu" />
-                                            </Box>
-                                        </Box>
-                                }
+
+                                <Box>
+                                    {
+                                        feedbackId &&
+                                        <FeedbackAnswerForm feedbackId={Number(feedbackId)} responseData={responseData} />
+                                    }
+                                </Box>
                             </Box>
+                            <Divider />
                         </Box>
-                        :
-                        <Box>Sekeleton</Box>
-                }
+                    }
+                </Box>
             </Box>
         </Page>
     )
 }
 
-export default FeedbackDetailPage
+export default FeedbackAnswerPage

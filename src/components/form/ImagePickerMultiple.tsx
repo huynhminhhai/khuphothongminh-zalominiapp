@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Controller, Control, ControllerRenderProps } from 'react-hook-form';
-import { chooseImage } from 'zmp-sdk';
+import { openMediaPicker } from 'zmp-sdk';
 import Label from './Label';
 import ErrorMessage from './ErrorMessage';
 
@@ -22,7 +22,7 @@ const ImagePreview: React.FC<{ imagePath: string, onRemove: () => void }> = Reac
     );
 });
 
-type ImageUploaderFieldProps = {
+type ImagePickerMultipleProps = {
     label: string;
     name: string;
     error?: string;
@@ -30,7 +30,7 @@ type ImageUploaderFieldProps = {
     required?: boolean;
 };
 
-const ImageUploaderField: React.FC<ImageUploaderFieldProps> = ({
+const ImagePickerMultiple: React.FC<ImagePickerMultipleProps> = ({
     label,
     name,
     error,
@@ -38,16 +38,21 @@ const ImageUploaderField: React.FC<ImageUploaderFieldProps> = ({
     required = false,
 }) => {
     const handleChooseImage = () => {
-        chooseImage({
-            count: 100,
-            sourceType: ['album', 'camera'],
+        openMediaPicker({
+            maxSelectItem: 5,
+            type: "photo",
+            serverUploadUrl: "https://mini.zalo.me/upload/media",
             success: (res) => {
+                // xử lý khi gọi api thành công
+                const { data } = res;
+                const result = JSON.parse(data);
 
-                const paths = res.tempFiles.map((file) => file.path);
+                const paths = result.urls.map((url: any) => url);
                 field.onChange([...(field.value || []), ...paths]);
             },
-            fail: (err) => {
-                console.error('Error choosing images:', err);
+            fail: (error) => {
+                // xử lý khi gọi api thất bại
+                console.log(error);
             },
         });
     };
@@ -81,7 +86,7 @@ const ImageUploaderField: React.FC<ImageUploaderFieldProps> = ({
     );
 };
 
-type FormImageUploaderProps = {
+type FormImagePickerMultipleProps = {
     name: string;
     label: string;
     control: Control<any>;
@@ -89,7 +94,7 @@ type FormImageUploaderProps = {
     required?: boolean;
 };
 
-const FormImageUploader: React.FC<FormImageUploaderProps> = ({
+const FormImagePickerMultiple: React.FC<FormImagePickerMultipleProps> = ({
     name,
     label,
     control,
@@ -101,7 +106,7 @@ const FormImageUploader: React.FC<FormImageUploaderProps> = ({
             name={name}
             control={control}
             render={({ field }) => (
-                <ImageUploaderField
+                <ImagePickerMultiple
                     label={label}
                     name={name}
                     required={required}
@@ -113,4 +118,4 @@ const FormImageUploader: React.FC<FormImageUploaderProps> = ({
     );
 };
 
-export default FormImageUploader;
+export default FormImagePickerMultiple;
