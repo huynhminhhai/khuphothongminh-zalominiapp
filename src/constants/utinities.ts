@@ -558,7 +558,7 @@ export const SURVEYDATA: SurveyType[] = [
         description: "Để xin ý kiến hiến đất đường vào thôn. Xin Ông/Bà/DN vui lòng chọn vào phiếu khảo sát dưới đây",
         status: 2,
         timestamp: "10/01/2025 08:00",
-        expiryDate: '15/01/2025',
+        expiryDate: '18/01/2025',
         questions: [
             {
                 id: "q1",
@@ -648,5 +648,133 @@ export const SURVEYDATA: SurveyType[] = [
                 answer: "",
             },
         ],
+    },
+];
+
+export const SURVEYRESULT = [
+    {   
+        id: 1,
+        surveyId: 3,
+        responses: [
+            {
+                questionId: 1,
+                answer: "Nguyễn Văn A", // Họ và tên
+            },
+            {
+                questionId: 2,
+                answer: "Có", // Có sẵn sàng tham gia
+            },
+            {
+                questionId: 3,
+                answer: [
+                    "Tiền mặt",
+                    "Vật phẩm (quần áo, thực phẩm, sách vở, ...)",
+                ], // Hình thức đóng góp
+            },
+            {
+                questionId: 4,
+                answer: "Không có ý kiến", // Ý kiến đóng góp khác
+            },
+        ],
+        userId: 101,
+    },
+    {
+        id: 2,
+        surveyId: 3,
+        responses: [
+            {
+                questionId: 1,
+                answer: "Lê Thị B",
+            },
+            {
+                questionId: 2,
+                answer: "Không",
+            },
+            {
+                questionId: 3,
+                answer: [],
+            },
+            {
+                questionId: 4,
+                answer: "Tôi bận nên không thể tham gia, nhưng sẽ hỗ trợ tài chính nếu cần.",
+            },
+        ],
+        userId: 102,
+    },
+    {
+        id: 3,
+        surveyId: 3,
+        responses: [
+            {
+                questionId: 1,
+                answer: "Phạm Văn C",
+            },
+            {
+                questionId: 2,
+                answer: "Có",
+            },
+            {
+                questionId: 3,
+                answer: [
+                    "Thời gian và công sức (tình nguyện viên)",
+                ],
+            },
+            {
+                questionId: 4,
+                answer: "Tôi có thể hỗ trợ trong các hoạt động ngoài giờ làm việc.",
+            },
+        ],
+        userId: 103,
+    },
+    {
+        id: 4,
+        surveyId: 3,
+        responses: [
+            {
+                questionId: 1,
+                answer: "Trần Thị D",
+            },
+            {
+                questionId: 2,
+                answer: "Không",
+            },
+            {
+                questionId: 3,
+                answer: [
+                    "Khác (vui lòng ghi rõ trong mục bên dưới)",
+                ],
+            },
+            {
+                questionId: 4,
+                answer: "Tôi muốn đóng góp bằng cách giới thiệu thêm tình nguyện viên.",
+            },
+        ],
+        userId: 104,
+    },
+    {
+        id: 5,
+        surveyId: 3,
+        responses: [
+            {
+                questionId: 1,
+                answer: "Ngô Văn E",
+            },
+            {
+                questionId: 2,
+                answer: "Có",
+            },
+            {
+                questionId: 3,
+                answer: [
+                    "Tiền mặt",
+                    "Thời gian và công sức (tình nguyện viên)",
+                ],
+            },
+            {
+                questionId: 4,
+                answer: "Tôi có thể hỗ trợ thêm bằng việc vận chuyển đồ đạc.",
+            },
+        ],
+        userId: 105,
     },
 ];

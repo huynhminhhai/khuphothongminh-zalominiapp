@@ -1,6 +1,7 @@
 import { PrimaryButton } from "components/button";
 import { HeaderSub } from "components/header-sub"
-import { SURVEYDATA, SurveyType } from "constants/utinities";
+import { ConfirmModal } from "components/modal";
+import { SURVEYDATA, SURVEYRESULT, SurveyType } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import { isExpired } from "utils/date";
@@ -14,9 +15,10 @@ type QuestionType = {
 };
 
 type SurveyResponseType = {
+    id?: number;
     surveyId: number | undefined;
-    userId: number,
-    responses: { questionId: string, answer: string | string[] }[];
+    userId: number;
+    responses: { questionId: any, answer: string | string[] }[];
 };
 
 const SurveyDetailPage: React.FC = () => {
@@ -25,46 +27,74 @@ const SurveyDetailPage: React.FC = () => {
     const [detailData, setDetailData] = useState<SurveyType>()
     const [responses, setResponses] = useState<any>([]);
     const [missingAnswersVisible, setMissingAnswersVisible] = useState(false);
+    const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [surveyResult, setSurveyResult] = useState<SurveyResponseType | undefined>(undefined);
 
     const { openSnackbar } = useSnackbar();
     const [searchParams] = useSearchParams();
 
     const surveyId = searchParams.get("id");
+    const idUser = 103;
+
+    const fetchSurveyData = async () => {
+        setLoading(true);
+        try {
+            // Giả lập gọi API để lấy thông tin khảo sát
+            const data = SURVEYDATA.find(survey => survey.id === Number(surveyId));
+
+            if (!data) {
+                throw new Error("Survey data not found");
+            }
+
+            setDetailData(data);
+
+            // Gọi kết quả khảo sát
+            const surveyResult = await fetchSurveyResult();
+            setSurveyResult(surveyResult);
+
+            console.log(surveyResult)
+
+            if (surveyResult) {
+                setResponses(surveyResult.responses);
+            } else {
+                // Khởi tạo trạng thái trả lời ban đầu dựa trên câu hỏi
+                const initialResponses = data.questions.map(q => ({
+                    questionId: q.id,
+                    answer: q.answer || (q.type === "multiple-choice" ? [] : ""),
+                }));
+
+                setResponses(initialResponses);
+            }
+        } catch (error) {
+            console.error("Failed to fetch survey data:", error);
+            openSnackbar({
+                text: "Không thể tải thông tin khảo sát. Vui lòng thử lại sau.",
+                type: "error",
+                duration: 5000,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchSurveyResult = async () => {
+        try {
+            // Giả lập gọi API để lấy kết quả khảo sát
+            return SURVEYRESULT.find(
+                survey => survey.userId === idUser && survey.surveyId === Number(surveyId)
+            );
+        } catch (error) {
+            console.error("Failed to fetch survey result:", error);
+            openSnackbar({
+                text: "Không thể tải thông tin khảo sát. Vui lòng thử lại sau.",
+                type: "error",
+                duration: 5000,
+            });
+            return undefined;
+        }
+    };
 
     useEffect(() => {
-        // Hàm gọi API để lấy thông tin thành viên
-        const fetchSurveyData = async () => {
-            setLoading(true);
-            try {
-                // Giả sử API trả về thông tin thành viên
-                // const response = await fetch(`/api/surveys/${surveyId}`);
-                // const data = await response.json();
-
-                const data = SURVEYDATA.find(survey => survey.id === Number(surveyId))
-
-                if (data) {
-                    setDetailData(data);
-
-                    // Initialize responses state based on the detailData
-                    const initialResponses = data.questions.map((q) => ({
-                        questionId: q.id,
-                        answer: q.answer || (q.type === "multiple-choice" ? [] : ""),
-                    }));
-                    setResponses(initialResponses);
-                }
-
-            } catch (error) {
-                console.error("Failed to fetch survey data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchSurveyData();
     }, [surveyId]);
 
@@ -78,6 +108,11 @@ const SurveyDetailPage: React.FC = () => {
     };
 
     const handleSubmit = async () => {
+        setConfirmVisible(true);
+    };
+
+    const handleConfirm = async () => {
+        setConfirmVisible(false);
 
         const unansweredQuestions = detailData?.questions.filter((q) => {
             const response = responses.find((res) => res.questionId === q.id);
@@ -91,32 +126,66 @@ const SurveyDetailPage: React.FC = () => {
 
         setLoading(true);
 
-        const idUser = 123;
 
-        const payload: SurveyResponseType = {
-            surveyId: detailData?.id,
-            responses: responses,
-            userId: idUser,
-        };
+        try {
+            // Kiểm tra nếu đã có kết quả khảo sát, nếu có thì gọi API Update, nếu không thì gọi API Add
+            if (surveyResult) {
+                const payload: SurveyResponseType = {
+                    surveyId: detailData?.id,
+                    responses: responses,
+                    userId: idUser,
+                    id: surveyResult.id
+                };
+                await updateSurveyResult(payload);
+                
+            } else {
+                const payload: SurveyResponseType = {
+                    surveyId: detailData?.id,
+                    responses: responses,
+                    userId: idUser,
+                };
+                await addSurveyResult(payload);
+                
+            }
+        } catch (error) {
+            console.error("Failed to submit survey data:", error);
+            openSnackbar({
+                text: "Không thể gửi thông tin khảo sát. Vui lòng thử lại sau.",
+                type: "error",
+                duration: 5000,
+            });
+        } finally {
+            setLoading(false);
+        }
 
-        // Gửi dữ liệu trả lời lên BE
-        // const response = await fetch('/api/surveys/submit', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(payload),
-        // });
+    };
 
-        // const result = await response.json();
+    const addSurveyResult = async (payload: SurveyResponseType) => {
+        
+        console.log("Adding survey result:", payload);
+
+        openSnackbar({
+            text: "Gửi khảo sát thành công",
+            type: "success",
+            duration: 5000,
+        });
+        
+    };
+
+    const updateSurveyResult = async (payload: SurveyResponseType) => {
+        
+        console.log("Updating survey result:", payload);
 
         openSnackbar({
             text: "Cập nhật khảo sát thành công",
             type: "success",
             duration: 5000,
         });
+        
+    };
 
-        console.log('submit data:', payload)
-
-        setLoading(false);
+    const handleCancel = () => {
+        setConfirmVisible(false);
     };
 
 
@@ -162,7 +231,7 @@ const SurveyDetailPage: React.FC = () => {
                                                 type="text"
                                                 value={responses.find((res) => res.questionId === q.id)?.answer || ""}
                                                 onChange={(e) => handleAnswerChange(q.id, e.target.value)}
-                                                className="p-2 w-full border border-gray-300 rounded-lg"
+                                                className="p-2 w-full border-b rounded-none  border-gray-300 h-[48px]"
                                             />
                                         )}
 
@@ -221,6 +290,13 @@ const SurveyDetailPage: React.FC = () => {
                     </Box>
                 </Box>
             </Box>
+            <ConfirmModal
+                visible={isConfirmVisible}
+                title="Xác nhận"
+                message="Bạn có chắc chắn muốn cập nhật kết quả này không?"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </Page>
     )
 }

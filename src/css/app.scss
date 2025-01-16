@@ -108,6 +108,10 @@ body {
   border-radius: 8px;
 }
 
+input {
+  outline: none;
+}
+
 input[type='checkbox'],
 input[type='radio'] {
   accent-color: #731611;

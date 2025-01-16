@@ -57,7 +57,7 @@ const SurveyManagementPage: React.FC = () => {
             )
         },
         {
-            id: 'count',
+            id: 'chart',
             header: 'Biểu đồ',
             cell: ({row}) => (
                 <div className="flex items-center justify-center">
