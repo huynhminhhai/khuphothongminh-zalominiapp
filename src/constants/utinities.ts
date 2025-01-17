@@ -541,14 +541,20 @@ export const FEEDBACKRESPONSES: FeedbackResponse[] = [
     },
 ];
 
+type QuestionType = {
+    questionId: number;
+    type: 'text' | 'multiple-choice' | 'one-choice';
+    question: string;
+    options: string[];
+};
+
 export type SurveyType = {
     id?: number;
     title: string;
     description: string;
-    status?: number;
     timestamp?: string;
     expiryDate: string;
-    questions: any[];
+    questions: QuestionType[];
     countAnswer?: number;
 }
 
@@ -557,23 +563,21 @@ export const SURVEYDATA: SurveyType[] = [
         id: 1,
         title: "Lấy ý kiến mở rộng đường vào thôn",
         description: "Để xin ý kiến hiến đất đường vào thôn. Xin Ông/Bà/DN vui lòng chọn vào phiếu khảo sát dưới đây",
-        status: 2,
-        timestamp: "10/01/2025 08:00",
         expiryDate: '18/01/2025',
         questions: [
             {
-                id: 1,
+                questionId: 1,
                 type: "one-choice",
                 question: "Ông/Bà có đồng ý tự nguyện hiến đất để mở rộng đường dẫn vào thôn không?",
                 options: ["Đồng ý", "Không đồng ý"],
             },
             {
-                id: 2,
+                questionId: 2,
                 type: "one-choice",
                 question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?",
                 options: ["< 2 mét", "< 3 mét", "< 4 mét", "< 5 mét"],
             }, {
-                id: 3,
+                questionId: 3,
                 type: "one-choice",
                 question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?",
                 options: ["Trước 30/4/1975", "Từ 30/4/1975 đến năm 1994", "Từ năm 1995 đến năm 2004", "Từ năm 2005 đến nay"],
@@ -586,22 +590,21 @@ export const SURVEYDATA: SurveyType[] = [
         title: "Khảo sát thành lập tổ quyên góp từ thiện",
         description: "Chúng tôi muốn tìm kiếm các cá nhân cùng chí hướng để tham gia và đóng góp cho tổ chức từ thiện này. Vui lòng trả lời các câu hỏi dưới đây.",
         expiryDate: "30/01/2025",
-        status: 2,
-        timestamp: "10/01/2025 08:00",
         questions: [
             {
-                id: 1,
+                questionId: 4,
                 question: "Họ và tên của bạn là gì?",
                 type: "text",
+                options: []
             },
             {
-                id: 2,
+                questionId: 5,
                 question: "Bạn có sẵn sàng tham gia tổ chức từ thiện không?",
                 type: "one-choice",
                 options: ["Có", "Không"],
             },
             {
-                id: 3,
+                questionId: 6,
                 question: "Bạn có thể đóng góp dưới hình thức nào?",
                 type: "multiple-choice",
                 options: [
@@ -612,9 +615,10 @@ export const SURVEYDATA: SurveyType[] = [
                 ],
             },
             {
-                id: 4,
+                questionId: 7,
                 question: "Nếu bạn có ý kiến đóng góp hoặc hình thức đóng góp khác, hãy ghi rõ:",
                 type: "text",
+                options: []
             },
         ],
         countAnswer: 5
@@ -623,24 +627,22 @@ export const SURVEYDATA: SurveyType[] = [
         id: 2,
         title: "Khảo sát 1",
         description: "Mô tả khảo sát",
-        status: 1,
-        timestamp: "05/01/2025 14:30",
         expiryDate: '13/01/2025',
         questions: [
             {
-                id: 1,
+                questionId: 8,
                 type: "text",
                 question: "Câu hỏi văn bản",
+                options: []
             },
             {
-                id: 2,
+                questionId: 9,
                 type: "multiple-choice",
                 question: "Câu hỏi nhiều chọn",
                 options: ["Giá vé", "Chất lượng phương tiện", "Thời gian hoạt động", "An toàn"],
-                answer: [],
             },
             {
-                id: 3,
+                questionId: 10,
                 type: "one-choice",
                 question: "Câu hỏi một chọn",
                 options: ["Có", "Không"],
@@ -654,29 +656,33 @@ export const SURVEYRESULT = [
     {
         id: 2,
         surveyId: 3,
-        responses: [
+        answers: [
             {
-                id: 1,
+                questionId: 4,
                 answer: "Lê Thị B",
-                type: "text"
+                type: "text",
+                question: "Họ và tên của bạn là gì?"
             },
             {
-                id: 2,
+                questionId: 5,
                 answer: "Không",
-                type: "one-choice"
+                type: "one-choice",
+                question: "Bạn có sẵn sàng tham gia tổ chức từ thiện không?",
             },
             {
-                id: 3,
+                questionId: 6,
                 answer: [
                     "Tiền mặt",
                     "Dịch vụ (y tế, giáo dục)",
                 ],
-                type: "multiple-choice"
+                type: "multiple-choice",
+                question: "Bạn có thể đóng góp dưới hình thức nào?",
             },
             {
-                id: 4,
+                questionId: 7,
                 answer: "Cần thêm thông tin về chương trình",
-                type: "text"
+                type: "text",
+                question: "Nếu bạn có ý kiến đóng góp hoặc hình thức đóng góp khác, hãy ghi rõ:",
             }
         ],
         userId: 102
@@ -684,29 +690,32 @@ export const SURVEYRESULT = [
     {
         id: 3,
         surveyId: 3,
-        responses: [
+        answers: [
             {
-                id: 1,
+                questionId: 4,
                 answer: "Trần Minh C",
-                type: "text"
+                type: "text",
+                question: "Họ và tên của bạn là gì?"
             },
             {
-                id: 2,
+                questionId: 5,
                 answer: "Có",
-                type: "one-choice"
+                type: "one-choice",
+                question: "Bạn có sẵn sàng tham gia tổ chức từ thiện không?",
             },
             {
-                id: 3,
+                questionId: 6,
                 answer: [
-                    "Tiền mặt",
-                    "Vật phẩm (quần áo)",
+                    "Tiền mặt"
                 ],
-                type: "multiple-choice"
+                type: "multiple-choice",
+                question: "Bạn có thể đóng góp dưới hình thức nào?",
             },
             {
-                id: 4,
+                questionId: 7,
                 answer: "Rất ủng hộ",
-                type: "text"
+                type: "text",
+                question: "Nếu bạn có ý kiến đóng góp hoặc hình thức đóng góp khác, hãy ghi rõ:",
             }
         ],
         userId: 103
@@ -714,29 +723,33 @@ export const SURVEYRESULT = [
     {
         id: 4,
         surveyId: 3,
-        responses: [
+        answers: [
             {
-                id: 1,
+                questionId: 4,
                 answer: "Nguyễn Thị D",
-                type: "text"
+                type: "text",
+                question: "Họ và tên của bạn là gì?"
             },
             {
-                id: 2,
+                questionId: 5,
                 answer: "Có",
-                type: "one-choice"
+                type: "one-choice",
+                question: "Bạn có sẵn sàng tham gia tổ chức từ thiện không?",
             },
             {
-                id: 3,
+                questionId: 6,
                 answer: [
                     "Vật phẩm (sách vở)",
                     "Dịch vụ (y tế)",
                 ],
-                type: "multiple-choice"
+                type: "multiple-choice",
+                question: "Bạn có thể đóng góp dưới hình thức nào?",
             },
             {
-                id: 4,
+                questionId: 7,
                 answer: "Tôi không có ý kiến",
-                type: "text"
+                type: "text",
+                question: "Nếu bạn có ý kiến đóng góp hoặc hình thức đóng góp khác, hãy ghi rõ:",
             }
         ],
         userId: 104
@@ -744,29 +757,133 @@ export const SURVEYRESULT = [
     {
         id: 5,
         surveyId: 3,
-        responses: [
+        answers: [
             {
-                id: 1,
+                questionId: 4,
                 answer: "Phạm Văn E",
-                type: "text"
+                type: "text",
+                question: "Họ và tên của bạn là gì?"
             },
             {
-                id: 2,
+                questionId: 5,
                 answer: "Không",
-                type: "one-choice"
+                type: "one-choice",
+                question: "Bạn có sẵn sàng tham gia tổ chức từ thiện không?",
             },
             {
-                id: 3,
+                questionId: 6,
                 answer: [
                     "Tiền mặt",
                     "Vật phẩm (sách vở, quần áo)",
                 ],
-                type: "multiple-choice"
+                type: "multiple-choice",
+                question: "Bạn có thể đóng góp dưới hình thức nào?",
             },
             {
-                id: 4,
+                questionId: 7,
                 answer: "Sẵn sàng tham gia nếu có thêm thông tin",
-                type: "text"
+                type: "text",
+                question: "Nếu bạn có ý kiến đóng góp hoặc hình thức đóng góp khác, hãy ghi rõ:",
+            }
+        ],
+        userId: 105
+    },
+    {
+        id: 9,
+        surveyId: 1,
+        answers: [
+            {
+                questionId: 1,
+                answer: "Không đồng ý",
+                type: "one-choice",
+                question: "Ông/Bà có đồng ý tự nguyện hiến đất để mở rộng đường dẫn vào thôn không?"
+            },
+            {
+                questionId: 2,
+                answer: "< 2 mét",
+                type: "one-choice",
+                question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?"
+            },
+            {
+                questionId: 3,
+                answer: "Từ năm 2005 đến nay",
+                type: "one-choice",
+                question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?"
+            }
+        ],
+        userId: 102
+    },
+    {
+        id: 10,
+        surveyId: 1,
+        answers: [
+            {
+                questionId: 1,
+                answer: "Đồng ý",
+                type: "one-choice",
+                question: "Ông/Bà có đồng ý tự nguyện hiến đất để mở rộng đường dẫn vào thôn không?"
+            },
+            {
+                questionId: 2,
+                answer: "< 4 mét",
+                type: "one-choice",
+                question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?"
+            },
+            {
+                questionId: 3,
+                answer: "Từ 30/4/1975 đến năm 1994",
+                type: "one-choice",
+                question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?"
+            }
+        ],
+        userId: 103
+    },
+    {
+        id: 11,
+        surveyId: 1,
+        answers: [
+            {
+                questionId: 1,
+                answer: "Đồng ý",
+                type: "one-choice",
+                question: "Ông/Bà có đồng ý tự nguyện hiến đất để mở rộng đường dẫn vào thôn không?"
+            },
+            {
+                questionId: 2,
+                answer: "< 3 mét",
+                type: "one-choice",
+                question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?"
+            },
+            {
+                questionId: 3,
+                answer: "Trước 30/4/1975",
+                type: "one-choice",
+                question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?"
+            }
+        ],
+        userId: 104
+    },
+    {
+        id: 12,
+        surveyId: 1,
+        answers: [
+            {
+                questionId: 1,
+                answer: "Đồng ý",
+                type: "one-choice",
+                question: "Ông/Bà có đồng ý tự nguyện hiến đất để mở rộng đường dẫn vào thôn không?"
+            },
+            {
+                questionId: 2,
+                answer: "< 5 mét",
+                type: "one-choice",
+                question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?"
+            },
+            {
+                questionId: 3,
+                answer: "Từ năm 1995 đến năm 2004",
+                type: "one-choice",
+                question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?"
             }
         ],
         userId: 105

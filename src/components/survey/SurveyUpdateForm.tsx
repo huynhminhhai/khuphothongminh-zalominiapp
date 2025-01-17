@@ -9,11 +9,10 @@ import { SURVEYDATA } from 'constants/utinities';
 import SurveyPreviewModal from './SurveyPreviewModal';
 
 type QuestionType = {
-    id: string;
+    questionId: number;
     type: 'text' | 'multiple-choice' | 'one-choice';
     question: string;
-    options?: string[];
-    answer?: string;
+    options: string[];
 };
 
 type SurveyType = {
@@ -21,7 +20,7 @@ type SurveyType = {
     title: string;
     description: string;
     expiryDate: string;
-    questions: any[];
+    questions: QuestionType[];
 };
 
 const defaultValues: SurveyType = {
@@ -96,41 +95,41 @@ const SurveyUpdateForm: React.FC = () => {
             ...prev,
             questions: [
                 ...prev.questions,
-                { id: Date.now().toString(), type, question: '', options: type === 'multiple-choice' || type === 'one-choice' ? [''] : [] },
+                { questionId: Date.now(), type, question: '', options: type === 'multiple-choice' || type === 'one-choice' ? [''] : [] },
             ],
         }));
     };
 
-    const handleQuestionChange = (id: string, field: 'question' | 'options', value: string) => {
+    const handleQuestionChange = (id: number, field: 'question' | 'options', value: string) => {
         setFormData((prev) => ({
             ...prev,
-            questions: prev.questions.map((q) => (q.id === id ? { ...q, [field]: value } : q)),
+            questions: prev.questions.map((q) => (q.questionId === id ? { ...q, [field]: value } : q)),
         }));
     };
 
-    const handleOptionChange = (id: string, index: number, value: string) => {
+    const handleOptionChange = (id: number, index: number, value: string) => {
         setFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((q) =>
-                q.id === id
+                q.questionId === id
                     ? { ...q, options: q.options?.map((opt, i) => (i === index ? value : opt)) }
                     : q
             ),
         }));
     };
 
-    const removeQuestion = (id: string) => {
+    const removeQuestion = (id: number) => {
         setFormData((prev) => ({
             ...prev,
-            questions: prev.questions.filter((q) => q.id !== id),
+            questions: prev.questions.filter((q) => q.questionId !== id),
         }));
     };
 
-    const handleRemoveOption = (questionId: string, index: number) => {
+    const handleRemoveOption = (questionId: number, index: number) => {
         setFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((q) =>
-                q.id === questionId
+                q.questionId === questionId
                     ? { ...q, options: q.options?.filter((_, i) => i !== index) }
                     : q
             ),
@@ -256,7 +255,7 @@ const SurveyUpdateForm: React.FC = () => {
 
                         <div>
                             {formData.questions.map((q, index) => (
-                                <div key={q.id} className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm">
+                                <div key={index} className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm">
                                     <div className="mb-4">
                                         <label className="block text-sm font-medium mb-[2px]">
                                             Câu hỏi {index + 1} <span className="text-red-600">(*)</span>
@@ -264,7 +263,7 @@ const SurveyUpdateForm: React.FC = () => {
                                         <input
                                             type="text"
                                             value={q.question}
-                                            onChange={(e) => handleQuestionChange(q.id, 'question', e.target.value)}
+                                            onChange={(e) => handleQuestionChange(q.questionId, 'question', e.target.value)}
                                             className="p-2 w-full border border-gray-300 rounded-lg "
                                         />
                                     </div>
@@ -281,7 +280,7 @@ const SurveyUpdateForm: React.FC = () => {
                                                 setFormData((prev) => ({
                                                     ...prev,
                                                     questions: prev.questions.map((qItem) =>
-                                                        qItem.id === q.id ? { ...qItem, type: newType, options: newType === 'multiple-choice' || newType === 'one-choice' ? [''] : [] } : qItem
+                                                        qItem.questionId === q.questionId ? { ...qItem, type: newType, options: newType === 'multiple-choice' || newType === 'one-choice' ? [''] : [] } : qItem
                                                     ),
                                                 }));
                                             }}
@@ -304,12 +303,12 @@ const SurveyUpdateForm: React.FC = () => {
                                                     <input
                                                         type="text"
                                                         value={opt}
-                                                        onChange={(e) => handleOptionChange(q.id, index, e.target.value)}
+                                                        onChange={(e) => handleOptionChange(q.questionId, index, e.target.value)}
                                                         className="p-2 w-full border border-gray-300 rounded-md shadow-sm"
                                                     />
                                                     <button
                                                         type="button"
-                                                        onClick={() => handleRemoveOption(q.id, index)}
+                                                        onClick={() => handleRemoveOption(q.questionId, index)}
                                                         className="ml-2 text-white bg-red-700 p-2 rounded-lg"
                                                     >
                                                         <Icon fontSize={18} icon="material-symbols:close-rounded" />
@@ -322,7 +321,7 @@ const SurveyUpdateForm: React.FC = () => {
                                                     setFormData((prev) => ({
                                                         ...prev,
                                                         questions: prev.questions.map((qItem) =>
-                                                            qItem.id === q.id ? { ...qItem, options: [...(qItem.options || []), ''] } : qItem
+                                                            qItem.questionId === q.questionId ? { ...qItem, options: [...(qItem.options || []), ''] } : qItem
                                                         ),
                                                     }));
                                                 }}
@@ -336,7 +335,7 @@ const SurveyUpdateForm: React.FC = () => {
                                     {/* Xóa câu hỏi */}
                                     <button
                                         type="button"
-                                        onClick={() => removeQuestion(q.id)}
+                                        onClick={() => removeQuestion(q.questionId)}
                                         className="mt-2 text-white font-medium bg-red-700 flex items-center gap-1 p-2 rounded-lg ml-auto"
                                     >
                                         {/* <Icon fontSize={18} icon="material-symbols:delete" /> */}

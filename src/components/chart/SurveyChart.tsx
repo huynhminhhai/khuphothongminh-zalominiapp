@@ -145,19 +145,19 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
           chartData = {
             question,
             chart: (
-              <div className="overflow-auto h-[300px]"> 
+              <div className="overflow-auto max-h-[300px]"> 
                 <table className="min-w-full table-auto border-collapse">
                   <thead>
                     <tr className="sticky top-[-1px] bg-white z-10"> 
-                      <th className="border-b p-2 text-left">STT</th>
-                      <th className="border-b p-2 text-center">Câu trả lời</th>
+                      <th className="border-b p-2 text-left font-medium">STT</th>
+                      <th className="border-b p-2 text-center font-medium">Câu trả lời</th>
                     </tr>
                   </thead>
                   <tbody>
                     {answers.map((a, index) => (
                       <tr
                         key={index}
-                        className={`hover:bg-gray-100 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
+                        className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
                       >
                         <td className="border-b p-2">{index + 1}</td>
                         <td className="border-b p-2">{a.answer}</td>
@@ -184,7 +184,7 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
     <div className='p-4'>
       {chartsData.map((chart, index) => (
         <div key={index} className='mb-10'>
-          <h3 className='text-lg font-medium mb-2'>{chart.question}</h3>
+          <h3 className='text-lg font-semibold mb-2'>{chart.question}</h3>
           {chart.chart}
         </div>
       ))}

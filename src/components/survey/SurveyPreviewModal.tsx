@@ -29,7 +29,7 @@ const SurveyPreviewModal: React.FC<SurveyPreviewModalProps> = ({
         {/* Danh sách câu hỏi */}
         <div className="space-y-4 mb-4">
           {formData.questions.map((q, index) => (
-            <div key={q.id} className="border-t-[1px] pt-3 mb-3">
+            <div key={index} className="border-t-[1px] pt-3 mb-3">
               <h3 className="font-medium mb-2">
                 Câu hỏi {index + 1}: {q.question}
               </h3>
@@ -41,7 +41,7 @@ const SurveyPreviewModal: React.FC<SurveyPreviewModalProps> = ({
                 <div className="space-y-2">
                   {q.options?.map((opt, i) => (
                     <label key={i} className="flex items-center space-x-2">
-                      <input type="radio" name={`question-${q.id}`} />
+                      <input type="radio" name={`question-${q.questionId}`} />
                       <span>{opt}</span>
                     </label>
                   ))}

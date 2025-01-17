@@ -46,7 +46,7 @@ const SurveyChartsPage: React.FC = () => {
     }, [surveyId])
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
+        <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Tổng quan khảo sát" />
                 {

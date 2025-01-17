@@ -7,7 +7,7 @@ import { formatDate, parseDate } from 'components/form/DatePicker';
 import SurveyPreviewModal from './SurveyPreviewModal';
 
 type QuestionType = {
-    id: any;
+    id?: any;
     type: 'text' | 'multiple-choice' | 'one-choice';  // Đổi 'rating' thành 'one-choice'
     question: string;
     options?: string[];
@@ -129,9 +129,8 @@ const CreateSurveyForm: React.FC = () => {
             }
         }
 
-        const updatedQuestions = formData.questions.map((q, index) => ({
-            ...q,
-            id: (index + 1), // Cập nhật id mới cho câu hỏi
+        const updatedQuestions = formData.questions.map(({ id, ...rest }) => ({
+            ...rest, // Giữ lại tất cả các trường khác ngoài id
         }));
 
         setFormData((prev) => ({

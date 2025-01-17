@@ -15,14 +15,12 @@ export const processSurveyResults = (data: typeof SURVEYRESULT) => {
     > = {};
 
     data.forEach((response) => {
-        console.log(response)
-        response.responses.forEach((answer) => {
-            const { id, type, answer: answerValue } = answer;
+        response.answers.forEach((answer) => {
+            const { questionId, type, answer: answerValue, question } = answer;
 
-
-            if (!questionsMap[id]) {
-                questionsMap[id] = {
-                    question: `Câu hỏi ${id}`,
+            if (!questionsMap[questionId]) {
+                questionsMap[questionId] = {
+                    question: `Câu hỏi ${questionId}: ${question}`,
                     type,
                     answers: {},
                 };
@@ -30,22 +28,22 @@ export const processSurveyResults = (data: typeof SURVEYRESULT) => {
 
             if (type === "one-choice") {
                 const choice = answerValue as string;
-                questionsMap[id].answers[choice] =
-                    (questionsMap[id].answers[choice] || 0) + 1;
+                questionsMap[questionId].answers[choice] =
+                    (questionsMap[questionId].answers[choice] || 0) + 1;
             }
 
             if (type === "multiple-choice") {
                 const choices = answerValue as string[];
                 choices.forEach((choice) => {
-                    questionsMap[id].answers[choice] =
-                        (questionsMap[id].answers[choice] || 0) + 1;
+                    questionsMap[questionId].answers[choice] =
+                        (questionsMap[questionId].answers[choice] || 0) + 1;
                 });
             }
 
             if (type === "text") {
                 const text = answerValue as string;
-                questionsMap[id].answers[text] =
-                    (questionsMap[id].answers[text] || 0) + 1;
+                questionsMap[questionId].answers[text] =
+                    (questionsMap[questionId].answers[text] || 0) + 1;
             }
         });
     });

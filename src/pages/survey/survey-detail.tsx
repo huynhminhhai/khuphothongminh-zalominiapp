@@ -8,7 +8,7 @@ import { isExpired } from "utils/date";
 import { Box, Button, Checkbox, Modal, Page, Radio, useSnackbar } from "zmp-ui"
 
 type QuestionType = {
-    id: string;
+    questionId: number;
     type: 'text' | 'multiple-choice' | 'one-choice';
     question: string;
     options?: string[];
@@ -18,7 +18,7 @@ type SurveyResponseType = {
     id?: number;
     surveyId: number | undefined;
     userId: number;
-    responses: { id: any, answer: string | string[] }[];
+    answers: { questionId: any, answer: string | string[] }[];
 };
 
 const SurveyDetailPage: React.FC = () => {
@@ -28,7 +28,7 @@ const SurveyDetailPage: React.FC = () => {
     const [responses, setResponses] = useState<any>([]);
     const [missingAnswersVisible, setMissingAnswersVisible] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [surveyResult, setSurveyResult] = useState<SurveyResponseType | undefined>(undefined);
+    const [surveyResult, setSurveyResult] = useState<any | undefined>(undefined);
 
     const { openSnackbar } = useSnackbar();
     const [searchParams] = useSearchParams();
@@ -46,6 +46,7 @@ const SurveyDetailPage: React.FC = () => {
                 throw new Error("Survey data not found");
             }
 
+            console.log(data)
             setDetailData(data);
 
             // Gọi kết quả khảo sát
@@ -55,12 +56,12 @@ const SurveyDetailPage: React.FC = () => {
             console.log(surveyResult)
 
             if (surveyResult) {
-                setResponses(surveyResult.responses);
+                setResponses(surveyResult.answers);
             } else {
                 // Khởi tạo trạng thái trả lời ban đầu dựa trên câu hỏi
                 const initialResponses = data.questions.map(q => ({
-                    id: q.id,
-                    answer: q.answer || (q.type === "multiple-choice" ? [] : ""),
+                    questionId: q.questionId,
+                    answer: q.type === "multiple-choice" ? [] : "",
                 }));
 
                 setResponses(initialResponses);
@@ -98,10 +99,10 @@ const SurveyDetailPage: React.FC = () => {
         fetchSurveyData();
     }, [surveyId]);
 
-    const handleAnswerChange = (questionId: string, value: string | string[], type: 'text' | 'multiple-choice' | 'one-choice') => {
+    const handleAnswerChange = (questionId: number, value: string | string[]) => {
         setResponses((prevResponses) => {
             const updatedResponses = prevResponses.map((res) =>
-                res.id === questionId ? { ...res, answer: value, type: type } : res
+                res.questionId === questionId ? { ...res, answer: value } : res
             );
             return updatedResponses;
         });
@@ -115,7 +116,7 @@ const SurveyDetailPage: React.FC = () => {
         setConfirmVisible(false);
 
         const unansweredQuestions = detailData?.questions.filter((q) => {
-            const response = responses.find((res) => res.id === q.id);
+            const response = responses.find((res) => res.questionId === q.questionId);
             return !response || !response.answer || (Array.isArray(response.answer) && response.answer.length === 0);
         });
 
@@ -132,7 +133,7 @@ const SurveyDetailPage: React.FC = () => {
             if (surveyResult) {
                 const payload: SurveyResponseType = {
                     surveyId: detailData?.id,
-                    responses: responses,
+                    answers: responses,
                     userId: idUser,
                     id: surveyResult.id
                 };
@@ -141,7 +142,7 @@ const SurveyDetailPage: React.FC = () => {
             } else {
                 const payload: SurveyResponseType = {
                     surveyId: detailData?.id,
-                    responses: responses,
+                    answers: responses,
                     userId: idUser,
                 };
                 await addSurveyResult(payload);
@@ -219,7 +220,7 @@ const SurveyDetailPage: React.FC = () => {
                     <Box>
                         <Box>
                             {detailData?.questions && detailData.questions.map((q: QuestionType, index: number) => (
-                                <div key={q.id} className="p-4 border-b">
+                                <div key={index} className="p-4 border-b">
                                     <div>
                                         <label className="block text-sm font-semibold mb-3 text-black]">
                                             Câu hỏi {index + 1}: {q.question}
@@ -229,8 +230,8 @@ const SurveyDetailPage: React.FC = () => {
                                         {q.type === "text" && (
                                             <input
                                                 type="text"
-                                                value={responses.find((res) => res.id === q.id)?.answer || ""}
-                                                onChange={(e) => handleAnswerChange(q.id, e.target.value, q.type)}
+                                                value={responses.find((res) => res.questionId === q.questionId)?.answer || ""}
+                                                onChange={(e) => handleAnswerChange(q.questionId, e.target.value)}
                                                 className="p-2 w-full border-b rounded-none  border-gray-300 h-[48px]"
                                             />
                                         )}
@@ -243,16 +244,16 @@ const SurveyDetailPage: React.FC = () => {
                                                         <Checkbox
                                                             value={opt}
                                                             checked={responses.find(
-                                                                (res) => res.id === q.id
+                                                                (res) => res.questionId === q.questionId
                                                             )?.answer.includes(opt)}
                                                             onChange={(e) => {
                                                                 const selectedOptions = responses.find(
-                                                                    (res) => res.id === q.id
+                                                                    (res) => res.questionId === q.questionId
                                                                 )?.answer || [];
                                                                 const newOptions = e.target.checked
                                                                     ? [...selectedOptions, opt]
                                                                     : selectedOptions.filter((option) => option !== opt);
-                                                                handleAnswerChange(q.id, newOptions, q.type);
+                                                                handleAnswerChange(q.questionId, newOptions);
                                                             }}
                                                         />
                                                         <span>{opt}</span>
@@ -269,9 +270,9 @@ const SurveyDetailPage: React.FC = () => {
                                                         <Radio
                                                             value={opt}
                                                             checked={responses.find(
-                                                                (res) => res.id === q.id
+                                                                (res) => res.questionId === q.questionId
                                                             )?.answer === opt}
-                                                            onChange={() => handleAnswerChange(q.id, opt, q.type)}
+                                                            onChange={() => handleAnswerChange(q.questionId, opt)}
                                                         />
                                                         <span>{opt}</span>
                                                     </div>

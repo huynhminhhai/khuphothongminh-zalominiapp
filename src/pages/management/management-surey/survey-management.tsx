@@ -56,7 +56,7 @@ const SurveyManagementPage: React.FC = () => {
         },
         {
             id: 'chart',
-            header: 'Biểu đồ',
+            header: 'Tổng quan',
             cell: ({row}) => (
                 <div className="flex items-center justify-center" onClick={() => navigate(`/survey-charts?id=${row.original.id}`)}>
                     <img width={30} src={images.pieChart} alt={row.original.title} />
