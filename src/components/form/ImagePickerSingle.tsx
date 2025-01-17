@@ -50,7 +50,7 @@ const ImagePickerSingle: React.FC<ImagePickerSingleProps> = ({
             <Label text={label} required={required} />
             <div
                 onClick={!field.value ? handleChooseImage : undefined}
-                className={`relative flex items-center justify-center cursor-pointer border-dashed border-[2px] border-[#b9bdc1] min-h-[50px] h-auto w-full ${field.value ? 'border-none' : ''
+                className={`relative flex items-center justify-center cursor-pointer rounded-lg border-dashed border-[2px] border-[#b9bdc1] min-h-[50px] h-auto w-full ${field.value ? 'border-none' : ''
                 }`}
             >
                 {field.value ? (

@@ -63,7 +63,7 @@ const ImageUploaderField: React.FC<ImageUploaderFieldProps> = ({
             <Label text={label} required={false} />
             <div
                 onClick={handleChooseImage}
-                className='flex items-center justify-center h-[150px] rounded-lg cursor-pointer border-dashed border-[2px] border-[#b9bdc1]'
+                className='flex items-center justify-center h-[50px] rounded-lg cursor-pointer border-dashed border-[2px] border-[#b9bdc1]'
             >
                 <span>Nhấn để chọn ảnh</span>
             </div>
