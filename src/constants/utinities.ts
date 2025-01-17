@@ -73,6 +73,7 @@ export const meetingColor = {
 }
 
 export type MeetingType = {
+    id: number;
     date: string;
     title: string;
     location: string;
@@ -82,40 +83,45 @@ export type MeetingType = {
 
 export const MEETING: MeetingType[] = [
     {
+        id: 1,
         date: '09/07/2024',
-        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        title: 'Thảo luận triển khai kế hoạch năm học mới',
         location: 'Cổng làng',
         time: '17:30 - 19:00',
         status: 2
     },
     {
+        id: 2,
         date: '09/07/2024',
-        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        title: 'Báo cáo kết quả công tác quý II năm 2024',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',
         status: 2
     },
     {
+        id: 3,
         date: '08/07/2024',
-        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        title: 'Tổ chức hội nghị chuyên đề an toàn giao thông',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',
         status: 1
     },
     {
+        id: 4,
         date: '07/07/2024',
-        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        title: 'Thảo luận kế hoạch tổ chức sự kiện ngày truyền thống',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',
         status: 3
     },
     {
+        id: 5,
         date: '07/07/2024',
-        title: 'Họp ban hành công văn số CVS15/01072024 theo nghị quyết TWD',
+        title: 'Họp ban chấp hành công đoàn định kỳ tháng 7',
         location: 'Phòng họp số 1',
         time: '08:30 - 10:00',
         status: 3
-    },
+    }
 ]
 
 export type genderType = {
@@ -583,7 +589,7 @@ export const SURVEYDATA: SurveyType[] = [
                 options: ["Trước 30/4/1975", "Từ 30/4/1975 đến năm 1994", "Từ năm 1995 đến năm 2004", "Từ năm 2005 đến nay"],
             },
         ],
-        countAnswer: 0
+        countAnswer: 4
     },
     {
         id: 3,

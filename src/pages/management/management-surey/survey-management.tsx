@@ -3,10 +3,16 @@ import { ColumnDef } from "@tanstack/react-table"
 import images from "assets/images"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TableTanStack } from "components/table"
+import { TablePagination, TableTanStack } from "components/table"
 import { SURVEYDATA, SurveyType } from "constants/utinities"
 import React, { useState } from "react"
 import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+
+const initParam = {
+    pageIndex: 1,
+    pageSize: 10,
+    keyword: '',
+}
 
 const SurveyManagementPage: React.FC = () => {
 
@@ -15,7 +21,24 @@ const SurveyManagementPage: React.FC = () => {
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [surveyId, setSurveyId] = useState<number | undefined>(undefined);
-    const [searchValue, setSearchValue] = useState('');
+    const [param, setParam] = useState(initParam)
+
+    const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
+        setParam((prevParam) => ({
+            ...prevParam,
+            pageIndex: params.pageIndex, // Cập nhật pageIndex từ params
+        }));
+        console.log(`Navigated to page: ${params.pageIndex}, pageSize: ${params.pageSize}`);
+    };
+
+    const handleRowChange = (newPageSize: number) => {
+        setParam((prevParam) => ({
+            ...prevParam,
+            pageSize: newPageSize,
+            pageIndex: 1, // Reset về trang đầu tiên khi thay đổi pageSize
+        }));
+        console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
+    };
 
     const removeSurvey = (id: number | undefined) => {
         setSurveyId(id)
@@ -57,7 +80,7 @@ const SurveyManagementPage: React.FC = () => {
         {
             id: 'chart',
             header: 'Tổng quan',
-            cell: ({row}) => (
+            cell: ({ row }) => (
                 <div className="flex items-center justify-center" onClick={() => navigate(`/survey-charts?id=${row.original.id}`)}>
                     <img width={30} src={images.pieChart} alt={row.original.title} />
                 </div>
@@ -92,7 +115,7 @@ const SurveyManagementPage: React.FC = () => {
     ];
 
     const filteredData = SURVEYDATA.filter(item =>
-        item.title.toLowerCase().includes(searchValue.toLowerCase())
+        item.title.toLowerCase().includes(param.keyword.toLowerCase())
     );
 
     return (
@@ -105,8 +128,13 @@ const SurveyManagementPage: React.FC = () => {
                             <Box>
                                 <Input
                                     placeholder="Tìm kiếm..."
-                                    value={searchValue}
-                                    onChange={(e) => setSearchValue(e.target.value)}
+                                    value={param.keyword}
+                                    onChange={(e) => {
+                                        setParam((prevParam) => ({
+                                            ...prevParam,
+                                            keyword: e.target.value
+                                        }));
+                                    }}
                                 />
                             </Box>
                             <Button
@@ -122,6 +150,13 @@ const SurveyManagementPage: React.FC = () => {
                         </Box>
                         <Box mt={4}>
                             <TableTanStack data={filteredData} columns={columns} />
+                            <TablePagination
+                                totalItems={50}
+                                pageSize={param.pageSize}
+                                pageIndex={param.pageIndex}
+                                onPageChange={handlePageChange}
+                                onRowChange={handleRowChange}
+                            />
                         </Box>
                     </Box>
                 </Box>

@@ -17,7 +17,7 @@ const ManagementPage: React.FC = () => {
                     <List className="bg-white rounded-lg overflow-hidden">
                         <Item
                             title="Quản lý tin tức"
-                            prefix={<img src={images.newss} alt='news' className="w-[30px] h-auto" />}
+                            prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/news-management')}
                         />
@@ -32,6 +32,12 @@ const ManagementPage: React.FC = () => {
                             prefix={<img src={images.idea} alt='feedback' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/feedback-management')}
+                        />
+                        <Item
+                            title="Quản lý cuộc họp"
+                            prefix={<img src={images.meeting} alt='feedback' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/meeting-management')}
                         />
                     </List>
                 </Box>

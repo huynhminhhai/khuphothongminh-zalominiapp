@@ -1,9 +1,9 @@
 import { Icon } from "@iconify/react"
-import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
+import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { TablePagination, TableTanStack } from "components/table"
-import { News, NEWSDATA } from "constants/utinities"
+import { MEETING, meetingColor, meetingStatus, MeetingType } from "constants/utinities"
 import React, { useState } from "react"
 import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
@@ -13,7 +13,7 @@ const initParam = {
     keyword: '',
 }
 
-const NewsManagementPage: React.FC = () => {
+const MeetingManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
@@ -21,6 +21,8 @@ const NewsManagementPage: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [newsId, setNewsId] = useState<number | undefined>(undefined);
     const [param, setParam] = useState(initParam)
+
+    console.log(param)
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -62,20 +64,33 @@ const NewsManagementPage: React.FC = () => {
         setConfirmVisible(false);
     };
 
-    const columns: ColumnDef<News>[] = [
+    const columns: ColumnDef<MeetingType>[] = [
         {
             accessorKey: 'title',
             header: 'Tiêu đề',
             size: 300
         },
         {
-            accessorKey: 'publishedDate',
-            header: 'Ngày tạo',
+            accessorKey: 'time',
+            header: 'Thời gian họp'
         },
         {
-            accessorKey: 'views',
-            header: 'Lượt xem',
-            size: 100
+            accessorKey: 'location',
+            header: 'Địa điểm'
+        },
+        {
+            id: 'status',
+            header: 'Trạng thái',
+            cell: ({ row }) => (
+                <div className="flex justify-center">
+                    <div style={{ backgroundColor: meetingColor[row.original.status] }} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">
+                        {
+                            meetingStatus[row.original.status]
+                        }
+                    </div>
+                </div>
+            ),
+            size: 160
         },
         {
             id: 'actions', // Custom column for actions
@@ -105,14 +120,14 @@ const NewsManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = NEWSDATA.filter(item =>
+    const filteredData = MEETING.filter(item =>
         item.title.toLowerCase().includes(param.keyword.toLowerCase())
     );
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý tin tức" />
+                <HeaderSub title="Quản lý cuộc họp" />
                 <Box p={4}>
                     <Box flex justifyContent="space-between">
                         <Box>
@@ -161,4 +176,4 @@ const NewsManagementPage: React.FC = () => {
     )
 }
 
-export default NewsManagementPage
+export default MeetingManagementPage

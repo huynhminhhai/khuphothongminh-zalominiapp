@@ -2,24 +2,48 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TableTanStack } from "components/table"
+import { TablePagination, TableTanStack } from "components/table"
 import { Feedback, FEEDBACKDATA, FEEDBACKRESPONSES } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Input, Page, Select, Switch, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Input, Page, Select, Switch, useNavigate, useSnackbar } from "zmp-ui"
+
+const initParam = {
+    pageIndex: 1,
+    pageSize: 10,
+    keyword: '',
+    status: 3
+}
 
 const FeedbackManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
     const { Option } = Select
-
-    const [searchValue, setSearchValue] = useState('');
-    const [selectedStatus, setSelectedStatus] = useState<string | null>("3");
     const [feedbackData, setFeedbackData] = useState(FEEDBACKDATA);
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+
+    const [param, setParam] = useState(initParam)
+
+    const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
+        setParam((prevParam) => ({
+            ...prevParam,
+            pageIndex: params.pageIndex, // Cập nhật pageIndex từ params
+        }));
+        console.log(`Navigated to page: ${params.pageIndex}, pageSize: ${params.pageSize}`);
+    };
+
+    // Hàm thay đổi số mục trên mỗi trang
+    const handleRowChange = (newPageSize: number) => {
+        setParam((prevParam) => ({
+            ...prevParam,
+            pageSize: newPageSize,
+            pageIndex: 1, // Reset về trang đầu tiên khi thay đổi pageSize
+        }));
+        console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
+    };
 
     const openConfirmModal = (action: () => void, title: string, message: string) => {
         setConfirmAction(() => action);  // Lưu hành động xác nhận
@@ -156,13 +180,13 @@ const FeedbackManagementPage: React.FC = () => {
     ];
 
     const filteredData = feedbackData.filter(item => {
-        const matchesSearch = item.title.toLowerCase().includes(searchValue.toLowerCase());
-        const matchesStatus = selectedStatus === "3" || item.status.toString() === selectedStatus;
+        const matchesSearch = item.title.toLowerCase().includes(param.keyword.toLowerCase());
+        const matchesStatus = param.status === 3 || item.status === param.status;
         return matchesSearch && matchesStatus;
     });
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
+        <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý phản ánh" />
                 <Box p={4}>
@@ -170,25 +194,41 @@ const FeedbackManagementPage: React.FC = () => {
                         <Box>
                             <Input
                                 placeholder="Tìm kiếm..."
-                                value={searchValue}
-                                onChange={(e) => setSearchValue(e.target.value)}
+                                value={param.keyword}
+                                onChange={(e) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        keyword: e.target.value
+                                    }));
+                                }}
                             />
                         </Box>
                         <Box>
                             <Select
-                                defaultValue="3"
+                                defaultValue={3}
                                 closeOnSelect
-                                onChange={(value) => setSelectedStatus(value as string)}
+                                onChange={(value) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        status: value as number
+                                    }));
+                                }}
                             >
-                                <Option value="3" title="Tất cả" />
-                                <Option value="1" title="Chưa đăng tải" />
-                                <Option value="2" title="Đã đăng tải" />
+                                <Option value={3} title="Tất cả" />
+                                <Option value={1} title="Chưa đăng tải" />
+                                <Option value={2} title="Đã đăng tải" />
                             </Select>
                         </Box>
                     </Box>
                     <Box mt={4}>
-
                         <TableTanStack data={filteredData} columns={columns} />
+                        <TablePagination
+                            totalItems={80}
+                            pageSize={param.pageSize}
+                            pageIndex={param.pageIndex}
+                            onPageChange={handlePageChange}
+                            onRowChange={handleRowChange}
+                        />
                     </Box>
                 </Box>
             </Box>
