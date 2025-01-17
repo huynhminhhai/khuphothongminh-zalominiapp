@@ -545,7 +545,7 @@ type QuestionType = {
     questionId: number;
     type: 'text' | 'multiple-choice' | 'one-choice';
     question: string;
-    options: string[];
+    options?: string[];
 };
 
 export type SurveyType = {

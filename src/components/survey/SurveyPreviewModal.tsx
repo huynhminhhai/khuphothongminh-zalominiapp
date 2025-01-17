@@ -13,6 +13,7 @@ const SurveyPreviewModal: React.FC<SurveyPreviewModalProps> = ({
   onClose,
   formData,
 }) => {
+
   return (
     <Modal
       visible={visible}

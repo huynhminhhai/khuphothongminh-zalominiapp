@@ -5,23 +5,24 @@ import { Icon } from '@iconify/react';
 import SecondaryButton from 'components/button/SecondaryButton';
 import { formatDate, parseDate } from 'components/form/DatePicker';
 import { useSearchParams } from 'react-router-dom';
-import { SURVEYDATA } from 'constants/utinities';
+import { SURVEYDATA, SurveyType } from 'constants/utinities';
 import SurveyPreviewModal from './SurveyPreviewModal';
+import { ConfirmModal } from 'components/modal';
 
-type QuestionType = {
-    questionId: number;
-    type: 'text' | 'multiple-choice' | 'one-choice';
-    question: string;
-    options: string[];
-};
+// type QuestionType = {
+//     questionId: number;
+//     type: 'text' | 'multiple-choice' | 'one-choice';
+//     question: string;
+//     options: string[];
+// };
 
-type SurveyType = {
-    id?: number;
-    title: string;
-    description: string;
-    expiryDate: string;
-    questions: QuestionType[];
-};
+// type SurveyType = {
+//     id?: number;
+//     title: string;
+//     description: string;
+//     expiryDate: string;
+//     questions: QuestionType[];
+// };
 
 const defaultValues: SurveyType = {
     id: 1,
@@ -38,6 +39,8 @@ const SurveyUpdateForm: React.FC = () => {
     const [previewVisible, setPreviewVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [descModal, setDescModal] = useState<string>('');
+    const [isConfirmVisible, setConfirmVisible] = useState(false);
+
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
@@ -57,6 +60,8 @@ const SurveyUpdateForm: React.FC = () => {
                 const data = SURVEYDATA.find(survey => survey.id === Number(surveyId))
 
                 if (data) {
+                    console.clear()
+                    console.log(data)
                     setFormData(data);
                 }
 
@@ -137,52 +142,36 @@ const SurveyUpdateForm: React.FC = () => {
     };
 
     const handleSubmit = () => {
-        if (!formData.title.trim() || !formData.description.trim()) {
-            setDescModal('Tiêu đề và mô tả không thể trống');
-            setPopupVisible(true);
-            return;
-        }
-
-        if (formData.questions.length <= 0) {
-            setDescModal('Khảo sát phải có ít nhất một câu hỏi');
-            setPopupVisible(true);
-            return;
-        }
-
-        // Kiểm tra các câu hỏi
-        for (const q of formData.questions) {
-            if (!q.question.trim()) {
-                setDescModal('Câu hỏi chưa có tiêu đề');
+        if (formData) {
+            if (!formData.title.trim() || !formData.description.trim()) {
+                setDescModal('Tiêu đề và mô tả không thể trống');
                 setPopupVisible(true);
                 return;
             }
-
-            if ((q.type === 'multiple-choice' || q.type === 'one-choice') && q.options?.some(opt => !opt.trim())) {
-                setDescModal('Các lựa chọn không được để trống');
+    
+            if (formData.questions.length <= 0) {
+                setDescModal('Khảo sát phải có ít nhất một câu hỏi');
                 setPopupVisible(true);
                 return;
             }
+    
+            // Kiểm tra các câu hỏi
+            for (const q of formData.questions) {
+                if (!q.question.trim()) {
+                    setDescModal('Câu hỏi chưa có tiêu đề');
+                    setPopupVisible(true);
+                    return;
+                }
+    
+                if ((q.type === 'multiple-choice' || q.type === 'one-choice') && q.options?.some(opt => !opt.trim())) {
+                    setDescModal('Các lựa chọn không được để trống');
+                    setPopupVisible(true);
+                    return;
+                }
+            }
         }
 
-        const updatedQuestions = formData.questions.map((q, index) => ({
-            ...q,
-            id: (index + 1).toString(), // Cập nhật id mới cho câu hỏi
-        }));
-
-        setFormData((prev) => ({
-            ...prev,
-            questions: updatedQuestions, // Cập nhật lại formData với id mới
-        }));
-
-        console.log('Survey updated:', formData);
-
-        openSnackbar({
-            text: 'Cập nhật khảo sát thành công',
-            type: 'success',
-            duration: 5000,
-        });
-
-        navigate('/survey-management');
+        setConfirmVisible(true);
     };
 
     const handlePreview = () => {
@@ -192,6 +181,27 @@ const SurveyUpdateForm: React.FC = () => {
             return;
         }
         setPreviewVisible(true);
+    };
+
+    const handleConfirm = () => {
+        setConfirmVisible(false);
+        if (formData) {
+            
+            console.log('Survey updated:', formData);
+    
+            openSnackbar({
+                text: 'Cập nhật khảo sát thành công',
+                type: 'success',
+                duration: 5000,
+            });
+    
+            // navigate('/survey-management');
+        }
+    };
+
+    const handleCancel = () => {
+        console.log("Cancelled!");
+        setConfirmVisible(false);
     };
 
     return (
@@ -366,7 +376,13 @@ const SurveyUpdateForm: React.FC = () => {
                     </Box>
                 </div>
             </Box>
-
+            <ConfirmModal
+                visible={isConfirmVisible}
+                title="Xác nhận"
+                message="Bạn có chắc chắn muốn cập nhật khảo sát này không?"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </Box>
     );
 };

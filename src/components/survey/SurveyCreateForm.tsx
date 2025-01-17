@@ -5,20 +5,22 @@ import { Icon } from '@iconify/react';
 import SecondaryButton from 'components/button/SecondaryButton';
 import { formatDate, parseDate } from 'components/form/DatePicker';
 import SurveyPreviewModal from './SurveyPreviewModal';
+import { ConfirmModal } from 'components/modal';
+import { SurveyType } from 'constants/utinities';
 
-type QuestionType = {
-    id?: any;
-    type: 'text' | 'multiple-choice' | 'one-choice';  // Đổi 'rating' thành 'one-choice'
-    question: string;
-    options?: string[];
-};
+// type QuestionType = {
+//     questionId: number;
+//     type: 'text' | 'multiple-choice' | 'one-choice';  // Đổi 'rating' thành 'one-choice'
+//     question: string;
+//     options?: string[];
+// };
 
-type SurveyType = {
-    title: string;
-    description: string;
-    expiryDate: string;
-    questions: QuestionType[];
-};
+// type SurveyType = {
+//     title: string;
+//     description: string;
+//     expiryDate: string;
+//     questions: QuestionType[];
+// };
 
 const defaultValues: SurveyType = {
     title: '',
@@ -34,6 +36,8 @@ const CreateSurveyForm: React.FC = () => {
     const [previewVisible, setPreviewVisible] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [descModal, setDescModal] = useState<string>('')
+    const [isConfirmVisible, setConfirmVisible] = useState(false);
+
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate()
 
@@ -57,43 +61,43 @@ const CreateSurveyForm: React.FC = () => {
             ...prev,
             questions: [
                 ...prev.questions,
-                { id: Date.now().toString(), type, question: '', options: type === 'multiple-choice' || type === 'one-choice' ? [''] : [] },
+                { questionId: Date.now(), type, question: '', options: type === 'multiple-choice' || type === 'one-choice' ? [''] : [] },
             ],
         }));
     };
 
-    const handleQuestionChange = (id: string, field: 'question' | 'options', value: string) => {
+    const handleQuestionChange = (id: number, field: 'question' | 'options', value: string) => {
         setFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((q) =>
-                q.id === id ? { ...q, [field]: value } : q
+                q.questionId === id ? { ...q, [field]: value } : q
             ),
         }));
     };
 
-    const handleOptionChange = (id: string, index: number, value: string) => {
+    const handleOptionChange = (id: number, index: number, value: string) => {
         setFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((q) =>
-                q.id === id
+                q.questionId === id
                     ? { ...q, options: q.options?.map((opt, i) => (i === index ? value : opt)) }
                     : q
             ),
         }));
     };
 
-    const removeQuestion = (id: string) => {
+    const removeQuestion = (id: number) => {
         setFormData((prev) => ({
             ...prev,
-            questions: prev.questions.filter((q) => q.id !== id),
+            questions: prev.questions.filter((q) => q.questionId !== id),
         }));
     };
 
-    const handleRemoveOption = (questionId: string, index: number) => {
+    const handleRemoveOption = (questionId: number, index: number) => {
         setFormData((prev) => ({
             ...prev,
             questions: prev.questions.map((q) =>
-                q.id === questionId
+                q.questionId === questionId
                     ? { ...q, options: q.options?.filter((_, i) => i !== index) }
                     : q
             ),
@@ -102,61 +106,73 @@ const CreateSurveyForm: React.FC = () => {
 
     const handleSubmit = () => {
 
-        if (!formData.title.trim() || !formData.description.trim()) {
-            setDescModal("Tiêu đề và mô tả không thể trống. Hãy điền đầy đủ thông tin để tiếp tục")
-            setPopupVisible(true)
-            return;
-        }
-
-        if (formData.questions.length <= 0) {
-            setDescModal("Khảo sát phải có ít nhất một câu hỏi")
-            setPopupVisible(true)
-            return;
-        }
-
-        // Kiểm tra các câu hỏi hiện có
-        for (const q of formData.questions) {
-            if (!q.question.trim()) {
-                setDescModal('Câu hỏi chưa có tiêu đề')
-                setPopupVisible(true);
+        if (formData) {
+            if (!formData.title.trim() || !formData.description.trim()) {
+                setDescModal("Tiêu đề và mô tả không thể trống. Hãy điền đầy đủ thông tin để tiếp tục")
+                setPopupVisible(true)
                 return;
             }
 
-            if ((q.type === 'multiple-choice' || q.type === 'one-choice') && q.options?.some(opt => !opt.trim())) {
-                setDescModal('Các lựa chọn không được để trống')
-                setPopupVisible(true);
+            if (formData.questions.length <= 0) {
+                setDescModal("Khảo sát phải có ít nhất một câu hỏi")
+                setPopupVisible(true)
                 return;
+            }
+
+            // Kiểm tra các câu hỏi hiện có
+            for (const q of formData.questions) {
+                if (!q.question.trim()) {
+                    setDescModal('Câu hỏi chưa có tiêu đề')
+                    setPopupVisible(true);
+                    return;
+                }
+
+                if ((q.type === 'multiple-choice' || q.type === 'one-choice') && q.options?.some(opt => !opt.trim())) {
+                    setDescModal('Các lựa chọn không được để trống')
+                    setPopupVisible(true);
+                    return;
+                }
             }
         }
 
-        const updatedQuestions = formData.questions.map(({ id, ...rest }) => ({
-            ...rest, // Giữ lại tất cả các trường khác ngoài id
-        }));
-
-        setFormData((prev) => ({
-            ...prev,
-            questions: updatedQuestions, // Cập nhật lại formData với id mới
-        }));
-
-        console.log('Survey submitted:', {...formData, questions: updatedQuestions});
-
-        openSnackbar({
-            text: "Tạo khảo sát thành công",
-            type: "success",
-            duration: 5000,
-        });
-
-        
-        navigate('/survey')
+        setConfirmVisible(true);
     };
 
     const handlePreview = () => {
-        if (!formData.title.trim() || !formData.description.trim() || formData.questions.length === 0) {
-            setDescModal('Chưa đầy đủ thông tin để xem trước khảo sát')
-            setPopupVisible(true);
-            return;
+        if (formData) {
+            if (!formData.title.trim() || !formData.description.trim() || formData.questions.length === 0) {
+                setDescModal('Chưa đầy đủ thông tin để xem trước khảo sát')
+                setPopupVisible(true);
+                return;
+            }
         }
         setPreviewVisible(true);
+    };
+
+    const handleConfirm = () => {
+        setConfirmVisible(false);
+        if (formData) {
+
+            const updatedQuestions = formData.questions.map(({ questionId, ...rest }) => ({
+                ...rest, // Giữ lại tất cả các trường khác ngoài id
+            }));
+
+            console.log('Survey submitted:', { ...formData, questions: updatedQuestions });
+
+            openSnackbar({
+                text: "Tạo khảo sát thành công",
+                type: "success",
+                duration: 5000,
+            });
+
+
+            navigate('/survey-management')
+        }
+    };
+
+    const handleCancel = () => {
+        console.log("Cancelled!");
+        setConfirmVisible(false);
     };
 
     return (
@@ -239,7 +255,7 @@ const CreateSurveyForm: React.FC = () => {
                         {/* Câu hỏi */}
                         <div>
                             {formData.questions.map((q, index) => (
-                                <div key={q.id} className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm">
+                                <div key={q.questionId} className="mb-6 p-4 border border-gray-200 rounded-lg shadow-sm">
                                     <div className="mb-4">
                                         <label className="block text-sm font-medium mb-[2px]">
                                             Câu hỏi {index + 1} <span className="text-red-600">(*)</span>
@@ -247,7 +263,7 @@ const CreateSurveyForm: React.FC = () => {
                                         <input
                                             type="text"
                                             value={q.question}
-                                            onChange={(e) => handleQuestionChange(q.id, 'question', e.target.value)}
+                                            onChange={(e) => handleQuestionChange(q.questionId, 'question', e.target.value)}
                                             className="p-2 w-full border border-gray-300 rounded-lg "
                                             required
                                         />
@@ -265,7 +281,7 @@ const CreateSurveyForm: React.FC = () => {
                                                 setFormData((prev) => ({
                                                     ...prev,
                                                     questions: prev.questions.map((qItem) =>
-                                                        qItem.id === q.id ? { ...qItem, type: newType, options: newType === 'multiple-choice' || newType === 'one-choice' ? [''] : [] } : qItem
+                                                        qItem.questionId === q.questionId ? { ...qItem, type: newType, options: newType === 'multiple-choice' || newType === 'one-choice' ? [''] : [] } : qItem
                                                     ),
                                                 }));
                                             }}
@@ -288,12 +304,12 @@ const CreateSurveyForm: React.FC = () => {
                                                     <input
                                                         type="text"
                                                         value={opt}
-                                                        onChange={(e) => handleOptionChange(q.id, index, e.target.value)}
+                                                        onChange={(e) => handleOptionChange(q.questionId, index, e.target.value)}
                                                         className="p-2 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                                     />
                                                     <button
                                                         type="button"
-                                                        onClick={() => handleRemoveOption(q.id, index)}
+                                                        onClick={() => handleRemoveOption(q.questionId, index)}
                                                         className="ml-2 text-white bg-red-700 focus:outline-none p-2 rounded-lg"
                                                     >
                                                         <Icon fontSize={18} icon='material-symbols:delete' />
@@ -306,7 +322,7 @@ const CreateSurveyForm: React.FC = () => {
                                                     setFormData((prev) => ({
                                                         ...prev,
                                                         questions: prev.questions.map((qItem) =>
-                                                            qItem.id === q.id
+                                                            qItem.questionId === q.questionId
                                                                 ? { ...qItem, options: [...(qItem.options || []), ''] }
                                                                 : qItem
                                                         ),
@@ -323,7 +339,7 @@ const CreateSurveyForm: React.FC = () => {
                                     {/* Xóa câu hỏi */}
                                     <button
                                         type="button"
-                                        onClick={() => removeQuestion(q.id)}
+                                        onClick={() => removeQuestion(q.questionId)}
                                         className="mt-2 text-white font-medium bg-red-700 flex items-center gap-1 p-2 rounded-lg ml-auto"
                                     >
                                         <Icon fontSize={18} icon='material-symbols:delete' />
@@ -355,6 +371,13 @@ const CreateSurveyForm: React.FC = () => {
                     </Box>
                 </div>
             </Box>
+            <ConfirmModal
+                visible={isConfirmVisible}
+                title="Xác nhận"
+                message="Bạn có chắc chắn muốn thêm khảo sát này không?"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </Box>
     );
 };
