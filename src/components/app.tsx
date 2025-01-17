@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
 
 const MyApp = () => {
   return (
@@ -52,6 +52,7 @@ const MyApp = () => {
               <Route path="/survey-management" element={<SurveyManagementPage></SurveyManagementPage>}></Route>
               <Route path="/survey-add" element={<SurveyAddPage></SurveyAddPage>}></Route>
               <Route path="/survey-update" element={<SurveyUpdatePage></SurveyUpdatePage>}></Route>
+              <Route path="/survey-charts" element={<SurveyChartsPage></SurveyChartsPage>}></Route>
 
               {/* MANAGEMENT NEWS */}
               <Route path="/news-management" element={<NewsManagementPage></NewsManagementPage>}></Route>

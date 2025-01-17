@@ -7,7 +7,7 @@ import { formatDate, parseDate } from 'components/form/DatePicker';
 import SurveyPreviewModal from './SurveyPreviewModal';
 
 type QuestionType = {
-    id: string;
+    id: any;
     type: 'text' | 'multiple-choice' | 'one-choice';  // Đổi 'rating' thành 'one-choice'
     question: string;
     options?: string[];
@@ -129,13 +129,24 @@ const CreateSurveyForm: React.FC = () => {
             }
         }
 
+        const updatedQuestions = formData.questions.map((q, index) => ({
+            ...q,
+            id: (index + 1), // Cập nhật id mới cho câu hỏi
+        }));
+
+        setFormData((prev) => ({
+            ...prev,
+            questions: updatedQuestions, // Cập nhật lại formData với id mới
+        }));
+
+        console.log('Survey submitted:', {...formData, questions: updatedQuestions});
+
         openSnackbar({
             text: "Tạo khảo sát thành công",
             type: "success",
             duration: 5000,
         });
 
-        console.log('Survey submitted:', formData);
         
         navigate('/survey')
     };

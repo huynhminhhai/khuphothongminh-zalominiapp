@@ -11,6 +11,7 @@ import thumbnailNews from './news.png'
 import empty from './empty.png'
 import survey from './survey.png'
 import newss from './new.png'
+import pieChart from './pie-chart.png'
 
 const images = {
     logo,
@@ -25,7 +26,8 @@ const images = {
     empty,
     checklist,
     survey,
-    newss
+    newss,
+    pieChart
 }
 
 export default images

@@ -548,7 +548,8 @@ export type SurveyType = {
     status?: number;
     timestamp?: string;
     expiryDate: string;
-    questions: any[]
+    questions: any[];
+    countAnswer?: number;
 }
 
 export const SURVEYDATA: SurveyType[] = [
@@ -561,26 +562,24 @@ export const SURVEYDATA: SurveyType[] = [
         expiryDate: '18/01/2025',
         questions: [
             {
-                id: "q1",
+                id: 1,
                 type: "one-choice",
                 question: "Ông/Bà có đồng ý tự nguyện hiến đất để mở rộng đường dẫn vào thôn không?",
                 options: ["Đồng ý", "Không đồng ý"],
-                answer: "",
             },
             {
-                id: "q2",
+                id: 2,
                 type: "one-choice",
                 question: "Ông/Bà dự kiến hiến được tối đa bao nhiêu mét đất?",
                 options: ["< 2 mét", "< 3 mét", "< 4 mét", "< 5 mét"],
-                answer: "",
             }, {
-                id: "q3",
+                id: 3,
                 type: "one-choice",
                 question: "Ông/Bà đã sinh sống trên đất và nhà ở hiện tại từ giai đoạn năm nào đến nay?",
                 options: ["Trước 30/4/1975", "Từ 30/4/1975 đến năm 1994", "Từ năm 1995 đến năm 2004", "Từ năm 2005 đến nay"],
-                answer: "",
             },
         ],
+        countAnswer: 0
     },
     {
         id: 3,
@@ -618,6 +617,7 @@ export const SURVEYDATA: SurveyType[] = [
                 type: "text",
             },
         ],
+        countAnswer: 5
     },
     {
         id: 2,
@@ -628,153 +628,148 @@ export const SURVEYDATA: SurveyType[] = [
         expiryDate: '13/01/2025',
         questions: [
             {
-                id: "q1",
+                id: 1,
                 type: "text",
                 question: "Câu hỏi văn bản",
-                answer: "",
             },
             {
-                id: "q2",
+                id: 2,
                 type: "multiple-choice",
                 question: "Câu hỏi nhiều chọn",
                 options: ["Giá vé", "Chất lượng phương tiện", "Thời gian hoạt động", "An toàn"],
                 answer: [],
             },
             {
-                id: "q3",
+                id: 3,
                 type: "one-choice",
                 question: "Câu hỏi một chọn",
                 options: ["Có", "Không"],
-                answer: "",
             },
         ],
+        countAnswer: 0
     },
 ];
 
 export const SURVEYRESULT = [
-    {   
-        id: 1,
-        surveyId: 3,
-        responses: [
-            {
-                questionId: 1,
-                answer: "Nguyễn Văn A", // Họ và tên
-            },
-            {
-                questionId: 2,
-                answer: "Có", // Có sẵn sàng tham gia
-            },
-            {
-                questionId: 3,
-                answer: [
-                    "Tiền mặt",
-                    "Vật phẩm (quần áo, thực phẩm, sách vở, ...)",
-                ], // Hình thức đóng góp
-            },
-            {
-                questionId: 4,
-                answer: "Không có ý kiến", // Ý kiến đóng góp khác
-            },
-        ],
-        userId: 101,
-    },
     {
         id: 2,
         surveyId: 3,
         responses: [
             {
-                questionId: 1,
+                id: 1,
                 answer: "Lê Thị B",
+                type: "text"
             },
             {
-                questionId: 2,
+                id: 2,
                 answer: "Không",
+                type: "one-choice"
             },
             {
-                questionId: 3,
-                answer: [],
+                id: 3,
+                answer: [
+                    "Tiền mặt",
+                    "Dịch vụ (y tế, giáo dục)",
+                ],
+                type: "multiple-choice"
             },
             {
-                questionId: 4,
-                answer: "Tôi bận nên không thể tham gia, nhưng sẽ hỗ trợ tài chính nếu cần.",
-            },
+                id: 4,
+                answer: "Cần thêm thông tin về chương trình",
+                type: "text"
+            }
         ],
-        userId: 102,
+        userId: 102
     },
     {
         id: 3,
         surveyId: 3,
         responses: [
             {
-                questionId: 1,
-                answer: "Phạm Văn C",
+                id: 1,
+                answer: "Trần Minh C",
+                type: "text"
             },
             {
-                questionId: 2,
+                id: 2,
                 answer: "Có",
+                type: "one-choice"
             },
             {
-                questionId: 3,
+                id: 3,
                 answer: [
-                    "Thời gian và công sức (tình nguyện viên)",
+                    "Tiền mặt",
+                    "Vật phẩm (quần áo)",
                 ],
+                type: "multiple-choice"
             },
             {
-                questionId: 4,
-                answer: "Tôi có thể hỗ trợ trong các hoạt động ngoài giờ làm việc.",
-            },
+                id: 4,
+                answer: "Rất ủng hộ",
+                type: "text"
+            }
         ],
-        userId: 103,
+        userId: 103
     },
     {
         id: 4,
         surveyId: 3,
         responses: [
             {
-                questionId: 1,
-                answer: "Trần Thị D",
+                id: 1,
+                answer: "Nguyễn Thị D",
+                type: "text"
             },
             {
-                questionId: 2,
-                answer: "Không",
+                id: 2,
+                answer: "Có",
+                type: "one-choice"
             },
             {
-                questionId: 3,
+                id: 3,
                 answer: [
-                    "Khác (vui lòng ghi rõ trong mục bên dưới)",
+                    "Vật phẩm (sách vở)",
+                    "Dịch vụ (y tế)",
                 ],
+                type: "multiple-choice"
             },
             {
-                questionId: 4,
-                answer: "Tôi muốn đóng góp bằng cách giới thiệu thêm tình nguyện viên.",
-            },
+                id: 4,
+                answer: "Tôi không có ý kiến",
+                type: "text"
+            }
         ],
-        userId: 104,
+        userId: 104
     },
     {
         id: 5,
         surveyId: 3,
         responses: [
             {
-                questionId: 1,
-                answer: "Ngô Văn E",
+                id: 1,
+                answer: "Phạm Văn E",
+                type: "text"
             },
             {
-                questionId: 2,
-                answer: "Có",
+                id: 2,
+                answer: "Không",
+                type: "one-choice"
             },
             {
-                questionId: 3,
+                id: 3,
                 answer: [
                     "Tiền mặt",
-                    "Thời gian và công sức (tình nguyện viên)",
+                    "Vật phẩm (sách vở, quần áo)",
                 ],
+                type: "multiple-choice"
             },
             {
-                questionId: 4,
-                answer: "Tôi có thể hỗ trợ thêm bằng việc vận chuyển đồ đạc.",
-            },
+                id: 4,
+                answer: "Sẵn sàng tham gia nếu có thêm thông tin",
+                type: "text"
+            }
         ],
-        userId: 105,
-    },
+        userId: 105
+    }
 ];
+

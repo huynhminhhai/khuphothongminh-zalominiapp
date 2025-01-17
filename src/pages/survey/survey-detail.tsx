@@ -18,7 +18,7 @@ type SurveyResponseType = {
     id?: number;
     surveyId: number | undefined;
     userId: number;
-    responses: { questionId: any, answer: string | string[] }[];
+    responses: { id: any, answer: string | string[] }[];
 };
 
 const SurveyDetailPage: React.FC = () => {
@@ -59,7 +59,7 @@ const SurveyDetailPage: React.FC = () => {
             } else {
                 // Khởi tạo trạng thái trả lời ban đầu dựa trên câu hỏi
                 const initialResponses = data.questions.map(q => ({
-                    questionId: q.id,
+                    id: q.id,
                     answer: q.answer || (q.type === "multiple-choice" ? [] : ""),
                 }));
 
@@ -98,10 +98,10 @@ const SurveyDetailPage: React.FC = () => {
         fetchSurveyData();
     }, [surveyId]);
 
-    const handleAnswerChange = (questionId: string, value: string | string[]) => {
+    const handleAnswerChange = (questionId: string, value: string | string[], type: 'text' | 'multiple-choice' | 'one-choice') => {
         setResponses((prevResponses) => {
             const updatedResponses = prevResponses.map((res) =>
-                res.questionId === questionId ? { ...res, answer: value } : res
+                res.id === questionId ? { ...res, answer: value, type: type } : res
             );
             return updatedResponses;
         });
@@ -115,7 +115,7 @@ const SurveyDetailPage: React.FC = () => {
         setConfirmVisible(false);
 
         const unansweredQuestions = detailData?.questions.filter((q) => {
-            const response = responses.find((res) => res.questionId === q.id);
+            const response = responses.find((res) => res.id === q.id);
             return !response || !response.answer || (Array.isArray(response.answer) && response.answer.length === 0);
         });
 
@@ -137,7 +137,7 @@ const SurveyDetailPage: React.FC = () => {
                     id: surveyResult.id
                 };
                 await updateSurveyResult(payload);
-                
+
             } else {
                 const payload: SurveyResponseType = {
                     surveyId: detailData?.id,
@@ -145,7 +145,7 @@ const SurveyDetailPage: React.FC = () => {
                     userId: idUser,
                 };
                 await addSurveyResult(payload);
-                
+
             }
         } catch (error) {
             console.error("Failed to submit survey data:", error);
@@ -161,7 +161,7 @@ const SurveyDetailPage: React.FC = () => {
     };
 
     const addSurveyResult = async (payload: SurveyResponseType) => {
-        
+
         console.log("Adding survey result:", payload);
 
         openSnackbar({
@@ -169,11 +169,11 @@ const SurveyDetailPage: React.FC = () => {
             type: "success",
             duration: 5000,
         });
-        
+
     };
 
     const updateSurveyResult = async (payload: SurveyResponseType) => {
-        
+
         console.log("Updating survey result:", payload);
 
         openSnackbar({
@@ -181,7 +181,7 @@ const SurveyDetailPage: React.FC = () => {
             type: "success",
             duration: 5000,
         });
-        
+
     };
 
     const handleCancel = () => {
@@ -229,8 +229,8 @@ const SurveyDetailPage: React.FC = () => {
                                         {q.type === "text" && (
                                             <input
                                                 type="text"
-                                                value={responses.find((res) => res.questionId === q.id)?.answer || ""}
-                                                onChange={(e) => handleAnswerChange(q.id, e.target.value)}
+                                                value={responses.find((res) => res.id === q.id)?.answer || ""}
+                                                onChange={(e) => handleAnswerChange(q.id, e.target.value, q.type)}
                                                 className="p-2 w-full border-b rounded-none  border-gray-300 h-[48px]"
                                             />
                                         )}
@@ -243,16 +243,16 @@ const SurveyDetailPage: React.FC = () => {
                                                         <Checkbox
                                                             value={opt}
                                                             checked={responses.find(
-                                                                (res) => res.questionId === q.id
+                                                                (res) => res.id === q.id
                                                             )?.answer.includes(opt)}
                                                             onChange={(e) => {
                                                                 const selectedOptions = responses.find(
-                                                                    (res) => res.questionId === q.id
+                                                                    (res) => res.id === q.id
                                                                 )?.answer || [];
                                                                 const newOptions = e.target.checked
                                                                     ? [...selectedOptions, opt]
                                                                     : selectedOptions.filter((option) => option !== opt);
-                                                                handleAnswerChange(q.id, newOptions);
+                                                                handleAnswerChange(q.id, newOptions, q.type);
                                                             }}
                                                         />
                                                         <span>{opt}</span>
@@ -269,9 +269,9 @@ const SurveyDetailPage: React.FC = () => {
                                                         <Radio
                                                             value={opt}
                                                             checked={responses.find(
-                                                                (res) => res.questionId === q.id
+                                                                (res) => res.id === q.id
                                                             )?.answer === opt}
-                                                            onChange={() => handleAnswerChange(q.id, opt)}
+                                                            onChange={() => handleAnswerChange(q.id, opt, q.type)}
                                                         />
                                                         <span>{opt}</span>
                                                     </div>

@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
+import images from "assets/images"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { TableTanStack } from "components/table"
@@ -50,18 +51,15 @@ const SurveyManagementPage: React.FC = () => {
             header: 'Thời hạn',
         },
         {
-            id: 'count',
+            accessorKey: 'countAnswer',
             header: 'Lượt khảo sát',
-            cell: ({row}) => (
-                <span>55</span>
-            )
         },
         {
             id: 'chart',
             header: 'Biểu đồ',
             cell: ({row}) => (
-                <div className="flex items-center justify-center">
-                    <Icon icon='mdi:chart-line' fontSize={22}/>
+                <div className="flex items-center justify-center" onClick={() => navigate(`/survey-charts?id=${row.original.id}`)}>
+                    <img width={30} src={images.pieChart} alt={row.original.title} />
                 </div>
             )
         },

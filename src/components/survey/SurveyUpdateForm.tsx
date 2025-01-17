@@ -165,13 +165,23 @@ const SurveyUpdateForm: React.FC = () => {
             }
         }
 
+        const updatedQuestions = formData.questions.map((q, index) => ({
+            ...q,
+            id: (index + 1).toString(), // Cập nhật id mới cho câu hỏi
+        }));
+
+        setFormData((prev) => ({
+            ...prev,
+            questions: updatedQuestions, // Cập nhật lại formData với id mới
+        }));
+
+        console.log('Survey updated:', formData);
+
         openSnackbar({
             text: 'Cập nhật khảo sát thành công',
             type: 'success',
             duration: 5000,
         });
-
-        console.log('Survey updated:', formData);
 
         navigate('/survey-management');
     };
