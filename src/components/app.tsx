@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentManagementPage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
 import { MeetingUpdateForm } from "./meeting";
 
 const MyApp = () => {
@@ -69,6 +69,10 @@ const MyApp = () => {
               <Route path="/meeting-management" element={<MeetingManagementPage></MeetingManagementPage>}></Route>
               <Route path="/meeting-add" element={<MeetingAddtPage></MeetingAddtPage>}></Route>
               <Route path="/meeting-update" element={<MeetingUpdatePage></MeetingUpdatePage>}></Route>
+
+              {/* MANAGEMENT RESIDENT */}
+              <Route path="/resident-management" element={<ResidentManagementPage></ResidentManagementPage>}></Route>
+              <Route path="/resident-craft-management" element={<ResidentCraftManagementPage></ResidentCraftManagementPage>}></Route>
 
             </Routes>
             <Navigation />

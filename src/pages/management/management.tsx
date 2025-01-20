@@ -10,11 +10,17 @@ const ManagementPage: React.FC = () => {
     const navigate = useNavigate()
 
     return (
-        <Page className="relative flex-1 flex flex-col" style={{backgroundColor: '#f0f0f0'}}>
+        <Page className="relative flex-1 flex flex-col" style={{ backgroundColor: '#f0f0f0' }}>
             <Box>
                 <HeaderSub title="Quản trị ứng dụng" />
                 <Box p={4}>
                     <List className="bg-white rounded-lg overflow-hidden">
+                        <Item
+                            title="Quản lý hộ dân"
+                            prefix={<img src={images.home} alt='feedback' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/resident-management')}
+                        />
                         <Item
                             title="Quản lý tin tức"
                             prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}

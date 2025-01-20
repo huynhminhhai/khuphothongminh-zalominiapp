@@ -147,6 +147,7 @@ export const relationships = [
 
 export type ResidentType = {
     id: number;
+    parentId: number | null; 
     fullname: string;
     phoneNumber: string;
     numberCard: string;
@@ -162,11 +163,13 @@ export type ResidentType = {
     residenceType: number;
     status: number;
     bhyt: string;
+    avatar?: string; 
 }
 
 export const RESIDENT: ResidentType[] = [
     {
         id: 1,
+        parentId: null,
         fullname: "Huỳnh Minh Hải",
         phoneNumber: '0848551555',
         dateCard: '21/06/2022',
@@ -181,10 +184,12 @@ export const RESIDENT: ResidentType[] = [
         residenceStatus: 1,
         residenceType: 1,
         status: 1,
-        bhyt: '123'
+        bhyt: '123',
+        avatar: images.avatar
     },
     {
         id: 2,
+        parentId: 1,
         fullname: "Lê Thị Hoa",
         phoneNumber: '0848551444',
         dateCard: '21/6/2022',
@@ -199,10 +204,12 @@ export const RESIDENT: ResidentType[] = [
         residenceStatus: 1,
         residenceType: 1,
         status: 1,
-        bhyt: '123ewe'
+        bhyt: '123ewe',
+        avatar: ''
     },
     {
         id: 3,
+        parentId: 1,
         fullname: "Trần Quốc Bảo",
         phoneNumber: '0848551333',
         dateCard: '21/6/2022',
@@ -217,10 +224,12 @@ export const RESIDENT: ResidentType[] = [
         residenceStatus: 2,
         residenceType: 2,
         status: 1,
-        bhyt: '122323'
+        bhyt: '122323',
+        avatar: ''
     },
     {
         id: 4,
+        parentId: 1,
         fullname: "Phạm Thị Mai",
         phoneNumber: '0848551222',
         dateCard: '21/6/2022',
@@ -234,11 +243,13 @@ export const RESIDENT: ResidentType[] = [
         relationship: 3,
         residenceStatus: 1,
         residenceType: 1,
-        status: 3,
-        bhyt: '123ưew'
+        status: 1,
+        bhyt: '123ưew',
+        avatar: ''
     },
     {
         id: 5,
+        parentId: 1,
         fullname: "Nguyễn Văn An",
         phoneNumber: '0848551111',
         dateCard: '21/6/2022',
@@ -253,13 +264,15 @@ export const RESIDENT: ResidentType[] = [
         residenceStatus: 1,
         residenceType: 2,
         status: 1,
-        bhyt: '123sdsd'
+        bhyt: '123sdsd',
+        avatar: ''
     }
 ]
 
 export const RESIDENTCRAFT: ResidentType[] = [
     {
         id: 6,
+        parentId: 1,
         fullname: "Huỳnh Hồng Hưng",
         phoneNumber: '',
         dateCard: '21/6/2022',
@@ -274,12 +287,34 @@ export const RESIDENTCRAFT: ResidentType[] = [
         residenceStatus: 0,
         residenceType: 1,
         status: 2,
-        bhyt: '123sds'
-    }
+        bhyt: '123sds',
+        avatar: ''
+    },
+    {
+        id: 4,
+        parentId: 1,
+        fullname: "Phạm Thị Mai",
+        phoneNumber: '0848551222',
+        dateCard: '21/6/2022',
+        numberCard: "2345678901",
+        gender: 2,
+        birthDate: "12/9/2018",
+        nation: "Kinh",
+        religion: "Không",
+        nationality: "Việt Nam",
+        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 3,
+        residenceStatus: 1,
+        residenceType: 1,
+        status: 3,
+        bhyt: '123ưew',
+        avatar: ''
+    },
 ]
 
 export const RESIDENTMAIN = {
     id: 1,
+    parentId: null,
     fullname: "Huỳnh Minh Hải",
     phoneNumber: '0848551555',
     dateCard: '21/6/2022',
@@ -294,7 +329,8 @@ export const RESIDENTMAIN = {
     residenceStatus: 0,
     residenceType: 1,
     status: 1,
-    bhyt: '123'
+    bhyt: '123',
+    avatar: images.avatar
 }
 
 export type News = {

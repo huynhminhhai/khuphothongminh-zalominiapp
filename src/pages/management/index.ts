@@ -27,3 +27,9 @@ export { default as FeedbackAnswerPage } from "./management-feedback/feedback-an
 export { default as MeetingManagementPage } from "./management-meeting/meeting-management";
 export { default as MeetingAddtPage } from "./management-meeting/meeting-create";
 export { default as MeetingUpdatePage } from "./management-meeting/meeting-update";
+
+/**
+ * RESIDENT
+**/
+export { default as ResidentManagementPage } from "./management-resident/resident-management";
+export { default as ResidentCraftManagementPage } from "./management-resident/resident-craft-management";

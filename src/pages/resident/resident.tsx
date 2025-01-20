@@ -5,7 +5,7 @@ import { Box, Page } from "zmp-ui"
 
 const ResidentPage: React.FC = () => {
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[65px]">
+        <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Thông tin hộ dân" />
                 <InforResidentSection />

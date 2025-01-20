@@ -5,7 +5,7 @@ import InforResidentItemMain from "./InforResidentItemMain"
 const InforResidentSection: React.FC = () => {
     return (
         <Box>
-            <Box p={4}>
+            <Box>
                 <InforResidentItemMain />
             </Box>
         </Box>
