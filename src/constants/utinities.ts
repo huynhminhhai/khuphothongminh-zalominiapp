@@ -896,3 +896,127 @@ export const SURVEYRESULT = [
     }
 ];
 
+export const RESIDENTOPTION = [
+    {
+        value: 1,
+        label: 'Tất cả'
+    },
+    {
+        value: 2,
+        label: 'Tổ 1'
+    },
+    {
+        value: 3,
+        label: 'Tổ 2'
+    },
+    {
+        value: 4,
+        label: 'Tổ 3'
+    }
+]
+
+export const STAFFOPTION = [
+    {
+        value: 1,
+        label: 'Nguyễn Văn A',
+    },
+    {
+        value: 2,
+        label: 'Trần Thị B',
+    },
+    {
+        value: 3,
+        label: 'Lê Văn C',
+    },
+    {
+        value: 4,
+        label: 'Phạm Thị D',
+    },
+    {
+        value: 5,
+        label: 'Hoàng Văn E',
+    },
+    {
+        value: 6,
+        label: 'Vũ Thị F',
+    },
+    {
+        value: 7,
+        label: 'Đặng Văn G',
+    },
+    {
+        value: 8,
+        label: 'Ngô Thị H',
+    },
+    {
+        value: 9,
+        label: 'Bùi Văn I',
+    },
+    {
+        value: 10,
+        label: 'Phan Thị J',
+    },
+];
+
+export const MEETINGDATA = [
+    {
+        id: 1,
+        title: 'Họp tổ dân phố đầu năm',
+        description: 'Thảo luận kế hoạch phát triển tổ dân phố trong năm mới.',
+        meetingDate: '01/02/2025',
+        startTime: '18:00',
+        endTime: '20:00',
+        address: 'Nhà văn hóa tổ dân phố 5, Phường Xuân An, Thành phố Đà Lạt',
+        linkOnl: 'https://zoom.us/j/123456789',
+        resident: 1,
+        staff: [1,2],
+    },
+    {
+        id: 2,
+        title: 'Họp triển khai dự án xanh',
+        description: 'Cuộc họp về kế hoạch triển khai dự án trồng cây xanh tại khu vực.',
+        meetingDate: '10/02/2025',
+        startTime: '09:00',
+        endTime: '11:00',
+        address: 'Phòng họp UBND Phường Xuân An',
+        linkOnl: 'https://zoom.us/j/987654321',
+        resident: 1,
+        staff: [1,2],
+    },
+    {
+        id: 3,
+        title: 'Họp tổng kết cuối năm',
+        description: 'Đánh giá các hoạt động của tổ dân phố trong năm qua.',
+        meetingDate: '15/02/2025',
+        startTime: '14:00',
+        endTime: '16:00',
+        address: 'Hội trường nhà văn hóa huyện',
+        linkOnl: 'https://zoom.us/j/123987456',
+        resident: 2,
+        staff: [1,2],
+    },
+    {
+        id: 4,
+        title: 'Họp khẩn xử lý vấn đề môi trường',
+        description: 'Thảo luận về các biện pháp xử lý vấn đề rác thải trên địa bàn.',
+        meetingDate: '20/02/2025',
+        startTime: '15:00',
+        endTime: '17:00',
+        address: 'Hội trường Phòng Tài nguyên Môi trường',
+        linkOnl: 'https://zoom.us/j/456123789',
+        resident: 3,
+        staff: [1, 2, 3],
+    },
+    {
+        id: 5,
+        title: 'Họp phổ biến chính sách mới',
+        description: 'Triển khai và phổ biến các chính sách mới cho cư dân.',
+        meetingDate: '25/2/2025',
+        startTime: '10:00',
+        endTime: '12:00',
+        address: 'Phòng họp UBND Quận 3',
+        linkOnl: 'https://zoom.us/j/654321987',
+        resident: 1,
+        staff: [1,2],
+    },
+]

@@ -98,13 +98,13 @@ const MeetingManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/news-detail?id=${row.original.id}`)}
+                        onClick={() => navigate(`/meeting-detail?id=${row.original.id}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/news-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/meeting-update?id=${row.original.id}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
@@ -145,7 +145,7 @@ const MeetingManagementPage: React.FC = () => {
                         <Button
                             size="medium"
                             variant="secondary"
-                            onClick={() => navigate('/news-add')}
+                            onClick={() => navigate('/meeting-add')}
                         >
                             <div className="flex items-center gap-1">
                                 <Icon fontSize={18} icon='material-symbols:add-rounded' />

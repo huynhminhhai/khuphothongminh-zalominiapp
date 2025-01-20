@@ -25,3 +25,5 @@ export { default as FeedbackAnswerPage } from "./management-feedback/feedback-an
  * MEETING
  **/ 
 export { default as MeetingManagementPage } from "./management-meeting/meeting-management";
+export { default as MeetingAddtPage } from "./management-meeting/meeting-create";
+export { default as MeetingUpdatePage } from "./management-meeting/meeting-update";

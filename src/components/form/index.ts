@@ -1,7 +1,9 @@
 export { default as FormInputField } from "./InputField";
 export { default as FormSelectField } from "./SelectField";
+export { default as FormSelectMultipleField } from "./SelectMultipleField";
 export { default as FormInputAreaField } from "./InputAreaField";
 export { default as FormControllerDatePicker } from "./DatePicker";
+export { default as FormControllerTimePicker } from "./TimePicker";
 export { default as FormControllerCheckbox } from "./FormCheckbox";
 export { default as FormControllerRadioGroupProps } from "./FormRadioGroup";
 export { default as FormTextEditorField } from "./TextEditorField";

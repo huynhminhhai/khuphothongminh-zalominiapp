@@ -7,10 +7,11 @@ import ScrollToTop from "./scroll-top";
 import { NewsDetailPage, NewsPage } from "pages/news";
 import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
 import { HomePage } from "pages/homepage";
-import { MeetingPage } from "pages/meeting";
+import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingManagementPage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
+import { MeetingUpdateForm } from "./meeting";
 
 const MyApp = () => {
   return (
@@ -34,6 +35,7 @@ const MyApp = () => {
 
               {/* MEETING */}
               <Route path="/meeting" element={<MeetingPage></MeetingPage>}></Route>
+              <Route path="/meeting-detail" element={<MeetingDetailPage></MeetingDetailPage>}></Route>
 
               {/* FEEDBACK */}
               <Route path="/feedback" element={<FeedbackPage></FeedbackPage>}></Route>
@@ -65,6 +67,8 @@ const MyApp = () => {
 
               {/* MANAGEMENT MEETING */}
               <Route path="/meeting-management" element={<MeetingManagementPage></MeetingManagementPage>}></Route>
+              <Route path="/meeting-add" element={<MeetingAddtPage></MeetingAddtPage>}></Route>
+              <Route path="/meeting-update" element={<MeetingUpdatePage></MeetingUpdatePage>}></Route>
 
             </Routes>
             <Navigation />

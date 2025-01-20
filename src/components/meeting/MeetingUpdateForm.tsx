@@ -1,22 +1,27 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { PrimaryButton } from "components/button"
-import { FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
+import { FormControllerDatePicker, FormControllerTimePicker, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import { FormDataNews, schemaNews } from "components/news/type"
-import { NEWSDATA } from "constants/utinities"
+import { MEETINGDATA, RESIDENTOPTION, STAFFOPTION } from "constants/utinities"
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import { FormDataMeeting, schemaMeeting } from "./type"
 
-const defaultValues: FormDataNews = {
+const defaultValues: FormDataMeeting = {
     title: '',
     description: '',
-    content: '',
-    imageUrl: '',
+    meetingDate: '',
+    startTime: '',
+    endTime: '',
+    address: '',
+    linkOnl: '',
+    resident: undefined,
+    staff: []
 }
 
-const NewsUpdateForm = () => {
+const MeetingUpdateForm = () => {
 
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate()
@@ -25,28 +30,26 @@ const NewsUpdateForm = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataNews>({
-        resolver: yupResolver(schemaNews),
+    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataMeeting>({
+        resolver: yupResolver(schemaMeeting),
         defaultValues
     });
 
     const [searchParams] = useSearchParams();
 
-    const newsId = searchParams.get("id");
+    const meetingId = searchParams.get("id");
 
     useEffect(() => {
         // Hàm gọi API để lấy thông tin thành viên
         const fetchResidentData = async () => {
             setLoading(true);
             try {
-                // Giả sử API trả về thông tin thành viên
-                // const response = await fetch(`/api/residents/${residentId}`);
-                // const data = await response.json();
 
-                const data = NEWSDATA.find(resident => resident.id === Number(newsId))
+                const data = MEETINGDATA.find(resident => resident.id === Number(meetingId))
 
                 if (data) {
                     setFormData(data)
+
                     reset(data)
                 }
 
@@ -63,9 +66,9 @@ const NewsUpdateForm = () => {
         };
 
         fetchResidentData();
-    }, [newsId]);
+    }, [meetingId]);
 
-    const onSubmit: SubmitHandler<FormDataNews> = (data) => {
+    const onSubmit: SubmitHandler<FormDataMeeting> = (data) => {
 
         const updatedData = {};
 
@@ -102,7 +105,7 @@ const NewsUpdateForm = () => {
             // Thành công
             openSnackbar({
                 icon: true,
-                text: "Cập nhật thông tin tin tức thành công",
+                text: "Cập nhật thông tin cuộc họp thành công",
                 type: 'success',
                 action: { text: "Đóng", close: true },
                 duration: 5000,
@@ -138,7 +141,7 @@ const NewsUpdateForm = () => {
     return (
         <Box p={4}>
             <Box>
-                <div className="grid grid-cols-12 gap-x-3">
+            <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
                             name="title"
@@ -150,11 +153,73 @@ const NewsUpdateForm = () => {
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormImageUploaderSingle
-                            name="imageUrl"
-                            label="Upload ảnh"
+                        <FormControllerDatePicker
+                            name="meetingDate"
+                            label="Ngày họp"
                             control={control}
-                            error={errors.imageUrl?.message}
+                            placeholder="Chọn ngày họp"
+                            required
+                            dateFormat="dd/mm/yyyy"
+                            error={errors.meetingDate?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerTimePicker
+                            name="startTime"
+                            label="Thời gian bắt đầu"
+                            placeholder="Chọn thời gian họp"
+                            control={control}
+                            required={true}
+                            error={errors.startTime?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerTimePicker
+                            name="endTime"
+                            label="Thời gian kết thúc"
+                            placeholder="Chọn thời gian họp"
+                            control={control}
+                            required={true}
+                            error={errors.endTime?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="address"
+                            label="Địa điểm"
+                            placeholder="Nhập địa điểm"
+                            control={control}
+                            error={errors.address?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="linkOnl"
+                            label="Link họp online (nếu có)"
+                            placeholder="Nhập địa điểm"
+                            control={control}
+                            error={errors.linkOnl?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="resident"
+                            label="Người dân"
+                            placeholder="Chọn người dân"
+                            control={control}
+                            options={RESIDENTOPTION}
+                            error={errors.resident?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectMultipleField
+                            name="staff"
+                            label="Cán bộ"
+                            placeholder="Chọn cán bộ"
+                            control={control}
+                            options={STAFFOPTION}
+                            error={errors.staff?.message}
                         />
                     </div>
                     <div className="col-span-12">
@@ -167,19 +232,9 @@ const NewsUpdateForm = () => {
                             required
                         />
                     </div>
-                    <div className="col-span-12">
-                        <FormTextEditorField
-                            name="content"
-                            label="Nội dung tin tức"
-                            placeholder="Nhập nội dung tin tức..."
-                            control={control}
-                            error={errors.content?.message}
-                            required
-                        />
-                    </div>
-                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
+                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white shadow-sm">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật tin tức"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -195,4 +250,4 @@ const NewsUpdateForm = () => {
     )
 }
 
-export default NewsUpdateForm
+export default MeetingUpdateForm

@@ -35,7 +35,7 @@ const NewsDetailPage: React.FC = () => {
                 } catch (error) {
                     console.error("Failed to fetch resident data:", error);
                     openSnackbar({
-                        text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
+                        text: "Không thể tải thông tin. Vui lòng thử lại sau.",
                         type: "error",
                         duration: 5000,
                     });
