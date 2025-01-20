@@ -5,13 +5,12 @@ import { RecoilRoot } from "recoil";
 import { Navigation } from "./navigation";
 import ScrollToTop from "./scroll-top";
 import { NewsDetailPage, NewsPage } from "pages/news";
-import { ResidentAddPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
+import { ResidentAddPage, ResidentCraftPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
 import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentManagementPage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
-import { MeetingUpdateForm } from "./meeting";
 
 const MyApp = () => {
   return (
@@ -25,6 +24,7 @@ const MyApp = () => {
               
               {/* RESIDENT */}
               <Route path="/resident" element={<ResidentPage></ResidentPage>}></Route>
+              <Route path="/resident-craft" element={<ResidentCraftPage></ResidentCraftPage>}></Route>
               <Route path="/resident-member" element={<ResidentMemberPage></ResidentMemberPage>}></Route>
               <Route path="/resident-add" element={<ResidentAddPage></ResidentAddPage>}></Route>
               <Route path="/resident-edit" element={<ResidentEditPage></ResidentEditPage>}></Route>

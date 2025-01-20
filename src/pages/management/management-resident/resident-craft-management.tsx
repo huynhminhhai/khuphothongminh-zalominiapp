@@ -99,7 +99,7 @@ const ResidentCraftManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/resident?id=${row.original.id}`)}
+                        onClick={() => navigate(`/resident-craft?id=${row.original.id}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
