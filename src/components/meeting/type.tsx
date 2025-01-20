@@ -20,5 +20,6 @@ export type FormDataMeeting = {
     linkOnl?: string;
     resident?: number;
     staff?: number[];
-    notifyOA?: boolean
+    notifyOA?: boolean;
+    status?: number
 }

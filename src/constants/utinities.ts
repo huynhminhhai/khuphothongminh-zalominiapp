@@ -1,4 +1,5 @@
 import images from "assets/images";
+import { FormDataMeeting } from "components/meeting/type";
 
 export type StatisticsType = {
     label: string;
@@ -962,14 +963,15 @@ export const MEETINGDATA = [
     {
         id: 1,
         title: 'Họp tổ dân phố đầu năm',
-        description: 'Thảo luận kế hoạch phát triển tổ dân phố trong năm mới.',
+        description: 'Thảo luận và đề xuất các kế hoạch phát triển tổ dân phố trong năm mới, bao gồm các hoạt động cải thiện cơ sở hạ tầng, nâng cao đời sống văn hóa – xã hội, đảm bảo an ninh trật tự và khuyến khích tinh thần đoàn kết trong cộng đồng. Cuộc họp sẽ là cơ hội để người dân đóng góp ý kiến, chia sẻ nguyện vọng và cùng nhau xây dựng một môi trường sống tốt đẹp hơn cho mọi người.',
         meetingDate: '01/02/2025',
         startTime: '18:00',
         endTime: '20:00',
         address: 'Nhà văn hóa tổ dân phố 5, Phường Xuân An, Thành phố Đà Lạt',
         linkOnl: 'https://zoom.us/j/123456789',
         resident: 1,
-        staff: [1,2],
+        staff: [1,2,3,4,5,6,7],
+        status: 2
     },
     {
         id: 2,
@@ -982,6 +984,7 @@ export const MEETINGDATA = [
         linkOnl: 'https://zoom.us/j/987654321',
         resident: 1,
         staff: [1,2],
+        status: 2
     },
     {
         id: 3,
@@ -994,6 +997,7 @@ export const MEETINGDATA = [
         linkOnl: 'https://zoom.us/j/123987456',
         resident: 2,
         staff: [1,2],
+        status: 2
     },
     {
         id: 4,
@@ -1006,6 +1010,7 @@ export const MEETINGDATA = [
         linkOnl: 'https://zoom.us/j/456123789',
         resident: 3,
         staff: [1, 2, 3],
+        status: 2
     },
     {
         id: 5,
@@ -1018,5 +1023,6 @@ export const MEETINGDATA = [
         linkOnl: 'https://zoom.us/j/654321987',
         resident: 1,
         staff: [1,2],
+        status: 2
     },
 ]

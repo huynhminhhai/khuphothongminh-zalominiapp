@@ -52,7 +52,7 @@ const MeetingManagementPage: React.FC = () => {
             console.log(console.log('Call api delete survey with id: ', newsId))
 
             openSnackbar({
-                text: 'Xóa tin tức thành công',
+                text: 'Xóa cuộc họp thành công',
                 type: 'success',
                 duration: 5000,
             });
@@ -168,7 +168,7 @@ const MeetingManagementPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa tin tức này không?"
+                message="Bạn có chắc chắn muốn xóa cuộc họp này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

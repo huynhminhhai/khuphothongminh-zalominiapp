@@ -1,10 +1,10 @@
-import { MeetingType } from "constants/utinities"
 import React from "react"
 import { Box } from "zmp-ui"
 import MeetingItem from "./MeetingItem"
+import { FormDataMeeting } from "./type"
 
 type MeetingListProps = {
-    data: MeetingType[]
+    data: FormDataMeeting[]
 }
 
 const MeetingList: React.FC<MeetingListProps> = ({data}) => {
@@ -13,7 +13,7 @@ const MeetingList: React.FC<MeetingListProps> = ({data}) => {
         <Box>
             <div className="grid grid-cols-1 gap-4">
                 {
-                    data.map((item: MeetingType, index: React.Key ) => (
+                    data.map((item: FormDataMeeting, index: React.Key ) => (
                         <MeetingItem key={index} data={item} />
                     ))
                 }
