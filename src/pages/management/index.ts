@@ -33,3 +33,9 @@ export { default as MeetingUpdatePage } from "./management-meeting/meeting-updat
 **/
 export { default as ResidentManagementPage } from "./management-resident/resident-management";
 export { default as ResidentCraftManagementPage } from "./management-resident/resident-craft-management";
+
+/**
+ * TEAM 
+**/
+export { default as TeamManagementPage } from "./management-team/team-management";
+export { default as TeamAddPage } from "./management-team/team-create";

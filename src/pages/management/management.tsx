@@ -22,6 +22,12 @@ const ManagementPage: React.FC = () => {
                             onClick={() => navigate('/resident-management')}
                         />
                         <Item
+                            title="Quản lý nhân sự"
+                            prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/team-management')}
+                        />
+                        <Item
                             title="Quản lý tin tức"
                             prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}

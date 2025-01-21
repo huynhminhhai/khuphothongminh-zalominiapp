@@ -1079,8 +1079,8 @@ export type TeamType = {
     birthDate: string;
     avatar?: string;
     status?: number;
-    created_at?: string;
-    updated_at?: string;
+    start_date?: string;
+    end_date?: string;
 }
 
 export const TEAMDATA: TeamType[] = [
@@ -1094,55 +1094,135 @@ export const TEAMDATA: TeamType[] = [
         gender: 1,
         birthDate: "1980-05-15",
         avatar: "https://i.pinimg.com/736x/c9/45/0c/c9450c1a82fbf565176588363da3fcfa.jpg",
-        status: 1
+        status: 1,
+        start_date: '12/12/2024',
+        end_date: '12/12/2026'
     },
     {
         id: 2,
         fullname: "Nguyễn Thị Mai",
-        position: "Bí thư chi bộ",
+        position: "Phó khu phố",
         phonenumber: "0987654321",
         email: "nguyenthimai@example.com",
         officeAddress: "Khu phố 9",
         gender: 2,
         birthDate: "1975-08-22",
         avatar: "https://i.pinimg.com/736x/e5/08/cf/e508cff348d68a5bd0181a06509f6cbc.jpg",
-        status: 1
+        status: 1,
+        start_date: '12/12/2024',
+        end_date: '12/12/2026'
     },
     {
         id: 3,
         fullname: "Trần Văn Hùng",
-        position: "Ban quản lý",
+        position: "Tổ trưởng tổ 1",
         phonenumber: "0909123456",
         email: "tranvanhung@example.com",
         officeAddress: "Khu phố 9",
         gender: 1,
         birthDate: "1990-03-10",
         avatar: "https://approachableai.com/wp-content/uploads/2022/12/SDv2.1-Example.jpg",
-        status: 1
+        status: 1,
+        start_date: '12/12/2024',
+        end_date: '12/12/2026'
     },
     {
         id: 4,
         fullname: "Phạm Thị Lan",
-        position: "Tổ trưởng dân phố",
+        position: "Tổ phó tổ 1",
         phonenumber: "0933123456",
         email: "phamthilan@example.com",
         officeAddress: "Khu phố 9",
         gender: 2,
         birthDate: "1988-12-01",
         avatar: "https://i.pinimg.com/736x/76/b7/14/76b7140f632311d942c446ed5e10e34f.jpg",
-        status: 1
+        status: 1,
+        start_date: '12/12/2024',
+        end_date: '12/12/2026'
     },
     {
         id: 5,
         fullname: "Đỗ Minh Phúc",
-        position: "Phó trưởng khu phố",
+        position: "Tổ phó tổ 2",
         phonenumber: "0974567890",
         email: "dominphuc@example.com",
         officeAddress: "Khu phố 9",
         gender: 1,
         birthDate: "1982-07-20",
         avatar: "https://s.abcnews.com/images/GMA/HaleyYamadaLensa-hy-abc-20221205_1670289829448_hpEmbed_1x1_992.jpg",
-        status: 1
+        status: 1,
+        start_date: '12/12/2024',
+        end_date: '12/12/2026'
     }
 ];
 
+export const RESIDENTIALGROUPDATA = [
+    {
+        id: 1,
+        name: "Tổ 1"
+    },
+    {
+        id: 2,
+        name: "Tổ 2"
+    }
+]
+
+export type TermType = {
+    id: number;
+    staff_id: number;
+    position: string;
+    start_date: string;
+    end_date: string;
+    isCurrent: boolean;
+}
+
+export const TERMDATA:TermType[] = [
+    {
+        id: 1,
+        staff_id: 1,
+        position: 'Trưởng khu phố',
+        isCurrent: true,
+        start_date: '12/12/2024',
+        end_date: '12/12/2026'
+    },
+    {
+        id: 2,
+        staff_id: 2,
+        position: 'Phó khu phố',
+        isCurrent: true,
+        start_date: '12/12/2024',
+        end_date: '12/12/2026',
+    },
+    {
+        id: 3,
+        staff_id: 2,
+        position: 'Tổ trưởng tổ 1',
+        isCurrent: false,
+        start_date: '12/12/2022',
+        end_date: '12/12/2024'
+    },
+    {
+        id: 4,
+        staff_id: 3,
+        position: 'Tổ trưởng tổ 1',
+        isCurrent: true,
+        start_date: '12/12/2022',
+        end_date: '12/12/2024'
+    },
+    {
+        id: 5,
+        staff_id: 4,
+        position: 'Tổ phó tổ 1',
+        isCurrent: true,
+        start_date: '12/12/2022',
+        end_date: '12/12/2024'
+    },
+    {
+        id: 6,
+        staff_id: 5,
+        position: 'Tổ trưởng tổ 2',
+        isCurrent: true,
+        start_date: '12/12/2022',
+        end_date: '12/12/2024'
+    },
+]
