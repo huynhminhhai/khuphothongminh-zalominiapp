@@ -22,6 +22,7 @@ const SurveyManagementPage: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [surveyId, setSurveyId] = useState<number | undefined>(undefined);
     const [param, setParam] = useState(initParam)
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -40,28 +41,35 @@ const SurveyManagementPage: React.FC = () => {
         console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
-    const removeSurvey = (id: number | undefined) => {
-        setSurveyId(id)
+    const openConfirmModal = (action: () => void) => {
+        setConfirmAction(() => action);
         setConfirmVisible(true);
-    }
+    };
 
     const handleConfirm = () => {
-        if (surveyId !== null) {
+        if (confirmAction) {
+            confirmAction(); 
             setConfirmVisible(false);
-            console.log(console.log('Call api delete survey with id: ', 1))
+            setConfirmAction(null);
+        }
+    };
+
+    const handleCancel = () => {
+        setConfirmVisible(false);
+        setConfirmAction(null);
+    };
+
+    const removeSurvey = (id: number) => {
+        openConfirmModal(() => {
+            console.log('Call api delete survey with id: ', 1)
 
             openSnackbar({
                 text: 'Xóa khảo sát thành công',
                 type: 'success',
                 duration: 5000,
             });
-        }
-    };
-
-    const handleCancel = () => {
-        console.log("Cancelled!");
-        setConfirmVisible(false);
-    };
+        })
+    }
 
     const columns: ColumnDef<SurveyType>[] = [
         {
@@ -104,7 +112,7 @@ const SurveyManagementPage: React.FC = () => {
                         <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => removeSurvey(row.original.id)}
+                        onClick={() => removeSurvey(Number(row.original.id))}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />

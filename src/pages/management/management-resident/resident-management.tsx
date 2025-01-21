@@ -20,8 +20,8 @@ const ResidentManagementPage: React.FC = () => {
     const { openSnackbar } = useSnackbar();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [newsId, setNewsId] = useState<number | undefined>(undefined);
     const [param, setParam] = useState(initParam)
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -40,28 +40,35 @@ const ResidentManagementPage: React.FC = () => {
         console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
-    const removeNews = (id: number | undefined) => {
-        setNewsId(id)
+    const openConfirmModal = (action: () => void) => {
+        setConfirmAction(() => action);
         setConfirmVisible(true);
-    }
+    };
 
     const handleConfirm = () => {
-        if (newsId !== null) {
+        if (confirmAction) {
+            confirmAction(); // Gọi hành động đã lưu
             setConfirmVisible(false);
-            console.log(console.log('Call api delete survey with id: ', newsId))
-
-            openSnackbar({
-                text: 'Xóa tin tức thành công',
-                type: 'success',
-                duration: 5000,
-            });
+            setConfirmAction(null);
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
+        setConfirmAction(null);
     };
+
+    const removeResident = (id: number) => {
+        openConfirmModal(() => {
+            console.log('Call API delete resident with id:', id);
+
+            openSnackbar({
+                text: 'Xóa thông tin hộ dân thành công',
+                type: 'success',
+                duration: 5000,
+            });
+        })
+    }
 
     const columns: ColumnDef<ResidentType>[] = [
         {
@@ -109,13 +116,13 @@ const ResidentManagementPage: React.FC = () => {
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
+                    </button> */}
                     <button
-                        onClick={() => removeNews(row.original.id)}
+                        onClick={() => removeResident(row.original.id)}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button> */}
+                    </button>
                 </div>
             ),
         },
@@ -187,7 +194,7 @@ const ResidentManagementPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa tin tức này không?"
+                message="Bạn có chắc chắn muốn xóa thông tin hộ dân này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

@@ -19,8 +19,8 @@ const NewsManagementPage: React.FC = () => {
     const { openSnackbar } = useSnackbar();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [newsId, setNewsId] = useState<number | undefined>(undefined);
     const [param, setParam] = useState(initParam)
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -39,28 +39,35 @@ const NewsManagementPage: React.FC = () => {
         console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
-    const removeNews = (id: number | undefined) => {
-        setNewsId(id)
+    const openConfirmModal = (action: () => void) => {
+        setConfirmAction(() => action);
         setConfirmVisible(true);
-    }
+    };
 
     const handleConfirm = () => {
-        if (newsId !== null) {
+        if (confirmAction) {
+            confirmAction(); 
             setConfirmVisible(false);
-            console.log(console.log('Call api delete survey with id: ', newsId))
+            setConfirmAction(null);
+        }
+    };
+
+    const handleCancel = () => {
+        setConfirmVisible(false);
+        setConfirmAction(null);
+    };
+
+    const removeNews = (id: number) => {
+        openConfirmModal(() => {
+            console.log('Call api delete news with id: ', id)
 
             openSnackbar({
                 text: 'Xóa tin tức thành công',
                 type: 'success',
                 duration: 5000,
             });
-        }
-    };
-
-    const handleCancel = () => {
-        console.log("Cancelled!");
-        setConfirmVisible(false);
-    };
+        })
+    }
 
     const columns: ColumnDef<News>[] = [
         {
