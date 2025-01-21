@@ -11,6 +11,7 @@ import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentManagementPage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage } from "pages/management";
+import { TeamDetailPage, TeamPage } from "pages/team";
 
 const MyApp = () => {
   return (
@@ -46,6 +47,10 @@ const MyApp = () => {
               {/* SURVEY */}
               <Route path="/survey" element={<SurveyPage></SurveyPage>}></Route>
               <Route path="/survey-detail" element={<SurveyDetailPage></SurveyDetailPage>}></Route>
+
+              {/* TEAM */}
+              <Route path="/team" element={<TeamPage></TeamPage>}></Route>
+              <Route path="/team-detail" element={<TeamDetailPage></TeamDetailPage>}></Route>
 
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>

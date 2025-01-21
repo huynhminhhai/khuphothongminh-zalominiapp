@@ -26,7 +26,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                         <h3 className="text-[16px] leading-[22px] font-semibold line-clamp-2 mb-1">{data.title}</h3>
                         <div className="flex">
                             <Box>
-                                <ul className="text-[14px] font-normal text-[#7c7c7c]">
+                                <ul className="flex flex-col gap-[2px] text-[14px] font-normal text-[#7c7c7c]">
                                     <li className="line-clamp-2">
                                         Địa điểm: <span className="font-medium">{data.address}</span>
                                     </li>

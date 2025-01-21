@@ -55,6 +55,11 @@ export const SERVICES: ServicesType[] = [
         url: '/survey',
         icon: images.survey
     },
+    {
+        label: 'Thông tin tổ chức',
+        url: '/team',
+        icon: images.team
+    },
 ]
 
 export type MeetingStatusType = {
@@ -147,7 +152,7 @@ export const relationships = [
 
 export type ResidentType = {
     id: number;
-    parentId: number | null; 
+    parentId: number | null;
     fullname: string;
     phoneNumber: string;
     numberCard: string;
@@ -163,7 +168,7 @@ export type ResidentType = {
     residenceType: number;
     status: number;
     bhyt: string;
-    avatar?: string; 
+    avatar?: string;
 }
 
 export const RESIDENT: ResidentType[] = [
@@ -1006,7 +1011,7 @@ export const MEETINGDATA = [
         address: 'Nhà văn hóa tổ dân phố 5, Phường Xuân An, Thành phố Đà Lạt',
         linkOnl: 'https://zoom.us/j/123456789',
         resident: 1,
-        staff: [1,2,3,4,5,6,7],
+        staff: [1, 2, 3, 4, 5, 6, 7],
         status: 2
     },
     {
@@ -1019,7 +1024,7 @@ export const MEETINGDATA = [
         address: 'Phòng họp UBND Phường Xuân An',
         linkOnl: 'https://zoom.us/j/987654321',
         resident: 1,
-        staff: [1,2],
+        staff: [1, 2],
         status: 2
     },
     {
@@ -1032,7 +1037,7 @@ export const MEETINGDATA = [
         address: 'Hội trường nhà văn hóa huyện',
         linkOnl: 'https://zoom.us/j/123987456',
         resident: 2,
-        staff: [1,2],
+        staff: [1, 2],
         status: 2
     },
     {
@@ -1058,7 +1063,86 @@ export const MEETINGDATA = [
         address: 'Phòng họp UBND Quận 3',
         linkOnl: 'https://zoom.us/j/654321987',
         resident: 1,
-        staff: [1,2],
+        staff: [1, 2],
         status: 2
     },
 ]
+
+export type TeamType = {
+    id: number;
+    fullname: string;
+    position: string;
+    phonenumber: string;
+    email: string;
+    officeAddress: string;
+    gender: number;
+    birthDate: string;
+    avatar?: string;
+    status?: number;
+    created_at?: string;
+    updated_at?: string;
+}
+
+export const TEAMDATA: TeamType[] = [
+    {
+        id: 1,
+        fullname: "Lê Hoàng Nam",
+        position: "Trưởng khu phố",
+        phonenumber: "0912345678",
+        email: "lehoangnam@example.com",
+        officeAddress: "Khu phố 9",
+        gender: 1,
+        birthDate: "1980-05-15",
+        avatar: "https://i.pinimg.com/736x/c9/45/0c/c9450c1a82fbf565176588363da3fcfa.jpg",
+        status: 1
+    },
+    {
+        id: 2,
+        fullname: "Nguyễn Thị Mai",
+        position: "Bí thư chi bộ",
+        phonenumber: "0987654321",
+        email: "nguyenthimai@example.com",
+        officeAddress: "Khu phố 9",
+        gender: 2,
+        birthDate: "1975-08-22",
+        avatar: "https://i.pinimg.com/736x/e5/08/cf/e508cff348d68a5bd0181a06509f6cbc.jpg",
+        status: 1
+    },
+    {
+        id: 3,
+        fullname: "Trần Văn Hùng",
+        position: "Ban quản lý",
+        phonenumber: "0909123456",
+        email: "tranvanhung@example.com",
+        officeAddress: "Khu phố 9",
+        gender: 1,
+        birthDate: "1990-03-10",
+        avatar: "https://approachableai.com/wp-content/uploads/2022/12/SDv2.1-Example.jpg",
+        status: 1
+    },
+    {
+        id: 4,
+        fullname: "Phạm Thị Lan",
+        position: "Tổ trưởng dân phố",
+        phonenumber: "0933123456",
+        email: "phamthilan@example.com",
+        officeAddress: "Khu phố 9",
+        gender: 2,
+        birthDate: "1988-12-01",
+        avatar: "https://i.pinimg.com/736x/76/b7/14/76b7140f632311d942c446ed5e10e34f.jpg",
+        status: 1
+    },
+    {
+        id: 5,
+        fullname: "Đỗ Minh Phúc",
+        position: "Phó trưởng khu phố",
+        phonenumber: "0974567890",
+        email: "dominphuc@example.com",
+        officeAddress: "Khu phố 9",
+        gender: 1,
+        birthDate: "1982-07-20",
+        avatar: "https://s.abcnews.com/images/GMA/HaleyYamadaLensa-hy-abc-20221205_1670289829448_hpEmbed_1x1_992.jpg",
+        status: 1
+    }
+];
+
