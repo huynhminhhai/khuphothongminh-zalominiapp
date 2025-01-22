@@ -108,7 +108,7 @@ const TeamUpdateForm: React.FC = () => {
 
             reset(defaultValues);
             
-            navigate('/news-management');
+            navigate('/team-management');
         } catch (error) {
             console.error('Error:', error);
             openSnackbar({

@@ -39,3 +39,5 @@ export { default as ResidentCraftManagementPage } from "./management-resident/re
 **/
 export { default as TeamManagementPage } from "./management-team/team-management";
 export { default as TeamAddPage } from "./management-team/team-create";
+export { default as TeamUpdatePage } from "./management-team/team-edit";
+export { default as TeamTermPage } from "./management-team/team-term";

@@ -18,8 +18,8 @@ const defaultValues: FormDataTeam = {
     email: '',
     term: {
         position: '',
-        startDate: '',
-        endDate: ''
+        start_date: '',
+        end_date: ''
     }
 }
 
@@ -166,24 +166,24 @@ const TeamAddForm: React.FC = () => {
                     </div>
                     <div className="col-span-12">
                         <FormControllerDatePicker
-                            name="term.startDate"
+                            name="term.start_date"
                             label="Ngày bắt đầu"
                             control={control}
                             placeholder="Chọn ngày bắt đầu"
                             required
                             dateFormat="dd/mm/yyyy"
-                            error={errors.term?.startDate?.message}
+                            error={errors.term?.start_date?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormControllerDatePicker
-                            name="term.endDate"
+                            name="term.end_date"
                             label="Ngày kết thúc"
                             control={control}
                             placeholder="Chọn ngày kết thúc"
                             required
                             dateFormat="dd/mm/yyyy"
-                            error={errors.term?.endDate?.message}
+                            error={errors.term?.end_date?.message}
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">

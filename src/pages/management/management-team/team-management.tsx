@@ -46,7 +46,7 @@ const TeamManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); 
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -75,7 +75,7 @@ const TeamManagementPage: React.FC = () => {
             header: 'Họ tên',
         },
         {
-            accessorKey: 'phonenumber',
+            accessorKey: 'phoneNumber',
             header: 'SĐT',
         },
         {
@@ -85,8 +85,16 @@ const TeamManagementPage: React.FC = () => {
         {
             id: 'termDate',
             header: 'Nhiệm kỳ',
+            size: 250,
             cell: ({ row }) => (
-                <div className="flex justify-center items-center">{row.original.start_date} - {row.original.end_date}</div>
+                <div className="flex justify-center items-center gap-3">
+                    <div>
+                        {row.original.start_date} - {row.original.end_date}
+                    </div>
+                    <div onClick={() => navigate(`/team-term?id=${row.original.id}`)}>
+                        <Icon icon='lucide:edit' fontSize={18} />
+                    </div>
+                </div>
             )
         },
         {

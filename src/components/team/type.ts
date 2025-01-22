@@ -8,15 +8,22 @@ export const schemaTeam = yup.object().shape({
     residential_group_id: yup.number().required('Không được để trống'),
     term: yup.object().shape({
         position: yup.string().required('Chức vụ không được để trống'), 
-        startDate: yup.string().required('Ngày bắt đầu không được để trống'), 
-        endDate: yup.string().required('Ngày kết thúc không được để trống') 
+        start_date: yup.string().required('Ngày bắt đầu không được để trống'), 
+        end_date: yup.string().required('Ngày kết thúc không được để trống') 
     })
 });
 
-type FormDataTerm = {
+
+export const schemaTermAdd = yup.object().shape({
+    position: yup.string().required('Chức vụ không được để trống'),
+    start_date: yup.string().required('Không được để trống'),
+    end_date: yup.string().required('Không được để trống'),
+});
+
+export type FormDataTerm = {
     position: string;
-    startDate: string;
-    endDate: string;
+    start_date: string;
+    end_date: string;
 }
 
 export type FormDataTeam = {
