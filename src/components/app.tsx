@@ -12,6 +12,8 @@ import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage 
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentManagementPage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TeamAddPage, TeamManagementPage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
+import { TeamUpdateForm } from "./team";
+import TeamUpdatePage from "pages/management/management-team/team-edit";
 
 const MyApp = () => {
   return (
@@ -82,6 +84,7 @@ const MyApp = () => {
               {/* MANAGEMENT TEAM */}
               <Route path="/team-management" element={<TeamManagementPage></TeamManagementPage>}></Route>
               <Route path="/team-add" element={<TeamAddPage></TeamAddPage>}></Route>
+              <Route path="/team-update" element={<TeamUpdatePage></TeamUpdatePage>}></Route>
 
             </Routes>
             <Navigation />

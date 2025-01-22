@@ -1072,7 +1072,7 @@ export type TeamType = {
     id: number;
     fullname: string;
     position: string;
-    phonenumber: string;
+    phoneNumber: string;
     email: string;
     officeAddress: string;
     gender: number;
@@ -1081,6 +1081,7 @@ export type TeamType = {
     status?: number;
     start_date?: string;
     end_date?: string;
+    residential_group_id: number;
 }
 
 export const TEAMDATA: TeamType[] = [
@@ -1088,71 +1089,76 @@ export const TEAMDATA: TeamType[] = [
         id: 1,
         fullname: "Lê Hoàng Nam",
         position: "Trưởng khu phố",
-        phonenumber: "0912345678",
+        phoneNumber: "0912345678",
         email: "lehoangnam@example.com",
         officeAddress: "Khu phố 9",
         gender: 1,
-        birthDate: "1980-05-15",
+        birthDate: "15/05/1985",
         avatar: "https://i.pinimg.com/736x/c9/45/0c/c9450c1a82fbf565176588363da3fcfa.jpg",
         status: 1,
         start_date: '12/12/2024',
-        end_date: '12/12/2026'
+        end_date: '12/12/2026',
+        residential_group_id: 1
     },
     {
         id: 2,
         fullname: "Nguyễn Thị Mai",
         position: "Phó khu phố",
-        phonenumber: "0987654321",
+        phoneNumber: "0987654321",
         email: "nguyenthimai@example.com",
         officeAddress: "Khu phố 9",
         gender: 2,
-        birthDate: "1975-08-22",
+        birthDate: "22/8/1989",
         avatar: "https://i.pinimg.com/736x/e5/08/cf/e508cff348d68a5bd0181a06509f6cbc.jpg",
         status: 1,
         start_date: '12/12/2024',
-        end_date: '12/12/2026'
+        end_date: '12/12/2026',
+        residential_group_id: 1
     },
     {
         id: 3,
         fullname: "Trần Văn Hùng",
         position: "Tổ trưởng tổ 1",
-        phonenumber: "0909123456",
+        phoneNumber: "0909123456",
         email: "tranvanhung@example.com",
         officeAddress: "Khu phố 9",
         gender: 1,
-        birthDate: "1990-03-10",
+        birthDate: "10/03/1990",
         avatar: "https://approachableai.com/wp-content/uploads/2022/12/SDv2.1-Example.jpg",
         status: 1,
         start_date: '12/12/2024',
-        end_date: '12/12/2026'
+        end_date: '12/12/2026',
+        residential_group_id: 1
     },
     {
         id: 4,
         fullname: "Phạm Thị Lan",
         position: "Tổ phó tổ 1",
-        phonenumber: "0933123456",
+        phoneNumber: "0933123456",
         email: "phamthilan@example.com",
         officeAddress: "Khu phố 9",
         gender: 2,
-        birthDate: "1988-12-01",
+        birthDate: "01/12/1998",
         avatar: "https://i.pinimg.com/736x/76/b7/14/76b7140f632311d942c446ed5e10e34f.jpg",
         status: 1,
         start_date: '12/12/2024',
-        end_date: '12/12/2026'
+        end_date: '12/12/2026',
+        residential_group_id: 1
     },
     {
         id: 5,
         fullname: "Đỗ Minh Phúc",
         position: "Tổ phó tổ 2",
-        phonenumber: "0974567890",
+        phoneNumber: "0974567890",
         email: "dominphuc@example.com",
         officeAddress: "Khu phố 9",
         gender: 1,
-        birthDate: "1982-07-20",
+        birthDate: "20/07/1982",
         avatar: "https://s.abcnews.com/images/GMA/HaleyYamadaLensa-hy-abc-20221205_1670289829448_hpEmbed_1x1_992.jpg",
         status: 1,
         start_date: '12/12/2024',
-        end_date: '12/12/2026'
+        end_date: '12/12/2026',
+        residential_group_id: 1
     }
 ];
 

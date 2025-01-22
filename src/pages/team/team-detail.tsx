@@ -74,7 +74,7 @@ const TeamDetailPage: React.FC = () => {
                                             </div>
                                             <div className="flex items-center gap-3">
                                                 <Icon fontSize={20} className="text-[#808080]" icon='icon-park-solid:phone' />
-                                                <span className="text-[16px] font-medium">{detailData.phonenumber}</span>
+                                                <span className="text-[16px] font-medium">{detailData.phoneNumber}</span>
                                             </div>
                                             <div className="flex items-center gap-3">
                                                 <Icon fontSize={20} className="text-[#808080]" icon='ic:baseline-email' />
