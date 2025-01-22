@@ -52,3 +52,11 @@ export type FormDataTeamUpdate = {
     officeAddress: string;
     residential_group_id: number;
 }
+
+export type FormDataResidential = {
+    name: string;
+}
+
+export const schemaResidential = yup.object().shape({
+    name: yup.string().required('Tên tổ dân cư không được để trống'),
+});

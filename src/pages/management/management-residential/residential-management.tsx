@@ -3,26 +3,27 @@ import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { TablePagination, TableTanStack } from "components/table"
-import { RESIDENTIALGROUPDATA, TEAMDATA, TeamType } from "constants/utinities"
+import { ResidentialModalAdd } from "components/team"
+import { News, NEWSDATA, RESIDENTIALGROUPDATA } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
     pageSize: 10,
     keyword: '',
-    residential_group_id: 0
 }
 
-const TeamManagementPage: React.FC = () => {
+const ResidentialManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
-    const { Option } = Select
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+    const [modalAddForm, setModalAddForm] = useState<boolean>(false)
+    const [residentialId, setResidentialId] = useState<number>(0)
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -48,7 +49,7 @@ const TeamManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction();
+            confirmAction(); 
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -59,45 +60,22 @@ const TeamManagementPage: React.FC = () => {
         setConfirmAction(null);
     };
 
-    const removeStaff = (id: number) => {
+    const removeNews = (id: number) => {
         openConfirmModal(() => {
-            console.log('Call api delete news with id: ', id)
+            console.log('Call api delete with id: ', id)
 
             openSnackbar({
-                text: 'Xóa nhân sự thành công',
+                text: 'Xóa tổ dân cư thành công',
                 type: 'success',
                 duration: 5000,
             });
         })
     }
 
-    const columns: ColumnDef<TeamType>[] = [
+    const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'fullname',
-            header: 'Họ tên',
-        },
-        {
-            accessorKey: 'phoneNumber',
-            header: 'SĐT',
-        },
-        {
-            accessorKey: 'position',
-            header: 'Chức vụ',
-        },
-        {
-            id: 'termDate',
-            header: 'Nhiệm kỳ',
-            size: 250,
-            cell: ({ row }) => (
-                <div className="flex justify-center items-center gap-3">
-                    <div>
-                        {row.original.start_date} - {row.original.end_date}
-                    </div>
-                    <div onClick={() => navigate(`/team-term?id=${row.original.id}`)}>
-                        <Icon icon='lucide:edit' fontSize={18} />
-                    </div>
-                </div>
-            )
+            accessorKey: 'name',
+            header: 'Tên tổ dân cư'
         },
         {
             id: 'actions', // Custom column for actions
@@ -105,56 +83,36 @@ const TeamManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/team-detail?id=${row.original.id}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/team-update?id=${row.original.id}`)}
+                        onClick={() => {
+                            setResidentialId(row.original.id)
+                            setModalAddForm(true)
+                        }}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
-                    <button
-                        onClick={() => removeStaff(row.original.id)}
+                    {/* <button
+                        onClick={() => removeNews(row.original.id)}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    </button> */}
                 </div>
             ),
         },
     ];
 
-    const filteredData = TEAMDATA.filter(item => {
-        const matchesSearch = item.fullname.toLowerCase().includes(param.keyword.toLowerCase())
-        const matchesStatus = param.residential_group_id === 0 || item.status === param.residential_group_id;
-
-        return matchesSearch && matchesStatus;
-    });
-
-    console.log(param)
+    const filteredData = RESIDENTIALGROUPDATA.filter(item =>
+        item.name.toLowerCase().includes(param.keyword.toLowerCase())
+    );
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý tin tức" />
+                <HeaderSub title="Quản lý tổ dân cư" />
                 <Box p={4}>
-                    <Box mb={4} flex justifyContent="flex-end">
-                        <Button
-                            size="small"
-                            variant="tertiary"
-                            onClick={() => navigate('/residential-management')}
-                        >
-                            <div className="flex items-center gap-1">
-                                Quản lý tổ dân cư
-                                <Icon fontSize={18} icon='iconamoon:enter' />
-                            </div>
-                        </Button>
-                    </Box>
-                    <Box mb={2} flex justifyContent="space-between" className="gap-4">
-                        <Box className="flex-1">
+                    <Box flex justifyContent="space-between">
+                        <Box>
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -169,7 +127,10 @@ const TeamManagementPage: React.FC = () => {
                         <Button
                             size="medium"
                             variant="secondary"
-                            onClick={() => navigate('/team-add')}
+                            onClick={() => {
+                                setResidentialId(0)
+                                setModalAddForm(true)
+                            }}
                         >
                             <div className="flex items-center gap-1">
                                 <Icon fontSize={18} icon='material-symbols:add-rounded' />
@@ -177,27 +138,6 @@ const TeamManagementPage: React.FC = () => {
                             </div>
                         </Button>
                     </Box>
-                    <div className="grid grid-cols-2 gap-4">
-                        <Select
-                            // defaultValue={3}
-                            placeholder="Chọn tổ dân cư"
-                            closeOnSelect
-                            onChange={(value) => {
-                                setParam((prevParam) => ({
-                                    ...prevParam,
-                                    residential_group_id: value as number
-                                }));
-                            }}
-                        >
-                            <Option title={'Tất cả'} value={0} />
-                            {
-                                RESIDENTIALGROUPDATA.map((item) => (
-                                    <Option title={item.name} value={item.id} />
-                                ))
-                            }
-                        </Select>
-                        <div></div>
-                    </div>
                     <Box mt={4}>
                         <TableTanStack data={filteredData} columns={columns} />
                         <TablePagination
@@ -213,12 +153,17 @@ const TeamManagementPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa nhân sự này không?"
+                message="Bạn có chắc chắn muốn xóa tin tức này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
+            />
+            <ResidentialModalAdd
+                visible={modalAddForm}
+                onClose={() => setModalAddForm(false)}
+                residentialId={residentialId}
             />
         </Page>
     )
 }
 
-export default TeamManagementPage
+export default ResidentialManagementPage

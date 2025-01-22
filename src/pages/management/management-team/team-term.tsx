@@ -14,7 +14,6 @@ const TeamTermPage: React.FC = () => {
     const [staffData, setStaffData] = useState<TeamType>()
     const [termData, setTermData] = useState<TermType[]>()
     const [modalAddForm, setModalAddForm] = useState<boolean>(false)
-    const [modalUpdateForm, setModalUpdateForm] = useState<boolean>(false)
     const [termId, setTermId] = useState<number>(0)
 
     const navigate = useNavigate()
