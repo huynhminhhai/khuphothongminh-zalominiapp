@@ -83,9 +83,9 @@ const ResidentManagementPage: React.FC = () => {
                 <div className="flex items-center justify-center">
                     {
                         row.original.parentId ?
-                        <Icon className="text-red-700" fontSize={25} icon='ic:round-do-not-disturb-on' />
+                        <Icon className="text-red-700" fontSize={25} icon='material-symbols-light:close-rounded' />
                         :
-                        <Icon className="text-green-700" fontSize={30} icon='lets-icons:check-fill' />
+                        <Icon className="text-green-700" fontSize={30} icon='hugeicons:tick-01' />
                     }
                 </div>
             ),
@@ -106,7 +106,7 @@ const ResidentManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/resident?id=${row.original.id}`)}
+                        onClick={() => navigate(`/profile-resident?id=${row.original.id}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />

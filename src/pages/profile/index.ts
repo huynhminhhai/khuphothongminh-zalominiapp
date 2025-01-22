@@ -1,0 +1,1 @@
+export { default as ProfileResidentPage } from "./profile-resident";

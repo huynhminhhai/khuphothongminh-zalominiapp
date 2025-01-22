@@ -153,6 +153,7 @@ export const relationships = [
 export type ResidentType = {
     id: number;
     parentId: number | null;
+    parentName: string;
     fullname: string;
     phoneNumber: string;
     numberCard: string;
@@ -169,12 +170,16 @@ export type ResidentType = {
     status: number;
     bhyt: string;
     avatar?: string;
+    isHouseHold: boolean;
+    economicStatus: number;
+    culturalFamilyStatus: boolean;
 }
 
 export const RESIDENT: ResidentType[] = [
     {
         id: 1,
         parentId: null,
+        parentName: '',
         fullname: "Huỳnh Minh Hải",
         phoneNumber: '0848551555',
         dateCard: '21/06/2022',
@@ -190,11 +195,15 @@ export const RESIDENT: ResidentType[] = [
         residenceType: 1,
         status: 1,
         bhyt: '123',
-        avatar: images.avatar
+        avatar: images.avatar,
+        isHouseHold: true,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     },
     {
         id: 2,
         parentId: 1,
+        parentName: 'Huỳnh Minh Hải',
         fullname: "Lê Thị Hoa",
         phoneNumber: '0848551444',
         dateCard: '21/6/2022',
@@ -210,11 +219,15 @@ export const RESIDENT: ResidentType[] = [
         residenceType: 1,
         status: 1,
         bhyt: '123ewe',
-        avatar: ''
+        avatar: '',
+        isHouseHold: false,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     },
     {
         id: 3,
         parentId: 1,
+        parentName: 'Huỳnh Minh Hải',
         fullname: "Trần Quốc Bảo",
         phoneNumber: '0848551333',
         dateCard: '21/6/2022',
@@ -230,11 +243,15 @@ export const RESIDENT: ResidentType[] = [
         residenceType: 2,
         status: 1,
         bhyt: '122323',
-        avatar: ''
+        avatar: '',
+        isHouseHold: false,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     },
     {
         id: 4,
         parentId: 1,
+        parentName: 'Huỳnh Minh Hải',
         fullname: "Phạm Thị Mai",
         phoneNumber: '0848551222',
         dateCard: '21/6/2022',
@@ -250,11 +267,15 @@ export const RESIDENT: ResidentType[] = [
         residenceType: 1,
         status: 1,
         bhyt: '123ưew',
-        avatar: ''
+        avatar: '',
+        isHouseHold: false,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     },
     {
         id: 5,
         parentId: 1,
+        parentName: 'Huỳnh Minh Hải',
         fullname: "Nguyễn Văn An",
         phoneNumber: '0848551111',
         dateCard: '21/6/2022',
@@ -270,7 +291,10 @@ export const RESIDENT: ResidentType[] = [
         residenceType: 2,
         status: 1,
         bhyt: '123sdsd',
-        avatar: ''
+        avatar: '',
+        isHouseHold: false,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     }
 ]
 
@@ -278,6 +302,7 @@ export const RESIDENTCRAFT: ResidentType[] = [
     {
         id: 6,
         parentId: 1,
+        parentName: 'Huỳnh Minh Hải',
         fullname: "Huỳnh Hồng Hưng",
         phoneNumber: '',
         dateCard: '21/6/2022',
@@ -293,11 +318,15 @@ export const RESIDENTCRAFT: ResidentType[] = [
         residenceType: 1,
         status: 2,
         bhyt: '123sds',
-        avatar: ''
+        avatar: '',
+        isHouseHold: false,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     },
     {
         id: 4,
         parentId: 1,
+        parentName: 'Huỳnh Minh Hải',
         fullname: "Phạm Thị Mai",
         phoneNumber: '0848551222',
         dateCard: '21/6/2022',
@@ -313,13 +342,17 @@ export const RESIDENTCRAFT: ResidentType[] = [
         residenceType: 1,
         status: 3,
         bhyt: '123ưew',
-        avatar: ''
+        avatar: '',
+        isHouseHold: false,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     },
 ]
 
 export const RESIDENTMAIN = {
     id: 1,
     parentId: null,
+    parentName: '',
     fullname: "Huỳnh Minh Hải",
     phoneNumber: '0848551555',
     dateCard: '21/6/2022',
@@ -335,7 +368,10 @@ export const RESIDENTMAIN = {
     residenceType: 1,
     status: 1,
     bhyt: '123',
-    avatar: images.avatar
+    avatar: images.avatar,
+    isHouseHold: true,
+    economicStatus: 1,
+    culturalFamilyStatus: true
 }
 
 export type News = {
@@ -1182,7 +1218,7 @@ export type TermType = {
     isCurrent: boolean;
 }
 
-export const TERMDATA:TermType[] = [
+export const TERMDATA: TermType[] = [
     {
         id: 1,
         staff_id: 1,

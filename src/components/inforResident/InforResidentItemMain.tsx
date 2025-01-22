@@ -1,8 +1,10 @@
 import { Icon } from "@iconify/react"
 import images from "assets/images"
+import { economicStatus, gender } from "constants/mock"
 import { genderLabel, RESIDENT, RESIDENTMAIN } from "constants/utinities"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
+import { getLabelOptions } from "utils/options"
 import { Avatar, Box, useSnackbar } from "zmp-ui"
 
 export const InforItemMain = ({ label, value }: { label: string, value: string }) => {
@@ -69,19 +71,22 @@ const InforResidentItemMain: React.FC = () => {
                         </div>
                     </Box>
                     <Box p={4}>
+                        <InforItemMain label="Chủ hộ" value={detailData.parentName || 'Là chủ hộ'} />
                         <InforItemMain label="Số định danh cá nhân" value={detailData.numberCard} />
-                        <InforItemMain label="Giới tính" value={genderLabel[detailData.gender]} />
+                        <InforItemMain label="Giới tính" value={getLabelOptions(detailData.gender, gender) as string} />
                         <InforItemMain label="Ngày sinh" value={detailData.birthDate} />
                         <InforItemMain label="Dân tộc" value={detailData.nation} />
                         <InforItemMain label="Tôn giáo" value={detailData.religion} />
                         <InforItemMain label="Quốc tịch" value={detailData.nationality} />
                         <InforItemMain label="Quê quán" value={detailData.address} />
                         <InforItemMain label="Bảo hiểm y tế" value={detailData.bhyt} />
+                        <InforItemMain label="Tình trạng hộ" value={getLabelOptions(detailData.economicStatus, economicStatus) as string} />
+                        <InforItemMain label="Gia đình văn hóa" value={detailData.culturalFamilyStatus ? 'Đạt' : 'Không đạt'} />
                     </Box>
                 </Box>
             }
             {
-                detailData && detailData.relationship === 0 &&
+                detailData && detailData.isHouseHold &&
                 <Box p={4}>
                     <Box p={4} className="border-[1px] rounded-lg" onClick={() => navigate('/resident-member')}>
                         <div className="flex items-center justify-between">

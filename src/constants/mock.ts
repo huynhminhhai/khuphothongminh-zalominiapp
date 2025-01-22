@@ -30,3 +30,9 @@ export const residentRequest = [
     { value: 2, label: 'Đang yêu cầu thêm' },
     { value: 3, label: 'Đang yêu cập nhật' },
 ]
+
+export const economicStatus = [
+    { value: 1, label: 'Bình thường' },
+    { value: 2, label: 'Hộ nghèo' },
+    { value: 3, label: 'Hộ cận nghèo' },
+]

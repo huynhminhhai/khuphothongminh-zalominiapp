@@ -5,13 +5,18 @@ import { Divider } from "components/divider"
 import { InforResidentItemSub } from "."
 
 const InforResidentCraftList: React.FC = () => {
+
+    const myId = 1
+
+    const filteredData = RESIDENTCRAFT.filter(item => item.parentId === myId);
+    
     return (
         <Box>
             <div className="grid grid-cols-1">
                 {
-                    RESIDENTCRAFT.map((item: ResidentType, index: React.Key) => (
+                    filteredData.map((item: ResidentType, index: React.Key) => (
                         <Box key={index}>
-                            <InforResidentItemSub data={item} isCraft/>
+                            <InforResidentItemSub data={item} isCraft />
                             <Divider />
                         </Box>
                     ))
