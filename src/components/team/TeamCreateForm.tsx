@@ -14,7 +14,7 @@ const defaultValues: FormDataTeam = {
     birthDate: '',
     phoneNumber: '',
     officeAddress: '',
-    residential_group_id: 1,
+    residential_group_id: 0,
     email: '',
     term: {
         position: '',

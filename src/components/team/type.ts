@@ -5,7 +5,7 @@ export const schemaTeam = yup.object().shape({
     birthDate: yup.string().required('Ngày sinh không được để trống'),
     phoneNumber: yup.string().required('SĐT không được để trống'),
     officeAddress: yup.string().required('Không được để trống'),
-    residential_group_id: yup.number().required('Không được để trống'),
+    residential_group_id: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
     term: yup.object().shape({
         position: yup.string().required('Chức vụ không được để trống'), 
         start_date: yup.string().required('Ngày bắt đầu không được để trống'), 

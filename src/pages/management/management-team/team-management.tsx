@@ -139,7 +139,7 @@ const TeamManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý tin tức" />
+                <HeaderSub title="Quản lý nhân sự" />
                 <Box p={4}>
                     <Box mb={4} flex justifyContent="flex-end">
                         <Button
@@ -192,7 +192,7 @@ const TeamManagementPage: React.FC = () => {
                             <Option title={'Tất cả'} value={0} />
                             {
                                 RESIDENTIALGROUPDATA.map((item) => (
-                                    <Option title={item.name} value={item.id} />
+                                    <Option key={item.id} title={item.name} value={item.id} />
                                 ))
                             }
                         </Select>
