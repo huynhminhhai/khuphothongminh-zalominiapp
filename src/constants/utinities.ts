@@ -295,6 +295,30 @@ export const RESIDENT: ResidentType[] = [
         isHouseHold: false,
         economicStatus: 1,
         culturalFamilyStatus: true
+    },
+    {
+        id: 99,
+        parentId: null,
+        parentName: '',
+        fullname: "Nguyễn Văn B",
+        phoneNumber: '0848551111',
+        dateCard: '21/6/2022',
+        numberCard: "3456789012",
+        gender: 1,
+        birthDate: "05/12/1994",
+        nation: "Kinh",
+        religion: "Không",
+        nationality: "Việt Nam",
+        address: "Xã Thạnh Đức, Huyện Bến Lức, Tỉnh Long An",
+        relationship: 0,
+        residenceStatus: 1,
+        residenceType: 1,
+        status: 1,
+        bhyt: '123sdsd',
+        avatar: '',
+        isHouseHold: true,
+        economicStatus: 1,
+        culturalFamilyStatus: true
     }
 ]
 
@@ -1226,6 +1250,30 @@ export const TERMDATA: TermType[] = [
         isCurrent: true,
         start_date: '12/12/2024',
         end_date: '12/12/2026'
+    },
+    {
+        id: 6,
+        staff_id: 1,
+        position: 'Phó khu phố',
+        isCurrent: false,
+        start_date: '12/12/2022',
+        end_date: '12/12/2024'
+    },
+    {
+        id: 7,
+        staff_id: 1,
+        position: 'Tổ trưởng tổ 3',
+        isCurrent: false,
+        start_date: '12/12/2020',
+        end_date: '12/12/2022'
+    },
+    {
+        id: 8,
+        staff_id: 1,
+        position: 'Tổ phó tổ 3',
+        isCurrent: false,
+        start_date: '12/12/2016',
+        end_date: '12/12/2020'
     },
     {
         id: 2,

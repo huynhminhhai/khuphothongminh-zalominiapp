@@ -79,14 +79,30 @@ const ResidentCraftManagementPage: React.FC = () => {
         },
         {
             id: 'isParent',
-            header: 'Chủ hộ',
+            header: () => (
+                <div className="flex items-center justify-center gap-1">
+                    Chủ hộ
+                    <Checkbox
+                        size="small"
+                        label=""
+                        value=''
+                        checked={param.isHouseholder}
+                        onChange={() => {
+                            setParam((prevParam) => ({
+                                ...prevParam,
+                                isHouseholder: !param.isHouseholder
+                            }));
+                        }}
+                    />
+                </div>
+            ),
             cell: ({ row }) => (
                 <div className="flex items-center justify-center">
                     {
                         row.original.parentId ?
-                        <Icon className="text-red-700" fontSize={25} icon='ic:round-do-not-disturb-on' />
-                        :
-                        <Icon className="text-green-700" fontSize={30} icon='lets-icons:check-fill' />
+                            <Icon className="text-red-700" fontSize={25} icon='material-symbols-light:close-rounded' />
+                            :
+                            <Icon className="text-green-700" fontSize={30} icon='hugeicons:tick-01' />
                     }
                 </div>
             ),
@@ -141,7 +157,7 @@ const ResidentCraftManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý thông tin chưa duyệt" />
                 <Box p={4}>
                     <Box flex justifyContent="space-between" className="gap-3">
-                        <Box>
+                        <Box className="flex-1">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -149,20 +165,6 @@ const ResidentCraftManagementPage: React.FC = () => {
                                     setParam((prevParam) => ({
                                         ...prevParam,
                                         keyword: e.target.value
-                                    }));
-                                }}
-                            />
-                        </Box>
-                    </Box>
-                    <Box flex mt={3}>
-                        <Box>
-                            <Checkbox
-                                label="Chủ hộ"
-                                value=''
-                                onChange={() => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        isHouseholder: !param.isHouseholder
                                     }));
                                 }}
                             />

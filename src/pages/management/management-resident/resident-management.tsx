@@ -78,14 +78,30 @@ const ResidentManagementPage: React.FC = () => {
         },
         {
             id: 'isParent',
-            header: 'Chủ hộ',
+            header: () => (
+                <div className="flex items-center justify-center gap-1">
+                    Chủ hộ
+                    <Checkbox
+                        size="small"
+                        label=""
+                        value=''
+                        checked={param.isHouseholder}
+                        onChange={() => {
+                            setParam((prevParam) => ({
+                                ...prevParam,
+                                isHouseholder: !param.isHouseholder
+                            }));
+                        }}
+                    />
+                </div>
+            ),
             cell: ({ row }) => (
                 <div className="flex items-center justify-center">
                     {
                         row.original.parentId ?
-                        <Icon className="text-red-700" fontSize={25} icon='material-symbols-light:close-rounded' />
-                        :
-                        <Icon className="text-green-700" fontSize={30} icon='hugeicons:tick-01' />
+                            <Icon className="text-red-700" fontSize={25} icon='material-symbols-light:close-rounded' />
+                            :
+                            <Icon className="text-green-700" fontSize={30} icon='hugeicons:tick-01' />
                     }
                 </div>
             ),
@@ -139,8 +155,20 @@ const ResidentManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Quản lý thông tin hộ dân" />
                 <Box p={4}>
+                    <Box mb={2} flex justifyContent="flex-end">
+                        <Button
+                            size="small"
+                            variant="tertiary"
+                            onClick={() => navigate('/resident-craft-management')}
+                        >
+                            <div className="flex items-center gap-1">
+                                Danh sách hồ sơ chưa duyệt
+                                <Icon fontSize={18} icon='iconamoon:enter' />
+                            </div>
+                        </Button>
+                    </Box>
                     <Box flex justifyContent="space-between" className="gap-3">
-                        <Box>
+                        <Box className="flex-1">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -156,27 +184,13 @@ const ResidentManagementPage: React.FC = () => {
                             <Button
                                 size="medium"
                                 variant="secondary"
-                                onClick={() => navigate('/resident-craft-management')}
+                                onClick={() => navigate('/resident-profile-add')}
                             >
                                 <div className="flex items-center gap-1">
-                                    <Icon fontSize={18} icon='mdi:login' />
-                                    Chưa duyệt
+                                    <Icon fontSize={18} icon='material-symbols:add-rounded' />
+                                    Thêm
                                 </div>
                             </Button>
-                        </Box>
-                    </Box>
-                    <Box flex mt={3}>
-                        <Box>
-                            <Checkbox
-                                label="Chủ hộ"
-                                value=''
-                                onChange={() => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        isHouseholder: !param.isHouseholder
-                                    }));
-                                }}
-                            />
                         </Box>
                     </Box>
                     <Box mt={4}>

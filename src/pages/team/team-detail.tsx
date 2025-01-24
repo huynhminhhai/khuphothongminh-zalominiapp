@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react";
 import images from "assets/images";
 import { PrimaryButton } from "components/button";
 import { HeaderSub } from "components/header-sub";
-import { TEAMDATA, TeamType } from "constants/utinities";
+import { TEAMDATA, TeamType, TERMDATA, TermType } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import { getUser, openChatScreen, openUrlInWebview } from "services/zalo";
@@ -12,6 +12,7 @@ const TeamDetailPage: React.FC = () => {
 
     const [loading, setLoading] = useState(false);
     const [detailData, setDetailData] = useState<TeamType>()
+    const [termData, setTermData] = useState<TermType[]>()
 
     const { openSnackbar } = useSnackbar();
     const [searchParams] = useSearchParams();
@@ -43,7 +44,28 @@ const TeamDetailPage: React.FC = () => {
         };
 
         fetchResidentData();
+        fetchTermData();
     }, [memberId]);
+
+    const fetchTermData = async () => {
+        setLoading(true);
+        try {
+
+            const data = TERMDATA.filter(term => term.staff_id === Number(memberId))
+
+            setTermData(data)
+
+        } catch (error) {
+            console.error("Failed to fetch resident data:", error);
+            openSnackbar({
+                text: "Không thể tải thông tin. Vui lòng thử lại sau.",
+                type: "error",
+                duration: 5000,
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -98,6 +120,26 @@ const TeamDetailPage: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
+                                <Box mt={8} pb={8}>
+                                    <div className="flex flex-col gap-6 border-l-[1px] border-[#808080]">
+                                        {
+                                            termData &&
+                                            termData.map((term, index) => (
+                                                <div key={index} className="bg-white p-4 ml-6 box-shadow-3 relative rounded-lg">
+                                                    <div className="absolute left-[-38px] top-[50%] translate-y-[-50%]">
+                                                        <Icon color={term.isCurrent ? '#731611' : '#808080'} icon='stash:circle-dot' fontSize={27} />
+                                                    </div>
+                                                    <div className="flex">
+                                                        <Box className="flex-1">
+                                                            <h3 className="text-[18px] font-semibold mb-1">{term.position}</h3>
+                                                            <h4 className="text-[14px] font-medium text-[#808080]">{term.start_date} - {term.end_date}</h4>
+                                                        </Box>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </Box>
                         </Box>
                     }
                 </Box>
