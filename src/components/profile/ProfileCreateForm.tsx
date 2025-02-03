@@ -25,7 +25,8 @@ const defaultValues: FormDataProfile = {
     nation: '',
     bhyt: '',
     economicStatus: 1,
-    culturalFamilyStatus: true
+    culturalFamilyStatus: true,
+    parentId: 0,
 }
 
 const ProfileAddForm: React.FC = () => {
@@ -43,7 +44,7 @@ const ProfileAddForm: React.FC = () => {
     }[]>([])
 
     const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<FormDataProfile>({
-        resolver: yupResolver(schemaProfile),
+        resolver: yupResolver(schemaProfile(isHouseHold)),
         defaultValues
     });
 
@@ -152,7 +153,7 @@ const ProfileAddForm: React.FC = () => {
         console.log("Cancelled!");
         setConfirmVisible(false);
     };
-
+    
     return (
         <Box p={4}>
             <Box>
@@ -258,7 +259,7 @@ const ProfileAddForm: React.FC = () => {
                                     placeholder="Chọn chủ hộ"
                                     control={control}
                                     options={houseHoldOptions}
-                                    error={errors.parentId?.message}
+                                    error={errors.parentId?.message as string}
                                     required
                                 />
                             </div>

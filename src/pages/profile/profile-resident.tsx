@@ -58,7 +58,7 @@ const ProfileResidentPage: React.FC = () => {
     }, [userId]);
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
+        <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Thông tin xét duyệt" />
                 <Box>

@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export const schemaProfile = yup.object().shape({
+export const schemaProfile = (isHouseHold: boolean) => yup.object().shape({
     fullname: yup.string().required('Họ tên không được để trống'),
     phoneNumber: yup
         .string()
@@ -18,6 +18,25 @@ export const schemaProfile = yup.object().shape({
     bhyt: yup.string().required("Mã bảo hiểm không được để trống"),
     economicStatus: yup.number().required("Mã bảo hiểm không được để trống"),
     culturalFamilyStatus: yup.boolean().required("Mã bảo hiểm không được để trống"),
+    relationship: yup.number()
+        .test('required-or-empty', 'Chưa chọn mục này', function (value) {
+
+            if (!isHouseHold && (value === undefined || value === null || value === 0)) {
+                return this.createError({ message: 'Chưa chọn mục này' });
+            }
+
+            return true;
+        }),
+    parentId: yup
+        .number()
+        .test('required-or-empty', 'Chưa chọn mục này', function (value) {
+
+            if (!isHouseHold && (value === undefined || value === null || value === 0)) {
+                return this.createError({ message: 'Chưa chọn mục này' });
+            }
+
+            return true;
+        })
 });
 
 export type FormDataProfile = {

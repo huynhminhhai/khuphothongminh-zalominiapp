@@ -3,6 +3,7 @@ import { meetingColor, meetingStatus } from "constants/utinities";
 import { Box, useNavigate } from "zmp-ui";
 import { renderDayOfWeek } from "utils/date";
 import { FormDataMeeting } from "./type";
+import { Icon } from "@iconify/react";
 
 type MeetingItemProps = {
     data: FormDataMeeting
@@ -27,11 +28,11 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                         <div className="flex">
                             <Box>
                                 <ul className="flex flex-col gap-[2px] text-[14px] font-normal text-[#7c7c7c]">
-                                    <li className="line-clamp-2">
-                                        Địa điểm: <span className="font-medium">{data.address}</span>
+                                    <li className="flex items-start gap-2">
+                                        <Icon fontSize={18} icon='tdesign:location-filled' /> <span className="flex-1 font-medium line-clamp-2">{data.address}</span>
                                     </li>
-                                    <li>
-                                        Thời gian: <span className="font-medium">{data.startTime} - {data.endTime}</span>
+                                    <li className="flex items-start gap-2">
+                                        <Icon fontSize={18} icon='mingcute:time-fill' /> <span className="font-medium">{data.startTime} - {data.endTime}</span>
                                     </li>
                                 </ul>
                                 {
