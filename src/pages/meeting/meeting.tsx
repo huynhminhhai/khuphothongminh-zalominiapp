@@ -28,7 +28,7 @@ const MeetingPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Thông tin cuộc họp" />
                 <Box>
-                    <Box p={4} flex>
+                    <Box px={4} pb={4} pt={1} flex>
                         <div className="text-[#731611] flex items-center gap-1 border-r-[1px] pr-2 mr-2">
                             <Icon fontSize={20} icon='mdi:filter-outline' />
                             <span className="text-[16px] font-semibold">Lọc</span>

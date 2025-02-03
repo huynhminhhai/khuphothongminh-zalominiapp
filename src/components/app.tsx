@@ -10,10 +10,10 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TaskManagementPage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
-import TaskAddPage from "pages/management/management-task/task-create";
+import { TaskPage } from "pages/task";
 
 const MyApp = () => {
   return (
@@ -53,6 +53,9 @@ const MyApp = () => {
               {/* TEAM */}
               <Route path="/team" element={<TeamPage></TeamPage>}></Route>
               <Route path="/team-detail" element={<TeamDetailPage></TeamDetailPage>}></Route>
+
+              {/* TASK */}
+              <Route path="/task" element={<TaskPage></TaskPage>}></Route>
 
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>

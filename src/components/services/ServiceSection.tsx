@@ -6,8 +6,8 @@ import ServiceList from "./ServiceList"
 const ServiceSection: React.FC<any> = () => {
     return (
         <Box>
-            <Box p={4}>
-                <TitleSection title="Hộ dân" />
+            <Box px={4} pb={4}>
+                <TitleSection title="" />
                 <ServiceList />
             </Box>
         </Box>

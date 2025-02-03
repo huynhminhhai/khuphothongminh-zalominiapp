@@ -60,6 +60,11 @@ export const SERVICES: ServicesType[] = [
         url: '/team',
         icon: images.team
     },
+    {
+        label: 'Nhiệm vụ',
+        url: '/task',
+        icon: images.todo
+    },
 ]
 
 export type MeetingStatusType = {
@@ -663,6 +668,7 @@ export type SurveyType = {
     timestamp?: string;
     expiryDate: string;
     questions: QuestionType[];
+    status?: number;
     countAnswer?: number;
 }
 
@@ -691,7 +697,8 @@ export const SURVEYDATA: SurveyType[] = [
                 options: ["Trước 30/4/1975", "Từ 30/4/1975 đến năm 1994", "Từ năm 1995 đến năm 2004", "Từ năm 2005 đến nay"],
             },
         ],
-        countAnswer: 4
+        countAnswer: 4,
+        status: 2
     },
     {
         id: 3,
@@ -729,7 +736,8 @@ export const SURVEYDATA: SurveyType[] = [
                 options: []
             },
         ],
-        countAnswer: 5
+        countAnswer: 5,
+        status: 2
     },
     {
         id: 2,
@@ -756,7 +764,8 @@ export const SURVEYDATA: SurveyType[] = [
                 options: ["Có", "Không"],
             },
         ],
-        countAnswer: 0
+        countAnswer: 0,
+        status: 1
     },
 ];
 
@@ -1315,4 +1324,65 @@ export const TERMDATA: TermType[] = [
         start_date: '12/12/2022',
         end_date: '12/12/2024'
     },
+]
+
+export type TaskType = {
+    id: number;
+    title: string;      
+    description: string;
+    assignedTo: number;
+    dueDate: string;
+    status: number;
+    priority: number;
+    imageUrl?: string[]; 
+}
+
+export const TASKS: TaskType[] = [
+    {
+        id: 1,
+        title: "Hoàn thành tài liệu mới",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+        assignedTo: 9,
+        dueDate: "10/02/2025",
+        status: 1, 
+        priority: 2,
+        imageUrl: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
+      },
+      {
+        id: 2,
+        title: "Nộp báo cáo họp 14/02/2025",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+        assignedTo: 9,
+        dueDate: "08/02/2025",
+        status: 2, 
+        priority: 1,
+      },
+      {
+        id: 3,
+        title: "Chuẩn bị báo cáo tổng",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+        assignedTo: 10,
+        dueDate: "12/02/2025",
+        status: 3, 
+        priority: 3,
+      },
+      {
+        id: 4,
+        title: "Nộp báo cáo họp 10/02/2025",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+        assignedTo: 10,
+        dueDate: "15/02/2025",
+        status: 1,
+        priority: 2,
+        imageUrl: ["https://example.com/image3.jpg"],
+      },
+      {
+        id: 5,
+        title: "Nộp báo cáo họp 08/02/2025",
+        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+        assignedTo: 10,
+        dueDate: "20/02/2025",
+        status: 3,
+        priority: 1,
+      },
 ]
