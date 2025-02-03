@@ -9,6 +9,7 @@ import { FormDataProfile, schemaProfile } from "./type"
 import { economicStatus, gender, residentRealationships, residentStatus, residentType } from "constants/mock"
 import FormControllerRadioGroup from "components/form/FormRadioGroup"
 import { RESIDENT } from "constants/utinities"
+import { useSearchParams } from "react-router-dom"
 
 const defaultValues: FormDataProfile = {
     fullname: '',
@@ -29,10 +30,13 @@ const defaultValues: FormDataProfile = {
     parentId: 0,
 }
 
-const ProfileAddForm: React.FC = () => {
+const ProfileUpdateForm: React.FC = () => {
 
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate()
+    const [searchParams] = useSearchParams();
+
+    const profileId = searchParams.get("id");
 
     const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
@@ -54,12 +58,80 @@ const ProfileAddForm: React.FC = () => {
     };
 
     useEffect(() => {
+        // Hàm gọi API để lấy thông tin thành viên
+        const fetchResidentData = async () => {
+            setLoading(true);
+            try {
+
+                const data = RESIDENT.find(resident => resident.id === Number(profileId))
+
+                if (data) {
+
+                    if (!data.parentId) {
+                        await setIsHoldHouse(true)
+                    }
+
+                    setFormData({
+                        fullname: data.fullname,
+                        phoneNumber: data.phoneNumber,
+                        address: data.address,
+                        bhyt: data.bhyt,
+                        birthDate: data.birthDate,
+                        culturalFamilyStatus: data.culturalFamilyStatus,
+                        dateCard: data.dateCard,
+                        economicStatus: data.economicStatus,
+                        gender: data.gender,
+                        nation: data.nation,
+                        numberCard: data.numberCard,
+                        religion: data.religion,
+                        residenceStatus: data.residenceStatus,
+                        residenceType: data.residenceType,
+                        parentId: data.parentId || 0,
+                        relationship: data.relationship || 0
+                    })
+
+                    reset({
+                        fullname: data.fullname,
+                        phoneNumber: data.phoneNumber,
+                        address: data.address,
+                        bhyt: data.bhyt,
+                        birthDate: data.birthDate,
+                        culturalFamilyStatus: data.culturalFamilyStatus,
+                        dateCard: data.dateCard,
+                        economicStatus: data.economicStatus,
+                        gender: data.gender,
+                        nation: data.nation,
+                        numberCard: data.numberCard,
+                        religion: data.religion,
+                        residenceStatus: data.residenceStatus,
+                        residenceType: data.residenceType,
+                        parentId: data.parentId || 0,
+                        relationship: data.relationship || 0
+                    })
+                }
+
+            } catch (error) {
+                console.error("Failed to fetch resident data:", error);
+                openSnackbar({
+                    text: "Không thể tải thông tin. Vui lòng thử lại sau.",
+                    type: "error",
+                    duration: 5000,
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchResidentData();
+    }, [profileId]);
+
+    useEffect(() => {
         if (isHouseHold) {
             reset({
                 ...watch(),
                 parentId: defaultValues.parentId,
                 relationship: defaultValues.relationship,
-                address: defaultValues.address
+                // address: defaultValues.address
             })
         }
     }, [isHouseHold])
@@ -82,11 +154,11 @@ const ProfileAddForm: React.FC = () => {
     const fetchApi = () => {
         setLoading(true);
         try {
-            console.log('call api add with: ', { ...formData });
+            console.log('call api update with: ', { ...formData });
 
             openSnackbar({
                 icon: true,
-                text: "Thêm hồ sơ thành công",
+                text: "Cập nhật thông tin hồ sơ thành công",
                 type: 'success',
                 action: { text: "Đóng", close: true },
                 duration: 5000,
@@ -112,8 +184,7 @@ const ProfileAddForm: React.FC = () => {
         try {
             const data = RESIDENT.find((item) => item.id === Number(watch().parentId))
 
-            if ( data) {
-                console.log(data)
+            if (data) {
                 reset({
                     ...watch(),
                     address: data.address,
@@ -153,7 +224,7 @@ const ProfileAddForm: React.FC = () => {
         console.log("Cancelled!");
         setConfirmVisible(false);
     };
-    
+
     return (
         <Box p={4}>
             <Box>
@@ -245,7 +316,7 @@ const ProfileAddForm: React.FC = () => {
                     </div>
                     <div className="col-span-12">
                         <div className="flex items-center gap-2 mb-2">
-                            <Switch label="" onClick={() => setIsHoldHouse(!isHouseHold)} />
+                            <Switch checked={isHouseHold} label="" onChange={() => setIsHoldHouse(!isHouseHold)} />
                             <span className="font-medium">Chủ hộ</span>
                         </div>
                     </div>
@@ -345,7 +416,7 @@ const ProfileAddForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Thêm hồ sơ"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật thông tin hồ sơ"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -353,7 +424,7 @@ const ProfileAddForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn thêm hồ sơ này không?"
+                message="Bạn có chắc chắn muốn cập nhật thông tin hồ sơ này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
@@ -361,4 +432,4 @@ const ProfileAddForm: React.FC = () => {
     )
 }
 
-export default ProfileAddForm
+export default ProfileUpdateForm

@@ -127,12 +127,12 @@ const ResidentManagementPage: React.FC = () => {
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
-                    {/* <button
-                        onClick={() => navigate(`/news-update?id=${row.original.id}`)}
+                    <button
+                        onClick={() => navigate(`/resident-profile-update?id=${row.original.id}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
-                    </button> */}
+                    </button>
                     <button
                         onClick={() => removeResident(row.original.id)}
                         className="px-3 py-1 bg-red-700 text-white rounded"

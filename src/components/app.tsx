@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentProfileAddPage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 
@@ -80,6 +80,7 @@ const MyApp = () => {
               <Route path="/resident-management" element={<ResidentManagementPage></ResidentManagementPage>}></Route>
               <Route path="/resident-craft-management" element={<ResidentCraftManagementPage></ResidentCraftManagementPage>}></Route>
               <Route path="/resident-profile-add" element={<ResidentProfileAddPage></ResidentProfileAddPage>}></Route>
+              <Route path="/resident-profile-update" element={<ResidentProfileUpdatePage></ResidentProfileUpdatePage>}></Route>
               {/* PROFILE */}
               <Route path="/profile-resident" element={<ProfileResidentPage></ProfileResidentPage>}></Route>
 
