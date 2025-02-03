@@ -44,3 +44,8 @@ export { default as TeamAddPage } from "./management-team/team-create";
 export { default as TeamUpdatePage } from "./management-team/team-edit";
 export { default as TeamTermPage } from "./management-team/team-term";
 export { default as ResidentialManagementPage } from "./management-residential/residential-management";
+
+/**
+ * TASK 
+**/
+export { default as TaskManagementPage } from "./management-task/task-management";

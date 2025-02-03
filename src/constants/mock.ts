@@ -36,3 +36,16 @@ export const economicStatus = [
     { value: 2, label: 'Hộ nghèo' },
     { value: 3, label: 'Hộ cận nghèo' },
 ]
+
+export const taskStatus = [
+    { value: 1, label: 'Chưa bắt đầu' },
+    { value: 2, label: 'Đang thực hiện' },
+    { value: 3, label: 'Hoàn thành' },
+    { value: 4, label: 'Quá hạn' },
+]
+
+export const taskPriority = [
+    { value: 1, label: 'Thấp' },
+    { value: 2, label: 'Trung bình' },
+    { value: 3, label: 'Cao' },
+]

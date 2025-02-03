@@ -10,9 +10,10 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TaskManagementPage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
+import TaskAddPage from "pages/management/management-task/task-create";
 
 const MyApp = () => {
   return (
@@ -90,6 +91,10 @@ const MyApp = () => {
               <Route path="/team-update" element={<TeamUpdatePage></TeamUpdatePage>}></Route>
               <Route path="/team-term" element={<TeamTermPage></TeamTermPage>}></Route>
               <Route path="/residential-management" element={<ResidentialManagementPage></ResidentialManagementPage>}></Route>
+
+              {/* MANAGEMENT TASK */}
+              <Route path="/task-management" element={<TaskManagementPage></TaskManagementPage>}></Route>
+              <Route path="/task-add" element={<TaskAddPage></TaskAddPage>}></Route>
 
             </Routes>
             <Navigation />

@@ -14,6 +14,7 @@ import newss from './new.png'
 import pieChart from './pie-chart.png'
 import shape3 from './shape-3.png'
 import team from './team.png'
+import todo from './to-do-list.png'
 
 const images = {
     logo,
@@ -31,7 +32,8 @@ const images = {
     newss,
     pieChart,
     shape3,
-    team
+    team,
+    todo
 }
 
 export default images
