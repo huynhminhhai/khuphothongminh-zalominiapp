@@ -3,8 +3,10 @@ import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { TablePagination, TableTanStack } from "components/table"
-import { News, NEWSDATA } from "constants/utinities"
+import { taskPriority, taskStatus } from "constants/mock"
+import { TASKS, TaskType } from "constants/utinities"
 import React, { useState } from "react"
+import { getLabelOptions } from "utils/options"
 import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
@@ -46,7 +48,7 @@ const TaskManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); 
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -59,21 +61,51 @@ const TaskManagementPage: React.FC = () => {
 
     const removeNews = (id: number) => {
         openConfirmModal(() => {
-            console.log('Call api delete news with id: ', id)
+            console.log('Call api delete task with id: ', id)
 
             openSnackbar({
-                text: 'Xóa tin tức thành công',
+                text: 'Xóa nhiệm vụ thành công',
                 type: 'success',
                 duration: 5000,
             });
         })
     }
 
-    const columns: ColumnDef<any>[] = [
+    const columns: ColumnDef<TaskType>[] = [
         {
             accessorKey: 'title',
             header: 'Tên nhiệm vụ',
             size: 300
+        },
+        {
+            id: 'status',
+            header: 'Trạng thái',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                    <div className="text-[14px] text-white font-medium leading-[1] bg-gray-500 px-2 py-[6px] rounded-xl">
+                        {
+                            getLabelOptions(row.original.status, taskStatus)
+                        }
+                    </div>
+                </div>
+            ),
+        },
+        {
+            id: 'priority',
+            header: 'Ưu tiên',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                    <div className="text-[14px] text-white font-medium leading-[1] bg-red-600 px-2 py-[6px] rounded-xl"
+                        style={{
+                            backgroundColor: row.original.priority === 1 ? '#16a34a' : row.original.priority === 2 ? '#eab308' : '#dc2626'
+                        }}
+                    >
+                        {
+                            getLabelOptions(row.original.priority, taskPriority)
+                        }
+                    </div>
+                </div>
+            ),
         },
         {
             id: 'actions', // Custom column for actions
@@ -81,13 +113,13 @@ const TaskManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/news-detail?id=${row.original.id}`)}
+                        onClick={() => navigate(`/task-detail?id=${row.original.id}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/news-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/task-update?id=${row.original.id}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
@@ -103,7 +135,7 @@ const TaskManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = NEWSDATA.filter(item =>
+    const filteredData = TASKS.filter(item =>
         item.title.toLowerCase().includes(param.keyword.toLowerCase())
     );
 
@@ -137,7 +169,7 @@ const TaskManagementPage: React.FC = () => {
                         </Button>
                     </Box>
                     <Box mt={4}>
-                        <TableTanStack data={[]} columns={columns} />
+                        <TableTanStack data={filteredData} columns={columns} />
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}
@@ -151,7 +183,7 @@ const TaskManagementPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa tin tức này không?"
+                message="Bạn có chắc chắn muốn xóa nhiệm vụ này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
