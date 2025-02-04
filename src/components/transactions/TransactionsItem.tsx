@@ -16,7 +16,7 @@ const TransactionsItem: React.FC<TransactionsItemProps> = ({data}) => {
 
     return (
         <Box
-            onClick={() => navigate(`/task-detail?id=${data.id}`)}
+            onClick={() => navigate(`/transactions-detail?id=${data.id}`)}
         >
             <Box py={4} className="border-b-[1px]" flex alignItems="center" justifyContent="space-between">
                 <Box flex alignItems="center" className="gap-3 w-[100%]">
