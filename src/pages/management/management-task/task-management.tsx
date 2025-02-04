@@ -151,8 +151,8 @@ const TaskManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Quản lý nhiệm vụ" />
                 <Box p={4}>
-                    <Box mb={2} flex justifyContent="space-between">
-                        <Box>
+                    <Box mb={2} flex justifyContent="space-between" className="gap-4">
+                        <Box className="flex-1">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}

@@ -132,8 +132,8 @@ const SurveyManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý khảo sát" />
                 <Box>
                     <Box p={4}>
-                        <Box flex justifyContent="space-between">
-                            <Box>
+                        <Box flex justifyContent="space-between" className="gap-4">
+                            <Box className="flex-1">
                                 <Input
                                     placeholder="Tìm kiếm..."
                                     value={param.keyword}

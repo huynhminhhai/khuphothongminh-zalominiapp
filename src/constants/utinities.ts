@@ -1332,7 +1332,7 @@ export const TERMDATA: TermType[] = [
 
 export type TaskType = {
     id: number;
-    title: string;      
+    title: string;
     description: string;
     assignedTo: number;
     dueDate: string;
@@ -1350,31 +1350,31 @@ export const TASKS: TaskType[] = [
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
         assignedTo: 9,
         dueDate: "10/02/2025",
-        status: 1, 
+        status: 1,
         priority: 2,
         imageUrl: ["https://cdn.thuvienphapluat.vn/phap-luat/2022/KhanhHuyen/694.jpg"],
         note: '<p>Quá trình:</p><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Đang thu thập dự liệu</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Đã hoàn thành 50%</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Dự kiến hoàn thành trước thời hạn</li></ol><p>Khó khăn: Chưa có</p>',
         imageReport: ['https://glints.com/vn/blog/wp-content/uploads/2022/07/mau-bien-ban-cuoc-hop-giao-ban.jpg']
-      },
-      {
+    },
+    {
         id: 2,
         title: "Nộp báo cáo họp 14/02/2025",
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
         assignedTo: 9,
         dueDate: "08/02/2025",
-        status: 2, 
+        status: 2,
         priority: 1,
-      },
-      {
+    },
+    {
         id: 3,
         title: "Chuẩn bị báo cáo tổng",
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
         assignedTo: 10,
         dueDate: "12/02/2025",
-        status: 3, 
+        status: 3,
         priority: 3,
-      },
-      {
+    },
+    {
         id: 4,
         title: "Nộp báo cáo họp 10/02/2025",
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
@@ -1382,8 +1382,8 @@ export const TASKS: TaskType[] = [
         dueDate: "15/02/2025",
         status: 1,
         priority: 2,
-      },
-      {
+    },
+    {
         id: 5,
         title: "Nộp báo cáo họp 08/02/2025",
         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
@@ -1391,5 +1391,65 @@ export const TASKS: TaskType[] = [
         dueDate: "20/02/2025",
         status: 3,
         priority: 1,
-      },
+    },
+]
+
+export type transactionsType = {
+    id: number;
+    transaction_type: number;
+    amount: number;
+    description: string;
+    category: string;
+    transaction_date: string
+}
+
+export const TRANSACTIONSDATA: transactionsType[] = [
+    {
+        id: 1,
+        transaction_type: 1, // 1: Thu, 2: Chi
+        amount: 2000000,
+        description: "Thu tiền quỹ khu phố tháng 1",
+        category: "Quỹ khu phố",
+        transaction_date: "31/01/2025",
+    },
+    {
+        id: 2,
+        transaction_type: 2,
+        amount: 500000,
+        description: "Chi tiền mua dụng cụ vệ sinh công cộng",
+        category: "Vệ sinh môi trường",
+        transaction_date: "02/02/2025",
+    },
+    {
+        id: 3,
+        transaction_type: 1,
+        amount: 1500000,
+        description: "Ủng hộ từ mạnh thường quân",
+        category: "Quỹ từ thiện",
+        transaction_date: "05/02/2025",
+    },
+    {
+        id: 4,
+        transaction_type: 2,
+        amount: 700000,
+        description: "Chi tổ chức Tết Trung Thu cho trẻ em",
+        category: "Hoạt động cộng đồng",
+        transaction_date: "08/02/2025",
+    },
+    {
+        id: 5,
+        transaction_type: 2,
+        amount: 1200000,
+        description: "Chi hỗ trợ hộ gia đình khó khăn",
+        category: "Hỗ trợ cư dân",
+        transaction_date: "10/02/2025",
+    },
+    {
+        id: 6,
+        transaction_type: 1,
+        amount: 2500000,
+        description: "Thu tiền đóng góp xây dựng đường",
+        category: "Công trình khu phố",
+        transaction_date: "15/02/2025",
+    },
 ]

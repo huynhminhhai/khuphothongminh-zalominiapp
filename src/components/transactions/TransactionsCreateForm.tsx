@@ -6,7 +6,7 @@ import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormImageUploaderSingle, FormInputAreaField, FormInputField, FormSelectField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataTranscations, schemaTransactions } from "./type"
-import { transactionsType } from "constants/mock"
+import { transactionsOptions } from "constants/mock"
 
 const defaultValues: FormDataTranscations = {
     transaction_type: 0,
@@ -48,7 +48,7 @@ const TransactionsAddForm: React.FC = () => {
                 duration: 5000,
             });
             reset(defaultValues);
-            navigate('/news-management');
+            navigate('/transactions-management');
         } catch (error) {
             console.error('Error:', error);
             openSnackbar({
@@ -85,7 +85,7 @@ const TransactionsAddForm: React.FC = () => {
                             label="Loại giao dịch"
                             placeholder="Chọn loại giao dịch"
                             control={control}
-                            options={transactionsType}
+                            options={transactionsOptions}
                             error={errors.transaction_type?.message}
                         />
                     </div>

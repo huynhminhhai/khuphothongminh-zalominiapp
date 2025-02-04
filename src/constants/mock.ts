@@ -50,7 +50,7 @@ export const taskPriority = [
     { value: 3, label: 'Cao' },
 ]
 
-export const transactionsType = [
+export const transactionsOptions = [
     { value: 1, label: 'Thu' },
     { value: 2, label: 'Chi' },
 ]

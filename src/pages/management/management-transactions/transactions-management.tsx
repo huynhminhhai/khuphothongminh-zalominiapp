@@ -3,20 +3,24 @@ import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { TablePagination, TableTanStack } from "components/table"
-import { News, NEWSDATA } from "constants/utinities"
+import { transactionsOptions } from "constants/mock"
+import { TRANSACTIONSDATA, transactionsType } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { getLabelOptions } from "utils/options"
+import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
     pageSize: 10,
     keyword: '',
+    transaction_type: 0
 }
 
 const TransactionsManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
+    const {Option} = Select
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [param, setParam] = useState(initParam)
@@ -59,33 +63,49 @@ const TransactionsManagementPage: React.FC = () => {
 
     const removeNews = (id: number) => {
         openConfirmModal(() => {
-            console.log('Call api delete news with id: ', id)
+            console.log('Call api delete transactions with id: ', id)
 
             openSnackbar({
-                text: 'Xóa tin tức thành công',
+                text: 'Xóa khoản thu/chi thành công',
                 type: 'success',
                 duration: 5000,
             });
         })
     }
 
-    const columns: ColumnDef<News>[] = [
+    const columns: ColumnDef<transactionsType>[] = [
         {
-            accessorKey: 'title',
-            header: 'Tiêu đề',
-            size: 300
+            accessorKey: 'category',
+            header: 'Loại khoản thu/chi'
         },
         {
-            accessorKey: 'publishedDate',
-            header: 'Ngày tạo',
+            id: 'type',
+            header: 'Loại giao dịch',
+            cell: ({row}) => (
+                <div>
+                    {
+                        getLabelOptions(row.original.transaction_type, transactionsOptions)
+                    }
+                </div>
+            )
         },
         {
-            accessorKey: 'views',
-            header: 'Lượt xem',
-            size: 100
+            id: 'amount',
+            header: 'Số tiền',
+            cell: ({row}) => (
+                <div>
+                    {
+                        row.original.amount.toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+                    }
+                </div>
+            )
         },
         {
-            id: 'actions', // Custom column for actions
+            accessorKey: 'transaction_date',
+            header: 'Ngày thu/chi'
+        },
+        {
+            id: 'actions',
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
@@ -112,17 +132,20 @@ const TransactionsManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = NEWSDATA.filter(item =>
-        item.title.toLowerCase().includes(param.keyword.toLowerCase())
-    );
+    const filteredData = TRANSACTIONSDATA.filter(item => {
+        const matchesSearch = item.category.toLowerCase().includes(param.keyword.toLowerCase())
+        const matchesType = param.transaction_type === 0 || item.transaction_type === param.transaction_type;
+
+        return matchesSearch && matchesType ;
+    });
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý thu chi" />
                 <Box p={4}>
-                    <Box flex justifyContent="space-between">
-                        <Box>
+                    <Box mb={2} flex justifyContent="space-between" className="gap-4">
+                        <Box className="flex-1">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -145,8 +168,29 @@ const TransactionsManagementPage: React.FC = () => {
                             </div>
                         </Button>
                     </Box>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <Select
+                                placeholder="Chọn loại giao dịch"
+                                closeOnSelect
+                                onChange={(value) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        transaction_type: value as number
+                                    }));
+                                }}
+                            >
+                                <Option title={'Tất cả'} value={0} />
+                                {
+                                    transactionsOptions.map((item) => (
+                                        <Option key={item.value} title={item.label} value={item.value} />
+                                    ))
+                                }
+                            </Select>
+                        </div>
+                    </div>
                     <Box mt={4}>
-                        <TableTanStack data={[]} columns={columns} />
+                        <TableTanStack data={filteredData} columns={columns} />
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}
@@ -160,7 +204,7 @@ const TransactionsManagementPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa tin tức này không?"
+                message="Bạn có chắc chắn muốn xóa khoản thu/chi này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
