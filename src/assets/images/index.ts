@@ -15,6 +15,7 @@ import pieChart from './pie-chart.png'
 import shape3 from './shape-3.png'
 import team from './team.png'
 import todo from './to-do-list.png'
+import money from './money.png'
 
 const images = {
     logo,
@@ -33,7 +34,8 @@ const images = {
     pieChart,
     shape3,
     team,
-    todo
+    todo,
+    money
 }
 
 export default images

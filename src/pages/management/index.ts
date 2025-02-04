@@ -51,3 +51,9 @@ export { default as ResidentialManagementPage } from "./management-residential/r
 export { default as TaskManagementPage } from "./management-task/task-management";
 export { default as TaskAddPage } from "./management-task/task-create";
 export { default as TaskUpdatePage } from "./management-task/task-update";
+
+/**
+* TRANSACTION
+**/
+export { default as TransactionsManagementPage } from "./management-transactions/transactions-management";
+export { default as TransactionsAddPage } from "./management-transactions/transactions-create";

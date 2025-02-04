@@ -64,6 +64,11 @@ export const SERVICES: ServicesType[] = [
         url: '/task',
         icon: images.todo
     },
+    {
+        label: 'Tình hình tài chính',
+        url: '/transactions',
+        icon: images.money
+    },
 ]
 
 export type MeetingStatusType = {

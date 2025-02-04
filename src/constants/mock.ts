@@ -49,3 +49,8 @@ export const taskPriority = [
     { value: 2, label: 'Trung bình' },
     { value: 3, label: 'Cao' },
 ]
+
+export const transactionsType = [
+    { value: 1, label: 'Thu' },
+    { value: 2, label: 'Chi' },
+]
