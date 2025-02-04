@@ -1,5 +1,4 @@
 import images from "assets/images";
-import { FormDataMeeting } from "components/meeting/type";
 
 export type StatisticsType = {
     label: string;

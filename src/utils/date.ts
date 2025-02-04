@@ -37,3 +37,17 @@ export function isExpired(dateString: string): boolean {
     // So sánh ngày nhập vào với ngày hiện tại
     return inputDate < today;
 }
+
+export const getMeetingStatus = (meetingDate: string, startTime: string, endTime: string): { status: string, bgColor: string } => {
+    const [day, month, year] = meetingDate.split('/').map(Number);
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number);
+
+    const startDateTime = new Date(year, month - 1, day, startHour, startMinute);
+    const endDateTime = new Date(year, month - 1, day, endHour, endMinute);
+    const now = new Date();
+
+    if (now < startDateTime) return { status: 'Sắp diễn ra', bgColor: '#FFC107' };
+    if (now >= startDateTime && now <= endDateTime) return { status: 'Đang diễn ra', bgColor: '#28a745' };
+    return { status: 'Đã kết thúc', bgColor: '#DC3545' };
+};

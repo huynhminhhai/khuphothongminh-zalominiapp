@@ -1,13 +1,23 @@
 import React from "react";
 import { meetingColor, meetingStatus } from "constants/utinities";
 import { Box, useNavigate } from "zmp-ui";
-import { renderDayOfWeek } from "utils/date";
+import { getMeetingStatus, renderDayOfWeek } from "utils/date";
 import { FormDataMeeting } from "./type";
 import { Icon } from "@iconify/react";
 
 type MeetingItemProps = {
     data: FormDataMeeting
 }
+
+const MeetingStatus: React.FC<{ meetingDate: string, startTime: string, endTime: string }> = ({ meetingDate, startTime, endTime }) => {
+    const { status, bgColor } = getMeetingStatus(meetingDate, startTime, endTime);
+  
+    return (
+      <div style={{ backgroundColor: bgColor}} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">
+        {status}
+      </div>
+    );
+};
 
 const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
     
@@ -35,14 +45,15 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                                         <Icon fontSize={18} icon='mingcute:time-fill' /> <span className="font-medium">{data.startTime} - {data.endTime}</span>
                                     </li>
                                 </ul>
-                                {
+                                {/* {
                                     data.status && 
                                     <div style={{backgroundColor: meetingColor[data.status]}} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">
                                         {
                                             meetingStatus[data.status]
                                         }
                                     </div>
-                                }
+                                } */}
+                                <MeetingStatus meetingDate={data.meetingDate} startTime={data.startTime} endTime={data.endTime} />
                             </Box>
                             <Box>
 
