@@ -14,6 +14,7 @@ import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddt
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
+import { TransactionsPage } from "pages/transactions";
 
 const MyApp = () => {
   return (
@@ -57,6 +58,9 @@ const MyApp = () => {
               {/* TASK */}
               <Route path="/task" element={<TaskPage></TaskPage>}></Route>
               <Route path="/task-detail" element={<TaskDetailPage></TaskDetailPage>}></Route>
+
+              {/* TRANSACTIONS */}
+              <Route path="/transactions" element={<TransactionsPage></TransactionsPage>}></Route>
 
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>
