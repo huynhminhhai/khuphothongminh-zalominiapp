@@ -7,18 +7,21 @@ import { taskPriority, taskStatus } from "constants/mock"
 import { TASKS, TaskType } from "constants/utinities"
 import React, { useState } from "react"
 import { getLabelOptions } from "utils/options"
-import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
     pageSize: 10,
     keyword: '',
+    status: 0,
+    priority: 0
 }
 
 const TaskManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
+    const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [param, setParam] = useState(initParam)
@@ -135,16 +138,20 @@ const TaskManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = TASKS.filter(item =>
-        item.title.toLowerCase().includes(param.keyword.toLowerCase())
-    );
+    const filteredData = TASKS.filter(item => {
+        const matchesSearch = item.title.toLowerCase().includes(param.keyword.toLowerCase())
+        const matchesStatus = param.status === 0 || item.status === param.status;
+        const matchesPriority = param.priority === 0 || item.priority === param.priority;
+
+        return matchesSearch && matchesStatus && matchesPriority ;
+    });
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý nhiệm vụ" />
                 <Box p={4}>
-                    <Box flex justifyContent="space-between">
+                    <Box mb={2} flex justifyContent="space-between">
                         <Box>
                             <Input
                                 placeholder="Tìm kiếm..."
@@ -168,6 +175,48 @@ const TaskManagementPage: React.FC = () => {
                             </div>
                         </Button>
                     </Box>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <Select
+                                // defaultValue={3}
+                                placeholder="Chọn trạng thái"
+                                closeOnSelect
+                                onChange={(value) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        status: value as number
+                                    }));
+                                }}
+                            >
+                                <Option title={'Tất cả'} value={0} />
+                                {
+                                    taskStatus.map((item) => (
+                                        <Option key={item.value} title={item.label} value={item.value} />
+                                    ))
+                                }
+                            </Select>
+                        </div>
+                        <div>
+                            <Select
+                                // defaultValue={3}
+                                placeholder="Chọn độ ưu tiên"
+                                closeOnSelect
+                                onChange={(value) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        priority: value as number
+                                    }));
+                                }}
+                            >
+                                <Option title={'Tất cả'} value={0} />
+                                {
+                                    taskPriority.map((item) => (
+                                        <Option key={item.value} title={item.label} value={item.value} />
+                                    ))
+                                }
+                            </Select>
+                        </div>
+                    </div>
                     <Box mt={4}>
                         <TableTanStack data={filteredData} columns={columns} />
                         <TablePagination

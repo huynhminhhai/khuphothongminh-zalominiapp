@@ -178,25 +178,27 @@ const TeamManagementPage: React.FC = () => {
                         </Button>
                     </Box>
                     <div className="grid grid-cols-2 gap-4">
-                        <Select
-                            // defaultValue={3}
-                            placeholder="Chọn tổ dân cư"
-                            closeOnSelect
-                            onChange={(value) => {
-                                setParam((prevParam) => ({
-                                    ...prevParam,
-                                    residential_group_id: value as number
-                                }));
-                            }}
-                        >
-                            <Option title={'Tất cả'} value={0} />
-                            {
-                                RESIDENTIALGROUPDATA.map((item) => (
-                                    <Option key={item.id} title={item.name} value={item.id} />
-                                ))
-                            }
-                        </Select>
-                        <div></div>
+
+                        <div>
+                            <Select
+                                // defaultValue={3}
+                                placeholder="Chọn tổ dân cư"
+                                closeOnSelect
+                                onChange={(value) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        residential_group_id: value as number
+                                    }));
+                                }}
+                            >
+                                <Option title={'Tất cả'} value={0} />
+                                {
+                                    RESIDENTIALGROUPDATA.map((item) => (
+                                        <Option key={item.id} title={item.name} value={item.id} />
+                                    ))
+                                }
+                            </Select>
+                        </div>
                     </div>
                     <Box mt={4}>
                         <TableTanStack data={filteredData} columns={columns} />
