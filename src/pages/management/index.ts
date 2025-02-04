@@ -57,3 +57,4 @@ export { default as TaskUpdatePage } from "./management-task/task-update";
 **/
 export { default as TransactionsManagementPage } from "./management-transactions/transactions-management";
 export { default as TransactionsAddPage } from "./management-transactions/transactions-create";
+export { default as TransactionsUpdatePage } from "./management-transactions/transactions-update";

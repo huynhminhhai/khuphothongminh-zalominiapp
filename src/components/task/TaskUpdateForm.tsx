@@ -69,7 +69,6 @@ const TaskUpdateForm: React.FC = () => {
 
         let hasChanges = false;
 
-        // Duyệt qua tất cả các trường và so sánh với giá trị mặc định
         Object.keys(data).forEach((key) => {
             if (data[key] !== formData[key]) {
                 updatedData[key] = data[key];

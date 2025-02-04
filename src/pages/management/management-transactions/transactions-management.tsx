@@ -116,7 +116,7 @@ const TransactionsManagementPage: React.FC = () => {
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/news-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/transactions-update?id=${row.original.id}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
