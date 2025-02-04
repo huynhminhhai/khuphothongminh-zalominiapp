@@ -1,8 +1,8 @@
+import { Icon } from "@iconify/react"
 import images from "assets/images"
 import { taskPriority, taskStatus } from "constants/mock"
 import { TaskType } from "constants/utinities"
 import React from "react"
-import { isExpired } from "utils/date"
 import { getLabelOptions } from "utils/options"
 import { Box, useNavigate } from "zmp-ui"
 
@@ -26,12 +26,8 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                     <Box className="flex-1 w-[100%]">
                         <div className="flex flex-col">
                             <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-2">{data.title}</h3>
-                            
-                            <div className="flex items-center justify-between w-[100%] mb-2">
-                                <h4 className="text-[14px] font-normal text-[#7c7c7c]">Thời hạn: {data.dueDate}</h4>
-                            </div>
 
-                            <div className="flex items-center justify-between w-[100%]">
+                            <div className="flex items-center justify-between w-[100%]  mb-2">
                                 <div className="flex items-center gap-2">
                                     <div className="text-[12px] text-white font-medium leading-[1] bg-red-600 px-2 py-[6px] rounded-xl"
                                         style={{
@@ -48,6 +44,10 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                                         }
                                     </div>
                                 </div>
+                            </div>
+
+                            <div className="flex items-center justify-between w-[100%]">
+                                <h4 className="flex items-center gap-1 text-[14px] font-normal text-[#7c7c7c]"><Icon fontSize={18} icon='uiw:date' /> {data.dueDate}</h4>
                             </div>
                             
                         </div>

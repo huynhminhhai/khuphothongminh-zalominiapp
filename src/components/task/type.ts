@@ -18,3 +18,13 @@ export type FormDataTask = {
     priority: number;
     imageUrl?: string[]; 
 }
+
+export const schemaReportTask = yup.object().shape({
+    status: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
+});
+
+export type FormDataReportTask = {
+    status: number;
+    note?: string;
+    imageReport?: string[];
+}

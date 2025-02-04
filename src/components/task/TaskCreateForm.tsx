@@ -4,7 +4,7 @@ import { FormDataTask, schemaTask } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormControllerTimePicker, FormImageUploader, FormImageUploaderSingle, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
+import { FormControllerDatePicker, FormImageUploader, FormInputAreaField, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { STAFFOPTION } from "constants/utinities"
 import { taskPriority, taskStatus } from "constants/mock"
@@ -129,6 +129,7 @@ const TaskAddForm: React.FC = () => {
                             control={control}
                             options={taskStatus}
                             error={errors.status?.message}
+                            required
                         />
                     </div>
                     <div className="col-span-6">
@@ -139,6 +140,7 @@ const TaskAddForm: React.FC = () => {
                             control={control}
                             options={taskPriority}
                             error={errors.priority?.message}
+                            required
                         />
                     </div>
                     <div className="col-span-12">

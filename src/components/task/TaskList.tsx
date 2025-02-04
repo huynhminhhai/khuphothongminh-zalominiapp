@@ -8,7 +8,7 @@ type TaskListProps = {
     data: TaskType[]
 }
 
-const SurveyList: React.FC<TaskListProps> = ({data}) => {
+const TaskList: React.FC<TaskListProps> = ({data}) => {
 
     return (
         <Box>
@@ -29,9 +29,9 @@ const SurveyList: React.FC<TaskListProps> = ({data}) => {
                         <img src={images.empty} alt="Không có dữ liệu" />
                     </Box>
                     <Box mt={4}>
-                        <h3 className="text-[18px] leading-[1] font-medium text-center">Hiện chưa có khảo sát nào !</h3>
+                        <h3 className="text-[18px] leading-[1] font-medium text-center">Hiện chưa có nhiệm vụ nào !</h3>
                         <p className="text-[14px] leading-[20px] text-[#555] mt-2 text-center">
-                            Khi có khảo sát từ ban quản lý, bạn có thể tham gia và đóng góp ý kiến ngay tại đây. Vui lòng quay lại sau!
+                            Khi có nhiệm vụ, bạn có thể thao tác ngay tại đây. Vui lòng quay lại sau!
                         </p>
                     </Box>
                 </Box>
@@ -40,4 +40,4 @@ const SurveyList: React.FC<TaskListProps> = ({data}) => {
     )
 }
 
-export default SurveyList
+export default TaskList

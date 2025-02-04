@@ -13,7 +13,7 @@ import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { FeedbackAnswerPage, FeedbackManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
-import { TaskPage } from "pages/task";
+import { TaskDetailPage, TaskPage } from "pages/task";
 
 const MyApp = () => {
   return (
@@ -56,6 +56,7 @@ const MyApp = () => {
 
               {/* TASK */}
               <Route path="/task" element={<TaskPage></TaskPage>}></Route>
+              <Route path="/task-detail" element={<TaskDetailPage></TaskDetailPage>}></Route>
 
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>

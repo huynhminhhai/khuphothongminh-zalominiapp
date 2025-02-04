@@ -1334,7 +1334,9 @@ export type TaskType = {
     dueDate: string;
     status: number;
     priority: number;
-    imageUrl?: string[]; 
+    imageUrl?: string[];
+    note?: string;
+    imageReport?: string[];
 }
 
 export const TASKS: TaskType[] = [
@@ -1346,7 +1348,9 @@ export const TASKS: TaskType[] = [
         dueDate: "10/02/2025",
         status: 1, 
         priority: 2,
-        imageUrl: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
+        imageUrl: ["https://cdn.thuvienphapluat.vn/phap-luat/2022/KhanhHuyen/694.jpg"],
+        note: '<p>Quá trình:</p><ol><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Đang thu thập dự liệu</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Đã hoàn thành 50%</li><li data-list="bullet"><span class="ql-ui" contenteditable="false"></span>Dự kiến hoàn thành trước thời hạn</li></ol><p>Khó khăn: Chưa có</p>',
+        imageReport: ['https://glints.com/vn/blog/wp-content/uploads/2022/07/mau-bien-ban-cuoc-hop-giao-ban.jpg']
       },
       {
         id: 2,
@@ -1374,7 +1378,6 @@ export const TASKS: TaskType[] = [
         dueDate: "15/02/2025",
         status: 1,
         priority: 2,
-        imageUrl: ["https://example.com/image3.jpg"],
       },
       {
         id: 5,
