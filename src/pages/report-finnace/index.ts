@@ -1,0 +1,1 @@
+export { default as ReportFinanceDetailPage } from "./report-finance-detail";

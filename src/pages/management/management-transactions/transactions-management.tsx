@@ -6,6 +6,7 @@ import { TablePagination, TableTanStack } from "components/table"
 import { transactionsOptions } from "constants/mock"
 import { TRANSACTIONSDATA, transactionsType } from "constants/utinities"
 import React, { useState } from "react"
+import { convertNumberVND } from "utils/number"
 import { getLabelOptions } from "utils/options"
 import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
 
@@ -95,7 +96,7 @@ const TransactionsManagementPage: React.FC = () => {
             cell: ({row}) => (
                 <div>
                     {
-                        row.original.amount.toLocaleString("vi-VN", { style: "currency", currency: "VND" })
+                        convertNumberVND(row.original.amount)
                     }
                 </div>
             )

@@ -3,25 +3,26 @@ import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { TablePagination, TableTanStack } from "components/table"
-import { transactionsOptions } from "constants/mock"
-import { REPORTFINANCEDATA, reportFinanceType, TRANSACTIONSDATA, transactionsType } from "constants/utinities"
+import { monthOptions } from "constants/mock"
+import { REPORTFINANCEDATA, reportFinanceType } from "constants/utinities"
 import React, { useState } from "react"
-import { getLabelOptions } from "utils/options"
+import { convertNumberVND } from "utils/number"
 import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
     pageSize: 10,
     keyword: '',
-    transaction_type: 0
+    month: 0,
+    year: 0
 }
 
 const ReportFinanceManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
-    const {Option} = Select
 
+    const {Option} = Select
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -50,7 +51,7 @@ const ReportFinanceManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); 
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -79,12 +80,45 @@ const ReportFinanceManagementPage: React.FC = () => {
             header: 'Báo cáo'
         },
         {
+            id: 'totalIncome',
+            header: 'Tổng thu',
+            cell: ({ row }) => (
+                <div>
+                    {
+                        convertNumberVND(row.original.totalIncome)
+                    }
+                </div>
+            )
+        },
+        {
+            id: 'totalExpense',
+            header: 'Tổng chi',
+            cell: ({ row }) => (
+                <div>
+                    {
+                        convertNumberVND(row.original.totalExpense)
+                    }
+                </div>
+            )
+        },
+        {
+            id: 'remainingBalance',
+            header: 'Tổng quỹ còn lại',
+            cell: ({ row }) => (
+                <div>
+                    {
+                        convertNumberVND(row.original.remainingBalance)
+                    }
+                </div>
+            )
+        },
+        {
             id: 'actions',
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/transactions-detail?id=${row.original.id}`)}
+                        onClick={() => navigate(`/report-finance-detail?id=${row.original.id}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
@@ -109,7 +143,7 @@ const ReportFinanceManagementPage: React.FC = () => {
     const filteredData = REPORTFINANCEDATA.filter(item => {
         const matchesSearch = item.title.toLowerCase().includes(param.keyword.toLowerCase())
 
-        return matchesSearch ;
+        return matchesSearch;
     });
 
     return (
@@ -143,6 +177,40 @@ const ReportFinanceManagementPage: React.FC = () => {
                     </Box>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
+                            <Select
+                                placeholder="Chọn tháng"
+                                closeOnSelect
+                                onChange={(value) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        month: value as number
+                                    }));
+                                }}
+                            >
+                                <Option title={'Tất cả'} value={0} />
+                                {
+                                    monthOptions.map((item) => (
+                                        <Option key={item.value} title={item.label} value={item.value} />
+                                    ))
+                                }
+                            </Select>
+                        </div>
+                        <div>
+                            <Select
+                                placeholder="Chọn năm"
+                                closeOnSelect
+                                onChange={(value) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        year: value as number
+                                    }));
+                                }}
+                            >
+                                <Option title={'Tất cả'} value={0} />
+                                <Option title={'2024'} value={2024} />
+                                <Option title={'2025'} value={2025} />
+                                
+                            </Select>
                         </div>
                     </div>
                     <Box mt={4}>

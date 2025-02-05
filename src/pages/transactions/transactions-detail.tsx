@@ -1,4 +1,3 @@
-import { Icon } from "@iconify/react"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { transactionsOptions } from "constants/mock"
