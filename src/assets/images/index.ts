@@ -16,6 +16,7 @@ import shape3 from './shape-3.png'
 import team from './team.png'
 import todo from './to-do-list.png'
 import money from './money.png'
+import report from './report.png'
 
 const images = {
     logo,
@@ -35,7 +36,8 @@ const images = {
     shape3,
     team,
     todo,
-    money
+    money,
+    report
 }
 
 export default images
