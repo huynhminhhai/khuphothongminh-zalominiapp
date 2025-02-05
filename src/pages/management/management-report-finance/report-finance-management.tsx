@@ -22,7 +22,7 @@ const ReportFinanceManagementPage: React.FC = () => {
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
 
-    const {Option} = Select
+    const { Option } = Select
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -151,6 +151,18 @@ const ReportFinanceManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Báo cáo tài chính" />
                 <Box p={4}>
+                    <Box mb={2} flex justifyContent="flex-end">
+                        <Button
+                            size="small"
+                            variant="tertiary"
+                            onClick={() => navigate('/report-finance-chart')}
+                        >
+                            <div className="flex items-center gap-1">
+                                Tổng quan tài chính
+                                <Icon fontSize={18} icon='iconamoon:enter' />
+                            </div>
+                        </Button>
+                    </Box>
                     <Box mb={2} flex justifyContent="space-between" className="gap-4">
                         <Box className="flex-1">
                             <Input
@@ -209,7 +221,7 @@ const ReportFinanceManagementPage: React.FC = () => {
                                 <Option title={'Tất cả'} value={0} />
                                 <Option title={'2024'} value={2024} />
                                 <Option title={'2025'} value={2025} />
-                                
+
                             </Select>
                         </div>
                     </div>
