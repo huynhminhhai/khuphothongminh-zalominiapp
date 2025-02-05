@@ -16,6 +16,7 @@ import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
 import { TransactionDetailPage, TransactionsPage } from "pages/transactions";
 import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-finnace";
+import { AccountPage, LoginPage } from "pages/account";
 
 const MyApp = () => {
   return (
@@ -67,6 +68,10 @@ const MyApp = () => {
               {/* REPORT FINANCE */}
               <Route path="/report-finance-detail" element={<ReportFinanceDetailPage></ReportFinanceDetailPage>}></Route>
               <Route path="/report-finance-chart" element={<ReportFinanceChartPage></ReportFinanceChartPage>}></Route>
+
+              {/* ACCOUNT */}
+              <Route path="/account" element={<AccountPage></AccountPage>}></Route>
+              <Route path="/login" element={<LoginPage></LoginPage>}></Route>
 
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>

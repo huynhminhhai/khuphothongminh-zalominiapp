@@ -10,26 +10,26 @@ const tabs: Record<string, MenuItem> = {
     icon: <Icon icon="fa6-solid:house" />,
     activeIcon: <Icon icon="fa6-solid:house" />
   },
-  // "/notification": {
-  //   label: "Thông báo",
-  //   icon: <Icon icon="solar:bell-bold" />,
-  //   activeIcon: <Icon icon="solar:bell-bold" />
-  // },
-  // "/account": {
-  //   label: "Tài khoản",
-  //   icon: <Icon icon="icon-park-solid:people" />,
-  //   activeIcon: <Icon icon="icon-park-solid:people" />
-  // },
+  "/notification": {
+    label: "Thông báo",
+    icon: <Icon icon="solar:bell-bold" />,
+    activeIcon: <Icon icon="solar:bell-bold" />
+  },
   "/management": {
     label: "Quản lý",
     icon: <Icon icon="eos-icons:cluster-management" />,
     activeIcon: <Icon icon="eos-icons:cluster-management" />
   },
+  "/account": {
+    label: "Tài khoản",
+    icon: <Icon icon="icon-park-solid:people" />,
+    activeIcon: <Icon icon="icon-park-solid:people" />
+  },
 };
 
 export type TabKeys = keyof typeof tabs;
 
-export const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/management"];
+export const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/management", "/account"];
 
 export const Navigation: FC = () => {
   const navigate = useNavigate();

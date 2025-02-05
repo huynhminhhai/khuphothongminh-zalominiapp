@@ -1,4 +1,4 @@
-import { openWebview, openMediaPicker, openChat, getUserInfo } from "zmp-sdk/apis";
+import { openWebview, openMediaPicker, openChat, getUserInfo, getPhoneNumber, getAccessToken } from "zmp-sdk/apis";
 
 export const openUrlInWebview = async (link: string, style?: 'normal' | 'bottomSheet'): Promise<void> => {
     try {
@@ -60,3 +60,25 @@ export const getUser = async (): Promise<any> => {
         throw error;
     }
 };
+
+export const getPhoneNumberAccount = async (): Promise<any> => {
+    try {
+        const {token} = await getPhoneNumber({})
+
+        return token
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export const getAccessTokenAccount = async (): Promise<any> => {
+    try {
+        const accessToken = await getAccessToken({})
+
+        return accessToken
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
