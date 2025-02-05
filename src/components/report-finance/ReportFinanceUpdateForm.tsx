@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, useNavigate, useSnackbar } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -6,6 +6,8 @@ import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormInputField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataReportFinance, schemaReportFinance } from "./type"
+import { useSearchParams } from "react-router-dom"
+import { REPORTFINANCEDATA } from "constants/utinities"
 
 const defaultValues: FormDataReportFinance = {
     title: '',
@@ -30,6 +32,38 @@ const ReportFinanceUpdateForm: React.FC = () => {
         defaultValues
     });
 
+    const [searchParams] = useSearchParams();
+
+    const reportId = searchParams.get("id");
+
+    useEffect(() => {
+        const fetchResidentData = async () => {
+            setLoading(true);
+            try {
+
+                const data = REPORTFINANCEDATA.find(resident => resident.id === Number(reportId))
+
+                if (data) {
+                    setFormData(data)
+                    reset(data)
+                }
+
+            } catch (error) {
+                console.error("Failed to fetch report data:", error);
+                openSnackbar({
+                    text: "Không thể tải thông tin. Vui lòng thử lại sau.",
+                    type: "error",
+                    duration: 5000,
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchResidentData();
+    }, [reportId]);
+
+
     const onSubmit: SubmitHandler<FormDataReportFinance> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
@@ -38,11 +72,12 @@ const ReportFinanceUpdateForm: React.FC = () => {
     const fetchApi = () => {
         setLoading(true);
         try {
-            console.log('call api add with: ', { ...formData });
+            // Gọi API thêm thành viên
+            console.log('call api update with: ', formData);
             // Thành công
             openSnackbar({
                 icon: true,
-                text: "Tạo báo cáo thành công",
+                text: "Cập nhật báo cáo thành công",
                 type: 'success',
                 action: { text: "Đóng", close: true },
                 duration: 5000,

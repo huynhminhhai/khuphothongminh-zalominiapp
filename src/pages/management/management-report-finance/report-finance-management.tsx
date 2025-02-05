@@ -4,7 +4,7 @@ import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { TablePagination, TableTanStack } from "components/table"
 import { transactionsOptions } from "constants/mock"
-import { TRANSACTIONSDATA, transactionsType } from "constants/utinities"
+import { REPORTFINANCEDATA, reportFinanceType, TRANSACTIONSDATA, transactionsType } from "constants/utinities"
 import React, { useState } from "react"
 import { getLabelOptions } from "utils/options"
 import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
@@ -73,7 +73,7 @@ const ReportFinanceManagementPage: React.FC = () => {
         })
     }
 
-    const columns: ColumnDef<transactionsType>[] = [
+    const columns: ColumnDef<reportFinanceType>[] = [
         {
             accessorKey: 'title',
             header: 'Báo cáo'
@@ -90,7 +90,7 @@ const ReportFinanceManagementPage: React.FC = () => {
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/transactions-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/report-finance-update?id=${row.original.id}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
@@ -106,11 +106,10 @@ const ReportFinanceManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = TRANSACTIONSDATA.filter(item => {
-        const matchesSearch = item.category.toLowerCase().includes(param.keyword.toLowerCase())
-        const matchesType = param.transaction_type === 0 || item.transaction_type === param.transaction_type;
+    const filteredData = REPORTFINANCEDATA.filter(item => {
+        const matchesSearch = item.title.toLowerCase().includes(param.keyword.toLowerCase())
 
-        return matchesSearch && matchesType ;
+        return matchesSearch ;
     });
 
     return (
@@ -147,7 +146,7 @@ const ReportFinanceManagementPage: React.FC = () => {
                         </div>
                     </div>
                     <Box mt={4}>
-                        <TableTanStack data={[]} columns={columns} />
+                        <TableTanStack data={filteredData} columns={columns} />
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}

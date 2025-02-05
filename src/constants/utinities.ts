@@ -1453,3 +1453,51 @@ export const TRANSACTIONSDATA: transactionsType[] = [
         transaction_date: "15/02/2025",
     },
 ]
+
+export type reportFinanceType = {
+    id: number;
+    title: string;
+    startDate: string;
+    endDate: string;
+    totalIncome: number;
+    totalExpense: number;
+    remainingBalance: number;
+    createdBy?: number;
+    description?: string;
+}
+
+export const REPORTFINANCEDATA: reportFinanceType[] = [
+    {
+        id: 1,
+        title: "Báo cáo thu chi tháng 1/2025",
+        startDate: "01/01/2025",
+        endDate: "31/01/2025",
+        totalIncome: 50000000,
+        totalExpense: 30000000,
+        remainingBalance: 20000000,
+        createdBy: 101,
+        description: "Báo cáo thu chi cho tháng 1 năm 2025.",
+    },
+    {
+        id: 2,
+        title: "Báo cáo thu chi tháng 2/2025",
+        startDate: "01/02/2025",
+        endDate: "28/02/2025",
+        totalIncome: 40000000,
+        totalExpense: 25000000,
+        remainingBalance: 15000000,
+        createdBy: 102,
+        description: "Báo cáo thu chi cho tháng 2 năm 2025.",
+    },
+    {
+        id: 3,
+        title: "Báo cáo thu chi quý 1/2025",
+        startDate: "01/01/2025",
+        endDate: "31/03/2025",
+        totalIncome: 150000000,
+        totalExpense: 90000000,
+        remainingBalance: 60000000,
+        createdBy: 103,
+        description: "Tổng hợp thu chi trong quý 1 năm 2025.",
+    },
+];
