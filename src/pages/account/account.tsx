@@ -3,6 +3,7 @@ import images from "assets/images";
 import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { useLoginWithZalo } from "services/loginWithZalo";
+import { openPermissionSettingApp } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { Avatar, Box, List, Page, useNavigate, useSnackbar } from "zmp-ui"
 
@@ -21,6 +22,7 @@ const AccountPage: React.FC = () => {
             setIsLoadingFullScreen(true)
 
             await new Promise(resolve => setTimeout(resolve, 1000));
+
             console.log('Xóa access token')
 
             openSnackbar({
@@ -34,7 +36,13 @@ const AccountPage: React.FC = () => {
             navigate('/account')
         } catch (error) {
             console.log(error)
-            throw error;
+            openSnackbar({
+                icon: true,
+                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 5000,
+            });
         } finally {
             setIsLoadingFullScreen(false)
         }
@@ -95,6 +103,17 @@ const AccountPage: React.FC = () => {
                                 onClick={() => navigate('/login')}
                                 title="Với tài khoản"
                                 prefix={<img src={images.login} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                        </List>
+                    </Box>
+                    <Box m={4}>
+                        <List className="bg-white rounded-lg">
+                            <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Cài đặt</div>
+                            <Item
+                                onClick={() => openPermissionSettingApp()}
+                                title="Quản lý quyền"
+                                prefix={<img src={images.setting} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
                         </List>

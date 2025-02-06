@@ -22,6 +22,7 @@ import changePw from './reset-password.png'
 import zalo from './zalo.png'
 import resume from './resume.png'
 import logout from './logout.png'
+import setting from './gear.png'
 
 const images = {
     logo,
@@ -47,7 +48,8 @@ const images = {
     changePw,
     zalo,
     resume,
-    logout
+    logout,
+    setting
 }
 
 export default images

@@ -1,19 +1,23 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "zmp-ui";
 import { getAccessTokenAccount, getPhoneNumberAccount } from "./zalo";
+import { useStoreApp } from "store/store";
 
 export const useLoginWithZalo = () => {
-    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
     const { openSnackbar } = useSnackbar();
+    const { setIsLoadingFullScreen } = useStoreApp();
 
     const loginWithZalo = async () => {
-        setLoading(true);
+        setIsLoadingFullScreen(true);
+
         try {
             const phoneNumber = await getPhoneNumberAccount();
+
             if (phoneNumber) {
                 const accessToken = await getAccessTokenAccount();
+                
                 console.log("call api login zalo with: ", { token: phoneNumber, userAccessToken: accessToken });
 
                 // Hiển thị thông báo thành công
@@ -25,8 +29,9 @@ export const useLoginWithZalo = () => {
                     duration: 5000,
                 });
 
-                navigate("/profile");
+                navigate("/account");
             }
+            
         } catch (error) {
             console.error("Error:", error);
             openSnackbar({
@@ -37,9 +42,9 @@ export const useLoginWithZalo = () => {
                 duration: 5000,
             });
         } finally {
-            setLoading(false);
+            setIsLoadingFullScreen(false);
         }
     };
 
-    return { loginWithZalo, loading };
+    return { loginWithZalo };
 };
