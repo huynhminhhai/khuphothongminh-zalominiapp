@@ -4,9 +4,10 @@ import { FormDataProfile, schemaProfile } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormAvatarUploaderSingle, FormImageUploaderSingle, FormInputField } from "components/form"
+import { FormAvatarUploaderSingle, FormControllerDatePicker, FormImageUploaderSingle, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import images from "assets/images"
+import { gender } from "constants/mock"
 
 const defaultValues: FormDataProfile = {
     fullname: 'Huỳnh Minh Hải',
@@ -114,6 +115,28 @@ const ProfileForm: React.FC = () => {
                             placeholder="Nhập email"
                             control={control}
                             error={errors.email?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormControllerDatePicker
+                            name="birthDate"
+                            label="Ngày sinh"
+                            control={control}
+                            placeholder="Chọn ngày sinh"
+                            required
+                            dateFormat="dd/mm/yyyy"
+                            error={errors.birthDate?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="gender"
+                            label="Giới tính"
+                            placeholder="Chọn giới tính"
+                            control={control}
+                            options={gender}
+                            error={errors.gender?.message}
+                            required
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">

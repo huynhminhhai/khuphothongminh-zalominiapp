@@ -20,6 +20,8 @@ export type FormDataProfile = {
     phoneNumber: string;
     email?: string;
     avatar?: string;
+    birthDate?: string;
+    gender?: string;
 }
 
 export const schemaChangePassword = yup.object().shape({

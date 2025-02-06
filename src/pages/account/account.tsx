@@ -1,8 +1,9 @@
 import { Icon } from "@iconify/react";
 import images from "assets/images";
 import { HeaderSub } from "components/header-sub"
-import React, { useState } from "react"
+import React from "react"
 import { useLoginWithZalo } from "services/loginWithZalo";
+import { useStoreApp } from "store/store";
 import { Avatar, Box, List, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const AccountPage: React.FC = () => {
@@ -10,27 +11,39 @@ const AccountPage: React.FC = () => {
     const { Item } = List;
     const navigate = useNavigate()
 
-    const [loading, setLoading] = useState(false);
     const { loginWithZalo } = useLoginWithZalo()
     const { openSnackbar } = useSnackbar();
 
-    const handleLogout = () => {
+    const { setIsLoadingFullScreen } = useStoreApp();
 
-        console.log('Xóa access token')
+    const handleLogout = async () => {
+        try {
+            setIsLoadingFullScreen(true)
 
-        openSnackbar({
-            icon: true,
-            text: "Đăng xuất thành công thành công",
-            type: 'success',
-            action: { text: "Đóng", close: true },
-            duration: 5000,
-        });
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            console.log('Xóa access token')
 
-        navigate('/account')
+            openSnackbar({
+                icon: true,
+                text: "Đăng xuất thành công thành công",
+                type: 'success',
+                action: { text: "Đóng", close: true },
+                duration: 5000,
+            });
+
+            navigate('/account')
+        } catch (error) {
+            console.log(error)
+            throw error;
+        } finally {
+            setIsLoadingFullScreen(false)
+        }
+
+
     }
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[66px]" style={{backgroundColor: '#f5f6f7'}}>
+        <Page className="relative flex-1 flex flex-col bg-white pb-[66px]" style={{ backgroundColor: '#f5f6f7' }}>
             <Box>
                 <HeaderSub title="Tài khoản" />
                 <Box>

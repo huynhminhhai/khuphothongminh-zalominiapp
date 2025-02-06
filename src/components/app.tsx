@@ -17,14 +17,20 @@ import { TaskDetailPage, TaskPage } from "pages/task";
 import { TransactionDetailPage, TransactionsPage } from "pages/transactions";
 import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-finnace";
 import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage } from "pages/account";
+import { LoadingFullScreen } from "./loading";
+import { useStoreApp } from "store/store";
 
 const MyApp = () => {
+
+  const { isLoadingFullScreen } = useStoreApp();
+
   return (
     <RecoilRoot>
       <App>
         <SnackbarProvider>
           <ZMPRouter>
             <ScrollToTop />
+            <LoadingFullScreen isLoading={isLoadingFullScreen} />
             <Routes>
               <Route path="/" element={<HomePage></HomePage>}></Route>
               
