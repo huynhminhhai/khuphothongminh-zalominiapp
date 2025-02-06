@@ -414,3 +414,26 @@ div.ql-editor {
     transform: rotate(360deg);
   }
 } 
+
+/**
+* LOGIN
+**/
+
+.login-page .login-form label {
+  display: block;
+  height: 12px;
+}
+
+.login-page .login-form input {
+  height: 46px;
+  background-color: #73161118;
+  padding-left: 38px;
+  padding-right: 28px;
+}
+
+.login-page .login-form input,
+.login-page .login-form input::placeholder {
+  font-size: 16px;
+  color: #731611;
+  font-weight: 600;
+}
