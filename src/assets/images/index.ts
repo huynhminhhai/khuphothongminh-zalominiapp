@@ -17,6 +17,10 @@ import team from './team.png'
 import todo from './to-do-list.png'
 import money from './money.png'
 import report from './report.png'
+import login from './enter.png'
+import changePw from './reset-password.png'
+import zalo from './zalo.png'
+import resume from './resume.png'
 
 const images = {
     logo,
@@ -37,7 +41,11 @@ const images = {
     team,
     todo,
     money,
-    report
+    report,
+    login,
+    changePw,
+    zalo,
+    resume
 }
 
 export default images
