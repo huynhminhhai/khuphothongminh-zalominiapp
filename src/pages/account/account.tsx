@@ -12,6 +12,22 @@ const AccountPage: React.FC = () => {
 
     const [loading, setLoading] = useState(false);
     const { loginWithZalo } = useLoginWithZalo()
+    const { openSnackbar } = useSnackbar();
+
+    const handleLogout = () => {
+
+        console.log('Xóa access token')
+
+        openSnackbar({
+            icon: true,
+            text: "Đăng xuất thành công thành công",
+            type: 'success',
+            action: { text: "Đóng", close: true },
+            duration: 5000,
+        });
+
+        navigate('/account')
+    }
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[66px]" style={{backgroundColor: '#f5f6f7'}}>
@@ -35,8 +51,20 @@ const AccountPage: React.FC = () => {
                             <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tài khoản</div>
                             <Item
                                 onClick={() => navigate('/profile-account')}
-                                title="Thông tin người dùng"
+                                title="Thông tin"
                                 prefix={<img src={images.resume} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                            <Item
+                                onClick={() => navigate('/change-password')}
+                                title="Đổi mật khẩu"
+                                prefix={<img src={images.changePw} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                            <Item
+                                onClick={() => handleLogout()}
+                                title="Đăng xuất"
+                                prefix={<img src={images.logout} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
                         </List>

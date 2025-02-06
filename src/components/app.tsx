@@ -16,7 +16,7 @@ import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
 import { TransactionDetailPage, TransactionsPage } from "pages/transactions";
 import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-finnace";
-import { AccountPage, LoginPage, ProfileAccountPage } from "pages/account";
+import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage } from "pages/account";
 
 const MyApp = () => {
   return (
@@ -73,6 +73,7 @@ const MyApp = () => {
               <Route path="/account" element={<AccountPage></AccountPage>}></Route>
               <Route path="/login" element={<LoginPage></LoginPage>}></Route>
               <Route path="/profile-account" element={<ProfileAccountPage></ProfileAccountPage>}></Route>
+              <Route path="/change-password" element={<ChangePasswordPage></ChangePasswordPage>}></Route>
 
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>
