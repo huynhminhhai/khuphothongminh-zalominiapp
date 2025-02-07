@@ -12,7 +12,7 @@ const tabs: Record<string, MenuItem> = {
   },
   "/notification": {
     label: "Thông báo",
-    icon: <Icon icon="solar:bell-bold" />,
+    icon: <div className="relative"> <Icon icon='radix-icons:dot-filled' className="absolute top-[-10px] right-[-10px]" color="#e27477" /> <Icon icon="solar:bell-bold" /></div>,
     activeIcon: <Icon icon="solar:bell-bold" />
   },
   "/management": {
@@ -29,7 +29,7 @@ const tabs: Record<string, MenuItem> = {
 
 export type TabKeys = keyof typeof tabs;
 
-export const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/management", "/account"];
+export const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/management", "/account", "/notification"];
 
 export const Navigation: FC = () => {
   const navigate = useNavigate();

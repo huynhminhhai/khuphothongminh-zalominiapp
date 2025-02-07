@@ -19,6 +19,7 @@ import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-fi
 import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage } from "pages/account";
 import { LoadingFullScreen } from "./loading";
 import { useStoreApp } from "store/store";
+import { NotificationPage } from "pages/notification";
 
 const MyApp = () => {
 
@@ -80,6 +81,9 @@ const MyApp = () => {
               <Route path="/login" element={<LoginPage></LoginPage>}></Route>
               <Route path="/profile-account" element={<ProfileAccountPage></ProfileAccountPage>}></Route>
               <Route path="/change-password" element={<ChangePasswordPage></ChangePasswordPage>}></Route>
+
+              {/* NOTIFICATION */}
+              <Route path="/notification" element={<NotificationPage></NotificationPage>}></Route>
 
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>

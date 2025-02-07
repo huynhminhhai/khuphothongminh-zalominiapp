@@ -51,3 +51,28 @@ export const getMeetingStatus = (meetingDate: string, startTime: string, endTime
     if (now >= startDateTime && now <= endDateTime) return { status: 'Đang diễn ra', bgColor: '#28a745' };
     return { status: 'Đã kết thúc', bgColor: '#DC3545' };
 };
+
+export function timeAgo(date: string | Date): string {
+    const now = new Date();
+    const then = new Date(date);
+    const diffInSeconds = Math.floor((now.getTime() - then.getTime()) / 1000);
+
+    if (diffInSeconds < 60) {
+        return `${diffInSeconds} giây`;
+    } else if (diffInSeconds < 3600) {
+        const minutes = Math.floor(diffInSeconds / 60);
+        return `${minutes} phút`;
+    } else if (diffInSeconds < 86400) {
+        const hours = Math.floor(diffInSeconds / 3600);
+        return `${hours} giờ`;
+    } else if (diffInSeconds < 2592000) {
+        const days = Math.floor(diffInSeconds / 86400);
+        return `${days} ngày`;
+    } else if (diffInSeconds < 31536000) {
+        const months = Math.floor(diffInSeconds / 2592000);
+        return `${months} tháng`;
+    } else {
+        const years = Math.floor(diffInSeconds / 31536000);
+        return `${years} năm`;
+    }
+}
