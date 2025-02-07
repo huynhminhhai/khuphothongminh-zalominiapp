@@ -1,5 +1,3 @@
-import { Plugin } from "chart.js";
-
 export const optionsBarChart = {
     responsive: true,
     plugins: {
@@ -53,6 +51,11 @@ export const optionsPercent = {
             },
 
         } as const
+    },
+    elements: {
+        arc: {
+            borderWidth: 4,
+        },
     },
     scales: {
         y: {

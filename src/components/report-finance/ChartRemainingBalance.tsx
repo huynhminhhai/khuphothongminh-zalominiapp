@@ -24,9 +24,9 @@ const ChartRemainingBalance: React.FC = () => {
     datasets: [
       {
         label: 'Số dư quỹ',
-        data: [5000000, 7000000, 6500000, 9000000, 8500000, 9500000, 10000000, 11000000, 10500000, 11500000, 12000000, 13000000],
-        borderColor: '#4CAF50',
-        backgroundColor: 'rgba(76, 175, 80, 0.2)',
+        data: [50000000, 70000000, 65000000, 90000000, 85000000, 95000000, 100000000, 110000000, 105000000, 115000000, 120000000, 130000000],
+        borderColor: '#8497fc',
+        backgroundColor: 'transparent',
         fill: true,
       },
     ],
@@ -40,14 +40,23 @@ const ChartRemainingBalance: React.FC = () => {
     },
     scales: {
       y: {
-        display: false,
-        grid: {
-          display: false,
-        },
+        // display: false,
+        // grid: {
+        //   display: false,
+        // },
+        // ticks: {
+        //   display: false
+        // },
+        border: {
+          display: false
+        }
       },
       x: {
         grid: {
-          display: false, // Tắt grid trục X
+          display: false,
+        },
+        ticks: {
+          display: false
         },
       }
     },

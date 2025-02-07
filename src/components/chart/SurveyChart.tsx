@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Pie, Bar } from 'react-chartjs-2';
+import { Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { generateColors } from 'utils/chart';
+import { Box } from 'zmp-ui';
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, BarElement, CategoryScale, LinearScale, ChartDataLabels);
 
@@ -35,9 +36,9 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
           chartData = {
             question,
             chart: (
-              <Pie
+              <Doughnut
                 data={{
-                  labels: answers.map((a) => a.answer),
+                  labels: answers.map((a) => `${a.answer}: ${a.count}`),
                   datasets: [
                     {
                       data: answers.map((a) => a.count),
@@ -46,12 +47,14 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
                   ],
                 }}
                 options={{
+                  // responsive: true,
+                  // maintainAspectRatio: false,
                   plugins: {
                     datalabels: {
                       color: '#fff',
                       font: {
                         weight: 'bold',
-                        size: 16,
+                        size: 12,
                       },
                       formatter: (value, context) => {
                         const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
@@ -65,17 +68,16 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
                           const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
                           const value = context.raw as number;
                           const percentage = ((value / total) * 100).toFixed(1);
-                          return `${context.label}: ${value} (${percentage}%)`;
+                          return `${percentage}%`;
                         },
                       },
                     },
                   },
                   elements: {
                     arc: {
-                      borderWidth: 4, // Tùy chỉnh viền của các phần
+                      borderWidth: 4,
                     },
                   },
-                  responsive: true,
                 }}
               />
             ),
@@ -100,13 +102,13 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
                 options={{
                   plugins: {
                     legend: {
-                      display: true,
+                      display: false,
                     },
                     datalabels: {
                       color: '#000',
                       font: {
                         size: 14,
-                        weight: 'bold',
+                        // weight: 'bold',
                       },
                       anchor: 'end',
                       align: 'top',
@@ -118,20 +120,32 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
                       ticks: {
                         color: '#000',
                         font: {
-                          weight: 'normal',
+                          // weight: 'normal',
                           size: 10
                         }
                       },
+                      // border: {
+                      //   display: false
+                      // },
+                      grid: {
+                        display: false
+                      }
                     },
                     y: {
                       beginAtZero: true,
                       ticks: {
                         color: '#000',
                         font: {
-                          weight: 'bold',
+                          // weight: 'bold',
                           size: 12
                         }
                       },
+                      border: {
+                        display: false
+                      },
+                      grid: {
+                        display: false
+                      }
                     },
                   },
                 }}
@@ -145,10 +159,10 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
           chartData = {
             question,
             chart: (
-              <div className="overflow-auto max-h-[300px]"> 
+              <div className="overflow-auto max-h-[300px]">
                 <table className="min-w-full table-auto border-collapse">
                   <thead>
-                    <tr className="sticky top-[-1px] bg-white z-10"> 
+                    <tr className="sticky top-[-1px] bg-white z-10">
                       <th className="border-b p-2 text-left font-medium">STT</th>
                       <th className="border-b p-2 text-center font-medium">Câu trả lời</th>
                     </tr>
@@ -181,14 +195,19 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
   }, [surveyResults]);
 
   return (
-    <div className='p-4'>
+    <Box>
       {chartsData.map((chart, index) => (
-        <div key={index} className='mb-10'>
-          <h3 className='text-lg font-semibold mb-2'>{chart.question}</h3>
-          {chart.chart}
-        </div>
+        <Box p={4}>
+          <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">
+            <div key={index}>
+              <h3 className="text-[16px] leading-[22px] font-medium mb-1">{chart.question}</h3>
+              {chart.chart}
+            </div>
+          </div>
+        </Box>
+
       ))}
-    </div>
+    </Box>
   );
 };
 

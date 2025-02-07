@@ -6,20 +6,26 @@ import { Box, Page } from "zmp-ui"
 const ReportFinanceChartPage: React.FC = () => {
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white">
+        <Page className="relative flex-1 flex flex-col" style={{ backgroundColor: '#f5f6f7' }}>
             <Box>
                 <HeaderSub title="Tổng quan tài chính" />
-                <Box p={4}>
-                    <div className="mb-[100px]">
-                        <Box>
-                            <ChartCompareMonth />
-                        </Box>
-                    </div>
-                    <Box>
-                        <ChartCategories />
+                <Box>
+                    <Box p={4}>
+                        <div className="bg-white box-shadow-4 rounded-xl px-3 pt-4 pb-[80px]">
+                        <ChartCompareMonth />
+                        </div>
                     </Box>
-                    <Box pt={8}>
+
+                    <Box p={4}>
+                        <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">
+                        <ChartCategories />
+                        </div>
+                    </Box>
+
+                    <Box p={4}>
+                        <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">
                         <ChartRemainingBalance />
+                        </div>
                     </Box>
                 </Box>
             </Box>

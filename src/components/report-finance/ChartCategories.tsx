@@ -1,6 +1,6 @@
 import { monthOptions } from "constants/mock";
 import React, { useState } from "react"
-import { Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2';
 import { generateColors } from "utils/chart";
 import { Select } from "zmp-ui";
 
@@ -28,15 +28,12 @@ const ChartCategories: React.FC = () => {
     const options = {
         plugins: {
             datalabels: {
-                // formatter: (value: number) => value.toLocaleString('vi-VN') + 'đ',
-                // color: '#000',
-                // font: 'bold'
                 display: false,
             } as any
         },
         elements: {
             arc: {
-                borderWidth: 4, // Tùy chỉnh viền của các phần
+                borderWidth: 4,
             },
         },
     };
@@ -84,7 +81,7 @@ const ChartCategories: React.FC = () => {
                     </Select>
                 </div>
             </div>
-            <Pie data={data} options={options} />
+            <Doughnut data={data} options={options} />
         </div>
     )
 }

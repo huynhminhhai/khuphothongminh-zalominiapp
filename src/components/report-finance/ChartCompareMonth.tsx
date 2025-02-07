@@ -13,7 +13,7 @@ const initParam = {
 
 const ChartCompareMonth: React.FC = () => {
 
-    const {Option} = Select
+    const { Option } = Select
 
     const [param, setParam] = useState(initParam)
 
@@ -57,16 +57,25 @@ const ChartCompareMonth: React.FC = () => {
         },
         scales: {
             y: {
-              grid: {
-                display: false,
-              },
+                grid: {
+                    display: false,
+                },
+                border: {
+                    display: false
+                }
             },
             x: {
-              grid: {
-                display: false, // Tắt grid trục X
-              },
+                grid: {
+                    display: false,
+                },
+                ticks: {
+                    display: false
+                },
+                border: {
+                    display: false
+                }
             }
-          },
+        },
     };
 
     return (
