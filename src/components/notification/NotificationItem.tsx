@@ -20,7 +20,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
                 <div className="flex gap-2">
                     {
                         detailNoti.status === 1 ?
-                        <Icon fontSize={18} color="#e27477" icon='icon-park-outline:dot' /> :
+                        <Icon fontSize={18} color="#ff4045" icon='icon-park-outline:dot' /> :
                         <div className="w-[18px] h-[18px]"></div>
                     }
                     <div className="flex-1">

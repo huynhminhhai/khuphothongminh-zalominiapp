@@ -10,23 +10,13 @@ const ManagementPage: React.FC = () => {
     const navigate = useNavigate()
 
     return (
-        <Page className="relative flex-1 flex flex-col" style={{ backgroundColor: '#f0f0f0' }}>
+        <Page className="relative flex-1 flex flex-col pb-[66px]" style={{ backgroundColor: '#f0f0f0' }}>
             <Box>
                 <HeaderSub title="Quản trị ứng dụng" />
-                <Box p={4}>
-                    <List className="bg-white rounded-lg overflow-hidden">
-                        <Item
-                            title="Quản lý hộ dân"
-                            prefix={<img src={images.home} alt='feedback' className="w-[30px] h-auto" />}
-                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            onClick={() => navigate('/resident-management')}
-                        />
-                        <Item
-                            title="Quản lý nhân sự"
-                            prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
-                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            onClick={() => navigate('/team-management')}
-                        />
+                
+                <Box m={4}>
+                    <List className="bg-white rounded-lg">
+                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tuyên truyền, phản ánh</div>
                         <Item
                             title="Quản lý tin tức"
                             prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
@@ -45,17 +35,42 @@ const ManagementPage: React.FC = () => {
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/feedback-management')}
                         />
+                        
+                    </List>
+                </Box>
+
+                <Box m={4}>
+                    <List className="bg-white rounded-lg">
+                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tổ chức, dân cư</div>
                         <Item
-                            title="Quản lý cuộc họp"
-                            prefix={<img src={images.meeting} alt='feedback' className="w-[30px] h-auto" />}
+                            title="Quản lý tổ chức"
+                            prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            onClick={() => navigate('/meeting-management')}
+                            onClick={() => navigate('/team-management')}
                         />
+                        <Item
+                            title="Quản lý dân cư"
+                            prefix={<img src={images.home} alt='feedback' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/resident-management')}
+                        />
+                    </List>
+                </Box>
+
+                <Box m={4}>
+                    <List className="bg-white rounded-lg">
+                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Công việc, nhiệm vụ</div>
                         <Item
                             title="Quản lý nhiệm vụ"
                             prefix={<img src={images.todo} alt='feedback' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/task-management')}
+                        />
+                        <Item
+                            title="Quản lý cuộc họp"
+                            prefix={<img src={images.meeting} alt='feedback' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/meeting-management')}
                         />
                         <Item
                             title="Quản lý tài chính"

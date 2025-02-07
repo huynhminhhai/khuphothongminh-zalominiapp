@@ -1,6 +1,7 @@
 import images from "assets/images";
 import { HeaderHome } from "components/header";
 import { MeetingSection } from "components/meeting";
+import NewsSection from "components/news/NewsSection";
 import { ServiceSection } from "components/services";
 import { StatisticSection } from "components/statistics";
 import React from "react";
@@ -17,6 +18,7 @@ const HomePage: React.FunctionComponent = () => {
         <div className="bg-white rounded-t-2xl pt-3">
           <ServiceSection />
           <MeetingSection />
+          <NewsSection />
         </div>
       </Box>
     </Page>

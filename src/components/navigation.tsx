@@ -12,7 +12,7 @@ const tabs: Record<string, MenuItem> = {
   },
   "/notification": {
     label: "Thông báo",
-    icon: <div className="relative"> <Icon icon='radix-icons:dot-filled' className="absolute top-[-10px] right-[-10px]" color="#e27477" /> <Icon icon="solar:bell-bold" /></div>,
+    icon: <div className="relative"> <Icon icon='radix-icons:dot-filled' className="absolute top-[-10px] right-[-10px]" color="#ff4045" /> <Icon icon="solar:bell-bold" /></div>,
     activeIcon: <Icon icon="solar:bell-bold" />
   },
   "/management": {
