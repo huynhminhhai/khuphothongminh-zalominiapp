@@ -113,7 +113,9 @@ select {
   outline: none;
 }
 
-.zaui-input-affix-wrapper:hover, .zaui-input-affix-wrapper:focus, .zaui-input-affix-wrapper:focus-visible {
+.zaui-input-affix-wrapper:hover,
+.zaui-input-affix-wrapper:focus,
+.zaui-input-affix-wrapper:focus-visible {
   border-color: #b9bdc1;
 }
 
@@ -194,6 +196,10 @@ tbody tr td:not(:first-child) {
 
 .box-shadow-3 {
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+}
+
+.box-shadow-4 {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
 /**
@@ -373,7 +379,7 @@ div.ql-editor {
 
 /**
 * FEEDBACK
-**/ 
+**/
 
 .feedback-switch .zaui-switch:checked {
   background-color: #28a745;
@@ -381,7 +387,7 @@ div.ql-editor {
 
 /**
 * LOADING
-**/ 
+**/
 
 .loader {
   width: 48px;
@@ -393,8 +399,9 @@ div.ql-editor {
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
 }
+
 .loader::after {
-  content: '';  
+  content: '';
   box-sizing: border-box;
   position: absolute;
   left: 0;
@@ -406,14 +413,16 @@ div.ql-editor {
   border-bottom: 4px solid transparent;
   animation: rotation 0.5s linear infinite reverse;
 }
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
-} 
+}
 
 /**
 * LOGIN

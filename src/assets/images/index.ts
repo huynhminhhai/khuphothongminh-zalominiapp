@@ -23,6 +23,7 @@ import zalo from './zalo.png'
 import resume from './resume.png'
 import logout from './logout.png'
 import setting from './gear.png'
+import research from './research.png'
 
 const images = {
     logo,
@@ -49,7 +50,8 @@ const images = {
     zalo,
     resume,
     logout,
-    setting
+    setting,
+    research
 }
 
 export default images

@@ -65,3 +65,9 @@ export { default as TransactionsUpdatePage } from "./management-transactions/tra
 export { default as ReportFinanceManagementPage } from "./management-report-finance/report-finance-management";
 export { default as ReportFinanceCreatePage } from "./management-report-finance/report-finance-create";
 export { default as ReportFinanceUpdatePage } from "./management-report-finance/report-finance-update";
+
+
+/**
+* OVERVIEW 
+**/ 
+export { default as HouseHoldOverviewPage } from "./management-overview/household-overview";

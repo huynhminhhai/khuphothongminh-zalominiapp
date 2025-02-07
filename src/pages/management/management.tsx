@@ -86,6 +86,24 @@ const ManagementPage: React.FC = () => {
                         />
                     </List>
                 </Box>
+
+                <Box m={4}>
+                    <List className="bg-white rounded-lg">
+                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Thống kê báo cáo</div>
+                        {/* <Item
+                            title="Tình hình dân cư"
+                            prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/team-management')}
+                        /> */}
+                        <Item
+                            title="Hộ gia đình"
+                            prefix={<img src={images.research} alt='staff' className="w-[30px] h-auto" />}
+                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                            onClick={() => navigate('/overview-household')}
+                        />
+                    </List>
+                </Box>
             </Box>
         </Page>
     )
