@@ -2,11 +2,13 @@ import images from "assets/images"
 import TitleSection from "components/titleSection"
 import { NEWSDATA } from "constants/utinities"
 import React from "react"
-import { Box, Swiper } from "zmp-ui"
+import { Box, Swiper, useNavigate } from "zmp-ui"
 
 const NewsSection: React.FC = () => {
 
     const firstFourNews = NEWSDATA.slice(0, 4);
+
+    const navigate = useNavigate()
 
     return (
         <Box p={4} className="news-section">
@@ -26,7 +28,7 @@ const NewsSection: React.FC = () => {
                     {
                         firstFourNews.map((item, index) => (
                             <Swiper.Slide key={index}>
-                                <div>
+                                <div onClick={() => navigate(`/news-detail/?id=${item.id}`)}>
                                     <img
                                         className="slide-img h-[200px] w-full object-cover rounded-xl"
                                         src={item.imageUrl || images.thumbnailNews}
