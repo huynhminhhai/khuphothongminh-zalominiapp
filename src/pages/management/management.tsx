@@ -90,12 +90,12 @@ const ManagementPage: React.FC = () => {
                 <Box m={4}>
                     <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Thống kê báo cáo</div>
-                        {/* <Item
+                        <Item
                             title="Tình hình dân cư"
-                            prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
+                            prefix={<img src={images.statistics} alt='staff' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            onClick={() => navigate('/team-management')}
-                        /> */}
+                            onClick={() => navigate('/resident-household')}
+                        />
                         <Item
                             title="Hộ gia đình"
                             prefix={<img src={images.research} alt='staff' className="w-[30px] h-auto" />}

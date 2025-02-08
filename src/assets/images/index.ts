@@ -24,6 +24,7 @@ import resume from './resume.png'
 import logout from './logout.png'
 import setting from './gear.png'
 import research from './research.png'
+import statistics from './statistics.png'
 
 const images = {
     logo,
@@ -51,7 +52,8 @@ const images = {
     resume,
     logout,
     setting,
-    research
+    research,
+    statistics
 }
 
 export default images

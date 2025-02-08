@@ -71,3 +71,4 @@ export { default as ReportFinanceUpdatePage } from "./management-report-finance/
 * OVERVIEW 
 **/ 
 export { default as HouseHoldOverviewPage } from "./management-overview/household-overview";
+export { default as ResidentOverviewPage } from "./management-overview/resident-overview";
