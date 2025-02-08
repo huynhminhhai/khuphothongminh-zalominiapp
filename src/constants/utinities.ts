@@ -60,9 +60,9 @@ export const SERVICES: ServicesType[] = [
         icon: images.team
     },
     {
-        label: 'Nhiệm vụ',
-        url: '/task',
-        icon: images.todo
+        label: 'Bản đồ',
+        url: '/maps',
+        icon: images.map
     },
     {
         label: 'Tình hình tài chính',

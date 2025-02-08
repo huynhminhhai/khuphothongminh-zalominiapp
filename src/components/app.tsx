@@ -20,6 +20,7 @@ import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage } from "
 import { LoadingFullScreen } from "./loading";
 import { useStoreApp } from "store/store";
 import { NotificationPage } from "pages/notification";
+import { ResidentMapPage } from "pages/maps";
 
 const MyApp = () => {
 
@@ -85,6 +86,9 @@ const MyApp = () => {
               {/* NOTIFICATION */}
               <Route path="/notification" element={<NotificationPage></NotificationPage>}></Route>
 
+              {/* MAP */}
+              <Route path="/maps" element={<ResidentMapPage></ResidentMapPage>}></Route>
+
               {/* MANAGEMENT */}
               <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>
 
@@ -113,6 +117,7 @@ const MyApp = () => {
               <Route path="/resident-craft-management" element={<ResidentCraftManagementPage></ResidentCraftManagementPage>}></Route>
               <Route path="/resident-profile-add" element={<ResidentProfileAddPage></ResidentProfileAddPage>}></Route>
               <Route path="/resident-profile-update" element={<ResidentProfileUpdatePage></ResidentProfileUpdatePage>}></Route>
+
               {/* PROFILE */}
               <Route path="/profile-resident" element={<ProfileResidentPage></ProfileResidentPage>}></Route>
 

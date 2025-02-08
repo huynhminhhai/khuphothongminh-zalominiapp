@@ -143,7 +143,7 @@ const TaskManagementPage: React.FC = () => {
         const matchesStatus = param.status === 0 || item.status === param.status;
         const matchesPriority = param.priority === 0 || item.priority === param.priority;
 
-        return matchesSearch && matchesStatus && matchesPriority ;
+        return matchesSearch && matchesStatus && matchesPriority;
     });
 
     return (
@@ -151,6 +151,18 @@ const TaskManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Quản lý nhiệm vụ" />
                 <Box p={4}>
+                    <Box mb={2} flex justifyContent="flex-end">
+                        <Button
+                            size="small"
+                            variant="tertiary"
+                            onClick={() => navigate('/task')}
+                        >
+                            <div className="flex items-center gap-1">
+                                Nhiệm vụ của tôi
+                                <Icon fontSize={18} icon='iconamoon:enter' />
+                            </div>
+                        </Button>
+                    </Box>
                     <Box mb={2} flex justifyContent="space-between" className="gap-4">
                         <Box className="flex-1">
                             <Input

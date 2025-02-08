@@ -15,6 +15,7 @@ import pieChart from './pie-chart.png'
 import shape3 from './shape-3.png'
 import team from './team.png'
 import todo from './to-do-list.png'
+import todo2 from './to-do-list-2.png'
 import money from './money.png'
 import report from './report.png'
 import login from './enter.png'
@@ -25,6 +26,7 @@ import logout from './logout.png'
 import setting from './gear.png'
 import research from './research.png'
 import statistics from './statistics.png'
+import map from './map.png'
 
 const images = {
     logo,
@@ -44,6 +46,7 @@ const images = {
     shape3,
     team,
     todo,
+    todo2,
     money,
     report,
     login,
@@ -53,7 +56,8 @@ const images = {
     logout,
     setting,
     research,
-    statistics
+    statistics,
+    map
 }
 
 export default images

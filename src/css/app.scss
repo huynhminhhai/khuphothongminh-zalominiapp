@@ -462,3 +462,19 @@ div.ql-editor {
 .news-section .zaui-swiper {
   border-radius: 0;
 }
+
+/**
+* MAPS
+**/ 
+
+.leaflet-touch .leaflet-control-attribution a {
+  display: none;
+}
+
+.leaflet-touch .leaflet-control-attribution span {
+  display: none;
+}
+
+.leaflet-popup-content-wrapper {
+  background-color: #ffffffe8;
+}
