@@ -6,7 +6,7 @@ import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormImageUploaderSingle, FormInputAreaField, FormInputField, FormSelectField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataProfile, schemaProfile } from "./type"
-import { economicStatus, gender, residentRealationships, residentStatus, residentType } from "constants/mock"
+import { economicStatus, gender, jobs, residentRealationships, residentStatus, residentType } from "constants/mock"
 import FormControllerRadioGroup from "components/form/FormRadioGroup"
 import { RESIDENT } from "constants/utinities"
 import { useSearchParams } from "react-router-dom"
@@ -86,6 +86,7 @@ const ProfileUpdateForm: React.FC = () => {
                         religion: data.religion,
                         residenceStatus: data.residenceStatus,
                         residenceType: data.residenceType,
+                        job: data.job,
                         parentId: data.parentId || 0,
                         relationship: data.relationship || 0
                     })
@@ -105,6 +106,7 @@ const ProfileUpdateForm: React.FC = () => {
                         religion: data.religion,
                         residenceStatus: data.residenceStatus,
                         residenceType: data.residenceType,
+                        job: data.job,
                         parentId: data.parentId || 0,
                         relationship: data.relationship || 0
                     })
@@ -378,13 +380,23 @@ const ProfileUpdateForm: React.FC = () => {
                     </div>
 
                     <div className="col-span-12">
+                        <FormSelectField
+                            name="job"
+                            label="Nghề nghiệp"
+                            placeholder="Chọn nghề nghiệp"
+                            control={control}
+                            options={jobs}
+                            error={errors.job?.message}
+                        />
+                    </div>
+
+                    <div className="col-span-12">
                         <FormInputField
                             name="bhyt"
                             label="Bảo hiểm y tế"
                             placeholder="Nhập mã bảo hiểm y tế"
                             control={control}
                             error={errors.bhyt?.message}
-                            required
                         />
                     </div>
 

@@ -13,6 +13,14 @@ export const gender = [
     { value: 2, label: 'Nữ' },
 ]
 
+export const jobs = [
+    { value: 1, label: 'Công nhân' },
+    { value: 2, label: 'Nông dân' },
+    { value: 3, label: 'Viên chức' },
+    { value: 4, label: 'Lao động tự do' },
+    { value: 5, label: 'Khác' },
+]
+
 export const residentType = [
     { value: 1, label: "Thường trú" },
     { value: 2, label: "Tạm trú" },

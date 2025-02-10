@@ -43,7 +43,7 @@ const PoorHouseHoldChart: React.FC = () => {
 
     return (
         <Box>
-            <div className="text-[18px] font-medium mb-1 text-center">Thống kê hộ gia đình</div>
+            <div className="text-[18px] font-medium mb-1 text-center">Thống kê hộ nghèo</div>
             <div className="grid grid-cols-2 gap-4 my-2">
                 <div>
                     <Select

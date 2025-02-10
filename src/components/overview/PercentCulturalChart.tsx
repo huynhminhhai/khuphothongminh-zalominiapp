@@ -51,7 +51,7 @@ const PieChart: React.FC = () => {
 
     return (
         <Box>
-            <div className="text-[18px] font-medium mb-1 text-center">Tỉ lệ hộ nghèo</div>
+            <div className="text-[18px] font-medium mb-1 text-center">Tỉ lệ gia đình văn hóa</div>
             <div className="grid grid-cols-2 gap-4 my-2">
                 <div>
                     <Select

@@ -182,6 +182,7 @@ export type ResidentType = {
     isHouseHold: boolean;
     economicStatus: number;
     culturalFamilyStatus: boolean;
+    job: number;
 }
 
 export const RESIDENT: ResidentType[] = [
@@ -207,7 +208,8 @@ export const RESIDENT: ResidentType[] = [
         avatar: images.avatar,
         isHouseHold: true,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 1
     },
     {
         id: 2,
@@ -231,7 +233,8 @@ export const RESIDENT: ResidentType[] = [
         avatar: '',
         isHouseHold: false,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 1
     },
     {
         id: 3,
@@ -255,7 +258,8 @@ export const RESIDENT: ResidentType[] = [
         avatar: '',
         isHouseHold: false,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 2
     },
     {
         id: 4,
@@ -279,7 +283,8 @@ export const RESIDENT: ResidentType[] = [
         avatar: '',
         isHouseHold: false,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 3
     },
     {
         id: 5,
@@ -303,7 +308,8 @@ export const RESIDENT: ResidentType[] = [
         avatar: '',
         isHouseHold: false,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 4
     },
     {
         id: 99,
@@ -327,7 +333,8 @@ export const RESIDENT: ResidentType[] = [
         avatar: '',
         isHouseHold: true,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 1
     }
 ]
 
@@ -354,7 +361,8 @@ export const RESIDENTCRAFT: ResidentType[] = [
         avatar: '',
         isHouseHold: false,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 2
     },
     {
         id: 4,
@@ -378,7 +386,8 @@ export const RESIDENTCRAFT: ResidentType[] = [
         avatar: '',
         isHouseHold: false,
         economicStatus: 1,
-        culturalFamilyStatus: true
+        culturalFamilyStatus: true,
+        job: 1
     },
 ]
 
@@ -404,7 +413,8 @@ export const RESIDENTMAIN = {
     avatar: images.avatar,
     isHouseHold: true,
     economicStatus: 1,
-    culturalFamilyStatus: true
+    culturalFamilyStatus: true,
+    job: 1
 }
 
 export type News = {

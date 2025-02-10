@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PrimaryButton } from "components/button";
 import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form";
-import { gender, residentRealationships, residentStatus, residentType } from "constants/mock";
+import { gender, jobs, residentRealationships, residentStatus, residentType } from "constants/mock";
 import FormControllerRadioGroup from "components/form/FormRadioGroup";
 import { ConfirmModal } from "components/modal";
 import { useSearchParams } from "react-router-dom";
@@ -25,6 +25,7 @@ const defaultValues: FormDataResident = {
     religion: '',
     nation: '',
     bhyt: '',
+    job: 0
 };
 
 const ResidentEditForm: React.FC = () => {
@@ -276,13 +277,23 @@ const ResidentEditForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12">
+                        <FormSelectField
+                            name="job"
+                            label="Nghề nghiệp"
+                            placeholder="Chọn nghề nghiệp"
+                            control={control}
+                            options={jobs}
+                            error={errors.job?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
                         <FormInputField
                             name="bhyt"
                             label="Bảo hiểm y tế"
                             placeholder="Nhập mã bảo hiểm y tế"
                             control={control}
                             error={errors.bhyt?.message}
-                            required
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">

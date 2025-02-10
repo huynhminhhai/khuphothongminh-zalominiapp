@@ -83,6 +83,7 @@ body {
 .zaui-header.sub {
   background-color: white;
   position: fixed;
+  z-index: 9999;
 
   & .zaui-header-title {
     line-height: 1;

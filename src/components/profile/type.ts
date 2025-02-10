@@ -15,7 +15,6 @@ export const schemaProfile = (isHouseHold: boolean) => yup.object().shape({
     nation: yup.string().required("Không được để trống"),
     residenceType: yup.number().required("Chưa chọn mục này"),
     residenceStatus: yup.number().required("Chưa chọn mục này"),
-    bhyt: yup.string().required("Mã bảo hiểm không được để trống"),
     economicStatus: yup.number().required("Mã bảo hiểm không được để trống"),
     culturalFamilyStatus: yup.boolean().required("Mã bảo hiểm không được để trống"),
     relationship: yup.number()
@@ -52,8 +51,9 @@ export type FormDataProfile = {
     relationship?: number;
     residenceStatus: number;
     residenceType: number;
-    bhyt: string;
+    bhyt?: string;
     economicStatus: number;
     culturalFamilyStatus: boolean;
     parentId?: number;
+    job?: number;
 }

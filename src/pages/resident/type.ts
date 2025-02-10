@@ -16,8 +16,6 @@ export const schemaResident = yup.object().shape({
     nation: yup.string().required("Không được để trống"),
     residenceType: yup.number().required("Chưa chọn mục này"),
     residenceStatus: yup.number().required("Chưa chọn mục này"),
-    bhyt: yup.string().required("Mã bảo hiểm không được để trống")
-
 });
 
 export type FormDataResident = {
@@ -33,5 +31,6 @@ export type FormDataResident = {
     dateCard: string;
     religion: string;
     nation: string;
-    bhyt: string;
+    bhyt?: string;
+    job?: number;
 };

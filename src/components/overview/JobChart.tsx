@@ -29,7 +29,7 @@ const JobChart: React.FC = () => {
         labels: ['Công nhân', 'Nông dân', 'Viên chức', 'Lao động tự do', 'Khác'],
         datasets: [
           {
-            data: [40, 60, 30, 50, 20],
+            data: [20, 30, 15, 25, 10],
             backgroundColor: ['#f1b821', '#545e90', '#ee4880', '#b275d4', '#41b5ee'],
           },
         ],
@@ -37,7 +37,7 @@ const JobChart: React.FC = () => {
 
     return (
         <Box>
-            <div className="text-[18px] font-medium mb-1 text-center">Tình trạng bảo hiểm y tế</div>
+            <div className="text-[18px] font-medium mb-1 text-center">Thống kê nghề nghiệp</div>
             <div className="grid grid-cols-2 gap-4 my-2">
                 <div>
                     <Select
