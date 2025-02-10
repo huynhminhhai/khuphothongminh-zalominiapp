@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Box, Page } from "zmp-ui";
@@ -7,46 +7,31 @@ import { HeaderSub } from "components/header-sub";
 
 const generateResidents = (count: number) => {
     const statuses = ["Hộ nghèo", "Hộ cận nghèo", "Gia đình văn hóa", "Gia đình chưa văn hóa"];
-    const randomOffset = () => (Math.random() - 0.5) * 0.016; // Lệch vị trí ngẫu nhiên
+    const randomOffset = () => (Math.random() - 0.5) * 0.016;
 
     return Array.from({ length: count }, (_, id) => ({
         id: id + 1,
-        name: `Trần Văn ${String.fromCharCode(65 + (id % 26))}`, // Tạo tên từ A-Z
-        lat: 10.633 + randomOffset(), // Tạo vị trí gần khu vực gốc
+        name: `Trần Văn ${String.fromCharCode(65 + (id % 26))}`,
+        lat: 10.633 + randomOffset(),
         lng: 106.501 + randomOffset(),
-        status: statuses[Math.floor(Math.random() * statuses.length)], // Random trạng thái
+        status: statuses[Math.floor(Math.random() * statuses.length)],
     }));
 };
 
-const ChangeView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
-    const map = useMap();
-    map.setView(center, zoom);
-    return null;
-};
-
 const ResidentMapPage = () => {
-
-    const [mapType, setMapType] = useState("satellite");
-    const [filter, setFilter] = useState<"all" | "poor" | "culture">("all");
-
-    const tileLayers: { [key: string]: string } = {
-        streets: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        satellite: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    };
+    const [filter, setFilter] = useState<"poor" | "culture">("poor");
 
     const residents = generateResidents(500);
 
     const filteredResidents = residents.filter((res) => {
-        if (filter === "all") return true;
         if (filter === "poor") return res.status === "Hộ nghèo" || res.status === "Hộ cận nghèo";
         if (filter === "culture") return res.status === "Gia đình văn hóa" || res.status === "Gia đình chưa văn hóa";
         return false;
     });
 
     const center: [number, number] = [10.633159564692495, 106.50086913625947];
-    const zoom = 16;
+    const zoom = 14;
 
-    // Hàm chọn màu marker theo trạng thái hộ dân
     const getMarkerIcon = (status: string) => {
         const color = {
             "Hộ nghèo": "red",
@@ -58,7 +43,7 @@ const ResidentMapPage = () => {
         return L.icon({
             iconUrl: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
             iconSize: [32, 32],
-            iconAnchor: [16, 32], // Giữ điểm đánh dấu đúng vị trí
+            iconAnchor: [16, 32],
         });
     };
 
@@ -68,10 +53,22 @@ const ResidentMapPage = () => {
                 <HeaderSub title="Bản đồ" />
 
                 <Box>
-                    <MapContainer style={{ height: "600px", width: "100%" }}>
-                        <ChangeView center={center} zoom={zoom} />
+                    <MapContainer style={{ height: "600px", width: "100%" }} center={center} zoom={zoom}>
+                        <LayersControl position="topright">
+                            <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
+                                <TileLayer
+                                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                                    attribution="Bản đồ dân cư | © VNPT Long An"
+                                />
+                            </LayersControl.BaseLayer>
 
-                        <TileLayer url={tileLayers[mapType]} attribution="Bản đồ dân cư | © VNPT Long An" />
+                            <LayersControl.BaseLayer name="Bản đồ đường">
+                                <TileLayer
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    attribution="Bản đồ dân cư | © VNPT Long An"
+                                />
+                            </LayersControl.BaseLayer>
+                        </LayersControl>
 
                         {filteredResidents.map((res) => (
                             <Marker key={res.id} position={[res.lat, res.lng]} icon={getMarkerIcon(res.status)}>
@@ -81,23 +78,39 @@ const ResidentMapPage = () => {
                                         <ul className="flex flex-col gap-1">
                                             <li>Tên chủ hộ: {res.name}</li>
                                             <li>Số thành viên: 5</li>
+                                            <li>Đc: 364, QL1A, KP9, BL, LA</li>
                                         </ul>
-
                                     </div>
                                 </Popup>
                             </Marker>
                         ))}
                     </MapContainer>
 
-                    <div style={{ marginTop: 10 }}>
-                        <button onClick={() => setMapType("streets")}>Bản đồ đường</button>
-                        <button onClick={() => setMapType("satellite")}>Bản đồ vệ tinh</button>
-                    </div>
-                    <div>
-                        <button onClick={() => setFilter("all")}>Xem tất cả</button>
-                        <button onClick={() => setFilter("poor")}>Xem hộ nghèo & cận nghèo</button>
-                        <button onClick={() => setFilter("culture")}>Xem gia đình văn hóa</button>
-                    </div>
+                    <Box mt={2} p={4}>
+                        <div className="grid grid-cols-2 gap-3">
+                            <label className="cursor-pointer" onClick={() => setFilter("poor")}>
+                                <input type="radio" className="peer sr-only" name="pricing" defaultChecked />
+                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-end justify-center">
+                                            <p className="text-[14px] text-center font-bold">Xem hộ nghèo & cận nghèo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label className="cursor-pointer" onClick={() => setFilter("culture")}>
+                                <input type="radio" className="peer sr-only" name="pricing" />
+                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-end justify-center">
+                                            <p className="text-[14px] text-center font-bold">Xem gia đình văn hóa</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+
+                    </Box>
                 </Box>
             </Box>
         </Page>
