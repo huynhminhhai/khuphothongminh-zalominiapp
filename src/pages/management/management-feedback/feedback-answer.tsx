@@ -126,7 +126,6 @@ const FeedbackAnswerPage: React.FC = () => {
                                     }
                                 </Box>
                             </Box>
-                            <Divider />
                         </Box>
                     }
                 </Box>

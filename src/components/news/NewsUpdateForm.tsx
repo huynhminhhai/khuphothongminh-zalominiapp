@@ -177,7 +177,7 @@ const NewsUpdateForm = () => {
                             required
                         />
                     </div>
-                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
+                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
                             <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật tin tức"} handleClick={handleSubmit(onSubmit)} />
                         </Box>

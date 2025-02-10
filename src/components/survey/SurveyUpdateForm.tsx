@@ -367,7 +367,7 @@ const SurveyUpdateForm: React.FC = () => {
                             </Button>
                         </div>
 
-                        <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
+                        <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                             <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
                                 <SecondaryButton fullWidth label="Xem trước" handleClick={() => handlePreview()} />
                                 <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật khảo sát"} handleClick={() => handleSubmit()} />
