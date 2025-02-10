@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Box, Page } from "zmp-ui";
+import { Box, Page, Sheet } from "zmp-ui";
 import { HeaderSub } from "components/header-sub";
 import "leaflet.heat";
+import { LegendNote } from "components/maps";
+import { Icon } from "@iconify/react";
 
 
 const generateResidents = (count: number) => {
@@ -36,7 +38,13 @@ const HeatmapLayer = ({ residents }) => {
 
 
 const ResidentMapPage = () => {
+
+    const [sheetVisible, setSheetVisible] = useState(false);
     const [filter, setFilter] = useState<"poor" | "culture" | "heatmap" | "heatmap2">("poor");
+
+    const handleSetFilter = useCallback((value: "poor" | "culture" | "heatmap" | "heatmap2") => {
+        setFilter(value);
+    }, []);
 
     const residents = generateResidents(500);
 
@@ -70,85 +78,99 @@ const ResidentMapPage = () => {
                 <HeaderSub title="Bản đồ" />
 
                 <Box>
-                    <MapContainer style={{ height: "600px", width: "100%" }} center={center} zoom={zoom}>
-                        <LayersControl position="topright">
-                            <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
-                                <TileLayer
-                                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                                    attribution="Bản đồ dân cư | © VNPT Long An"
-                                />
-                            </LayersControl.BaseLayer>
+                    <Box className="relative">
+                        <LegendNote />
+                        <Box className="absolute top-[66px] right-3 z-[9999]">
+                            <button onClick={() => setSheetVisible(true)} className="p-2 bg-white text-[#a8a8a8] rounded-[5px] opacity-95">
+                                <Icon fontSize={26} icon='mdi:filter' />
+                            </button>
+                        </Box>
+                        <MapContainer style={{ height: "calc(100vh - 56px)", width: "100%" }} center={center} zoom={zoom}>
+                            <LayersControl position="topright">
+                                <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
+                                    <TileLayer
+                                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                                        attribution="Bản đồ dân cư | © VNPT Long An"
+                                    />
+                                </LayersControl.BaseLayer>
 
-                            <LayersControl.BaseLayer name="Bản đồ đường">
-                                <TileLayer
-                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                    attribution="Bản đồ dân cư | © VNPT Long An"
-                                />
-                            </LayersControl.BaseLayer>
-                        </LayersControl>
+                                <LayersControl.BaseLayer name="Bản đồ đường">
+                                    <TileLayer
+                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                        attribution="Bản đồ dân cư | © VNPT Long An"
+                                    />
+                                </LayersControl.BaseLayer>
+                            </LayersControl>
 
-                        {filter === "heatmap" || filter === "heatmap2" ? <HeatmapLayer residents={residents} /> :
-                            filteredResidents.map((res) => (
-                                <Marker key={res.id} position={[res.lat, res.lng]} icon={getMarkerIcon(res.status)}>
-                                    <Popup>
-                                        <div className="font-semibold">{res.status}</div>
-                                        <div className="mt-2">
-                                            <ul className="flex flex-col gap-1">
-                                                <li>Tên chủ hộ: {res.name}</li>
-                                                <li>Số thành viên: 5</li>
-                                                <li>Đc: 364, QL1A, KP9, BL, LA</li>
-                                            </ul>
-                                        </div>
-                                    </Popup>
-                                </Marker>
-                            ))}
-                    </MapContainer>
-
-                    <Box mt={2} p={4}>
-                        <div className="grid grid-cols-2 gap-3">
-                            <label className="cursor-pointer" onClick={() => setFilter("poor")}>
-                                <input type="radio" className="peer sr-only" name="pricing" defaultChecked />
-                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-end justify-center">
-                                            <p className="text-[14px] text-center font-bold">Xem hộ nghèo & cận nghèo</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                            <label className="cursor-pointer" onClick={() => setFilter("culture")}>
-                                <input type="radio" className="peer sr-only" name="pricing" />
-                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-end justify-center">
-                                            <p className="text-[14px] text-center font-bold">Xem gia đình văn hóa</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                            <label className="cursor-pointer" onClick={() => setFilter("heatmap")}>
-                                <input type="radio" className="peer sr-only" name="pricing" />
-                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-end justify-center">
-                                            <p className="text-[14px] text-center font-bold">Mật độ dân cư</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                            <label className="cursor-pointer" onClick={() => setFilter("heatmap2")}>
-                                <input type="radio" className="peer sr-only" name="pricing" />
-                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-end justify-center">
-                                            <p className="text-[14px] text-center font-bold">Mật độ hộ gia đình</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-
+                            {filter === "heatmap" || filter === "heatmap2" ? <HeatmapLayer residents={residents} /> :
+                                filteredResidents.map((res) => (
+                                    <Marker key={res.id} position={[res.lat, res.lng]} icon={getMarkerIcon(res.status)}>
+                                        <Popup>
+                                            <div className="font-semibold">{res.status}</div>
+                                            <div className="mt-2">
+                                                <ul className="flex flex-col gap-1">
+                                                    <li>Tên chủ hộ: {res.name}</li>
+                                                    <li>Số thành viên: 5</li>
+                                                    <li>Đc: 364, QL1A, KP9, BL, LA</li>
+                                                </ul>
+                                            </div>
+                                        </Popup>
+                                    </Marker>
+                                ))}
+                        </MapContainer>
                     </Box>
+
+                    <Sheet
+                        visible={sheetVisible}
+                        onClose={() => setSheetVisible(false)}
+                        autoHeight
+                        zIndex={9999}
+                    >
+                        <Box mt={6} p={4} mb={10}>
+                            <div className="grid grid-cols-2 gap-3">
+                                <label className="cursor-pointer" onClick={() => handleSetFilter("poor")}>
+                                    <input type="radio" className="peer sr-only" name="pricing" defaultChecked />
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex items-end justify-center">
+                                                <p className="text-[14px] text-center font-bold">Xem hộ nghèo & cận nghèo</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label className="cursor-pointer" onClick={() => handleSetFilter("culture")}>
+                                    <input type="radio" className="peer sr-only" name="pricing" />
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex items-end justify-center">
+                                                <p className="text-[14px] text-center font-bold">Xem gia đình văn hóa</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label className="cursor-pointer" onClick={() => handleSetFilter("heatmap")}>
+                                    <input type="radio" className="peer sr-only" name="pricing" />
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex items-end justify-center">
+                                                <p className="text-[14px] text-center font-bold">Mật độ dân cư</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                                <label className="cursor-pointer" onClick={() => handleSetFilter("heatmap2")}>
+                                    <input type="radio" className="peer sr-only" name="pricing" />
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                        <div className="flex flex-col gap-1">
+                                            <div className="flex items-end justify-center">
+                                                <p className="text-[14px] text-center font-bold">Mật độ hộ gia đình</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </Box>
+                    </Sheet>
                 </Box>
             </Box>
         </Page>
