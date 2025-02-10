@@ -8,7 +8,7 @@ const NewsPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Tin tức" />
-                <Box p={4}>
+                <Box pb={4}>
                     <NewsList />
                 </Box>
             </Box>

@@ -82,7 +82,7 @@ const TaskDetailPage: React.FC = () => {
                     {
                         detailData ?
                             <Box>
-                                <Box p={4}>
+                                <Box px={4} pb={4}>
                                     <h3 className="text-[20px] font-medium">{detailData.title}</h3>
                                 </Box>
                                 <Box p={4}>

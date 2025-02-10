@@ -12,7 +12,7 @@ const MemberResidentSection: React.FC = () => {
     return (
         <Box>
             <Box>
-                <Box pt={4} pb={2} px={4}>
+                <Box pb={2} px={4}>
                     <h3 className="text-[18px] font-semibold">Thông tin thành viên đã duyệt</h3>
                 </Box>
                 <InforResidentList />

@@ -12,11 +12,13 @@ const NewsList: React.FC = () => {
         <Box>
             <div className="grid grid-cols-1">
                 <NewsMain data={NEWSDATA[0]} />
-                {
-                    subNews.map((item, index) => (
-                        <NewsItem key={index} data={item}/>
-                    ))
-                }
+                <Box px={4}>
+                    {
+                        subNews.map((item, index) => (
+                            <NewsItem key={index} data={item}/>
+                        ))
+                    }
+                </Box>
             </div>
             <div className="flex items-center justify-center gap-3 pt-6 pb-2">
                 <Button onClick={() => console.log('call api list news')} size="medium">Xem thêm</Button>

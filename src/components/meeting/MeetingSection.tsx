@@ -8,17 +8,18 @@ const MeetingSection: React.FC<any> = () => {
 
     const navigate = useNavigate()
 
-    const firstTwoMeetings = MEETINGDATA.slice(0, 2);
+    const firstTwoMeetings = MEETINGDATA.slice(0, 3);
 
     return (
         <Box>
-            <Box p={4}>
+            <Box px={4} pt={4} pb={0}>
                 <TitleSection title="Cuộc họp hôm nay" handleClick={() => navigate('/meeting')} />
                 <Box>
                     <Swiper
                         loop
                         duration={12000}
                         autoplay
+                        className="pb-6"
                     >
                         {
                             firstTwoMeetings.map((item, index) => (

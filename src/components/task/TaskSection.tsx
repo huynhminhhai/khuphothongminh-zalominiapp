@@ -12,13 +12,14 @@ const TaskSection: React.FC<any> = () => {
 
     return (
         <Box>
-            <Box p={4}>
+            <Box px={4} pt={4} pb={0}>
                 <TitleSection title="Nhiệm vụ hôm nay" handleClick={() => navigate('/task')} />
                 <Box>
                     <Swiper
                         loop
                         duration={12000}
                         autoplay
+                        className="pb-6"
                     >
                         {
                             firstTwoTasks.map((item, index) => (
