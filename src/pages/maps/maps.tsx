@@ -4,6 +4,8 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Box, Page } from "zmp-ui";
 import { HeaderSub } from "components/header-sub";
+import "leaflet.heat";
+
 
 const generateResidents = (count: number) => {
     const statuses = ["Hộ nghèo", "Hộ cận nghèo", "Gia đình văn hóa", "Gia đình chưa văn hóa"];
@@ -18,8 +20,23 @@ const generateResidents = (count: number) => {
     }));
 };
 
+const HeatmapLayer = ({ residents }) => {
+    const map = useMap();
+
+    React.useEffect(() => {
+        const heatData = residents.map(res => [res.lat, res.lng, 0.5]);
+        const heatLayer = (L as any).heatLayer(heatData, { radius: 25, blur: 15, maxZoom: 17 }).addTo(map);
+        return () => {
+            map.removeLayer(heatLayer);
+        };
+    }, [map, residents]);
+
+    return null;
+};
+
+
 const ResidentMapPage = () => {
-    const [filter, setFilter] = useState<"poor" | "culture">("poor");
+    const [filter, setFilter] = useState<"poor" | "culture" | "heatmap" | "heatmap2">("poor");
 
     const residents = generateResidents(500);
 
@@ -70,20 +87,21 @@ const ResidentMapPage = () => {
                             </LayersControl.BaseLayer>
                         </LayersControl>
 
-                        {filteredResidents.map((res) => (
-                            <Marker key={res.id} position={[res.lat, res.lng]} icon={getMarkerIcon(res.status)}>
-                                <Popup>
-                                    <div className="font-semibold">{res.status}</div>
-                                    <div className="mt-2">
-                                        <ul className="flex flex-col gap-1">
-                                            <li>Tên chủ hộ: {res.name}</li>
-                                            <li>Số thành viên: 5</li>
-                                            <li>Đc: 364, QL1A, KP9, BL, LA</li>
-                                        </ul>
-                                    </div>
-                                </Popup>
-                            </Marker>
-                        ))}
+                        {filter === "heatmap" || filter === "heatmap2" ? <HeatmapLayer residents={residents} /> :
+                            filteredResidents.map((res) => (
+                                <Marker key={res.id} position={[res.lat, res.lng]} icon={getMarkerIcon(res.status)}>
+                                    <Popup>
+                                        <div className="font-semibold">{res.status}</div>
+                                        <div className="mt-2">
+                                            <ul className="flex flex-col gap-1">
+                                                <li>Tên chủ hộ: {res.name}</li>
+                                                <li>Số thành viên: 5</li>
+                                                <li>Đc: 364, QL1A, KP9, BL, LA</li>
+                                            </ul>
+                                        </div>
+                                    </Popup>
+                                </Marker>
+                            ))}
                     </MapContainer>
 
                     <Box mt={2} p={4}>
@@ -104,6 +122,26 @@ const ResidentMapPage = () => {
                                     <div className="flex flex-col gap-1">
                                         <div className="flex items-end justify-center">
                                             <p className="text-[14px] text-center font-bold">Xem gia đình văn hóa</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label className="cursor-pointer" onClick={() => setFilter("heatmap")}>
+                                <input type="radio" className="peer sr-only" name="pricing" />
+                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-end justify-center">
+                                            <p className="text-[14px] text-center font-bold">Mật độ dân cư</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                            <label className="cursor-pointer" onClick={() => setFilter("heatmap2")}>
+                                <input type="radio" className="peer sr-only" name="pricing" />
+                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="flex flex-col gap-1">
+                                        <div className="flex items-end justify-center">
+                                            <p className="text-[14px] text-center font-bold">Mật độ hộ gia đình</p>
                                         </div>
                                     </div>
                                 </div>
