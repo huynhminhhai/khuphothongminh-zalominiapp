@@ -1,9 +1,11 @@
 import images from "assets/images";
+import { Divider } from "components/divider";
 import { HeaderHome } from "components/header";
 import { MeetingSection } from "components/meeting";
 import NewsSection from "components/news/NewsSection";
 import { ServiceSection } from "components/services";
 import { StatisticSection } from "components/statistics";
+import { TaskSection } from "components/task";
 import React from "react";
 import { Box, Page } from "zmp-ui";
 
@@ -17,7 +19,11 @@ const HomePage: React.FunctionComponent = () => {
         <StatisticSection />
         <div className="bg-white rounded-t-2xl pt-3">
           <ServiceSection />
+          <Divider />
           <MeetingSection />
+          <Divider />
+          <TaskSection />
+          <Divider />
           <NewsSection />
         </div>
       </Box>

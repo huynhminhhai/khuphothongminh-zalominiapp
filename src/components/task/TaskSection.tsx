@@ -1,19 +1,19 @@
 import TitleSection from "components/titleSection"
 import React from "react"
 import { Box, Swiper, useNavigate } from "zmp-ui"
-import { MEETINGDATA } from "constants/utinities"
-import MeetingItem from "./MeetingItem"
+import TaskItem from "./TaskItem"
+import { TASKS } from "constants/utinities"
 
-const MeetingSection: React.FC<any> = () => {
+const TaskSection: React.FC<any> = () => {
 
     const navigate = useNavigate()
 
-    const firstTwoMeetings = MEETINGDATA.slice(0, 2);
+    const firstTwoTasks = TASKS.slice(0, 2);
 
     return (
         <Box>
             <Box p={4}>
-                <TitleSection title="Cuộc họp hôm nay" handleClick={() => navigate('/meeting')} />
+                <TitleSection title="Nhiệm vụ hôm nay" handleClick={() => navigate('/task')} />
                 <Box>
                     <Swiper
                         loop
@@ -21,9 +21,9 @@ const MeetingSection: React.FC<any> = () => {
                         autoplay
                     >
                         {
-                            firstTwoMeetings.map((item, index) => (
+                            firstTwoTasks.map((item, index) => (
                                 <Swiper.Slide key={index}>
-                                    <MeetingItem key={index} data={item} />
+                                    <TaskItem key={index} data={item} />
                                 </Swiper.Slide>
                             ))
                         }
@@ -34,4 +34,4 @@ const MeetingSection: React.FC<any> = () => {
     )
 }
 
-export default MeetingSection
+export default TaskSection

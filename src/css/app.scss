@@ -163,6 +163,19 @@ tbody tr td:not(:first-child) {
   max-height: 60vh;
 }
 
+
+.zaui-swiper-item  {
+  opacity: 1 !important;
+}
+
+.zaui-swiper-item .task-item {
+  border-bottom: 0;
+}
+
+.zaui-swiper-item .task-item img {
+  width: 60px;
+}
+
 /**
 * CUSTOM
 **/

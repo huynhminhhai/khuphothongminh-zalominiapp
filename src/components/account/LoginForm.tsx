@@ -48,7 +48,7 @@ const LoginForm: React.FC = () => {
                 duration: 5000,
             });
             reset(defaultValues);
-            navigate('/profile');
+            navigate('/account');
         } catch (error) {
             console.error('Error:', error);
             openSnackbar({

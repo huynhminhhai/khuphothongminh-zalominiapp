@@ -12,7 +12,7 @@ const NewsSection: React.FC = () => {
 
     return (
         <Box p={4} className="news-section">
-            <TitleSection title="Tin tức mới nhất" />
+            <TitleSection title="Tin tức mới nhất" handleClick={() => navigate('/news')}/>
             <Box
                 flex
                 flexDirection="column"

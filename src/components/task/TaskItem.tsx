@@ -17,8 +17,9 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
     return (
         <Box
             onClick={() => navigate(`/task-detail?id=${data.id}`)}
+            className="task-item border-b-[1px]"
         >
-            <Box py={4} className="border-b-[1px]" flex alignItems="center" justifyContent="space-between">
+            <Box py={4} flex alignItems="center" justifyContent="space-between">
                 <Box flex alignItems="center" className="gap-3 w-[100%]">
                     <Box>
                         <img className="w-[60px]" src={images.todo} alt={data.title} />
