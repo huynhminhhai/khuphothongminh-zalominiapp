@@ -9,7 +9,7 @@ type MeetingItemProps = {
     data: FormDataMeeting
 }
 
-const MeetingStatus: React.FC<{ meetingDate: string, startTime: string, endTime: string }> = ({ meetingDate, startTime, endTime }) => {
+export const MeetingStatus: React.FC<{ meetingDate: string, startTime: string, endTime: string }> = ({ meetingDate, startTime, endTime }) => {
     const { status, bgColor } = getMeetingStatus(meetingDate, startTime, endTime);
   
     return (

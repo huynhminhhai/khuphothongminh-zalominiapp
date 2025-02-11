@@ -6,6 +6,7 @@ import { ConfirmModal } from "components/modal";
 import { MEETINGDATA } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
+import { copyToClipboard } from "utils/copyToClipboard";
 import { renderDayOfWeek } from "utils/date";
 import { Avatar, Box, Page, useNavigate, useSnackbar } from "zmp-ui"
 
@@ -46,31 +47,24 @@ const MeetingDetailPage: React.FC = () => {
         fetchResidentData();
     }, [meetingId]);
 
-    const handleCopy = async () => {
-        try {
-            const tempInput = document.createElement("textarea");
-            tempInput.value = detailData?.linkOnl as string;
-            document.body.appendChild(tempInput);
-            tempInput.select();
-            document.execCommand("copy");
-            document.body.removeChild(tempInput);
-            openSnackbar({
+    const handleCopy = async (linkOnl: string) => {
+        copyToClipboard(
+            linkOnl,
+            () => openSnackbar({
                 icon: true,
                 text: "Sao chép thành công",
                 type: 'success',
                 action: { text: "Đóng", close: true },
                 duration: 3000,
-            });
-        } catch (error) {
-            console.error('Lỗi khi sao chép:', error);
-            openSnackbar({
+            }),
+            () => openSnackbar({
                 icon: true,
                 text: "Sao chép không thành công",
                 type: 'error',
                 action: { text: "Đóng", close: true },
                 duration: 3000,
-            });
-        }
+            })
+        );
     };
 
     const openConfirmModal = (action: () => void, title: string, message: string) => {
@@ -146,7 +140,7 @@ const MeetingDetailPage: React.FC = () => {
                                                 </Box>
                                                 <Box flex className="gap-2">
                                                     {detailData.linkOnl}
-                                                    <div className="flex items-center justify-center text-[10px] text-[#fff] leading-[1] rounded-lg w-fit" onClick={() => handleCopy()}>
+                                                    <div className="flex items-center justify-center text-[10px] text-[#fff] leading-[1] rounded-lg w-fit" onClick={() => handleCopy(detailData.linkOnl as string)}>
                                                         <Icon fontSize={20} className="text-[#808080]" icon='solar:copy-bold' />
                                                     </div>
                                                 </Box>

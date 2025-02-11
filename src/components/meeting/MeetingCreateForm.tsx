@@ -52,7 +52,7 @@ const MeetingAddForm: React.FC = () => {
                 duration: 5000,
             });
             reset(defaultValues);
-            navigate('/news-management');
+            navigate('/meeting-management');
         } catch (error) {
             console.error('Error:', error);
             openSnackbar({
@@ -78,8 +78,6 @@ const MeetingAddForm: React.FC = () => {
         console.log("Cancelled!");
         setConfirmVisible(false);
     };
-
-    console.log(watch())
 
     return (
         <Box p={4}>

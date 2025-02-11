@@ -111,7 +111,7 @@ const MeetingUpdateForm = () => {
                 duration: 5000,
             });
             reset(defaultValues);
-            navigate('/news-management');
+            navigate('/meeting-management');
         } catch (error) {
             console.error('Error:', error);
             openSnackbar({

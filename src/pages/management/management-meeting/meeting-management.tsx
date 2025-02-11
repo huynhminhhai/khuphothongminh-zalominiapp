@@ -1,10 +1,12 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
+import { MeetingStatus } from "components/meeting/MeetingItem"
 import { ConfirmModal } from "components/modal"
 import { TablePagination, TableTanStack } from "components/table"
-import { MEETING, meetingColor, meetingStatus, MeetingType } from "constants/utinities"
+import { MEETINGDATA } from "constants/utinities"
 import React, { useState } from "react"
+import { copyToClipboard } from "utils/copyToClipboard"
 import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
@@ -19,10 +21,8 @@ const MeetingManagementPage: React.FC = () => {
     const { openSnackbar } = useSnackbar();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [newsId, setNewsId] = useState<number | undefined>(undefined);
+    const [meetingId, setMeetingId] = useState<number | undefined>(undefined);
     const [param, setParam] = useState(initParam)
-
-    console.log(param)
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -42,14 +42,14 @@ const MeetingManagementPage: React.FC = () => {
     };
 
     const removeNews = (id: number | undefined) => {
-        setNewsId(id)
+        setMeetingId(id)
         setConfirmVisible(true);
     }
 
     const handleConfirm = () => {
-        if (newsId !== null) {
+        if (meetingId !== null) {
             setConfirmVisible(false);
-            console.log(console.log('Call api delete survey with id: ', newsId))
+            console.log(console.log('Call api delete survey with id: ', meetingId))
 
             openSnackbar({
                 text: 'Xóa cuộc họp thành công',
@@ -64,30 +64,67 @@ const MeetingManagementPage: React.FC = () => {
         setConfirmVisible(false);
     };
 
-    const columns: ColumnDef<MeetingType>[] = [
+    const handleCopy = async (linkOnl: string) => {
+        copyToClipboard(
+            linkOnl,
+            () => openSnackbar({
+                icon: true,
+                text: "Sao chép thành công",
+                type: 'success',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            }),
+            () => openSnackbar({
+                icon: true,
+                text: "Sao chép không thành công",
+                type: 'error',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            })
+        );
+    };
+
+    const columns: ColumnDef<any>[] = [
         {
             accessorKey: 'title',
             header: 'Tiêu đề',
-            size: 300
+            size: 250
         },
         {
-            accessorKey: 'time',
-            header: 'Thời gian họp'
+            id: 'time',
+            header: 'Thời gian họp',
+            cell: ({ row }) => (
+                <div className="flex flex-col justify-center">
+                    <div>{row.original.meetingDate}</div>
+                    <div>{row.original.startTime} - {row.original.endTime}</div>
+                </div>
+            ),
+            size: 160
         },
         {
-            accessorKey: 'location',
-            header: 'Địa điểm'
+            accessorKey: 'address',
+            header: 'Địa điểm',
+            size: 250
+        },
+        {
+            id: 'linkOnl',
+            header: 'Link online',
+            cell: ({ row }) => (
+                <div className="flex justify-center items-center gap-1">
+                    <div>Link họp</div>
+                    <div className="flex items-center justify-center text-[10px] text-[#fff] leading-[1] rounded-lg w-fit" onClick={() => handleCopy(row.original.linkOnl as string)}>
+                        <Icon fontSize={20} className="text-[#808080]" icon='solar:copy-bold' />
+                    </div>
+                </div>
+            ),
+            size: 160
         },
         {
             id: 'status',
             header: 'Trạng thái',
             cell: ({ row }) => (
                 <div className="flex justify-center">
-                    <div style={{ backgroundColor: meetingColor[row.original.status] }} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">
-                        {
-                            meetingStatus[row.original.status]
-                        }
-                    </div>
+                    <MeetingStatus meetingDate={row.original.meetingDate} startTime={row.original.startTime} endTime={row.original.endTime} />
                 </div>
             ),
             size: 160
@@ -120,7 +157,7 @@ const MeetingManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = MEETING.filter(item =>
+    const filteredData = MEETINGDATA.filter(item =>
         item.title.toLowerCase().includes(param.keyword.toLowerCase())
     );
 
