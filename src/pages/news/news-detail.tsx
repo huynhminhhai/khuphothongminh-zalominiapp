@@ -50,7 +50,7 @@ const NewsDetailPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Chi tiết tin tức" />
+                <HeaderSub title="Chi tiết tin tức" onBackClick={() => navigate('/news')} />
                 <Box px={4} pb={4}>
                     <div className="flex items-center gap-2 mb-2">
                         <div className="h-[24px] w-[5px] bg-[#731611] block"></div>

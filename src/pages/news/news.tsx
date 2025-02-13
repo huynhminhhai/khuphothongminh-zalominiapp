@@ -1,13 +1,16 @@
 import { HeaderSub } from "components/header-sub"
 import { NewsList } from "components/news"
 import React from "react"
-import { Box, Page } from "zmp-ui"
+import { Box, Page, useNavigate } from "zmp-ui"
 
 const NewsPage: React.FC = () => {
+
+    const navigate = useNavigate()
+
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Tin tức" />
+                <HeaderSub title="Tin tức" onBackClick={() => navigate('/')} />
                 <Box pb={4}>
                     <NewsList />
                 </Box>

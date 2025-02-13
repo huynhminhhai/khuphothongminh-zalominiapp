@@ -11,8 +11,8 @@ export const schemaProfile = (isHouseHold: boolean) => yup.object().shape({
     birthDate: yup.string().required('Chưa chọn ngày sinh'),
     numberCard: yup.string().typeError('CCCD phải là một số').required("CCCD phải là một số"),
     dateCard: yup.string().required("Chưa chọn mục này"),
-    religion: yup.string().required("Không được để trống"),
-    nation: yup.string().required("Không được để trống"),
+    religion: yup.number().required('Chưa chọn tôn giáo').notOneOf([0], 'Chưa chọn mục này'),
+    nation: yup.number().required('Chưa chọn dân tộc').notOneOf([0], 'Chưa chọn mục này'),
     residenceType: yup.number().required("Chưa chọn mục này"),
     residenceStatus: yup.number().required("Chưa chọn mục này"),
     economicStatus: yup.number().required("Mã bảo hiểm không được để trống"),
@@ -45,8 +45,8 @@ export type FormDataProfile = {
     dateCard: string;
     gender: number;
     birthDate: string;
-    nation: string;
-    religion: string;
+    nation: number;
+    religion: number;
     address: string;
     relationship?: number;
     residenceStatus: number;

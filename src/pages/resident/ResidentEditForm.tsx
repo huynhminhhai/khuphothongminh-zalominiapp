@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PrimaryButton } from "components/button";
 import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form";
-import { gender, jobs, residentRealationships, residentStatus, residentType } from "constants/mock";
+import { ethnicOptions, gender, jobs, religionOptions, residentRealationships, residentStatus, residentType } from "constants/mock";
 import FormControllerRadioGroup from "components/form/FormRadioGroup";
 import { ConfirmModal } from "components/modal";
 import { useSearchParams } from "react-router-dom";
@@ -22,8 +22,8 @@ const defaultValues: FormDataResident = {
     gender: 0,
     numberCard: '',
     dateCard: '',
-    religion: '',
-    nation: '',
+    religion: 0,
+    nation: 0,
     bhyt: '',
     job: 0
 };
@@ -257,21 +257,23 @@ const ResidentEditForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-6">
-                        <FormInputField
+                        <FormSelectField
                             name="religion"
                             label="Tôn giáo"
                             placeholder="Nhập tôn giáo"
                             control={control}
+                            options={religionOptions}
                             error={errors.religion?.message}
                             required
                         />
                     </div>
                     <div className="col-span-6">
-                        <FormInputField
+                        <FormSelectField
                             name="nation"
                             label="Dân tộc"
                             placeholder="Nhập dân tộc"
                             control={control}
+                            options={ethnicOptions}
                             error={errors.nation?.message}
                             required
                         />

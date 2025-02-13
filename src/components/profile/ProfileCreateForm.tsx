@@ -6,7 +6,7 @@ import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormImageUploaderSingle, FormInputAreaField, FormInputField, FormSelectField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataProfile, schemaProfile } from "./type"
-import { economicStatus, gender, jobs, residentRealationships, residentStatus, residentType } from "constants/mock"
+import { economicStatus, ethnicOptions, gender, jobs, religionOptions, residentRealationships, residentStatus, residentType } from "constants/mock"
 import FormControllerRadioGroup from "components/form/FormRadioGroup"
 import { RESIDENT } from "constants/utinities"
 
@@ -21,8 +21,8 @@ const defaultValues: FormDataProfile = {
     gender: 0,
     numberCard: '',
     dateCard: '',
-    religion: '',
-    nation: '',
+    religion: 0,
+    nation: 0,
     bhyt: '',
     economicStatus: 1,
     culturalFamilyStatus: true,
@@ -112,7 +112,7 @@ const ProfileAddForm: React.FC = () => {
         try {
             const data = RESIDENT.find((item) => item.id === Number(watch().parentId))
 
-            if ( data) {
+            if (data) {
                 console.log(data)
                 reset({
                     ...watch(),
@@ -153,7 +153,7 @@ const ProfileAddForm: React.FC = () => {
         console.log("Cancelled!");
         setConfirmVisible(false);
     };
-    
+
     return (
         <Box p={4}>
             <Box>
@@ -224,21 +224,23 @@ const ProfileAddForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-6">
-                        <FormInputField
+                        <FormSelectField
                             name="religion"
                             label="Tôn giáo"
                             placeholder="Nhập tôn giáo"
                             control={control}
+                            options={religionOptions}
                             error={errors.religion?.message}
                             required
                         />
                     </div>
                     <div className="col-span-6">
-                        <FormInputField
+                        <FormSelectField
                             name="nation"
                             label="Dân tộc"
                             placeholder="Nhập dân tộc"
                             control={control}
+                            options={ethnicOptions}
                             error={errors.nation?.message}
                             required
                         />

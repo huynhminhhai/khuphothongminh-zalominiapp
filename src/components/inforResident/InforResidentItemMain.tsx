@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import images from "assets/images"
-import { economicStatus, gender } from "constants/mock"
+import { economicStatus, ethnicOptions, gender, religionOptions } from "constants/mock"
 import { genderLabel, RESIDENT, RESIDENTMAIN } from "constants/utinities"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
@@ -76,8 +76,8 @@ const InforResidentItemMain: React.FC = () => {
                         <InforItemMain label="Số định danh cá nhân" value={detailData.numberCard} />
                         <InforItemMain label="Giới tính" value={getLabelOptions(detailData.gender, gender) as string} />
                         <InforItemMain label="Ngày sinh" value={detailData.birthDate} />
-                        <InforItemMain label="Dân tộc" value={detailData.nation} />
-                        <InforItemMain label="Tôn giáo" value={detailData.religion} />
+                        <InforItemMain label="Dân tộc" value={getLabelOptions(detailData.nation, ethnicOptions) as string} />
+                        <InforItemMain label="Tôn giáo" value={getLabelOptions(detailData.religion, religionOptions) as string} />
                         <InforItemMain label="Quốc tịch" value={detailData.nationality} />
                         <InforItemMain label="Quê quán" value={detailData.address} />
                         <InforItemMain label="Bảo hiểm y tế" value={detailData.bhyt} />
