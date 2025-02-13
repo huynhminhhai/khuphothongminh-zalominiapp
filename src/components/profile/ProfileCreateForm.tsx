@@ -201,18 +201,18 @@ const ProfileAddForm: React.FC = () => {
                             required
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormInputField
                             type="number"
                             name="numberCard"
-                            label="CCCD/Mã định danh"
-                            placeholder="Nhập CCCD/Mã định danh"
+                            label="Số định danh cá nhân"
+                            placeholder="Nhập số định danh cá nhân"
                             control={control}
                             error={errors.numberCard?.message}
                             required
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormControllerDatePicker
                             name="dateCard"
                             label="Ngày cấp"

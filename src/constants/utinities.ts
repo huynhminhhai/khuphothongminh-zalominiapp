@@ -9,17 +9,18 @@ export type StatisticsType = {
 
 export const STATISTICS: StatisticsType[] = [
     {
-        label: 'Khu phố',
-        value: '9',
-        iconUrl: 'fluent:building-48-filled',
+        label: 'Hộ dân',
+        value: '774',
+        iconUrl: 'ic:round-house',
         color: '#218838'
     },
     {
-        label: 'Hộ dân',
-        value: '26,025',
-        iconUrl: 'ic:round-house',
+        label: 'Nhân khẩu',
+        value: '6,728',
+        iconUrl: 'mdi:user',
         color: '#0056D2'
     },
+    
 ]
 
 export type ServicesType = {

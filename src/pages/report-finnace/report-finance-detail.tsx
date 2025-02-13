@@ -73,7 +73,7 @@ const ReportFinanceDetailPage: React.FC = () => {
                                 <hr />
                                 <Box px={4} pb={4} pt={2} className="text-[16px] font-medium">
                                     <div className="flex items-center justify-between w-full py-3">
-                                        <div>Tông thu</div>
+                                        <div>Tổng thu</div>
                                         <div className="text-green-600">+
                                             {
                                                 convertNumberVND(detailData.totalIncome)
@@ -81,7 +81,7 @@ const ReportFinanceDetailPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between w-full py-3">
-                                        <div>Tông chi</div>
+                                        <div>Tổng chi</div>
                                         <div className="text-red-600">-
                                             {
                                                 convertNumberVND(detailData.totalExpense)
@@ -89,7 +89,7 @@ const ReportFinanceDetailPage: React.FC = () => {
                                         </div>
                                     </div>
                                     <div className="flex items-center justify-between w-full py-3">
-                                        <div>Tông quỹ còn lại</div>
+                                        <div>Tổng quỹ còn lại</div>
                                         <div className="text-blue-600">
                                             {
                                                 convertNumberVND(detailData.remainingBalance)

@@ -11,7 +11,7 @@ export const InforItemMain = ({ label, value }: { label: string, value: string }
     return (
         <div className="flex items-center justify-between gap-6 py-4 resident-item">
             <div className="text-[14px] text-[#767a7f] font-normal whitespace-nowrap">{label}</div>
-            <div className="text-[14px] font-normal">{value}</div>
+            <div className="text-[14px] font-normal text-end">{value}</div>
         </div>
     )
 }
