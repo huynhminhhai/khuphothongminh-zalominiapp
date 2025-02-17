@@ -10,7 +10,7 @@ const MemberResidentSection: React.FC = () => {
     const navigate = useNavigate()
 
     return (
-        <Box>
+        <Box pt={4}>
             <Box>
                 <Box pb={2} px={4}>
                     <h3 className="text-[18px] font-semibold">Thông tin thành viên đã duyệt</h3>

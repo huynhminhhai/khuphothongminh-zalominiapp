@@ -1,4 +1,5 @@
 export const residentRealationships = [
+    { value: 8, label: "Chủ hộ" },
     { value: 1, label: "Chồng" },
     { value: 2, label: "Vợ" },
     { value: 3, label: "Con" },
@@ -146,4 +147,43 @@ export const religionOptions = [
     { value: 9, label: "Tịnh độ cư sĩ Phật hội Việt Nam" },
     { value: 10, label: "Minh Sư Đạo" },
     { value: 11, label: "Minh Lý Đạo" },
+];
+
+export const provinceOptions = [
+    {
+        id: 1,
+        name: "Hà Nội",
+        districts: [
+            {
+                id: 101,
+                name: "Ba Đình",
+                wards: [
+                    { id: 10101, name: "Phúc Xá" },
+                    { id: 10102, name: "Trúc Bạch" }
+                ]
+            },
+            {
+                id: 102,
+                name: "Hoàn Kiếm",
+                wards: [
+                    { id: 10201, name: "Chương Dương" },
+                    { id: 10202, name: "Hàng Bạc" }
+                ]
+            }
+        ]
+    },
+    {
+        id: 2,
+        name: "Hồ Chí Minh",
+        districts: [
+            {
+                id: 201,
+                name: "Quận 1",
+                wards: [
+                    { id: 20101, name: "Bến Nghé" },
+                    { id: 20102, name: "Bến Thành" }
+                ]
+            }
+        ]
+    }
 ];

@@ -153,10 +153,10 @@ const ResidentEditForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormSelectField
-                            disabled={getValues().relationship === 0}
+                            // disabled={getValues().relationship === 0}
                             name="relationship"
                             label="Quan hệ với chủ hộ"
-                            placeholder={getValues().relationship === 0 ? 'Chủ hộ' : "Chọn quan hệ với chủ hộ"}
+                            placeholder={"Chọn quan hệ với chủ hộ"}
                             control={control}
                             options={residentRealationships}
                             error={errors.relationship?.message}

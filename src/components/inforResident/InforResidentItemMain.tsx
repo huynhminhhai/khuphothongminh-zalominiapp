@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react"
 import images from "assets/images"
+import SecondaryButton from "components/button/SecondaryButton"
 import { economicStatus, ethnicOptions, gender, religionOptions } from "constants/mock"
 import { genderLabel, RESIDENT, RESIDENTMAIN } from "constants/utinities"
 import React, { useEffect, useState } from "react"
@@ -65,7 +66,7 @@ const InforResidentItemMain: React.FC = () => {
                         <div className="bg-[#731611] relative flex flex-col items-center justify-center py-[30px] overflow-hidden">
                             {/* <img src={images.shape3} alt="shape3" className="bg-[#e9ca9433] absolute z-10 top-0 left-0 w-full h-full object-none" /> */}
                             <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.1] z-0" />
-                            <Avatar size={120} src={detailData.avatar || 
+                            <Avatar size={120} src={detailData.avatar ||
                                 'https://www.pphfoundation.ca/wp-content/uploads/2018/05/default-avatar.png'
                             } className="relative z-20 border-[4px] border-white" />
                             <div className="relative z-20 uppercase text-[18px] font-bold mt-3 text-white">{detailData.fullname}</div>
@@ -86,7 +87,7 @@ const InforResidentItemMain: React.FC = () => {
                     </Box>
                 </Box>
             }
-            {
+            {/* {
                 detailData && detailData.isHouseHold &&
                 <Box p={4}>
                     <Box p={4} className="border-[1px] rounded-lg" onClick={() => navigate('/resident-member')}>
@@ -98,7 +99,12 @@ const InforResidentItemMain: React.FC = () => {
                         </div>
                     </Box>
                 </Box>
-            }
+            } */}
+            <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">
+                <Box py={3} flex alignItems="center" justifyContent="center" className="w-full">
+                    <SecondaryButton fullWidth label="Cập nhật thông tin" handleClick={() => navigate('/resident-edit?id=1')} iconLeft={<Icon fontSize={16} icon='tabler:edit' />} />
+                </Box>
+            </div>
         </Box>
     )
 }

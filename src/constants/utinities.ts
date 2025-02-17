@@ -201,7 +201,7 @@ export const RESIDENT: ResidentType[] = [
         religion: 1,
         nationality: "Việt Nam",
         address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
-        relationship: 0,
+        relationship: 8,
         residenceStatus: 1,
         residenceType: 1,
         status: 1,

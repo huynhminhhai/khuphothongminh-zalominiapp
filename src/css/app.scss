@@ -256,6 +256,23 @@ tbody tr td:not(:first-child) {
   border-bottom: 1px solid #e5e7eb;
 }
 
+.tab-resident .zaui-tabs-tabbar-item {
+  width: 100%;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s linear;
+}
+
+.tab-resident .zaui-tabs-tabbar::after,
+.tab-resident .zaui-tabs-tabbar-active-line {
+  display: none;
+}
+
+.tab-resident .zaui-tabs-tabbar-item.zaui-tabs-tabbar-item-active {
+  background-color: #e9ca9433;
+  color: #731611;
+}
+
 /**
 * BUTTON
 **/
