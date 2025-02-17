@@ -5,7 +5,7 @@ import { TaskList } from "components/task"
 import { TASKS, TaskType } from "constants/utinities"
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { Box, Button, Page, Select } from "zmp-ui"
+import { Box, Page, Select } from "zmp-ui"
 
 const TaskPage: React.FC = () => {
 
@@ -55,16 +55,8 @@ const TaskPage: React.FC = () => {
                             </div>
                         </Box>
                         <Divider />
-                        <Box px={4} pb={4}>
-                            <Box>
-                                <TaskList data={filteredMeetings} />
-                                {
-                                    filteredMeetings.length > 0 &&
-                                    <div className="flex items-center justify-center gap-3 pt-6 pb-2">
-                                        <Button onClick={() => console.log('call api')} size="medium">Xem thêm</Button>
-                                    </div>
-                                }
-                            </Box>
+                        <Box>
+                            <TaskList />
                         </Box>
                     </Box>
                 </Box>

@@ -58,16 +58,8 @@ const TransactionsPage: React.FC = () => {
                             </div>
                         </Box>
                         <Divider />
-                        <Box px={4} pb={4}>
-                            <Box>
-                                <TransactionsList data={filteredTransactions} />
-                                {
-                                    filteredTransactions.length > 0 &&
-                                    <div className="flex items-center justify-center gap-3 pt-6 pb-2">
-                                        <Button onClick={() => console.log('call api')} size="medium">Xem thêm</Button>
-                                    </div>
-                                }
-                            </Box>
+                        <Box>
+                            <TransactionsList />
                         </Box>
                     </Box>
                 </Box>

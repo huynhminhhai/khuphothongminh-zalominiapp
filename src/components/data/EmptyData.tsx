@@ -12,7 +12,7 @@ type EmptyDataProps = {
 const EmptyData: React.FC<EmptyDataProps> = ({ title, desc, handleClick, textBtn }) => {
 
     return (
-        <Box p={4}>
+        <Box>
             <Box flex justifyContent="center">
                 <img src={images.empty} alt="Không có dữ liệu" />
             </Box>

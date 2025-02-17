@@ -83,7 +83,7 @@ body {
 .zaui-header.sub {
   background-color: white;
   position: fixed;
-  z-index: 9999;
+  z-index: 999;
 
   & .zaui-header-title {
     line-height: 1;
@@ -243,9 +243,13 @@ tbody tr td:not(:first-child) {
 * MEETING
 **/
 
-.meeting-item:not(:last-child) {
+.home .meeting-item {
+  border-bottom: 0;
+}
+
+.meeting-item {
   border-bottom: 1px solid #e5e7eb;
-  padding-bottom: 16px;
+  padding-block: 16px;
 }
 
 .resident-item:not(:last-child) {

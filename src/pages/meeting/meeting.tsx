@@ -2,26 +2,12 @@ import { Icon } from "@iconify/react"
 import { Divider } from "components/divider"
 import { HeaderSub } from "components/header-sub"
 import { MeetingList } from "components/meeting"
-import { FormDataMeeting } from "components/meeting/type"
-import { MEETING, MEETINGDATA } from "constants/utinities"
-import React, { useState } from "react"
-import { Box, Button, Page, Select } from "zmp-ui"
+import React from "react"
+import { Box, Page, Select } from "zmp-ui"
 
 const MeetingPage: React.FC = () => {
 
     const { Option } = Select;
-
-    const [filteredMeetings, setFilteredMeetings] = useState<FormDataMeeting[]>(MEETINGDATA);
-
-    // const handleFilterChange = (value: number) => {
-    //     let filtered = MEETINGDATA;
-
-    //     if (value !== 4) {
-    //         filtered = MEETING.filter(meeting => meeting.status === value);
-    //     }
-
-    //     setFilteredMeetings(filtered);
-    // };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -48,11 +34,8 @@ const MeetingPage: React.FC = () => {
                         </Box>
                     </Box>
                     <Divider />
-                    <Box p={4}>
-                        <MeetingList data={MEETINGDATA} />
-                        <div className="flex items-center justify-center gap-3 pt-6 pb-2 border-t-[1px] border-[#e5e7eb] mt-4">
-                            <Button onClick={() => console.log('call api list news')} size="medium">Xem thêm</Button>
-                        </div>
+                    <Box>
+                        <MeetingList />
                     </Box>
                 </Box>
             </Box>

@@ -8,7 +8,7 @@ const TeamPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Nhân sự/ Cán bộ" />
-                <Box px={4} pb={4}>
+                <Box pb={4}>
                     <TeamList />
                 </Box>
             </Box>

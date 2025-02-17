@@ -76,13 +76,14 @@ const TeamDetailPage: React.FC = () => {
                         detailData &&
                         <Box>
                             <div className="relative bg-[#f6f7fb] mt-[60px] rounded-lg px-6 pb-10">
-                                <div className="absolute top-[-60px] left-[50%] translate-x-[-50%]">
+                                <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.06] z-0" />
+                                <div className="absolute top-[-60px] left-[50%] translate-x-[-50%] z-10">
                                     <Avatar size={120} src={detailData.avatar || images.avatar} />
                                 </div>
-                                <div className="pt-[72px]">
+                                <div className="pt-[72px] relative z-10">
                                     <Box className="text-center">
                                         <h3 className="text-[20px] font-semibold mb-1">{detailData.fullname}</h3>
-                                        <h4 className="text-[16px] text-[#808080] font-medium">{detailData.position}</h4>
+                                        <h4 className="text-[16px] text-[#3737737] font-semibold">{detailData.position}</h4>
                                     </Box>
                                     <Box mt={4}>
                                         <div className="flex flex-col gap-4">
@@ -120,26 +121,26 @@ const TeamDetailPage: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
-                                <Box mt={8} pb={8}>
-                                    <div className="flex flex-col border-l-[1px] border-[#808080]">
-                                        {
-                                            termData &&
-                                            termData.map((term, index) => (
-                                                <div key={index} className="bg-white p-4 ml-6 relative border-b-[1px] border-dashed">
-                                                    <div className="absolute left-[-38px] top-[50%] translate-y-[-50%]">
-                                                        <Icon color={term.isCurrent ? '#731611' : '#808080'} icon='stash:circle-dot' fontSize={27} />
-                                                    </div>
-                                                    <div className="flex">
-                                                        <Box className="flex-1">
-                                                            <h3 className="text-[18px] font-semibold mb-1" style={{color: term.isCurrent ? '#731611' : ''}}>{term.position}</h3>
-                                                            <h4 className="text-[14px] font-medium text-[#808080]">{term.start_date} - {term.end_date}</h4>
-                                                        </Box>
-                                                    </div>
+                            <Box ml={3} mt={8} pb={8}>
+                                <div className="flex flex-col border-l-[1px] border-[#808080]">
+                                    {
+                                        termData &&
+                                        termData.map((term, index) => (
+                                            <div key={index} className="bg-white p-4 ml-6 relative border-b-[1px] border-dashed">
+                                                <div className="absolute left-[-38px] top-[50%] translate-y-[-50%]">
+                                                    <Icon color={term.isCurrent ? '#731611' : '#808080'} icon='stash:circle-dot' fontSize={27} />
                                                 </div>
-                                            ))
-                                        }
-                                    </div>
-                                </Box>
+                                                <div className="flex">
+                                                    <Box className="flex-1">
+                                                        <h3 className="text-[18px] font-semibold mb-1" style={{ color: term.isCurrent ? '#731611' : '' }}>{term.position}</h3>
+                                                        <h4 className="text-[14px] font-medium text-[#808080]">{term.start_date} - {term.end_date}</h4>
+                                                    </Box>
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </Box>
                         </Box>
                     }
                 </Box>
