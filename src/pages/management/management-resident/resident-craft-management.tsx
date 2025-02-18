@@ -2,10 +2,12 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
-import { RESIDENT, RESIDENTCRAFT, ResidentType } from "constants/utinities"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
+import { districtOptions, provinceOptions, wardOptions } from "constants/mock"
+import { RESIDENTCRAFT, ResidentType } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Checkbox, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { getLabelOptions } from "utils/options"
+import { Box, Checkbox, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
@@ -20,6 +22,7 @@ const ResidentCraftManagementPage: React.FC = () => {
     const { openSnackbar } = useSnackbar();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
@@ -82,18 +85,6 @@ const ResidentCraftManagementPage: React.FC = () => {
             header: () => (
                 <div className="flex items-center justify-center gap-1">
                     Chủ hộ
-                    <Checkbox
-                        size="small"
-                        label=""
-                        value=''
-                        checked={param.isHouseholder}
-                        onChange={() => {
-                            setParam((prevParam) => ({
-                                ...prevParam,
-                                isHouseholder: !param.isHouseholder
-                            }));
-                        }}
-                    />
                 </div>
             ),
             cell: ({ row }) => (
@@ -113,8 +104,13 @@ const ResidentCraftManagementPage: React.FC = () => {
             header: 'SĐT',
         },
         {
-            accessorKey: 'address',
-            header: 'SĐT',
+            id: 'address',
+            header: 'Địa chỉ',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-center line-clamp-1">
+                    {`${row.original.addressPermanent}, ${wardOptions.find(item => item.id === row.original.wardsPermanent)?.name}, ${districtOptions.find(item => item.id === row.original.districtPermanent)?.name}, ${getLabelOptions(row.original.provincePermanent, provinceOptions)}`}
+                </div>
+            ),
             size: 300
         },
         {
@@ -147,7 +143,7 @@ const ResidentCraftManagementPage: React.FC = () => {
 
     const filteredData = RESIDENTCRAFT.filter(item => {
         const matchesSearch = item.fullname.toLowerCase().includes(param.keyword.toLowerCase())
-        const matchesRelationship = param.isHouseholder ? item.relationship === 0 : true
+        const matchesRelationship = param.isHouseholder ? Boolean(item.isHouseHold) : true
         return matchesSearch && matchesRelationship
     });
 
@@ -155,9 +151,13 @@ const ResidentCraftManagementPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý thông tin chưa duyệt" />
-                <Box p={4}>
-                    <Box flex justifyContent="space-between" className="gap-3">
-                        <Box className="flex-1">
+                <Box pb={4}>
+                    <FilterBar
+                        showAddButton={false}
+                        setViewCard={setViewCard}
+                        viewCard={viewCard}
+                    >
+                        <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -168,10 +168,33 @@ const ResidentCraftManagementPage: React.FC = () => {
                                     }));
                                 }}
                             />
-                        </Box>
-                    </Box>
-                    <Box mt={4}>
-                        <TableTanStack data={filteredData} columns={columns} />
+                        </div>
+                        <div className="col-span-12">
+                            <div className="flex items-center justify-start gap-2">
+                                <Checkbox
+                                    size="medium"
+                                    label=""
+                                    value=''
+                                    checked={param.isHouseholder}
+                                    onChange={() => {
+                                        setParam((prevParam) => ({
+                                            ...prevParam,
+                                            isHouseholder: !param.isHouseholder
+                                        }));
+                                    }}
+                                />
+                                <span className="text-[16px]">Chủ hộ</span>
+                            </div>
+                        </div>
+                    </FilterBar>
+                    <Box>
+                        {viewCard ?
+                            <CardTanStack data={filteredData} columns={columns} />
+                            :
+                            <Box px={4}>
+                                <TableTanStack data={filteredData} columns={columns} />
+                            </Box>
+                        }
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}

@@ -51,7 +51,7 @@ const TablePagination: React.FC<PaginationProps> = ({ pageIndex, pageSize, total
 
   return (
     <Box mt={4}>
-      <div className='flex items-center justify-end'>
+      <div className='flex items-center justify-center'>
         {/* Dropdown để thay đổi số mục trên mỗi trang */}
       <select
         value={pageSize}

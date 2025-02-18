@@ -200,6 +200,13 @@ tbody tr td:not(:first-child) {
   overflow: hidden;
 }
 
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .clip-path-1 {
   clip-path: polygon(5% 0, 100% 0%, 95% 100%, 0% 100%);
 }

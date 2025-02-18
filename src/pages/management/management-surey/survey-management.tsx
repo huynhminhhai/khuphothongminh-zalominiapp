@@ -3,10 +3,10 @@ import { ColumnDef } from "@tanstack/react-table"
 import images from "assets/images"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { SURVEYDATA, SurveyType } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
@@ -21,6 +21,7 @@ const SurveyManagementPage: React.FC = () => {
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [surveyId, setSurveyId] = useState<number | undefined>(undefined);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
@@ -48,7 +49,7 @@ const SurveyManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); 
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -131,9 +132,14 @@ const SurveyManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Quản lý khảo sát" />
                 <Box>
-                    <Box p={4}>
-                        <Box flex justifyContent="space-between" className="gap-4">
-                            <Box className="flex-1">
+                    <Box pb={4}>
+                        <FilterBar
+                            showAddButton
+                            onAddButtonClick={() => navigate("/survey-add")}
+                            setViewCard={setViewCard}
+                            viewCard={viewCard}
+                        >
+                            <div className="col-span-12">
                                 <Input
                                     placeholder="Tìm kiếm..."
                                     value={param.keyword}
@@ -144,20 +150,16 @@ const SurveyManagementPage: React.FC = () => {
                                         }));
                                     }}
                                 />
-                            </Box>
-                            <Button
-                                size="medium"
-                                variant="secondary"
-                                onClick={() => navigate('/survey-add')}
-                            >
-                                <div className="flex items-center gap-1">
-                                    <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                    Thêm
-                                </div>
-                            </Button>
-                        </Box>
-                        <Box mt={4}>
-                            <TableTanStack data={filteredData} columns={columns} />
+                            </div>
+                        </FilterBar>
+                        <Box>
+                            {viewCard ?
+                                <CardTanStack data={filteredData} columns={columns} />
+                                :
+                                <Box px={4}>
+                                    <TableTanStack data={filteredData} columns={columns} />
+                                </Box>
+                            }
                             <TablePagination
                                 totalItems={50}
                                 pageSize={param.pageSize}

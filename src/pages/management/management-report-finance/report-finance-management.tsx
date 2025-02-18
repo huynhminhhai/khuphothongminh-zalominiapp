@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { monthOptions } from "constants/mock"
 import { REPORTFINANCEDATA, reportFinanceType } from "constants/utinities"
 import React, { useState } from "react"
@@ -24,6 +24,7 @@ const ReportFinanceManagementPage: React.FC = () => {
 
     const { Option } = Select
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
@@ -83,7 +84,7 @@ const ReportFinanceManagementPage: React.FC = () => {
             id: 'totalIncome',
             header: 'Tổng thu',
             cell: ({ row }) => (
-                <div>
+                <div className="text-green-600">
                     {
                         convertNumberVND(row.original.totalIncome)
                     }
@@ -94,7 +95,7 @@ const ReportFinanceManagementPage: React.FC = () => {
             id: 'totalExpense',
             header: 'Tổng chi',
             cell: ({ row }) => (
-                <div>
+                <div className="text-red-600">
                     {
                         convertNumberVND(row.original.totalExpense)
                     }
@@ -105,7 +106,7 @@ const ReportFinanceManagementPage: React.FC = () => {
             id: 'remainingBalance',
             header: 'Tổng quỹ còn lại',
             cell: ({ row }) => (
-                <div>
+                <div className="text-blue-600">
                     {
                         convertNumberVND(row.original.remainingBalance)
                     }
@@ -150,21 +151,14 @@ const ReportFinanceManagementPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Báo cáo tài chính" />
-                <Box p={4}>
-                    <Box mb={2} flex justifyContent="flex-end">
-                        <Button
-                            size="small"
-                            variant="tertiary"
-                            onClick={() => navigate('/report-finance-chart')}
-                        >
-                            <div className="flex items-center gap-1">
-                                Tổng quan tài chính
-                                <Icon fontSize={18} icon='iconamoon:enter' />
-                            </div>
-                        </Button>
-                    </Box>
-                    <Box mb={2} flex justifyContent="space-between" className="gap-4">
-                        <Box className="flex-1">
+                <Box pb={4}>
+                    <FilterBar
+                        showAddButton
+                        onAddButtonClick={() => navigate("/report-finance-add")}
+                        setViewCard={setViewCard}
+                        viewCard={viewCard}
+                    >
+                        <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -175,20 +169,8 @@ const ReportFinanceManagementPage: React.FC = () => {
                                     }));
                                 }}
                             />
-                        </Box>
-                        <Button
-                            size="medium"
-                            variant="secondary"
-                            onClick={() => navigate('/report-finance-add')}
-                        >
-                            <div className="flex items-center gap-1">
-                                <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                Thêm
-                            </div>
-                        </Button>
-                    </Box>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
+                        </div>
+                        <div className="col-span-6">
                             <Select
                                 placeholder="Chọn tháng"
                                 closeOnSelect
@@ -207,7 +189,7 @@ const ReportFinanceManagementPage: React.FC = () => {
                                 }
                             </Select>
                         </div>
-                        <div>
+                        <div className="col-span-6">
                             <Select
                                 placeholder="Chọn năm"
                                 closeOnSelect
@@ -224,9 +206,27 @@ const ReportFinanceManagementPage: React.FC = () => {
 
                             </Select>
                         </div>
-                    </div>
-                    <Box mt={4}>
-                        <TableTanStack data={filteredData} columns={columns} />
+                    </FilterBar>
+                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
+                        <Button
+                            size="small"
+                            variant="tertiary"
+                            onClick={() => navigate('/report-finance-chart')}
+                        >
+                            <div className="flex items-center gap-1">
+                                Tổng quan tài chính
+                                <Icon fontSize={18} icon='iconamoon:enter' />
+                            </div>
+                        </Button>
+                    </Box>
+                    <Box>
+                        {viewCard ?
+                            <CardTanStack data={filteredData} columns={columns} />
+                            :
+                            <Box px={4}>
+                                <TableTanStack data={filteredData} columns={columns} />
+                            </Box>
+                        }
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}

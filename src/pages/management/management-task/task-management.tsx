@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react"
 import { ColumnDef, createColumnHelper } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { taskPriority, taskStatus } from "constants/mock"
 import { TASKS, TaskType } from "constants/utinities"
 import React, { useState } from "react"
@@ -24,6 +24,7 @@ const TaskManagementPage: React.FC = () => {
     const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
@@ -150,21 +151,14 @@ const TaskManagementPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý nhiệm vụ" />
-                <Box p={4}>
-                    <Box mb={2} flex justifyContent="flex-end">
-                        <Button
-                            size="small"
-                            variant="tertiary"
-                            onClick={() => navigate('/task')}
-                        >
-                            <div className="flex items-center gap-1">
-                                Nhiệm vụ của tôi
-                                <Icon fontSize={18} icon='iconamoon:enter' />
-                            </div>
-                        </Button>
-                    </Box>
-                    <Box mb={2} flex justifyContent="space-between" className="gap-4">
-                        <Box className="flex-1">
+                <Box pb={4}>
+                    <FilterBar
+                        showAddButton
+                        onAddButtonClick={() => navigate('/task-add')}
+                        setViewCard={setViewCard}
+                        viewCard={viewCard}
+                    >
+                        <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -175,20 +169,8 @@ const TaskManagementPage: React.FC = () => {
                                     }));
                                 }}
                             />
-                        </Box>
-                        <Button
-                            size="medium"
-                            variant="secondary"
-                            onClick={() => navigate('/task-add')}
-                        >
-                            <div className="flex items-center gap-1">
-                                <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                Thêm
-                            </div>
-                        </Button>
-                    </Box>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
+                        </div>
+                        <div className="col-span-12">
                             <Select
                                 // defaultValue={3}
                                 placeholder="Chọn trạng thái"
@@ -208,7 +190,7 @@ const TaskManagementPage: React.FC = () => {
                                 }
                             </Select>
                         </div>
-                        <div>
+                        <div className="col-span-12">
                             <Select
                                 // defaultValue={3}
                                 placeholder="Chọn độ ưu tiên"
@@ -228,9 +210,27 @@ const TaskManagementPage: React.FC = () => {
                                 }
                             </Select>
                         </div>
-                    </div>
-                    <Box mt={4}>
-                        <TableTanStack data={filteredData} columns={columns} />
+                    </FilterBar>
+                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
+                        <Button
+                            size="small"
+                            variant="tertiary"
+                            onClick={() => navigate('/task')}
+                        >
+                            <div className="flex items-center gap-1">
+                                Nhiệm vụ của tôi
+                                <Icon fontSize={18} icon='iconamoon:enter' />
+                            </div>
+                        </Button>
+                    </Box>
+                    <Box>
+                        {viewCard ?
+                            <CardTanStack data={filteredData} columns={columns} />
+                            :
+                            <Box px={4}>
+                                <TableTanStack data={filteredData} columns={columns} />
+                            </Box>
+                        }
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}

@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { transactionsOptions } from "constants/mock"
 import { TRANSACTIONSDATA, transactionsType } from "constants/utinities"
 import React, { useState } from "react"
@@ -21,9 +21,10 @@ const TransactionsManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar();
-    const {Option} = Select
+    const { Option } = Select
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
@@ -51,7 +52,7 @@ const TransactionsManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); 
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -82,8 +83,8 @@ const TransactionsManagementPage: React.FC = () => {
         {
             id: 'type',
             header: 'Loại giao dịch',
-            cell: ({row}) => (
-                <div>
+            cell: ({ row }) => (
+                <div style={{color: row.original.transaction_type === 1 ? '#16a34a' : '#dc2626'}}>
                     {
                         getLabelOptions(row.original.transaction_type, transactionsOptions)
                     }
@@ -93,8 +94,8 @@ const TransactionsManagementPage: React.FC = () => {
         {
             id: 'amount',
             header: 'Số tiền',
-            cell: ({row}) => (
-                <div>
+            cell: ({ row }) => (
+                <div style={{color: row.original.transaction_type === 1 ? '#16a34a' : '#dc2626'}}>
                     {
                         convertNumberVND(row.original.amount)
                     }
@@ -137,16 +138,21 @@ const TransactionsManagementPage: React.FC = () => {
         const matchesSearch = item.category.toLowerCase().includes(param.keyword.toLowerCase())
         const matchesType = param.transaction_type === 0 || item.transaction_type === param.transaction_type;
 
-        return matchesSearch && matchesType ;
+        return matchesSearch && matchesType;
     });
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý thu chi" />
-                <Box p={4}>
-                    <Box mb={2} flex justifyContent="space-between" className="gap-4">
-                        <Box className="flex-1">
+                <Box pb={4}>
+                    <FilterBar
+                        showAddButton
+                        onAddButtonClick={() => navigate('/transactions-add')}
+                        setViewCard={setViewCard}
+                        viewCard={viewCard}
+                    >
+                        <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -157,20 +163,8 @@ const TransactionsManagementPage: React.FC = () => {
                                     }));
                                 }}
                             />
-                        </Box>
-                        <Button
-                            size="medium"
-                            variant="secondary"
-                            onClick={() => navigate('/transactions-add')}
-                        >
-                            <div className="flex items-center gap-1">
-                                <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                Thêm
-                            </div>
-                        </Button>
-                    </Box>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
+                        </div>
+                        <div className="col-span-12">
                             <Select
                                 placeholder="Chọn loại giao dịch"
                                 closeOnSelect
@@ -189,9 +183,15 @@ const TransactionsManagementPage: React.FC = () => {
                                 }
                             </Select>
                         </div>
-                    </div>
-                    <Box mt={4}>
-                        <TableTanStack data={filteredData} columns={columns} />
+                    </FilterBar>
+                    <Box>
+                        {viewCard ?
+                            <CardTanStack data={filteredData} columns={columns} />
+                            :
+                            <Box px={4}>
+                                <TableTanStack data={filteredData} columns={columns} />
+                            </Box>
+                        }
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}

@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { ResidentialModalAdd } from "components/team"
 import { News, NEWSDATA, RESIDENTIALGROUPDATA } from "constants/utinities"
 import React, { useState } from "react"
@@ -20,6 +20,7 @@ const ResidentialManagementPage: React.FC = () => {
     const { openSnackbar } = useSnackbar();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [modalAddForm, setModalAddForm] = useState<boolean>(false)
@@ -49,7 +50,7 @@ const ResidentialManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); 
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -110,9 +111,14 @@ const ResidentialManagementPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý tổ dân cư" />
-                <Box p={4}>
-                    <Box flex justifyContent="space-between">
-                        <Box>
+                <Box pb={4}>
+                    <FilterBar
+                        showAddButton
+                        onAddButtonClick={() => navigate("/team-add")}
+                        setViewCard={setViewCard}
+                        viewCard={viewCard}
+                    >
+                        <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -123,23 +129,16 @@ const ResidentialManagementPage: React.FC = () => {
                                     }));
                                 }}
                             />
-                        </Box>
-                        <Button
-                            size="medium"
-                            variant="secondary"
-                            onClick={() => {
-                                setResidentialId(0)
-                                setModalAddForm(true)
-                            }}
-                        >
-                            <div className="flex items-center gap-1">
-                                <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                Thêm
-                            </div>
-                        </Button>
-                    </Box>
-                    <Box mt={4}>
-                        <TableTanStack data={filteredData} columns={columns} />
+                        </div>
+                    </FilterBar>
+                    <Box>
+                        {viewCard ?
+                            <CardTanStack data={filteredData} columns={columns} />
+                            :
+                            <Box px={4}>
+                                <TableTanStack data={filteredData} columns={columns} />
+                            </Box>
+                        }
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}

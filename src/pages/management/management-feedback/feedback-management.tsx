@@ -2,7 +2,7 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { Feedback, FEEDBACKDATA, FEEDBACKRESPONSES } from "constants/utinities"
 import React, { useState } from "react"
 import { Box, Input, Page, Select, Switch, useNavigate, useSnackbar } from "zmp-ui"
@@ -22,6 +22,7 @@ const FeedbackManagementPage: React.FC = () => {
     const [feedbackData, setFeedbackData] = useState(FEEDBACKDATA);
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
@@ -144,9 +145,6 @@ const FeedbackManagementPage: React.FC = () => {
                             checked={currentStatus === 2}
                             onChange={handleToggle}
                         />
-                        <span className="text-[12px] leading-[1] font-medium">
-                            {currentStatus === 2 ? "Đã đăng tải" : "Chưa đăng tải"}
-                        </span>
                     </Box>
                 );
             }
@@ -189,9 +187,13 @@ const FeedbackManagementPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý phản ánh" />
-                <Box p={4}>
-                    <Box flex justifyContent="space-between" className="gap-3">
-                        <Box>
+                <Box pb={4}>
+                    <FilterBar
+                        showAddButton={false}
+                        setViewCard={setViewCard}
+                        viewCard={viewCard}
+                    >
+                        <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
                                 value={param.keyword}
@@ -202,8 +204,8 @@ const FeedbackManagementPage: React.FC = () => {
                                     }));
                                 }}
                             />
-                        </Box>
-                        <Box>
+                        </div>
+                        <div className="col-span-12">
                             <Select
                                 defaultValue={3}
                                 closeOnSelect
@@ -218,10 +220,16 @@ const FeedbackManagementPage: React.FC = () => {
                                 <Option value={1} title="Chưa đăng tải" />
                                 <Option value={2} title="Đã đăng tải" />
                             </Select>
-                        </Box>
-                    </Box>
-                    <Box mt={4}>
-                        <TableTanStack data={filteredData} columns={columns} />
+                        </div>
+                    </FilterBar>
+                    <Box>
+                        {viewCard ?
+                            <CardTanStack data={filteredData} columns={columns} />
+                            :
+                            <Box px={4}>
+                                <TableTanStack data={filteredData} columns={columns} />
+                            </Box>
+                        }
                         <TablePagination
                             totalItems={80}
                             pageSize={param.pageSize}

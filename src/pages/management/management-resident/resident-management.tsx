@@ -2,9 +2,11 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { TablePagination, TableTanStack } from "components/table"
+import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
+import { districtOptions, provinceOptions, wardOptions } from "constants/mock"
 import { RESIDENT, ResidentType } from "constants/utinities"
 import React, { useState } from "react"
+import { getLabelOptions } from "utils/options"
 import { Box, Button, Checkbox, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
@@ -20,6 +22,7 @@ const ResidentManagementPage: React.FC = () => {
     const { openSnackbar } = useSnackbar();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [viewCard, setViewCard] = useState<boolean>(true)
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
@@ -81,18 +84,6 @@ const ResidentManagementPage: React.FC = () => {
             header: () => (
                 <div className="flex items-center justify-center gap-1">
                     Chủ hộ
-                    <Checkbox
-                        size="small"
-                        label=""
-                        value=''
-                        checked={param.isHouseholder}
-                        onChange={() => {
-                            setParam((prevParam) => ({
-                                ...prevParam,
-                                isHouseholder: !param.isHouseholder
-                            }));
-                        }}
-                    />
                 </div>
             ),
             cell: ({ row }) => (
@@ -112,8 +103,13 @@ const ResidentManagementPage: React.FC = () => {
             header: 'SĐT',
         },
         {
-            accessorKey: 'address',
-            header: 'SĐT',
+            id: 'address',
+            header: 'Địa chỉ',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-center line-clamp-1">
+                    {`${row.original.addressPermanent}, ${wardOptions.find(item => item.id === row.original.wardsPermanent)?.name}, ${districtOptions.find(item => item.id === row.original.districtPermanent)?.name}, ${getLabelOptions(row.original.provincePermanent, provinceOptions)}`}
+                </div>
+            ),
             size: 300
         },
         {
@@ -146,7 +142,7 @@ const ResidentManagementPage: React.FC = () => {
 
     const filteredData = RESIDENT.filter(item => {
         const matchesSearch = item.fullname.toLowerCase().includes(param.keyword.toLowerCase())
-        const matchesRelationship = param.isHouseholder ? item.relationship === 0 : true
+        const matchesRelationship = param.isHouseholder ? Boolean(item.isHouseHold) : true
         return matchesSearch && matchesRelationship
     });
 
@@ -154,8 +150,44 @@ const ResidentManagementPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Quản lý thông tin hộ dân" />
-                <Box p={4}>
-                    <Box mb={2} flex justifyContent="flex-end">
+                <Box pb={4}>
+                    <FilterBar
+                        showAddButton
+                        onAddButtonClick={() => navigate("/resident-profile-add")}
+                        setViewCard={setViewCard}
+                        viewCard={viewCard}
+                    >
+                        <div className="col-span-12">
+                            <Input
+                                placeholder="Tìm kiếm..."
+                                value={param.keyword}
+                                onChange={(e) => {
+                                    setParam((prevParam) => ({
+                                        ...prevParam,
+                                        keyword: e.target.value
+                                    }));
+                                }}
+                            />
+                        </div>
+                        <div className="col-span-12">
+                            <div className="flex items-center justify-start gap-2">
+                                <Checkbox
+                                    size="medium"
+                                    label=""
+                                    value=''
+                                    checked={param.isHouseholder}
+                                    onChange={() => {
+                                        setParam((prevParam) => ({
+                                            ...prevParam,
+                                            isHouseholder: !param.isHouseholder
+                                        }));
+                                    }}
+                                />
+                                <span className="text-[16px]">Chủ hộ</span>
+                            </div>
+                        </div>
+                    </FilterBar>
+                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
                         <Button
                             size="small"
                             variant="tertiary"
@@ -167,34 +199,14 @@ const ResidentManagementPage: React.FC = () => {
                             </div>
                         </Button>
                     </Box>
-                    <Box flex justifyContent="space-between" className="gap-3">
-                        <Box className="flex-1">
-                            <Input
-                                placeholder="Tìm kiếm..."
-                                value={param.keyword}
-                                onChange={(e) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        keyword: e.target.value
-                                    }));
-                                }}
-                            />
-                        </Box>
-                        <Box>
-                            <Button
-                                size="medium"
-                                variant="secondary"
-                                onClick={() => navigate('/resident-profile-add')}
-                            >
-                                <div className="flex items-center gap-1">
-                                    <Icon fontSize={18} icon='material-symbols:add-rounded' />
-                                    Thêm
-                                </div>
-                            </Button>
-                        </Box>
-                    </Box>
-                    <Box mt={4}>
-                        <TableTanStack data={filteredData} columns={columns} />
+                    <Box>
+                        {viewCard ?
+                            <CardTanStack data={filteredData} columns={columns} />
+                            :
+                            <Box px={4}>
+                                <TableTanStack data={filteredData} columns={columns} />
+                            </Box>
+                        }
                         <TablePagination
                             totalItems={50}
                             pageSize={param.pageSize}
