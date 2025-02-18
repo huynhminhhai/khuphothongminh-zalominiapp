@@ -20,7 +20,7 @@ export const STATISTICS: StatisticsType[] = [
         iconUrl: 'mdi:user',
         color: '#0056D2'
     },
-    
+
 ]
 
 export type ServicesType = {
@@ -172,8 +172,6 @@ export type ResidentType = {
     birthDate: string;
     nation: number;
     religion: number;
-    nationality: string;
-    address: string;
     relationship: number;
     residenceStatus: number;
     residenceType: number;
@@ -184,6 +182,14 @@ export type ResidentType = {
     economicStatus: number;
     culturalFamilyStatus: boolean;
     job: number;
+    address: string;
+    province: number;
+    district: number;
+    ward: number;
+    addressPermanent: string;
+    provincePermanent: number;
+    districtPermanent: number;
+    wardsPermanent: number;
 }
 
 export const RESIDENT: ResidentType[] = [
@@ -199,8 +205,6 @@ export const RESIDENT: ResidentType[] = [
         birthDate: "15/3/1995",
         nation: 1,
         religion: 1,
-        nationality: "Việt Nam",
-        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 8,
         residenceStatus: 1,
         residenceType: 1,
@@ -210,7 +214,15 @@ export const RESIDENT: ResidentType[] = [
         isHouseHold: true,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 1
+        job: 1,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "364, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
     {
         id: 2,
@@ -224,8 +236,6 @@ export const RESIDENT: ResidentType[] = [
         birthDate: "21/6/1998",
         nation: 1,
         religion: 2,
-        nationality: "Việt Nam",
-        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 2,
         residenceStatus: 1,
         residenceType: 1,
@@ -235,7 +245,15 @@ export const RESIDENT: ResidentType[] = [
         isHouseHold: false,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 1
+        job: 1,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "364, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
     {
         id: 3,
@@ -249,8 +267,6 @@ export const RESIDENT: ResidentType[] = [
         birthDate: "10/01/2020",
         nation: 1,
         religion: 2,
-        nationality: "Việt Nam",
-        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 3,
         residenceStatus: 2,
         residenceType: 2,
@@ -260,7 +276,15 @@ export const RESIDENT: ResidentType[] = [
         isHouseHold: false,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 2
+        job: 2,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "364, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
     {
         id: 4,
@@ -274,8 +298,6 @@ export const RESIDENT: ResidentType[] = [
         birthDate: "12/9/2018",
         nation: 1,
         religion: 2,
-        nationality: "Việt Nam",
-        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 3,
         residenceStatus: 1,
         residenceType: 1,
@@ -285,7 +307,15 @@ export const RESIDENT: ResidentType[] = [
         isHouseHold: false,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 3
+        job: 3,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "364, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
     {
         id: 5,
@@ -299,8 +329,6 @@ export const RESIDENT: ResidentType[] = [
         birthDate: "05/12/1994",
         nation: 1,
         religion: 2,
-        nationality: "Việt Nam",
-        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 4,
         residenceStatus: 1,
         residenceType: 2,
@@ -310,7 +338,15 @@ export const RESIDENT: ResidentType[] = [
         isHouseHold: false,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 4
+        job: 4,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "364, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
     {
         id: 99,
@@ -324,8 +360,6 @@ export const RESIDENT: ResidentType[] = [
         birthDate: "05/12/1994",
         nation: 1,
         religion: 2,
-        nationality: "Việt Nam",
-        address: "Xã Thạnh Đức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 0,
         residenceStatus: 1,
         residenceType: 1,
@@ -335,7 +369,15 @@ export const RESIDENT: ResidentType[] = [
         isHouseHold: true,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 1
+        job: 1,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "360, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '360, quốc lộ 1A, Khu Phố 9',
     }
 ]
 
@@ -352,8 +394,6 @@ export const RESIDENTCRAFT: ResidentType[] = [
         birthDate: "12/9/2026",
         nation: 1,
         religion: 2,
-        nationality: "Việt Nam",
-        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 3,
         residenceStatus: 0,
         residenceType: 1,
@@ -363,7 +403,15 @@ export const RESIDENTCRAFT: ResidentType[] = [
         isHouseHold: false,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 2
+        job: 2,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "364, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
     {
         id: 4,
@@ -377,8 +425,6 @@ export const RESIDENTCRAFT: ResidentType[] = [
         birthDate: "12/9/2018",
         nation: 1,
         religion: 2,
-        nationality: "Việt Nam",
-        address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
         relationship: 3,
         residenceStatus: 1,
         residenceType: 1,
@@ -388,11 +434,19 @@ export const RESIDENTCRAFT: ResidentType[] = [
         isHouseHold: false,
         economicStatus: 1,
         culturalFamilyStatus: true,
-        job: 1
+        job: 1,
+        province: 2,
+        district: 201,
+        ward: 20102,
+        address: "364, quốc lộ 1A, Khu Phố 9",
+        provincePermanent: 2,
+        districtPermanent: 202,
+        wardsPermanent: 20201,
+        addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
 ]
 
-export const RESIDENTMAIN = {
+export const RESIDENTMAIN: ResidentType = {
     id: 1,
     parentId: null,
     parentName: '',
@@ -404,8 +458,6 @@ export const RESIDENTMAIN = {
     birthDate: "15/3/1995",
     nation: 1,
     religion: 1,
-    nationality: "Việt Nam",
-    address: "Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An",
     relationship: 0,
     residenceStatus: 0,
     residenceType: 1,
@@ -415,7 +467,15 @@ export const RESIDENTMAIN = {
     isHouseHold: true,
     economicStatus: 1,
     culturalFamilyStatus: true,
-    job: 1
+    job: 1,
+    province: 2,
+    district: 201,
+    ward: 20102,
+    address: "364, quốc lộ 1A, Khu Phố 9",
+    provincePermanent: 2,
+    districtPermanent: 202,
+    wardsPermanent: 20201,
+    addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
 }
 
 export type News = {

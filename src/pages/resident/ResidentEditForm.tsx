@@ -10,13 +10,13 @@ import { ConfirmModal } from "components/modal";
 import { useSearchParams } from "react-router-dom";
 import { RESIDENT } from "constants/utinities";
 import { FormDataResident, schemaResident } from "./type";
+import useAddress from "utils/useAddress";
 
 const defaultValues: FormDataResident = {
     fullname: '',
     phoneNumber: '',
     residenceType: 1,
     residenceStatus: 1,
-    address: 'Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An',
     relationship: 0,
     birthDate: '',
     gender: 0,
@@ -25,7 +25,17 @@ const defaultValues: FormDataResident = {
     religion: 0,
     nation: 0,
     bhyt: '',
-    job: 0
+    job: 0,
+    // Thường trú
+    addressPermanent: '',
+    provincePermanent: 0,
+    districtPermanent: 0,
+    wardsPermanent: 0,
+    // quê quán
+    address: '',
+    province: 0,
+    district: 0,
+    ward: 0
 };
 
 const ResidentEditForm: React.FC = () => {
@@ -35,12 +45,52 @@ const ResidentEditForm: React.FC = () => {
 
     const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [formData, setFormData] = useState({})
+    const [formData, setFormData] = useState<any>({})
 
-    const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm<FormDataResident>({
+    const { handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm<FormDataResident>({
         resolver: yupResolver(schemaResident),
         defaultValues
     });
+
+    // Thường trú
+    const selectedPermanentProvince = watch("provincePermanent");
+    const selectedPermanentDistrict = watch("districtPermanent");
+
+    const { provinces: provincesPermanent, districts: districtsPermanent, wards: wardsPermanent } = useAddress(selectedPermanentProvince, selectedPermanentDistrict);
+
+    // Quê quán
+    const selectedProvince = watch("province");
+    const selectedDistrict = watch("district");
+
+    const { provinces, districts, wards } = useAddress(selectedProvince, selectedDistrict);
+
+    useEffect(() => {
+        setValue('districtPermanent', 0)
+        setValue('wardsPermanent', 0)
+    }, [selectedPermanentProvince, setValue])
+
+    useEffect(() => {
+        setValue('wardsPermanent', 0)
+    }, [selectedPermanentDistrict, setValue])
+
+    useEffect(() => {
+        setValue('district', 0)
+        setValue('ward', 0)
+    }, [selectedProvince, setValue])
+
+    useEffect(() => {
+        setValue('ward', 0)
+    }, [selectedDistrict, setValue])
+
+    useEffect(() => {
+        if (formData) {
+            reset(formData);
+            setValue("district", formData.district || 0);
+            setValue("ward", formData.ward || 0);
+            setValue("districtPermanent", formData.districtPermanent || 0);
+            setValue("wardsPermanent", formData.wardsPermanent || 0);
+        }
+    }, [formData, reset, setValue]);
 
     const [searchParams] = useSearchParams();
 
@@ -103,7 +153,7 @@ const ResidentEditForm: React.FC = () => {
 
         setConfirmVisible(true);
 
-        setFormData(updatedData)
+        setFormData({...updatedData, id: formData.id})
     };
 
     const fetchApi = () => {
@@ -202,14 +252,83 @@ const ResidentEditForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12">
+                        <FormSelectField
+                            name="province"
+                            label="Quê quán"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={provinces}
+                            error={errors.province?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="district"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={districts}
+                            error={errors.district?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="ward"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={wards}
+                            error={errors.ward?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
                         <FormInputAreaField
-                            disabled
                             name="address"
-                            label="Địa chỉ"
-                            placeholder="Nhập địa chỉ"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
                             control={control}
                             error={errors.address?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="provincePermanent"
+                            label="Địa chỉ thường trú"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={provincesPermanent}
+                            error={errors.provincePermanent?.message}
                             required
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="districtPermanent"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={districtsPermanent}
+                            error={errors.districtPermanent?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="wardsPermanent"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={wardsPermanent}
+                            error={errors.wardsPermanent?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputAreaField
+                            name="addressPermanent"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
+                            control={control}
+                            error={errors.addressPermanent?.message}
                         />
                     </div>
                     <div className="col-span-6">

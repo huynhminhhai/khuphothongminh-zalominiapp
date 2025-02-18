@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react"
 import images from "assets/images"
 import SecondaryButton from "components/button/SecondaryButton"
-import { economicStatus, ethnicOptions, gender, religionOptions } from "constants/mock"
+import { districtOptions, economicStatus, ethnicOptions, gender, provinceOptions, religionOptions, wardOptions } from "constants/mock"
 import { genderLabel, RESIDENT, RESIDENTMAIN } from "constants/utinities"
 import React, { useEffect, useState } from "react"
 import { useNavigate, useSearchParams } from "react-router-dom"
@@ -75,12 +75,13 @@ const InforResidentItemMain: React.FC = () => {
                     <Box p={4}>
                         <InforItemMain label="Chủ hộ" value={detailData.parentName || 'Là chủ hộ'} />
                         <InforItemMain label="Số định danh cá nhân" value={detailData.numberCard} />
+                        <InforItemMain label="Số điện thoại" value={detailData.phoneNumber} />
                         <InforItemMain label="Giới tính" value={getLabelOptions(detailData.gender, gender) as string} />
                         <InforItemMain label="Ngày sinh" value={detailData.birthDate} />
                         <InforItemMain label="Dân tộc" value={getLabelOptions(detailData.nation, ethnicOptions) as string} />
                         <InforItemMain label="Tôn giáo" value={getLabelOptions(detailData.religion, religionOptions) as string} />
-                        <InforItemMain label="Quốc tịch" value={detailData.nationality} />
-                        <InforItemMain label="Quê quán" value={detailData.address} />
+                        <InforItemMain label="Quê quán" value={`${detailData.address}, ${wardOptions.find(item => item.id === detailData.ward)?.name}, ${districtOptions.find(item => item.id === detailData.district)?.name}, ${getLabelOptions(detailData.province, provinceOptions)}`} />
+                        <InforItemMain label="Thường trú" value={`${detailData.addressPermanent}, ${wardOptions.find(item => item.id === detailData.wardsPermanent)?.name}, ${districtOptions.find(item => item.id === detailData.districtPermanent)?.name}, ${getLabelOptions(detailData.provincePermanent, provinceOptions)}`} />
                         <InforItemMain label="Bảo hiểm y tế" value={detailData.bhyt} />
                         <InforItemMain label="Tình trạng hộ" value={getLabelOptions(detailData.economicStatus, economicStatus) as string} />
                         <InforItemMain label="Gia đình văn hóa" value={detailData.culturalFamilyStatus ? 'Đạt' : 'Không đạt'} />

@@ -4,7 +4,7 @@ import { InforItemMain } from "./InforResidentItemMain"
 import { Icon } from "@iconify/react"
 import { genderLabel, relationships, ResidentType } from "constants/utinities"
 import { getLabelOptions } from "utils/options"
-import { residentRequest, residentStatus, residentType } from "constants/mock"
+import { districtOptions, provinceOptions, residentRequest, residentStatus, residentType, wardOptions } from "constants/mock"
 import SecondaryButton from "components/button/SecondaryButton"
 
 type InforResidentItemProps = {
@@ -48,9 +48,11 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({data, isCraft=fals
                         <Box>
                             <Box>
                                 <InforItemMain label="Số định danh cá nhân" value={data.numberCard} />
+                                <InforItemMain label="Số điện thoại" value={data.phoneNumber} />
                                 <InforItemMain label="Ngày sinh" value={data.birthDate} />
                                 <InforItemMain label="Giới tính" value={genderLabel[data.gender]} />
                                 <InforItemMain label="Quan hệ với chủ hộ" value={getLabelOptions(data.relationship, relationships) || 'Chủ hộ'} />
+                                <InforItemMain label="Quê quán" value={`${data.address}, ${wardOptions.find(item => item.id === data.ward)?.name}, ${districtOptions.find(item => item.id === data.district)?.name}, ${getLabelOptions(data.province, provinceOptions)}`} />
                                 <InforItemMain
                                     label="Loại cư trú"
                                     value={`${getLabelOptions(data.residenceType, residentType)}`}

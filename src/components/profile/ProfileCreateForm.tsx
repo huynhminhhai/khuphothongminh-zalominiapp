@@ -9,13 +9,13 @@ import { FormDataProfile, schemaProfile } from "./type"
 import { economicStatus, ethnicOptions, gender, jobs, religionOptions, residentRealationships, residentStatus, residentType } from "constants/mock"
 import FormControllerRadioGroup from "components/form/FormRadioGroup"
 import { RESIDENT } from "constants/utinities"
+import useAddress from "utils/useAddress"
 
 const defaultValues: FormDataProfile = {
     fullname: '',
     phoneNumber: '',
     residenceType: 1,
     residenceStatus: 1,
-    address: '',
     relationship: 0,
     birthDate: '',
     gender: 0,
@@ -27,6 +27,16 @@ const defaultValues: FormDataProfile = {
     economicStatus: 1,
     culturalFamilyStatus: true,
     parentId: 0,
+    // Thường trú
+    addressPermanent: '',
+    provincePermanent: 0,
+    districtPermanent: 0,
+    wardsPermanent: 0,
+    // quê quán
+    address: '',
+    province: 0,
+    district: 0,
+    ward: 0
 }
 
 const ProfileAddForm: React.FC = () => {
@@ -43,7 +53,7 @@ const ProfileAddForm: React.FC = () => {
         label: string;
     }[]>([])
 
-    const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<FormDataProfile>({
+    const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormDataProfile>({
         resolver: yupResolver(schemaProfile(isHouseHold)),
         defaultValues
     });
@@ -53,14 +63,48 @@ const ProfileAddForm: React.FC = () => {
         setFormData(data)
     };
 
+    // Thường trú
+    const selectedPermanentProvince = watch("provincePermanent");
+    const selectedPermanentDistrict = watch("districtPermanent");
+
+    const { provinces: provincesPermanent, districts: districtsPermanent, wards: wardsPermanent } = useAddress(selectedPermanentProvince, selectedPermanentDistrict);
+
+    // Quê quán
+    const selectedProvince = watch("province");
+    const selectedDistrict = watch("district");
+
+    const { provinces, districts, wards } = useAddress(selectedProvince, selectedDistrict);
+
     useEffect(() => {
         if (isHouseHold) {
-            reset({
-                ...watch(),
-                parentId: defaultValues.parentId,
-                relationship: defaultValues.relationship,
-                address: defaultValues.address
-            })
+            setValue('districtPermanent', 0)
+            setValue('wardsPermanent', 0)
+        }
+    }, [selectedPermanentProvince, setValue, isHouseHold])
+
+    useEffect(() => {
+        if (isHouseHold) {
+            setValue('wardsPermanent', 0)
+        }
+    }, [selectedPermanentDistrict, setValue, isHouseHold])
+
+    useEffect(() => {
+        setValue('district', 0)
+        setValue('ward', 0)
+    }, [selectedProvince, setValue])
+
+    useEffect(() => {
+        setValue('ward', 0)
+    }, [selectedDistrict, setValue])
+
+    useEffect(() => {
+        if (isHouseHold) {
+            setValue('parentId', defaultValues.parentId)
+            setValue('relationship', defaultValues.relationship)
+            setValue('provincePermanent', defaultValues.provincePermanent)
+            setValue('districtPermanent', defaultValues.districtPermanent)
+            setValue('wardsPermanent', defaultValues.wardsPermanent)
+            setValue('addressPermanent', defaultValues.addressPermanent)
         }
     }, [isHouseHold])
 
@@ -111,22 +155,21 @@ const ProfileAddForm: React.FC = () => {
         setLoading(true);
         try {
             const data = RESIDENT.find((item) => item.id === Number(watch().parentId))
-
+            
             if (data) {
-                console.log(data)
-                reset({
-                    ...watch(),
-                    address: data.address,
-                    culturalFamilyStatus: data.culturalFamilyStatus,
-                    economicStatus: data.economicStatus
-                })
+                setValue('provincePermanent', data.provincePermanent)
+                setValue('addressPermanent', data.addressPermanent)
+                setValue('districtPermanent', data.districtPermanent)
+                setValue('wardsPermanent', data.wardsPermanent)
+                setValue('culturalFamilyStatus', data.culturalFamilyStatus)
+                setValue('economicStatus', data.economicStatus)
             } else {
-                reset({
-                    ...watch(),
-                    address: defaultValues.address,
-                    culturalFamilyStatus: defaultValues.culturalFamilyStatus,
-                    economicStatus: defaultValues.economicStatus
-                })
+                setValue('provincePermanent', defaultValues.provincePermanent)
+                setValue('addressPermanent', defaultValues.addressPermanent)
+                setValue('districtPermanent', defaultValues.districtPermanent)
+                setValue('wardsPermanent', defaultValues.wardsPermanent)
+                setValue('culturalFamilyStatus', defaultValues.culturalFamilyStatus)
+                setValue('economicStatus', defaultValues.economicStatus)
             }
         } catch (error) {
             console.error('Error:', error);
@@ -150,7 +193,6 @@ const ProfileAddForm: React.FC = () => {
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -297,14 +339,87 @@ const ProfileAddForm: React.FC = () => {
                         </>
                     }
                     <div className="col-span-12">
+                        <FormSelectField
+                            name="province"
+                            label="Quê quán"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={provinces}
+                            error={errors.province?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="district"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={districts}
+                            error={errors.district?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="ward"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={wards}
+                            error={errors.ward?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
                         <FormInputAreaField
                             name="address"
-                            disabled={!isHouseHold}
-                            label="Địa chỉ"
-                            placeholder="Nhập địa chỉ"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
                             control={control}
                             error={errors.address?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="provincePermanent"
+                            label="Địa chỉ thường trú"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={provincesPermanent}
+                            error={errors.provincePermanent?.message}
                             required
+                            disabled={!isHouseHold}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="districtPermanent"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={districtsPermanent}
+                            error={errors.districtPermanent?.message}
+                            disabled={!isHouseHold}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="wardsPermanent"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={wardsPermanent}
+                            error={errors.wardsPermanent?.message}
+                            disabled={!isHouseHold}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputAreaField
+                            name="addressPermanent"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
+                            control={control}
+                            error={errors.addressPermanent?.message}
+                            disabled={!isHouseHold}
                         />
                     </div>
 

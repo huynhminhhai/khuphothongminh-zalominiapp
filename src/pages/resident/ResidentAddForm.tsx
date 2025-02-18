@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, useNavigate, useSnackbar } from "zmp-ui";
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -8,13 +8,13 @@ import { ethnicOptions, gender, jobs, religionOptions, residentRealationships, r
 import FormControllerRadioGroup from "components/form/FormRadioGroup";
 import { ConfirmModal } from "components/modal";
 import { FormDataResident, schemaResident } from "./type";
+import useAddress from "utils/useAddress";
 
 const defaultValues: FormDataResident = {
     fullname: '',
     phoneNumber: '',
     residenceType: 1,
     residenceStatus: 1,
-    address: 'Thị trấn Bến Lức, Huyện Bến Lức, Tỉnh Long An',
     relationship: 0,
     birthDate: '',
     gender: 0,
@@ -23,7 +23,17 @@ const defaultValues: FormDataResident = {
     religion: 0,
     nation: 0,
     bhyt: '',
-    job: 0
+    job: 0,
+    // Thường trú
+    addressPermanent: '',
+    provincePermanent: 0,
+    districtPermanent: 0,
+    wardsPermanent: 0,
+    // quê quán
+    address: '',
+    province: 0,
+    district: 0,
+    ward: 0
 };
 
 const ResidentAddForm: React.FC = () => {
@@ -35,7 +45,7 @@ const ResidentAddForm: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataResident>(defaultValues)
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataResident>({
+    const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataResident>({
         resolver: yupResolver(schemaResident),
         defaultValues
     });
@@ -44,6 +54,18 @@ const ResidentAddForm: React.FC = () => {
         setConfirmVisible(true);
         setFormData(data)
     };
+
+    // Thường trú
+    const selectedPermanentProvince = watch("provincePermanent");
+    const selectedPermanentDistrict = watch("districtPermanent");
+
+    const { provinces: provincesPermanent, districts: districtsPermanent, wards: wardsPermanent } = useAddress(selectedPermanentProvince, selectedPermanentDistrict);
+
+    // Quê quán
+    const selectedProvince = watch("province");
+    const selectedDistrict = watch("district");
+
+    const { provinces, districts, wards } = useAddress(selectedProvince, selectedDistrict);
 
     const fetchApi = () => {
         setLoading(true);
@@ -86,6 +108,24 @@ const ResidentAddForm: React.FC = () => {
         setConfirmVisible(false);
     };
 
+    useEffect(() => {
+        setValue('districtPermanent', 0)
+        setValue('wardsPermanent', 0)
+    }, [selectedPermanentProvince, setValue])
+
+    useEffect(() => {
+        setValue('wardsPermanent', 0)
+    }, [selectedPermanentDistrict, setValue])
+
+    useEffect(() => {
+        setValue('district', 0)
+        setValue('ward', 0)
+    }, [selectedProvince, setValue])
+
+    useEffect(() => {
+        setValue('ward', 0)
+    }, [selectedDistrict, setValue])
+    
     return (
         <Box p={4}>
             <Box>
@@ -140,14 +180,83 @@ const ResidentAddForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12">
+                        <FormSelectField
+                            name="province"
+                            label="Quê quán"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={provinces}
+                            error={errors.province?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="district"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={districts}
+                            error={errors.district?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="ward"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={wards}
+                            error={errors.ward?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
                         <FormInputAreaField
                             name="address"
-                            disabled
-                            label="Địa chỉ"
-                            placeholder="Nhập địa chỉ"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
                             control={control}
                             error={errors.address?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="provincePermanent"
+                            label="Địa chỉ thường trú"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={provincesPermanent}
+                            error={errors.provincePermanent?.message}
                             required
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="districtPermanent"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={districtsPermanent}
+                            error={errors.districtPermanent?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="wardsPermanent"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={wardsPermanent}
+                            error={errors.wardsPermanent?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputAreaField
+                            name="addressPermanent"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
+                            control={control}
+                            error={errors.addressPermanent?.message}
                         />
                     </div>
                     <div className="col-span-6">
@@ -235,7 +344,7 @@ const ResidentAddForm: React.FC = () => {
                             error={errors.bhyt?.message}
                         />
                     </div>
-                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
+                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
                             <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Gửi yêu cầu thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
                         </Box>

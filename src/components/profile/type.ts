@@ -6,7 +6,6 @@ export const schemaProfile = (isHouseHold: boolean) => yup.object().shape({
         .string()
         .required('Số điện thoại không được để trống')
         .matches(/^(\+84|0)(9|3|7|8|5|6)[0-9]{8}$/, 'Số điện thoại không hợp lệ'),
-    address: yup.string().required('Địa chỉ không được để trống'),
     gender: yup.number().required('Chưa chọn giới tính').notOneOf([0], 'Chưa chọn mục này'),
     birthDate: yup.string().required('Chưa chọn ngày sinh'),
     numberCard: yup.string().typeError('CCCD phải là một số').required("CCCD phải là một số"),
@@ -35,7 +34,17 @@ export const schemaProfile = (isHouseHold: boolean) => yup.object().shape({
             }
 
             return true;
-        })
+        }),
+    // Thường trú
+    addressPermanent: yup.string().required('Địa chỉ không được để trống'),
+    provincePermanent: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
+    districtPermanent: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
+    wardsPermanent: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
+    // quê quán
+    address: yup.string().required('Địa chỉ không được để trống'),
+    province: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
+    district: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
+    ward: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
 });
 
 export type FormDataProfile = {
@@ -47,7 +56,6 @@ export type FormDataProfile = {
     birthDate: string;
     nation: number;
     religion: number;
-    address: string;
     relationship?: number;
     residenceStatus: number;
     residenceType: number;
@@ -56,4 +64,14 @@ export type FormDataProfile = {
     culturalFamilyStatus: boolean;
     parentId?: number;
     job?: number;
+    // Thường trú
+    addressPermanent: string;
+    provincePermanent: number;
+    districtPermanent: number;
+    wardsPermanent: number;
+    // quê quán
+    address: string;
+    province: number;
+    district: number;
+    ward: number;
 }

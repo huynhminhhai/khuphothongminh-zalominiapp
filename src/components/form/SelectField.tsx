@@ -52,7 +52,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                     placeholder={placeholder}
                     disabled={disabled}
                 />
-                <Icon className="absolute right-3 top-[46%]" icon="formkit:down" fontSize={9} />
+                <Icon style={{top: label || required ? '46%' : '26%'}} className="absolute right-3 top-[46%]" icon="formkit:down" fontSize={9} />
                 {errors && (
                     <ErrorMessage message={errors} />
                 )}

@@ -150,40 +150,173 @@ export const religionOptions = [
 ];
 
 export const provinceOptions = [
+    { value: 1, label: "Hà Nội" },
+    { value: 2, label: "Hồ Chí Minh" },
+    { value: 3, label: "Hải Phòng" },
+    { value: 4, label: "Đà Nẵng" },
+    { value: 5, label: "Cần Thơ" },
+    { value: 6, label: "An Giang" },
+    { value: 7, label: "Bà Rịa - Vũng Tàu" },
+    { value: 8, label: "Bắc Giang" },
+    { value: 9, label: "Bắc Kạn" },
+    { value: 10, label: "Bạc Liêu" },
+    { value: 11, label: "Bắc Ninh" },
+    { value: 12, label: "Bến Tre" },
+    { value: 13, label: "Bình Định" },
+    { value: 14, label: "Bình Dương" },
+    { value: 15, label: "Bình Phước" },
+    { value: 16, label: "Bình Thuận" },
+    { value: 17, label: "Cà Mau" },
+    { value: 18, label: "Cao Bằng" },
+    { value: 19, label: "Đắk Lắk" },
+    { value: 20, label: "Đắk Nông" },
+    { value: 21, label: "Điện Biên" },
+    { value: 22, label: "Đồng Nai" },
+    { value: 23, label: "Đồng Tháp" },
+    { value: 24, label: "Gia Lai" },
+    { value: 25, label: "Hà Giang" },
+    { value: 26, label: "Hà Nam" },
+    { value: 27, label: "Hà Tĩnh" },
+    { value: 28, label: "Hải Dương" },
+    { value: 29, label: "Hậu Giang" },
+    { value: 30, label: "Hòa Bình" },
+    { value: 31, label: "Hưng Yên" },
+    { value: 32, label: "Khánh Hòa" },
+    { value: 33, label: "Kiên Giang" },
+    { value: 34, label: "Kon Tum" },
+    { value: 35, label: "Lai Châu" },
+    { value: 36, label: "Lâm Đồng" },
+    { value: 37, label: "Lạng Sơn" },
+    { value: 38, label: "Lào Cai" },
+    { value: 39, label: "Long An" },
+    { value: 40, label: "Nam Định" },
+    { value: 41, label: "Nghệ An" },
+    { value: 42, label: "Ninh Bình" },
+    { value: 43, label: "Ninh Thuận" },
+    { value: 44, label: "Phú Thọ" },
+    { value: 45, label: "Phú Yên" },
+    { value: 46, label: "Quảng Bình" },
+    { value: 47, label: "Quảng Nam" },
+    { value: 48, label: "Quảng Ngãi" },
+    { value: 49, label: "Quảng Ninh" },
+    { value: 50, label: "Quảng Trị" },
+    { value: 51, label: "Sóc Trăng" },
+    { value: 52, label: "Sơn La" },
+    { value: 53, label: "Tây Ninh" },
+    { value: 54, label: "Thái Bình" },
+    { value: 55, label: "Thái Nguyên" },
+    { value: 56, label: "Thanh Hóa" },
+    { value: 57, label: "Thừa Thiên Huế" },
+    { value: 58, label: "Tiền Giang" },
+    { value: 59, label: "Trà Vinh" },
+    { value: 60, label: "Tuyên Quang" },
+    { value: 61, label: "Vĩnh Long" },
+    { value: 62, label: "Vĩnh Phúc" },
+    { value: 63, label: "Yên Bái" },
+];
+
+export const districtOptions = [
     {
-        id: 1,
-        name: "Hà Nội",
-        districts: [
-            {
-                id: 101,
-                name: "Ba Đình",
-                wards: [
-                    { id: 10101, name: "Phúc Xá" },
-                    { id: 10102, name: "Trúc Bạch" }
-                ]
-            },
-            {
-                id: 102,
-                name: "Hoàn Kiếm",
-                wards: [
-                    { id: 10201, name: "Chương Dương" },
-                    { id: 10202, name: "Hàng Bạc" }
-                ]
-            }
-        ]
+        "id": 101,
+        "name": "Ba Đình",
+        "province": { "id": 1, "name": "Hà Nội" }
     },
     {
-        id: 2,
-        name: "Hồ Chí Minh",
-        districts: [
-            {
-                id: 201,
-                name: "Quận 1",
-                wards: [
-                    { id: 20101, name: "Bến Nghé" },
-                    { id: 20102, name: "Bến Thành" }
-                ]
-            }
-        ]
+        "id": 102,
+        "name": "Hoàn Kiếm",
+        "province": { "id": 1, "name": "Hà Nội" }
+    },
+    {
+        "id": 103,
+        "name": "Cầu Giấy",
+        "province": { "id": 1, "name": "Hà Nội" }
+    },
+    {
+        "id": 201,
+        "name": "Quận 1",
+        "province": { "id": 2, "name": "TP. Hồ Chí Minh" }
+    },
+    {
+        "id": 202,
+        "name": "Quận 3",
+        "province": { "id": 2, "name": "TP. Hồ Chí Minh" }
+    },
+    {
+        "id": 203,
+        "name": "Quận 7",
+        "province": { "id": 2, "name": "TP. Hồ Chí Minh" }
+    },
+    {
+        "id": 301,
+        "name": "Sơn Trà",
+        "province": { "id": 3, "name": "Đà Nẵng" }
+    },
+    {
+        "id": 302,
+        "name": "Hải Châu",
+        "province": { "id": 3, "name": "Đà Nẵng" }
+    },
+    {
+        "id": 401,
+        "name": "Thủ Dầu Một",
+        "province": { "id": 4, "name": "Bình Dương" }
+    },
+    {
+        "id": 402,
+        "name": "Dĩ An",
+        "province": { "id": 4, "name": "Bình Dương" }
     }
-];
+]
+
+export const wardOptions = [
+    {
+        "id": 10101,
+        "name": "Phúc Xá",
+        "district": { "id": 101, "name": "Ba Đình", "province": { "id": 1, "name": "Hà Nội" } }
+    },
+    {
+        "id": 10102,
+        "name": "Trúc Bạch",
+        "district": { "id": 101, "name": "Ba Đình", "province": { "id": 1, "name": "Hà Nội" } }
+    },
+    {
+        "id": 10201,
+        "name": "Hàng Bạc",
+        "district": { "id": 102, "name": "Hoàn Kiếm", "province": { "id": 1, "name": "Hà Nội" } }
+    },
+    {
+        "id": 20101,
+        "name": "Bến Nghé",
+        "district": { "id": 201, "name": "Quận 1", "province": { "id": 2, "name": "TP. Hồ Chí Minh" } }
+    },
+    {
+        "id": 20102,
+        "name": "Bến Thành",
+        "district": { "id": 201, "name": "Quận 1", "province": { "id": 2, "name": "TP. Hồ Chí Minh" } }
+    },
+    {
+        "id": 20201,
+        "name": "Võ Thị Sáu",
+        "district": { "id": 202, "name": "Quận 3", "province": { "id": 2, "name": "TP. Hồ Chí Minh" } }
+    },
+    {
+        "id": 30101,
+        "name": "An Hải Bắc",
+        "district": { "id": 301, "name": "Sơn Trà", "province": { "id": 3, "name": "Đà Nẵng" } }
+    },
+    {
+        "id": 30102,
+        "name": "An Hải Đông",
+        "district": { "id": 301, "name": "Sơn Trà", "province": { "id": 3, "name": "Đà Nẵng" } }
+    },
+    {
+        "id": 40101,
+        "name": "Hiệp Thành",
+        "district": { "id": 401, "name": "Thủ Dầu Một", "province": { "id": 4, "name": "Bình Dương" } }
+    },
+    {
+        "id": 40102,
+        "name": "Phú Lợi",
+        "district": { "id": 401, "name": "Thủ Dầu Một", "province": { "id": 4, "name": "Bình Dương" } }
+    }
+]
