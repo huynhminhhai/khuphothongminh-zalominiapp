@@ -1,10 +1,12 @@
 import React, { FC } from "react";
 import { Box, Header, useNavigate } from "zmp-ui";
 import images from "assets/images";
+import { useStoreApp } from "store/store";
 
 export const HeaderHome: FC = () => {
 
   const navigate = useNavigate()
+  const { account } = useStoreApp();
 
   return (
     <Header
@@ -16,13 +18,16 @@ export const HeaderHome: FC = () => {
             <div className="w-[60px] h-[60px] rounded-full border-[2px] border-[#e9ca9433] overflow-hidden">
                 <img
                 className="h-[100%] w-[100%] object-cover"
-                src={images.avatar}
+                src={account?.avatar || images.avatarDefault}
                 />
             </div>
-            <Box>
-              <h4 className="text-[20px] font-semibold leading-[1] text-white uppercase mb-2">Huynh Minh Hai</h4>
-              <h5 className="text-[14px] font-medium leading-[1] tracking-widest text-white">084*****55 ✦ Khu phố 9</h5>
-            </Box>
+            {
+              account &&
+              <Box>
+                <h4 className="text-[20px] font-semibold leading-[1] text-white uppercase mb-2">Huynh Minh Hai</h4>
+                <h5 className="text-[14px] font-medium leading-[1] tracking-widest text-white">084*****55 ✦ Khu phố 9</h5>
+              </Box>
+            }
           </Box>
         ) as unknown as string
       }

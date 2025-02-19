@@ -27,6 +27,7 @@ import setting from './gear.png'
 import research from './research.png'
 import statistics from './statistics.png'
 import map from './map.png'
+import avatarDefault from './avatar-default.jpg'
 
 const images = {
     logo,
@@ -57,7 +58,8 @@ const images = {
     setting,
     research,
     statistics,
-    map
+    map,
+    avatarDefault
 }
 
 export default images

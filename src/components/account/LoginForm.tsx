@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { FormInputField } from "components/form"
 import { Icon } from "@iconify/react"
 import { useLoginWithZalo } from "services/loginWithZalo"
+import { useLogin } from "apiRequest/auth"
 
 const defaultValues: FormDataLogin = {
     username: '',
@@ -14,13 +15,12 @@ const defaultValues: FormDataLogin = {
 
 const LoginForm: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
     const { loginWithZalo } = useLoginWithZalo()
 
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState<FormDataLogin>(defaultValues)
     const [isHide, setIsHide] = useState<boolean>(true)
+
+    const { mutateAsync } = useLogin();
 
     const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataLogin>({
         resolver: yupResolver(schemaLogin),
@@ -28,37 +28,20 @@ const LoginForm: React.FC = () => {
     });
 
     const onSubmit: SubmitHandler<FormDataLogin> = (data) => {
-        setFormData(data)
-
         if (data) {
-            fetchApi()
+            fetchApi(data)
         }
     };
 
-    const fetchApi = () => {
+    const fetchApi = async (data: FormDataLogin) => {
         setLoading(true);
+
         try {
-            console.log('call api login with: ', { ...formData });
-            
-            openSnackbar({
-                icon: true,
-                text: "Đăng nhập thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            navigate('/account');
+            await mutateAsync({ username: data.username, password: data.password });
         } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+            console.error("Error:", error);
         } finally {
+            reset(defaultValues);
             setLoading(false);
         }
     }
@@ -68,7 +51,7 @@ const LoginForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12 relative">
-                        <Icon icon='mdi:user' fontSize={20} color="#731611" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]"/>
+                        <Icon icon='mdi:user' fontSize={20} color="#731611" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
                             name="username"
                             label=""
@@ -78,7 +61,7 @@ const LoginForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12 relative">
-                        <Icon icon='mdi:password' fontSize={20} color="#731611" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]"/>
+                        <Icon icon='mdi:password' fontSize={20} color="#731611" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
                             name="password"
                             type={isHide ? 'password' : 'text'}
@@ -87,15 +70,16 @@ const LoginForm: React.FC = () => {
                             control={control}
                             error={errors.password?.message}
                         />
-                        <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHide(!isHide)}>
-                            
-                            {
-                                isHide ? <Icon fontSize={20} color="#731611" icon='mdi:eye-off'/> : <Icon fontSize={20} color="#731611" icon='mdi:eye'/>
-                            }
+                        <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHide(prev => !prev)}>
+                            <Icon
+                                fontSize={20}
+                                color="#731611"
+                                icon={isHide ? 'mdi:eye-off' : 'mdi:eye'}
+                            />
                         </div>
                     </div>
                     <div className="col-span-12 relative mt-[60px]">
-                        <Button fullWidth onClick={handleSubmit(onSubmit)}>
+                        <Button disabled={loading} fullWidth onClick={handleSubmit(onSubmit)}>
                             {loading ? "Đang xử lý..." : "Đăng nhập"}
                         </Button>
                         <div className="mt-3 font-medium">Bạn không có tài khoản? <span onClick={() => loginWithZalo()} className="font-semibold text-[#731611]">Đăng nhập với zalo</span></div>
