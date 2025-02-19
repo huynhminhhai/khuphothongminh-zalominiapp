@@ -33,15 +33,15 @@ const PieChart: React.FC = () => {
     }
 
     const otherHouseholds = HouseHolData.totalHouseholds - (HouseHolData.poorHouseholds + HouseHolData.nearPoorHouseholds);
-    const poorPercentage = (HouseHolData.poorHouseholds / HouseHolData.totalHouseholds) * 100;
-    const nearPoorPercentage = (HouseHolData.nearPoorHouseholds / HouseHolData.totalHouseholds) * 100;
-    const otherPercentage = (otherHouseholds / HouseHolData.totalHouseholds) * 100;
+    const poorPercentage = ((HouseHolData.poorHouseholds / HouseHolData.totalHouseholds) * 100).toFixed(2);
+    const nearPoorPercentage = ((HouseHolData.nearPoorHouseholds / HouseHolData.totalHouseholds) * 100).toFixed(2);
+    const otherPercentage = ((otherHouseholds / HouseHolData.totalHouseholds) * 100).toFixed(2);
 
     const pieHouseholdData = {
         labels: [
-            `Hộ nghèo: ${poorPercentage} hộ`,
-            `Hộ cận nghèo: ${nearPoorPercentage} hộ`,
-            `Hộ khác: ${otherPercentage} hộ`,
+            `Hộ nghèo: ${HouseHolData.poorHouseholds} hộ`,
+            `Hộ cận nghèo: ${HouseHolData.nearPoorHouseholds} hộ`,
+            `Hộ khác: ${otherHouseholds} hộ`,
         ],
         datasets: [
             {

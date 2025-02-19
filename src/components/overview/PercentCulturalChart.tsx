@@ -33,13 +33,13 @@ const PieChart: React.FC = () => {
     }
 
     const otherHouseholds = HouseHolData.totalHouseholds - HouseHolData.culturalHouseholds;
-    const culturalPercentage = (HouseHolData.culturalHouseholds / HouseHolData.totalHouseholds) * 100;
-    const otherPercentage = (otherHouseholds / HouseHolData.totalHouseholds) * 100;
+    const culturalPercentage = ((HouseHolData.culturalHouseholds / HouseHolData.totalHouseholds) * 100).toFixed(2);
+    const otherPercentage = ((otherHouseholds / HouseHolData.totalHouseholds) * 100).toFixed(2);
 
     const pieCulturalData = {
         labels: [
-            `Gia đình có văn hóa: ${culturalPercentage} hộ`,
-            `Gia đình khác: ${otherPercentage} hộ`,
+            `Gia đình có văn hóa: ${HouseHolData.culturalHouseholds} hộ`,
+            `Gia đình khác: ${otherHouseholds} hộ`,
         ],
         datasets: [
             {
