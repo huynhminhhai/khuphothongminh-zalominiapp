@@ -108,7 +108,7 @@ const MeetingDetailPage: React.FC = () => {
                         detailData ?
                             <Box>
                                 <Box px={4}>
-                                    <h3 className="text-[22px] font-semibold">{detailData.title}</h3>
+                                    <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.title}</h3>
                                     <div className="mt-6 mb-2 flex items-center gap-3">
                                         <Avatar size={30} src="https://tse1.mm.bing.net/th?id=OIP.LN-T_MAQBZx7pCwEWw5GwgHaHa&pid=Api" />
                                         <div className="text-[16px] font-medium text-[#808080]">được tạo bởi <span className="text-[#000]">{'Huỳnh Minh Hải'}</span></div>

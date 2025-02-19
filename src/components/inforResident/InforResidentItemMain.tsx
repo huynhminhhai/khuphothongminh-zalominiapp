@@ -69,7 +69,7 @@ const InforResidentItemMain: React.FC = () => {
                             <Avatar size={120} src={detailData.avatar ||
                                 'https://www.pphfoundation.ca/wp-content/uploads/2018/05/default-avatar.png'
                             } className="relative z-20 border-[4px] border-white" />
-                            <div className="relative z-20 uppercase text-[18px] font-bold mt-3 text-white">{detailData.fullname}</div>
+                            <div className="relative z-20 uppercase text-[18px] leading-[24px] font-semibold mt-3 text-white">{detailData.fullname}</div>
                         </div>
                     </Box>
                     <Box p={4}>

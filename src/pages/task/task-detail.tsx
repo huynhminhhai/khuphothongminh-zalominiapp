@@ -82,8 +82,8 @@ const TaskDetailPage: React.FC = () => {
                     {
                         detailData ?
                             <Box>
-                                <Box px={4} pb={4}>
-                                    <h3 className="text-[20px] font-medium">{detailData.title}</h3>
+                                <Box px={4}>
+                                    <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.title}</h3>
                                 </Box>
                                 <Box p={4}>
                                     <div className="border-[1px] rounded-xl p-3">
@@ -158,6 +158,7 @@ const TaskDetailPage: React.FC = () => {
                                         }
                                     </div>
                                 </Box>
+                                <Divider />
                                 <Divider />
                                 <Box p={4}>
                                     <div className="text-[16px] font-medium mb-1">Ghi chú người thực hiện</div>

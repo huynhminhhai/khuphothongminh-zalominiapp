@@ -51,8 +51,8 @@ const ReportFinanceDetailPage: React.FC = () => {
                     {
                         detailData ?
                             <Box>
-                                <Box p={4}>
-                                    <h3 className="text-[20px] font-medium">{detailData.title}</h3>
+                                <Box px={4}>
+                                    <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.title}</h3>
                                 </Box>
                                 <Box p={4} flex className="gap-3">
                                     <div className="border-[1px] rounded-xl p-3 w-full">

@@ -51,8 +51,8 @@ const TransactionDetailPage: React.FC = () => {
                     {
                         detailData ?
                             <Box>
-                                <Box p={4}>
-                                    <h3 className="text-[20px] font-medium">{detailData.category}</h3>
+                                <Box px={4} pb={4}>
+                                    <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.category}</h3>
                                 </Box>
                                 <Box px={4} pb={4}>
                                     <div className="text-[22px] font-semibold" style={{ color: detailData.transaction_type === 1 ? '#16a34a' : '#dc2626' }}>{detailData.transaction_type === 1 ? '+' : '-'}{detailData.amount.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</div>

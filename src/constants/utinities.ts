@@ -383,7 +383,7 @@ export const RESIDENT: ResidentType[] = [
 
 export const RESIDENTCRAFT: ResidentType[] = [
     {
-        id: 6,
+        id: 97,
         parentId: 1,
         parentName: 'Huỳnh Minh Hải',
         fullname: "Huỳnh Hồng Hưng",
@@ -414,7 +414,7 @@ export const RESIDENTCRAFT: ResidentType[] = [
         addressPermanent: '364, quốc lộ 1A, Khu Phố 9',
     },
     {
-        id: 4,
+        id: 96,
         parentId: 1,
         parentName: 'Huỳnh Minh Hải',
         fullname: "Phạm Thị Mai",

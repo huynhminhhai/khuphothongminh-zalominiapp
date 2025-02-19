@@ -82,8 +82,8 @@ const TeamDetailPage: React.FC = () => {
                                 </div>
                                 <div className="pt-[72px] relative z-10">
                                     <Box className="text-center">
-                                        <h3 className="text-[20px] font-semibold mb-1">{detailData.fullname}</h3>
-                                        <h4 className="text-[16px] text-[#3737737] font-semibold">{detailData.position}</h4>
+                                        <h3 className="text-[22px] leading-[28px] font-semibold mb-1">{detailData.fullname}</h3>
+                                        <h4 className="text-[18px] leading-[22px] text-[#3737737] font-semibold">{detailData.position}</h4>
                                     </Box>
                                     <Box mt={4}>
                                         <div className="flex flex-col gap-4">

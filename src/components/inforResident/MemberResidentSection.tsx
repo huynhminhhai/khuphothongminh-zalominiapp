@@ -4,6 +4,8 @@ import InforResidentList from "./InforResidentList"
 import { PrimaryButton } from "components/button"
 import { Icon } from "@iconify/react"
 import InforResidentCraftList from "./InforResidentCraftList"
+import { RESIDENT, RESIDENTCRAFT } from "constants/utinities"
+import { Divider } from "components/divider"
 
 const MemberResidentSection: React.FC = () => {
 
@@ -12,13 +14,8 @@ const MemberResidentSection: React.FC = () => {
     return (
         <Box pt={4}>
             <Box>
-                <Box pb={2} px={4}>
-                    <h3 className="text-[18px] font-semibold">Thông tin thành viên đã duyệt</h3>
-                </Box>
                 <InforResidentList />
-                <Box mt={4} pt={4} pb={2} px={4}>
-                    <h3 className="text-[18px] font-semibold">Thông tin thành viên chưa duyệt</h3>
-                </Box>
+                <Divider />
                 <InforResidentCraftList />
                 <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">
                     <Box py={3} flex alignItems="center" justifyContent="center" className="w-full">

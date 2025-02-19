@@ -270,6 +270,10 @@ tbody tr td:not(:first-child) {
   transition: all 0.3s linear;
 }
 
+.tab-resident .zaui-tabs-tabbar {
+  border-bottom: 3px solid #e9ca9433;
+}
+
 .tab-resident .zaui-tabs-tabbar::after,
 .tab-resident .zaui-tabs-tabbar-active-line {
   display: none;
@@ -278,6 +282,10 @@ tbody tr td:not(:first-child) {
 .tab-resident .zaui-tabs-tabbar-item.zaui-tabs-tabbar-item-active {
   background-color: #e9ca9433;
   color: #731611;
+}
+
+.select-member input {
+  height: 28px;
 }
 
 /**
