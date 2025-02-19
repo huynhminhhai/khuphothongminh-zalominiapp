@@ -25,12 +25,29 @@ const PercentInsuranceChart: React.FC = () => {
 
     const { Option } = Select
 
+    const insuranceRawData = {
+        total: 1000, // Tổng số người
+        insured: 744, // Có bảo hiểm
+        uninsured: 256, // Không có bảo hiểm
+    };
+
+    const insurancePercentage = {
+        insured: ((insuranceRawData.insured / insuranceRawData.total) * 100).toFixed(2),
+        uninsured: ((insuranceRawData.uninsured / insuranceRawData.total) * 100).toFixed(2),
+    };
+
     const insuranceData = {
-        labels: ['Có bảo hiểm', 'Không có bảo hiểm', 'Hỗ trợ bảo hiểm'],
+        labels: [
+            `Có bảo hiểm ${insuranceRawData.insured}`,
+            `Không có bảo hiểm ${insuranceRawData.uninsured}`
+        ],
         datasets: [
             {
-                data: [70, 20, 10],
-                backgroundColor: ['#89d3d4', '#b9ebe0', '#D1D5DB'],
+                data: [
+                    insurancePercentage.insured,
+                    insurancePercentage.uninsured
+                ],
+                backgroundColor: ['#89d3d4', '#b9ebe0'],
             },
         ],
     };

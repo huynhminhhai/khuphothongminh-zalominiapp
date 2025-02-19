@@ -25,15 +25,34 @@ const JobChart: React.FC = () => {
 
     const { Option } = Select
 
-    const jobData = {
-        labels: ['Công nhân', 'Nông dân', 'Viên chức', 'Lao động tự do', 'Khác'],
-        datasets: [
-          {
-            data: [20, 30, 15, 25, 10],
-            backgroundColor: ['#f1b821', '#545e90', '#ee4880', '#b275d4', '#41b5ee'],
-          },
+    const JobData = {
+        total: 547,
+        others: 47,
+        workers: 200,
+        farmers: 120,
+        officers: 90,
+        freelancers: 90
+    };
+
+    const pieJobData = {
+        labels: [
+            `Công nhân ${JobData.workers}`,
+            `Nông dân ${JobData.farmers}`,
+            `Viên chức ${JobData.officers}`,
+            `Lao động tự do ${JobData.freelancers}`,
+            `Khác ${JobData.others}`
         ],
-      };
+        datasets: [
+            {
+                data: [((JobData.workers / JobData.total) * 100).toFixed(2),
+                ((JobData.farmers / JobData.total) * 100).toFixed(2),
+                ((JobData.officers / JobData.total) * 100).toFixed(2),
+                ((JobData.freelancers / JobData.total) * 100).toFixed(2),
+                ((JobData.others / JobData.total) * 100).toFixed(2),],
+                backgroundColor: ['#f1b821', '#545e90', '#ee4880', '#b275d4', '#41b5ee'],
+            },
+        ],
+    };
 
     return (
         <Box>
@@ -78,7 +97,7 @@ const JobChart: React.FC = () => {
                     </Select>
                 </div>
             </div>
-            <Doughnut data={jobData} options={optionsPercent} />
+            <Doughnut data={pieJobData} options={optionsPercent} />
         </Box>
     )
 }
