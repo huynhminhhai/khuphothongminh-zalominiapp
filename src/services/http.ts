@@ -8,16 +8,15 @@ const request = async <T>(
     body?: any
 ): Promise<T> => {
 
-    const navigate = useNavigate()
-
     const fullUrl = `${envConfig.API_ENDPOINT}${url}`;  // Tạo URL đầy đủ cho API
 
     const token = getDataFromStorage(['token']);  // Lấy token từ Storage
 
     // Kiểm tra nếu không có token thì redirect đến trang đăng nhập
     if (!token) {
-        window.location.href = '/'; 
-        navigate('/'); // Chuyển hướng về trang chủ
+        window.location.href = '/';
+        removeDataFromStorage(['token']);
+        // navigate('/'); // Chuyển hướng về trang chủ
         throw new Error('Người dùng chưa đăng nhập');  // Ném lỗi để dừng request
     }
 
@@ -43,7 +42,7 @@ const request = async <T>(
             if (response.status === 401) {  // Trường hợp token hết hạn hoặc không hợp lệ
                 removeDataFromStorage(['token']);  // Xóa token khỏi Storage
                 window.location.href = '/';  // Chuyển hướng về trang đăng nhập
-                navigate('/');
+                // navigate('/');
                 throw new Error('Token hết hạn');  // Ném lỗi để dừng request
             }
             throw new Error((data as any).message || 'Lỗi không xác định (request)');  // Xử lý lỗi chung

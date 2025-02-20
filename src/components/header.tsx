@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Box, Header, useNavigate } from "zmp-ui";
 import images from "assets/images";
 import { useStoreApp } from "store/store";
+import { maskPhoneNumber } from "utils/number";
 
 export const HeaderHome: FC = () => {
 
@@ -24,8 +25,8 @@ export const HeaderHome: FC = () => {
             {
               account &&
               <Box>
-                <h4 className="text-[20px] font-semibold leading-[1] text-white uppercase mb-2">Huynh Minh Hai</h4>
-                <h5 className="text-[14px] font-medium leading-[1] tracking-widest text-white">084*****55 ✦ Khu phố 9</h5>
+                <h4 className="text-[20px] font-semibold leading-[1] text-white uppercase mb-2">{account.fullName}</h4>
+                <h5 className="text-[14px] font-medium leading-[1] tracking-widest text-white">{maskPhoneNumber(account.phoneNumber)} ✦ Khu phố 9</h5>
               </Box>
             }
           </Box>

@@ -23,7 +23,6 @@ const HomePage: React.FunctionComponent = () => {
           <MeetingSection />
           <Divider />
           <TaskSection />
-          <Divider />
           <NewsSection />
         </div>
       </Box>
