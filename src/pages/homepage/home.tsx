@@ -7,9 +7,12 @@ import { ServiceSection } from "components/services";
 import { StatisticSection } from "components/statistics";
 import { TaskSection } from "components/task";
 import React from "react";
+import { useStoreApp } from "store/store";
 import { Box, Page } from "zmp-ui";
 
 const HomePage: React.FunctionComponent = () => {
+
+  const {account} = useStoreApp()
 
   return (
     <Page className="relative flex-1 flex flex-col bg-white pb-[66px] home">
@@ -19,10 +22,15 @@ const HomePage: React.FunctionComponent = () => {
         <StatisticSection />
         <div className="bg-white rounded-t-2xl pt-3">
           <ServiceSection />
-          <Divider />
-          <MeetingSection />
-          <Divider />
-          <TaskSection />
+          {
+            account &&
+            <>
+              <Divider />
+              <MeetingSection />
+              <Divider />
+              <TaskSection />
+            </>
+          }
           <NewsSection />
         </div>
       </Box>

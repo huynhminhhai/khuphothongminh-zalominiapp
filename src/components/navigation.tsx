@@ -3,6 +3,7 @@ import React, { FC, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { BottomNavigation } from "zmp-ui";
 import { MenuItem } from "constants/types";
+import { useStoreApp } from "store/store";
 
 const tabs: Record<string, MenuItem> = {
   "/": {
@@ -34,14 +35,24 @@ export const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/management", "/account", "/no
 export const Navigation: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { account } = useStoreApp();
+
+  const filteredTabs = useMemo(() => {
+    if (account && account.role === 'admin') {
+      return tabs;
+    }
+
+    const { "/management": _, ...restTabs } = tabs;
+    return restTabs;
+  }, [account]);
 
   const hasBottomNav = useMemo(() => {
     return HAS_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
   }, [location]);
 
-    if (!hasBottomNav) {
-      return <></>;
-    }
+  if (!hasBottomNav) {
+    return <></>;
+  }
 
   return (
     <>
@@ -50,12 +61,12 @@ export const Navigation: FC = () => {
         activeKey={location.pathname}
         className="z-10 box-shadow-3"
       >
-        {Object.keys(tabs).map((path: TabKeys) => (
+        {Object.keys(filteredTabs).map((path: TabKeys) => (
           <BottomNavigation.Item
             key={path}
-            label={tabs[path].label}
-            icon={tabs[path].icon}
-            activeIcon={tabs[path].activeIcon}
+            label={filteredTabs[path].label}
+            icon={filteredTabs[path].icon}
+            activeIcon={filteredTabs[path].activeIcon}
             onClick={() => navigate(path)}
           />
         ))}

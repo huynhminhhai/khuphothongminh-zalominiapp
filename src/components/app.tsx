@@ -31,12 +31,12 @@ const MyApp = () => {
   const queryClient = new QueryClient()
 
   useEffect(() => {
-    // Lấy tài khoản từ ZMP storage
     const loadAccountData = async () => {
       const storedAccount = await getDataFromStorage(["account"]);
 
+      console.log(storedAccount)
+
       if (storedAccount && storedAccount["account"]) {
-        // Nếu có thông tin tài khoản trong storage, cập nhật vào Zustand
         setAccount(JSON.parse(storedAccount["account"]));
       }
     };

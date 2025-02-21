@@ -1,9 +1,50 @@
 import { LoginForm } from "components/account"
 import { HeaderSub } from "components/header-sub"
-import React from "react"
-import { Box, Page } from "zmp-ui"
+import React, { useEffect } from "react"
+import { getDataFromStorage } from "services/zalo"
+import { useStoreApp } from "store/store"
+import { Box, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const LoginPage: React.FC = () => {
+
+    const navigate = useNavigate();
+    const { openSnackbar } = useSnackbar();
+    const { account, setAccount } = useStoreApp();
+
+    useEffect(() => {
+        const checkLogin = async () => {
+            if (account) {
+                openSnackbar({
+                    icon: true,
+                    text: "Bạn đã đăng nhập thành công",
+                    type: 'success',
+                    action: { text: "Đóng", close: true },
+                    duration: 3000,
+                });
+                navigate("/account");
+                return;
+            }
+
+            const [token, storedAccount] = await Promise.all([
+                getDataFromStorage(['token']),
+                getDataFromStorage(['account']),
+            ]);
+
+            if (token && token['token'] && storedAccount && storedAccount['account']) {
+                try {
+                    const parsedAccount = JSON.parse(storedAccount['account']);
+                    console.log(parsedAccount)
+                    if (!account) setAccount(parsedAccount);
+                } catch (error) {
+                    console.error("Lỗi parse account:", error);
+                }
+            }
+        };
+
+        checkLogin();
+    }, [account, setAccount]);
+
+
     return (
         <Page className="relative flex-1 flex flex-col bg-white login-page">
             <Box>

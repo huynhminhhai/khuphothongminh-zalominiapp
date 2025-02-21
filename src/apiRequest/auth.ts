@@ -9,10 +9,7 @@ const authApiRequest = {
         // const response = await http.post<{ token: string }>('/auth/login', { username, password });
 
         return new Promise((resolve, reject) => {
-            console.log('call api login with: ', { username, password });
-            // setTimeout(() => {
-            //     reject('Thông tin đăng nhập không chính xác');
-            // }, 2000);
+            // console.log('call api login with: ', { username, password });
             setTimeout(() => {
                 const response = {
                     token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjM0NTY3ODkwLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJleHBpcmVkX2F0Ijp0cnVlLCJpYXQiOjE2Mjk5MTMyNzAsImV4cCI6MTYzMDAwNjg3MH0.8JgDRry6sqhQ6y1KmT6a2ij5pHX6zyXbh8qPz8B9lsA',
@@ -67,7 +64,7 @@ export const useLogin = () => {
                 text: "Đăng nhập thành công",
                 type: 'success',
                 action: { text: "Đóng", close: true },
-                duration: 5000,
+                duration: 3000,
             });
             queryClient.invalidateQueries({ queryKey: ['user'] });
 
@@ -82,14 +79,13 @@ export const useLogin = () => {
                 text: error,
                 type: 'error',
                 action: { text: "Đóng", close: true },
-                duration: 5000,
+                duration: 3000,
             });
         },
     });
 };
 
 export const useLogout = () => {
-    const navigate = useNavigate();
     const { openSnackbar } = useSnackbar();
     const { clearAccount } = useStoreApp();
 
@@ -104,10 +100,8 @@ export const useLogout = () => {
             text: "Đăng xuất thành công thành công",
             type: 'success',
             action: { text: "Đóng", close: true },
-            duration: 5000,
+            duration: 3000,
         });
-
-        // navigate('/login');
     };
 
     return logout;

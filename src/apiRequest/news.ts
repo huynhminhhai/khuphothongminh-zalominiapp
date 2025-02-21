@@ -3,17 +3,10 @@ import http from 'services/http';
 
 const newsApiRequest = {
     getNewsList: async (param: { page: number; pageSize: number }) => {
-        console.log('call api:', param)
         return await http.get<any[]>(`/posts?_page=${param.page}&_limit=${param.pageSize}`);
     },
     getNewsDetail: async (id: number) => {
-        try {
-            const response = await http.get<any>(`/posts/${id}`);
-            return response;
-        } catch (error) {
-            console.error(error);
-            throw error;
-        }
+        return await http.get<any>(`/posts/${id}`);
     },
 };
 

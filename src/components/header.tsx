@@ -17,17 +17,21 @@ export const HeaderHome: FC = () => {
         (
           <Box flex alignItems="center" className="space-x-3" onClick={() => navigate(`/account`)}>
             <div className="w-[60px] h-[60px] rounded-full border-[2px] border-[#e9ca9433] overflow-hidden">
-                <img
+              <img
                 className="h-[100%] w-[100%] object-cover"
                 src={account?.avatar || images.avatarDefault}
-                />
+              />
             </div>
             {
-              account &&
-              <Box>
-                <h4 className="text-[20px] font-semibold leading-[1] text-white uppercase mb-2">{account.fullName}</h4>
-                <h5 className="text-[14px] font-medium leading-[1] tracking-widest text-white">{maskPhoneNumber(account.phoneNumber)} ✦ Khu phố 9</h5>
-              </Box>
+              account ?
+                <Box>
+                  <h4 className="text-[20px] font-semibold leading-[1] text-white uppercase mb-2">{account.fullName}</h4>
+                  <h5 className="text-[14px] font-medium leading-[1] tracking-widest text-white">{maskPhoneNumber(account.phoneNumber)} ✦ Khu phố 9</h5>
+                </Box> :
+                <Box>
+                  {/* <h4 className="text-[16px] font-semibold leading-[1] text-white uppercase mb-2"></h4> */}
+                  <h5 className="text-[16px] font-semibold leading-[1] text-white">Đăng nhập ngay</h5>
+                </Box>
             }
           </Box>
         ) as unknown as string

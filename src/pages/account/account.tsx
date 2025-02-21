@@ -4,9 +4,9 @@ import images from "assets/images";
 import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { useLoginWithZalo } from "services/loginWithZalo";
-import { getDataFromStorage, openPermissionSettingApp } from "services/zalo";
+import { openPermissionSettingApp } from "services/zalo";
 import { useStoreApp } from "store/store";
-import { Avatar, Box, List, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { Avatar, Box, List, Page, useNavigate } from "zmp-ui"
 
 const AccountPage: React.FC = () => {
 
@@ -20,7 +20,7 @@ const AccountPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[66px]" style={{ backgroundColor: '#f5f6f7' }}>
             <Box>
-                <HeaderSub title="Tài khoản" />
+                <HeaderSub title="Tài khoản" onBackClick={() => navigate('/')} />
                 <Box>
 
                     {

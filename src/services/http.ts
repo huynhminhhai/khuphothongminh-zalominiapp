@@ -1,6 +1,5 @@
 import envConfig from "envConfig";
 import { getDataFromStorage, removeDataFromStorage } from "./zalo";
-import { useNavigate } from "zmp-ui";
 
 const request = async <T>(
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
@@ -13,12 +12,9 @@ const request = async <T>(
     const token = getDataFromStorage(['token']);  // Lấy token từ Storage
 
     // Kiểm tra nếu không có token thì redirect đến trang đăng nhập
-    if (!token) {
-        window.location.href = '/';
-        removeDataFromStorage(['token']);
-        // navigate('/'); // Chuyển hướng về trang chủ
-        throw new Error('Người dùng chưa đăng nhập');  // Ném lỗi để dừng request
-    }
+    // if (!token) {
+    //     throw new Error('Người dùng chưa đăng nhập');
+    // }
 
     // Thiết lập headers cho request
     const headers: HeadersInit = {
@@ -33,24 +29,46 @@ const request = async <T>(
         ...(body && { body: JSON.stringify(body) }),  // Chỉ thêm body nếu có
     };
 
+    // try {
+    //     const response = await fetch(fullUrl, options);  // Gửi request đến API
+    //     const data: T = await response.json();  // Chuyển response về JSON
+
+    //     // Nếu request thất bại
+    //     if (!response.ok) {
+    //         if (response.status === 401) {  // Trường hợp token hết hạn hoặc không hợp lệ
+    //             removeDataFromStorage(['token']);  // Xóa token khỏi Storage
+    //             window.location.href = '/';  // Chuyển hướng về trang đăng nhập
+    //             throw new Error('Token hết hạn');  // Ném lỗi để dừng request
+    //         }
+    //         throw new Error((data as any).message || 'Lỗi không xác định (request)');  // Xử lý lỗi chung
+    //     }
+
+    //     return data;  // Trả về dữ liệu nếu request thành công
+    // } catch (error) {
+    //     console.error('Fetch error:', error);  // Log lỗi ra console
+    //     throw error;  // Ném lỗi để nơi gọi request có thể xử lý tiếp
+    // }
+
     try {
         const response = await fetch(fullUrl, options);  // Gửi request đến API
         const data: T = await response.json();  // Chuyển response về JSON
-
         // Nếu request thất bại
         if (!response.ok) {
             if (response.status === 401) {  // Trường hợp token hết hạn hoặc không hợp lệ
                 removeDataFromStorage(['token']);  // Xóa token khỏi Storage
-                window.location.href = '/';  // Chuyển hướng về trang đăng nhập
-                // navigate('/');
+                window.location.href = '/account';  // Chuyển hướng về trang đăng nhập
                 throw new Error('Token hết hạn');  // Ném lỗi để dừng request
             }
-            throw new Error((data as any).message || 'Lỗi không xác định (request)');  // Xử lý lỗi chung
+            throw new Error((data as any)?.message || 'Lỗi không xác định (request)');  // Xử lý lỗi chung
         }
-
+    
         return data;  // Trả về dữ liệu nếu request thành công
     } catch (error) {
-        console.error('Fetch error:', error);  // Log lỗi ra console
+        if (error instanceof Error) {
+            console.error('Fetch error:', error.message);  // Log lỗi ra console
+        } else {
+            console.error('Unknown error:', error);  // Log các lỗi không phải là Error
+        }
         throw error;  // Ném lỗi để nơi gọi request có thể xử lý tiếp
     }
 };
