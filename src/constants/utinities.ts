@@ -27,50 +27,51 @@ export type ServicesType = {
     label: string;
     url: string;
     icon?: string;
+    isCheckLogin: boolean
 }
 
-export const SERVICES: ServicesType[] = [
-    {
-        label: 'Thông tin hộ dân',
-        url: '/resident',
-        icon: images.home
-    },
-    {
-        label: 'Tin tức',
-        url: '/news',
-        icon: images.news
-    },
-    {
-        label: 'Góp ý kiến',
-        url: '/feedback',
-        icon: images.idea
-    },
-    {
-        label: 'Thông tin cuộc họp',
-        url: '/meeting',
-        icon: images.meeting
-    },
-    {
-        label: 'Khảo sát ý kiến',
-        url: '/survey',
-        icon: images.survey
-    },
-    {
-        label: 'Thông tin tổ chức',
-        url: '/team',
-        icon: images.team
-    },
-    {
-        label: 'Bản đồ',
-        url: '/maps',
-        icon: images.map
-    },
-    {
-        label: 'Tình hình tài chính',
-        url: '/transactions',
-        icon: images.money
-    },
-]
+// export const SERVICES: ServicesType[] = [
+//     {
+//         label: 'Thông tin hộ dân',
+//         url: '/resident',
+//         icon: images.home
+//     },
+//     {
+//         label: 'Tin tức',
+//         url: '/news',
+//         icon: images.news
+//     },
+//     {
+//         label: 'Góp ý kiến',
+//         url: '/feedback',
+//         icon: images.idea
+//     },
+//     {
+//         label: 'Thông tin cuộc họp',
+//         url: '/meeting',
+//         icon: images.meeting
+//     },
+//     {
+//         label: 'Khảo sát ý kiến',
+//         url: '/survey',
+//         icon: images.survey
+//     },
+//     {
+//         label: 'Thông tin tổ chức',
+//         url: '/team',
+//         icon: images.team
+//     },
+//     {
+//         label: 'Bản đồ',
+//         url: '/maps',
+//         icon: images.map
+//     },
+//     {
+//         label: 'Tình hình tài chính',
+//         url: '/transactions',
+//         icon: images.money
+//     },
+// ]
 
 export type MeetingStatusType = {
     [key: number]: string;

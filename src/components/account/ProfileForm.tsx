@@ -1,30 +1,36 @@
-import React, { useState } from "react"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import React, { useEffect, useState } from "react"
+import { Box } from "zmp-ui"
 import { FormDataProfile, schemaProfile } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormAvatarUploaderSingle, FormControllerDatePicker, FormImageUploaderSingle, FormInputField, FormSelectField } from "components/form"
+import { FormAvatarUploaderSingle, FormControllerDatePicker, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import images from "assets/images"
 import { gender } from "constants/mock"
+import { useStoreApp } from "store/store"
+import { useUpdateAccount } from "apiRequest/account"
 
 const defaultValues: FormDataProfile = {
-    fullname: 'Huỳnh Minh Hải',
-    phoneNumber: '0848551555',
-    avatar: images.avatar
+    fullname: '',
+    phoneNumber: '',
+    avatar: '',
+    birthDate: ''
 }
 
 const ProfileForm: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
+    const { account, setAuth } = useStoreApp()
+
+    console.log(account)
 
     const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [formData, setFormData] = useState<FormDataProfile>(defaultValues)
+    const [formData, setFormData] = useState<FormDataProfile>(defaultValues);
+    const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataProfile>({
+    const { mutateAsync } = useUpdateAccount();
+
+    const { handleSubmit, reset, watch, control, formState: { errors } } = useForm<FormDataProfile>({
         resolver: yupResolver(schemaProfile),
         defaultValues
     });
@@ -34,30 +40,37 @@ const ProfileForm: React.FC = () => {
         setFormData(data)
     };
 
-    const fetchApi = () => {
-        setLoading(true);
+    useEffect(() => {
+        if (account) {
+            reset(account)
+            setFormData(account)
+        }
+    }, [account, setAuth])
+
+    useEffect(() => {
+        const formValues = watch();
+        const isChanged = JSON.stringify(formData) !== JSON.stringify(formValues);
+        setIsSubmitEnabled(isChanged);
+    }, [formData, watch()]);
+
+    const fetchApi = async () => {
+
+        if (!account) { return; }
+
         try {
-            // Gọi API thêm tin tức
-            console.log('call api add with: ', { ...formData });
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật thông tin tài khoản thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            // navigate('/news-management');
+            setLoading(true);
+            const fieldsToUpdate = Object.keys(formData).reduce((acc: any, key: string) => {
+                if (formData[key] !== account[key]) {
+                    acc[key] = formData[key];
+                }
+                return acc;
+            }, {});
+
+            if (Object.keys(fieldsToUpdate).length > 0) {
+                await mutateAsync(fieldsToUpdate);  // Gửi các trường thay đổi
+            }
         } catch (error) {
             console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
         } finally {
             setLoading(false);
         }
@@ -141,7 +154,7 @@ const ProfileForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={loading || !isSubmitEnabled} fullWidth label={loading ? "Đang xử lý..." : "Cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

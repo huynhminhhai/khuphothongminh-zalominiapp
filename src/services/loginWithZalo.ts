@@ -2,16 +2,25 @@ import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "zmp-ui";
 import { getAccessTokenAccount, getPhoneNumberAccount } from "./zalo";
 import { useStoreApp } from "store/store";
+import { useLoginZalo } from "apiRequest/auth";
 
 export const useLoginWithZalo = () => {
 
     const navigate = useNavigate();
     const { openSnackbar } = useSnackbar();
-    const { setIsLoadingFullScreen } = useStoreApp();
+    const { setIsLoadingFullScreen, token } = useStoreApp();
+    const { mutateAsync } = useLoginZalo();
 
-    const loginWithZalo = async () => {
+    const loginWithZalo = async (redirectUrl?: string) => {
+
+        if (token) {
+            console.log('Đã đăng nhập')
+            navigate(redirectUrl || "/account");
+            return;
+        }
+
         setIsLoadingFullScreen(true);
-
+        
         try {
             const phoneNumber = await getPhoneNumberAccount();
 
@@ -20,27 +29,30 @@ export const useLoginWithZalo = () => {
                 
                 console.log("call api login zalo with: ", { token: phoneNumber, userAccessToken: accessToken });
 
-                // Hiển thị thông báo thành công
-                openSnackbar({
-                    icon: true,
-                    text: "Đăng nhập thành công",
-                    type: "success",
-                    action: { text: "Đóng", close: true },
-                    duration: 5000,
-                });
+                await mutateAsync({ token: phoneNumber, userAccessToken: accessToken });
 
-                navigate("/account");
+                navigate(redirectUrl || "/account");
             }
             
         } catch (error) {
             console.error("Error:", error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+            if ((error as any).code === -201) {
+                openSnackbar({
+                    icon: true,
+                    text: "Bạn đã từ chối đăng nhập bằng số điện thoại",
+                    type: "error",
+                    action: { text: "Đóng", close: true },
+                    duration: 5000,
+                });
+            } else {
+                openSnackbar({
+                    icon: true,
+                    text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+                    type: "error",
+                    action: { text: "Đóng", close: true },
+                    duration: 5000,
+                });
+            }
         } finally {
             setIsLoadingFullScreen(false);
         }

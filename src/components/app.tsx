@@ -26,23 +26,35 @@ import { getDataFromStorage } from "services/zalo";
 
 const MyApp = () => {
 
-  const { isLoadingFullScreen, setAccount } = useStoreApp();
+  const { isLoadingFullScreen, setAuth } = useStoreApp();
 
   const queryClient = new QueryClient()
 
-  useEffect(() => {
-    const loadAccountData = async () => {
-      const storedAccount = await getDataFromStorage(["account"]);
+  const loadAuthData = async () => {
+    try {
+      const storedData = await getDataFromStorage(["account", "token"]);
 
-      console.log(storedAccount)
-
-      if (storedAccount && storedAccount["account"]) {
-        setAccount(JSON.parse(storedAccount["account"]));
+      if (!storedData) {
+        setAuth({ account: null, token: null });
+        return;
       }
-    };
 
-    loadAccountData();
-  }, [setAccount]);
+      const storedAccount = storedData.account ? JSON.parse(storedData.account) : null;
+      const storedToken = storedData.token || null;
+
+      setAuth({
+        account: storedAccount,
+        token: storedToken,
+      });
+    } catch (error) {
+      console.error("Lỗi khi load dữ liệu từ storage:", error);
+      setAuth({ account: null, token: null }); // Reset nếu có lỗi
+    }
+  };
+
+  useEffect(() => {
+    loadAuthData();
+  }, [setAuth]);
 
   return (
     <RecoilRoot>

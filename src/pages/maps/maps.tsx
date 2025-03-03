@@ -85,7 +85,7 @@ const ResidentMapPage = () => {
                                 <Icon fontSize={26} icon='mdi:filter' />
                             </button>
                         </Box>
-                        <MapContainer style={{ height: "calc(100vh - 56px)", width: "100%" }} center={center} zoom={zoom}>
+                        <MapContainer style={{ height: "calc(100vh - 58px)", width: "100%" }} center={center} zoom={zoom}>
                             <LayersControl position="topright">
                                 <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
                                     <TileLayer

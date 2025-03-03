@@ -1,13 +1,59 @@
-import { useQuery } from '@tanstack/react-query';
 import http from 'services/http';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { setDataToStorage } from 'services/zalo';
+import { useStoreApp } from 'store/store';
+import { useSnackbar } from 'zmp-ui';
 
 const accountApiRequest = {
-    me: () => http.get<any>('/account/me'),
+    update: async (data: any) => {
+        console.log(data)
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                const response = data
+
+                resolve(response);
+            }, 1500);
+
+        });
+        return await http.put<any>('/account/update', data)
+    },
 }
 
-export const useUser = () => {
-    return useQuery({
-        queryKey: ['user'],
-        queryFn: accountApiRequest.me
+export const useUpdateAccount = () => {
+    const queryClient = useQueryClient();
+    const { openSnackbar } = useSnackbar();
+    const { setAccount, account } = useStoreApp();
+
+    return useMutation({
+        mutationFn: accountApiRequest.update,
+        onSuccess: (data) => {
+            openSnackbar({
+                icon: true,
+                text: "Cập nhật thông tin tài khoản thành công",
+                type: 'success',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            const newData = {...account, ...data}
+
+            queryClient.setQueryData(['account'], newData);
+
+            if (newData) {
+                setDataToStorage({ account: JSON.stringify(newData) })
+            }
+
+            setAccount(newData)
+        },
+        onError: (error: string) => {
+            console.error('Lỗi:', error);
+            openSnackbar({
+                icon: true,
+                text: error,
+                type: 'error',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
     });
 };

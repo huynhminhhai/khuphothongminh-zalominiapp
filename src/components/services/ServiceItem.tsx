@@ -1,5 +1,6 @@
 import { ServicesType } from "constants/utinities";
 import React from "react";
+import { useLoginWithZalo } from "services/loginWithZalo";
 import { Box, useNavigate } from "zmp-ui";
 
 type ServiceItemType = {
@@ -9,9 +10,18 @@ type ServiceItemType = {
 const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
 
     const navigate = useNavigate()
+    const { loginWithZalo } = useLoginWithZalo();
+
+    const handleNavigate = (url: string) => {
+        if (data.isCheckLogin) {
+            loginWithZalo(url)
+        } else {
+            navigate(url)
+        }
+    }
 
     return (
-        <Box onClick={() => navigate(data.url)}>
+        <Box onClick={() => handleNavigate(data.url)}>
             <div className="flex-center flex-col gap-2">
                 <Box>
                     <div className="bg-[#731611] rounded-full flex-center p-4 w-[60px] h-[60px] relative">

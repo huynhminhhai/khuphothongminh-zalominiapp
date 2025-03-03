@@ -7,72 +7,42 @@ const request = async <T>(
     body?: any
 ): Promise<T> => {
 
-    const fullUrl = `${envConfig.API_ENDPOINT}${url}`;  // Tạo URL đầy đủ cho API
+    const fullUrl = `${envConfig.API_ENDPOINT}${url}`;
 
-    const token = getDataFromStorage(['token']);  // Lấy token từ Storage
+    const storedData = await getDataFromStorage(['token']);
+    const token = storedData?.token;
 
-    // Kiểm tra nếu không có token thì redirect đến trang đăng nhập
-    // if (!token) {
-    //     throw new Error('Người dùng chưa đăng nhập');
-    // }
-
-    // Thiết lập headers cho request
     const headers: HeadersInit = {
-        'Content-Type': 'application/json',  // Xác định kiểu dữ liệu JSON
-        Authorization: `Bearer ${token}`,  // Đính kèm token vào header Authorization
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
     };
 
-    // Cấu hình request
     const options: RequestInit = {
-        method,   // Phương thức (GET, POST, PUT, DELETE)
-        headers,  // Headers chứa token
-        ...(body && { body: JSON.stringify(body) }),  // Chỉ thêm body nếu có
+        method,
+        headers,
+        ...(body && { body: JSON.stringify(body) }),
     };
-
-    // try {
-    //     const response = await fetch(fullUrl, options);  // Gửi request đến API
-    //     const data: T = await response.json();  // Chuyển response về JSON
-
-    //     // Nếu request thất bại
-    //     if (!response.ok) {
-    //         if (response.status === 401) {  // Trường hợp token hết hạn hoặc không hợp lệ
-    //             removeDataFromStorage(['token']);  // Xóa token khỏi Storage
-    //             window.location.href = '/';  // Chuyển hướng về trang đăng nhập
-    //             throw new Error('Token hết hạn');  // Ném lỗi để dừng request
-    //         }
-    //         throw new Error((data as any).message || 'Lỗi không xác định (request)');  // Xử lý lỗi chung
-    //     }
-
-    //     return data;  // Trả về dữ liệu nếu request thành công
-    // } catch (error) {
-    //     console.error('Fetch error:', error);  // Log lỗi ra console
-    //     throw error;  // Ném lỗi để nơi gọi request có thể xử lý tiếp
-    // }
 
     try {
-        const response = await fetch(fullUrl, options);  // Gửi request đến API
-        const data: T = await response.json();  // Chuyển response về JSON
-        // Nếu request thất bại
+        const response = await fetch(fullUrl, options);
+        const data: T = await response.json();
+        
         if (!response.ok) {
-            if (response.status === 401) {  // Trường hợp token hết hạn hoặc không hợp lệ
-                removeDataFromStorage(['token']);  // Xóa token khỏi Storage
-                window.location.href = '/account';  // Chuyển hướng về trang đăng nhập
-                throw new Error('Token hết hạn');  // Ném lỗi để dừng request
+            if (response.status === 401) {
+                removeDataFromStorage(['token']);
+                window.location.href = '/account';
+                throw new Error('Token hết hạn');
             }
-            throw new Error((data as any)?.message || 'Lỗi không xác định (request)');  // Xử lý lỗi chung
+            window.location.href = '/';
+            throw new Error((data as any)?.message || 'Lỗi không xác định (request)');
         }
     
-        return data;  // Trả về dữ liệu nếu request thành công
+        return data;
     } catch (error) {
-        if (error instanceof Error) {
-            console.error('Fetch error:', error.message);  // Log lỗi ra console
-        } else {
-            console.error('Unknown error:', error);  // Log các lỗi không phải là Error
-        }
-        throw error;  // Ném lỗi để nơi gọi request có thể xử lý tiếp
+        console.error('Request error:', error);
+        throw error;
     }
 };
-
 
 const http = {
     get: <T>(url: string) => request<T>('GET', url),
