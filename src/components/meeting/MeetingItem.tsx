@@ -11,18 +11,18 @@ type MeetingItemProps = {
 
 export const MeetingStatus: React.FC<{ meetingDate: string, startTime: string, endTime: string }> = ({ meetingDate, startTime, endTime }) => {
     const { status, bgColor } = getMeetingStatus(meetingDate, startTime, endTime);
-  
+
     return (
-      <div style={{ backgroundColor: bgColor}} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">
-        {status}
-      </div>
+        <div style={{ backgroundColor: bgColor }} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">
+            {status}
+        </div>
     );
 };
 
 const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
-    
+
     const navigate = useNavigate()
-    
+
     return (
         <Box className="meeting-item" onClick={() => navigate(`/meeting-detail?id=${data.id}`)}>
             <Box>
@@ -35,7 +35,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                     </Box>
                     <Box py={2} className="flex-1">
                         <h3 className="text-[16px] leading-[22px] font-semibold line-clamp-2 mb-1">{data.title}</h3>
-                        <div className="flex">
+                        <div className="flex flex-col">
                             <Box>
                                 <ul className="flex flex-col gap-[2px] text-[14px] font-normal text-[#7c7c7c]">
                                     <li className="flex items-start gap-2">
@@ -53,11 +53,8 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                                         }
                                     </div>
                                 } */}
-                                <MeetingStatus meetingDate={data.meetingDate} startTime={data.startTime} endTime={data.endTime} />
                             </Box>
-                            <Box>
-
-                            </Box>
+                            <MeetingStatus meetingDate={data.meetingDate} startTime={data.startTime} endTime={data.endTime} />
                         </div>
                     </Box>
                 </div>

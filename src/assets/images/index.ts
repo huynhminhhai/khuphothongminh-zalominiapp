@@ -27,7 +27,7 @@ import setting from './gear.png'
 import research from './research.png'
 import statistics from './statistics.png'
 import map from './map.png'
-import avatarDefault from './avatar-default.webp'
+import avatarDefault from './private-account.png'
 
 const images = {
     logo,

@@ -22,7 +22,7 @@ const accountApiRequest = {
 export const useUpdateAccount = () => {
     const queryClient = useQueryClient();
     const { openSnackbar } = useSnackbar();
-    const { setAccount, account } = useStoreApp();
+    const { setAuth, account, token } = useStoreApp();
 
     return useMutation({
         mutationFn: accountApiRequest.update,
@@ -40,10 +40,8 @@ export const useUpdateAccount = () => {
             queryClient.setQueryData(['account'], newData);
 
             if (newData) {
-                setDataToStorage({ account: JSON.stringify(newData) })
+                setAuth({account: newData, token})
             }
-
-            setAccount(newData)
         },
         onError: (error: string) => {
             console.error('Lỗi:', error);
