@@ -24,7 +24,9 @@ const MeetingSection: React.FC<any> = () => {
                         {
                             firstTwoMeetings.map((item, index) => (
                                 <Swiper.Slide key={index}>
-                                    <MeetingItem key={index} data={item} />
+                                    <Box key={index}>
+                                        <MeetingItem data={item} />
+                                    </Box>
                                 </Swiper.Slide>
                             ))
                         }

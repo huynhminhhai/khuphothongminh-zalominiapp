@@ -26,7 +26,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
     return (
         <Box className="meeting-item" onClick={() => navigate(`/meeting-detail?id=${data.id}`)}>
             <Box>
-                <div className="flex gap-4">
+                <div className="flex items-start gap-4">
                     <Box px={4} py={6} width={108} height={152} className="bg-[#e9ca9433] text-[#731611] rounded-tl-2xl rounded-br-2xl">
                         <div className="flex-center flex-col h-[100%]">
                             <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(data.meetingDate)}</div>
@@ -39,7 +39,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                             <Box>
                                 <ul className="flex flex-col gap-[2px] text-[14px] font-normal text-[#7c7c7c]">
                                     <li className="flex items-start gap-2">
-                                        <Icon fontSize={18} icon='tdesign:location-filled' /> <span className="flex-1 font-medium line-clamp-2">{data.address}</span>
+                                        <Icon fontSize={18} icon='tdesign:location-filled' /> <span className="flex-1 font-medium line-clamp-2 whitespace-normal">{data.address}</span>
                                     </li>
                                     <li className="flex items-start gap-2">
                                         <Icon fontSize={18} icon='mingcute:time-fill' /> <span className="font-medium">{data.startTime} - {data.endTime}</span>

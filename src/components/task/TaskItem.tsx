@@ -48,7 +48,7 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                             </div>
 
                             <div className="flex items-center justify-between w-[100%]">
-                                <h4 className="flex items-center gap-1 text-[14px] font-normal text-[#7c7c7c]"><Icon fontSize={18} icon='bxs:calendar' /> {data.dueDate}</h4>
+                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-[#7c7c7c]"><Icon fontSize={18} icon='bxs:calendar' /> {data.dueDate}</h4>
                             </div>
                             
                         </div>
