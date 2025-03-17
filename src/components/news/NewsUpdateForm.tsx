@@ -1,9 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup"
+import { useUpdateNews } from "apiRequest/management/news"
+import { useGetNewsDetail } from "apiRequest/news"
 import { PrimaryButton } from "components/button"
 import { FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataNews, schemaNews } from "components/news/type"
-import { NEWSDATA } from "constants/utinities"
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
@@ -21,7 +22,6 @@ const NewsUpdateForm = () => {
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate()
 
-    const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
 
@@ -31,39 +31,16 @@ const NewsUpdateForm = () => {
     });
 
     const [searchParams] = useSearchParams();
-
     const newsId = searchParams.get("id");
 
+    const { mutate: updateNews, isPending } = useUpdateNews();
+    const { data: newsDetail } = useGetNewsDetail(Number(newsId));
+
     useEffect(() => {
-        // Hàm gọi API để lấy thông tin thành viên
-        const fetchResidentData = async () => {
-            setLoading(true);
-            try {
-                // Giả sử API trả về thông tin thành viên
-                // const response = await fetch(`/api/residents/${residentId}`);
-                // const data = await response.json();
-
-                const data = NEWSDATA.find(resident => resident.id === Number(newsId))
-
-                if (data) {
-                    setFormData(data)
-                    reset(data)
-                }
-
-            } catch (error) {
-                console.error("Failed to fetch resident data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchResidentData();
-    }, [newsId]);
+        if (newsDetail) {
+            reset(newsDetail);
+        }
+    }, [newsDetail, reset]);
 
     const onSubmit: SubmitHandler<FormDataNews> = (data) => {
 
@@ -71,7 +48,6 @@ const NewsUpdateForm = () => {
 
         let hasChanges = false;
 
-        // Duyệt qua tất cả các trường và so sánh với giá trị mặc định
         Object.keys(data).forEach((key) => {
             if (data[key] !== formData[key]) {
                 updatedData[key] = data[key];
@@ -86,7 +62,7 @@ const NewsUpdateForm = () => {
                 type: 'warning',
                 duration: 3000,
             });
-            return; // Không thực hiện tiếp tục gửi yêu cầu
+            return;
         }
 
         setConfirmVisible(true);
@@ -94,44 +70,19 @@ const NewsUpdateForm = () => {
         setFormData(updatedData)
     };
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            // Gọi API thêm thành viên
-            console.log('call api update with: ', formData);
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật thông tin tin tức thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            navigate('/news-management');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
-
     const handleConfirm = () => {
         setConfirmVisible(false);
-        if (formData) {
-            fetchApi()
+        if (formData && newsId) {
+            updateNews({ id: Number(newsId), data: formData }, {
+                onSuccess: () => {
+                    reset(defaultValues);
+                    navigate("/news-management");
+                },
+            });
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -179,7 +130,7 @@ const NewsUpdateForm = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật tin tức"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật tin tức"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

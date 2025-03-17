@@ -3,34 +3,29 @@ import React from 'react';
 import { Box } from 'zmp-ui';
 
 interface PaginationProps {
-  pageIndex: number; // Trang hiện tại (1-based index)
-  pageSize: number; // Số mục trên mỗi trang
-  totalItems: number; // Tổng số mục
-  onPageChange: (params: { pageIndex: number; pageSize: number }) => void; // Hàm xử lý thay đổi trang
-  onRowChange: (pageSize: number) => void; // Hàm xử lý thay đổi số mục trên mỗi trang
+  pageIndex: number;
+  pageSize: number;
+  totalItems: number;
+  onPageChange: (params: { pageIndex: number; pageSize: number }) => void;
+  onRowChange: (pageSize: number) => void;
 }
 
 const TablePagination: React.FC<PaginationProps> = ({ pageIndex, pageSize, totalItems, onPageChange, onRowChange }) => {
   const totalPages = Math.ceil(totalItems / pageSize);
 
-  // Tạo danh sách nút trang với rút gọn
   const generatePages = () => {
     const pages: (number | string)[] = [];
 
     if (totalPages <= 5) {
-      // Hiển thị tất cả các trang nếu tổng số trang <= 5
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
       if (pageIndex <= 2) {
-        // Nếu trang hiện tại là 1 hoặc 2
         pages.push(1, 2, 3, '...', totalPages);
       } else if (pageIndex >= totalPages - 1) {
-        // Nếu trang hiện tại là trang cuối hoặc áp chót
         pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
       } else {
-        // Nếu trang hiện tại ở giữa
         pages.push(1, '...', pageIndex, '...', totalPages);
       }
     }

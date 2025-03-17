@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
 import { FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
+import { useCreateNews } from "apiRequest/management/news"
 
 const defaultValues: FormDataNews = {
     title: '',
@@ -19,7 +20,6 @@ const NewsAddForm: React.FC = () => {
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate()
 
-    const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataNews>(defaultValues)
 
@@ -28,49 +28,24 @@ const NewsAddForm: React.FC = () => {
         defaultValues
     });
 
+    const { mutateAsync: createNews, isPending } = useCreateNews();
+
     const onSubmit: SubmitHandler<FormDataNews> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
     };
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            // Gọi API thêm tin tức
-            console.log('call api add with: ', { ...formData });
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Thêm tin tức thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            navigate('/news-management');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setConfirmVisible(false);
-        if (formData) {
-            fetchApi()
+        try {
+            await createNews(formData);
+            reset(defaultValues);
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -118,7 +93,7 @@ const NewsAddForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Thêm tin tức"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Thêm tin tức"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

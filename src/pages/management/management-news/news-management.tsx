@@ -1,14 +1,16 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
+import { useDeleteNews, useGetNewsListManagement } from "apiRequest/management/news"
+import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
+import { NewsSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import { News, NEWSDATA } from "constants/utinities"
 import React, { useState } from "react"
 import { Box, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const initParam = {
-    pageIndex: 1,
+    page: 1,
     pageSize: 10,
     keyword: '',
 }
@@ -23,21 +25,22 @@ const NewsManagementPage: React.FC = () => {
     const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
+    const { mutate: deleteNews } = useDeleteNews();
+
+
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
             ...prevParam,
-            pageIndex: params.pageIndex, // Cập nhật pageIndex từ params
+            page: params.pageIndex,
         }));
-        console.log(`Navigated to page: ${params.pageIndex}, pageSize: ${params.pageSize}`);
     };
 
     const handleRowChange = (newPageSize: number) => {
         setParam((prevParam) => ({
             ...prevParam,
             pageSize: newPageSize,
-            pageIndex: 1, // Reset về trang đầu tiên khi thay đổi pageSize
+            page: 1,
         }));
-        console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
     const openConfirmModal = (action: () => void) => {
@@ -59,32 +62,24 @@ const NewsManagementPage: React.FC = () => {
     };
 
     const removeNews = (id: number) => {
-        openConfirmModal(() => {
-            console.log('Call api delete news with id: ', id)
-
-            openSnackbar({
-                text: 'Xóa tin tức thành công',
-                type: 'success',
-                duration: 5000,
-            });
-        })
+        openConfirmModal(() => deleteNews(id));
     }
 
-    const columns: ColumnDef<News>[] = [
+    const columns: ColumnDef<any>[] = [
         {
             accessorKey: 'title',
             header: 'Tiêu đề',
             size: 300
         },
-        {
-            accessorKey: 'publishedDate',
-            header: 'Ngày tạo',
-        },
-        {
-            accessorKey: 'views',
-            header: 'Lượt xem',
-            size: 100
-        },
+        // {
+        //     accessorKey: 'publishedDate',
+        //     header: 'Ngày tạo',
+        // },
+        // {
+        //     accessorKey: 'views',
+        //     header: 'Lượt xem',
+        //     size: 100
+        // },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
@@ -113,14 +108,54 @@ const NewsManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = NEWSDATA.filter(item =>
-        item.title.toLowerCase().includes(param.keyword.toLowerCase())
-    );
+    const { data, isLoading } = useGetNewsListManagement(param);
+
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <Box px={4}>
+                    <NewsSkeleton count={5} />
+                </Box>
+            );
+        }
+
+        if (!data?.length) {
+            return (
+                <Box px={4}>
+                    <EmptyData
+                        title="Hiện chưa có tin tức nào!"
+                        desc="Nhấn vào nút Thêm để bắt đầu!"
+                    />
+                </Box>
+            );
+        }
+
+        return <Box>
+            {
+                viewCard ? (
+                    <CardTanStack data={data} columns={columns} />
+                ) : (
+                    <Box px={4}>
+                        <TableTanStack data={data} columns={columns} />
+                    </Box>
+                )
+            }
+            <Box px={4}>
+                <TablePagination
+                    totalItems={100}
+                    pageSize={param.pageSize}
+                    pageIndex={param.page}
+                    onPageChange={handlePageChange}
+                    onRowChange={handleRowChange}
+                />
+            </Box>
+        </Box>
+    };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý tin tức" />
+                <HeaderSub title="Quản lý tin tức" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton
@@ -143,22 +178,7 @@ const NewsManagementPage: React.FC = () => {
                     </FilterBar>
 
                     <Box>
-                        {viewCard ?
-                            <CardTanStack data={filteredData} columns={columns} />
-                            :
-                            <Box px={4}>
-                                <TableTanStack data={filteredData} columns={columns} />
-                            </Box>
-                        }
-                        <Box px={4}>
-                            <TablePagination
-                                totalItems={50}
-                                pageSize={param.pageSize}
-                                pageIndex={param.pageIndex}
-                                onPageChange={handlePageChange}
-                                onRowChange={handleRowChange}
-                            />
-                        </Box>
+                        {renderContent()}
                     </Box>
                 </Box>
             </Box>

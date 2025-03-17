@@ -1,4 +1,5 @@
 import { removeDataFromStorage, setDataToStorage } from "services/zalo";
+import { useStoreApp } from "./store";
 
 export interface Account {
     id: string;
@@ -42,3 +43,7 @@ export const createAuthSlice = (set: any): AuthSliceType => ({
         removeDataFromStorage(["account", "token"]);
     },
 });
+
+export const useRole = () => {
+    return useStoreApp((state) => state.account?.role || "guest");
+};

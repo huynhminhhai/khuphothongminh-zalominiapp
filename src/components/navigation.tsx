@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router";
 import { BottomNavigation } from "zmp-ui";
 import { MenuItem } from "constants/types";
 import { useStoreApp } from "store/store";
+import { useRole } from "store/authSlice";
 
 const tabs: Record<string, MenuItem> = {
   "/": {
@@ -36,9 +37,10 @@ export const Navigation: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { account } = useStoreApp();
+  const role = useRole();
 
   const filteredTabs = useMemo(() => {
-    if (account && account.role === 'admin') {
+    if (role === "admin") {
       return tabs;
     }
 

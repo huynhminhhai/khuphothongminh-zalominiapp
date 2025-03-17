@@ -13,7 +13,7 @@ const newsApiRequest = {
 export const useGetNewsList = (param: { page: number; pageSize: number }) => {
 
     return useInfiniteQuery({
-        queryKey: ['newsList', param.page, param.pageSize],
+        queryKey: ['newsList', param.pageSize],
         queryFn: async ({ pageParam = 1 }) => {
             try {
                 return await newsApiRequest.getNewsList({ page: pageParam, pageSize: param.pageSize });
@@ -26,7 +26,7 @@ export const useGetNewsList = (param: { page: number; pageSize: number }) => {
         getNextPageParam: (lastPage, allPages) => {
             return lastPage.length === param.pageSize ? allPages.length + 1 : undefined;
         },
-        staleTime: 1000 * 60 * 15,
+        staleTime: 1000 * 60 * 5,
         retry: 1,
     })
 };
@@ -43,8 +43,8 @@ export const useGetNewsDetail = (id: number) => {
                 throw error;
             }
         },
-        enabled: !!id, // Only call the API if id is valid
-        staleTime: 15 * 60 * 1000,
+        enabled: !!id,
+        staleTime: 1000 * 60 * 5,
         retry: 1,
     });
 };

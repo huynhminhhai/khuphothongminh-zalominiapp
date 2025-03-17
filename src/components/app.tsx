@@ -23,6 +23,8 @@ import { NotificationPage } from "pages/notification";
 import { ResidentMapPage } from "pages/maps";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDataFromStorage } from "services/zalo";
+import { ProtectedRoute } from "services/permission";
+import ForbiddenPage from "pages/403";
 
 const MyApp = () => {
 
@@ -121,7 +123,7 @@ const MyApp = () => {
                 <Route path="/maps" element={<ResidentMapPage></ResidentMapPage>}></Route>
 
                 {/* MANAGEMENT */}
-                <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>
+                <Route path="/management" element={<ProtectedRoute requiredRole="admin"><ManagementPage></ManagementPage></ProtectedRoute>}></Route>
 
                 {/* MANAGEMENT SURVEY */}
                 <Route path="/survey-management" element={<SurveyManagementPage></SurveyManagementPage>}></Route>
@@ -177,6 +179,9 @@ const MyApp = () => {
                 {/* MANAGEMENT OVERVIEW */}
                 <Route path="/overview-household" element={<HouseHoldOverviewPage></HouseHoldOverviewPage>}></Route>
                 <Route path="/resident-household" element={<ResidentOverviewPage></ResidentOverviewPage>}></Route>
+
+                {/* PERMISSION */}
+                <Route path="/403" element={<ForbiddenPage></ForbiddenPage>}></Route>
 
               </Routes>
               <Navigation />

@@ -81,11 +81,7 @@ const ResidentManagementPage: React.FC = () => {
         },
         {
             id: 'isParent',
-            header: () => (
-                <div className="flex items-center justify-center gap-1">
-                    Chủ hộ
-                </div>
-            ),
+            header: 'Chủ hộ',
             cell: ({ row }) => (
                 <div className="flex items-center justify-center">
                     {

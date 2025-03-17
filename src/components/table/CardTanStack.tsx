@@ -23,13 +23,13 @@ const CardTanStack = <T,>({ data, columns }: CardTanStackProps<T>) => {
                         table.getRowModel().rows.map(row => (
                             <div key={row.id} className="p-4 border-b-[2px] border-dashed">
                                 {row.getVisibleCells().map(cell => (
-                                    <div key={cell.id} className="flex items-center justify-between gap-8 mb-3">
+                                    <div key={cell.id} className="flex items-center gap-3 mb-3">
                                         {/* Hiển thị tiêu đề cột */}
-                                        <div className="text-[16px] font-medium text-gray-500 whitespace-nowrap">
+                                        <div className="text-[16px] font-medium text-gray-500 whitespace-nowrap min-w-[80px]">
                                             {flexRender(cell.column.columnDef.header, (cell as any).getContext())}
                                         </div>
                                         {/* Hiển thị nội dung của cell */}
-                                        <div className="text-[16px] leading-[20px] text-right font-medium line-clamp-2">
+                                        <div className="text-[16px] leading-[20px] font-medium line-clamp-2">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </div>
                                     </div>
