@@ -10,7 +10,7 @@ import { FormImageUploader, FormInputAreaField, FormInputField } from "component
 const defaultValues: FormDataFeedback = {
     title: '',
     content: '',
-    images: ['https://cdn-icons-png.flaticon.com/128/18991/18991627.png']
+    images: []
 };
 
 const FeedbackAddForm: React.FC = () => {
@@ -103,7 +103,7 @@ const FeedbackAddForm: React.FC = () => {
                             label="Upload ảnh"
                             control={control}
                             error={errors.images?.message}
-                            required
+                            // required
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
