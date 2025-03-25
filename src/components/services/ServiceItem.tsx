@@ -24,12 +24,12 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
         <Box onClick={() => handleNavigate(data.url)}>
             <div className="flex-center flex-col gap-2">
                 <Box>
-                    <div className="bg-[#e9ebed] rounded-full flex-center p-4 w-[60px] h-[60px] relative">
-                        <img src={data.icon} alt={data.label} />
+                    <div className="rounded-full flex-center w-[60px] h-[60px] relative">
+                        <img className="w-[48px] h-[48px]" src={data.icon} alt={data.label} />
                     </div>
                 </Box>
                 <Box>
-                    <h4 className="text-[14px] leading-[18px] text-center font-normal">{data.label}</h4>
+                    <h4 className="text-[14px] leading-[18px] text-center font-medium">{data.label}</h4>
                 </Box>
             </div>
         </Box>

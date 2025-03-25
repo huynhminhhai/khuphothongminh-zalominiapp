@@ -29,6 +29,20 @@ export const pickMedia = async () => {
     }
 };
 
+export const pickFile = async () => {
+    try {
+        const { data } = await openMediaPicker({
+            type: "file",
+            serverUploadUrl: "https://mini.zalo.me/documents/api/openMediaPicker/?lang=vi",
+        });
+        const result = JSON.parse(data);
+        console.log(result);
+    } catch (error) {
+        // xử lý khi gọi api thất bại
+        console.log(error);
+    }
+};
+
 export type openChatScreenProps = {
     type?: 'user' | 'oa';
     idUser: any;

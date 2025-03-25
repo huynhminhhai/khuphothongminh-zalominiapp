@@ -27,7 +27,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
         <Box className="meeting-item" onClick={() => navigate(`/meeting-detail?id=${data.id}`)}>
             <Box>
                 <div className="flex items-start gap-4">
-                    <Box px={4} py={6} width={108} height={152} className="bg-[#e9ebed] text-[#731611] rounded-tl-2xl rounded-br-2xl">
+                    <Box px={4} py={6} width={108} height={152} className="bg-[#e9ca9433] text-[#731611] rounded-tl-2xl rounded-br-2xl">
                         <div className="flex-center flex-col h-[100%]">
                             <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(data.meetingDate)}</div>
                             <div className="text-[14px] leading-[1] font-medium text-center">{data.meetingDate}</div>

@@ -41,15 +41,56 @@ const ImageUploaderField: React.FC<ImageUploaderFieldProps> = ({
         chooseImage({
             count: 100,
             sourceType: ['album', 'camera'],
-            success: (res) => {
-
+            success: async (res) => {
                 const paths = res.tempFiles.map((file) => file.path);
                 field.onChange([...(field.value || []), ...paths]);
+
+                const files = await Promise.all(
+                    res.tempFiles.map(async (file, index) => {
+                        const response = await fetch(file.path);
+                        const blob = await response.blob();
+                        return new File([blob], `image_${index}.png`, { type: blob.type });
+                    })
+                );
+
+                uploadImages(files);
             },
             fail: (err) => {
                 console.error('Error choosing images:', err);
             },
         });
+    };
+
+    const uploadImages = async (files: (string | Blob)[] | null) => {
+        if (!files || files.length === 0) {
+            console.error("No files to upload.");
+            return;
+        }
+
+        const formData = new FormData();
+
+        files.forEach((file: string | Blob, index: number) => {
+            if (file) {
+                formData.append(`file_${index}`, file);
+            }
+        });
+
+        try {
+            const response = await fetch("https://your-api.com/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error("Upload failed");
+            }
+
+            const data = await response.json();
+            console.log("Upload success:", data);
+
+        } catch (error) {
+            console.error("Lỗi khi gửi request:", error);
+        }
     };
 
     const handleRemoveImage = (index: number) => {

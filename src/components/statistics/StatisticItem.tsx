@@ -19,7 +19,7 @@ const StatisticItem: React.FC<StatisticItemProps> = ({data}) => {
                         </div>
                     </Box>
                     <Box>
-                        <h5 className="text-[13px] leading-[1] font-normal mb-[6px]">{data.label}</h5>
+                        <h5 className="text-[13px] leading-[1] font-medium mb-[6px]">{data.label}</h5>
                         <h4 className="text-[16px] leading-[1] font-semibold">{data.value}</h4>
                     </Box>
                 </div>

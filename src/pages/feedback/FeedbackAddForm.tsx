@@ -5,12 +5,12 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmModal } from "components/modal";
 import { PrimaryButton } from "components/button";
-import TextEditor from "components/form/TextEditorField";
-import { FormImageUploader, FormTextEditorField } from "components/form";
+import { FormImageUploader, FormInputAreaField, FormInputField } from "components/form";
 
 const defaultValues: FormDataFeedback = {
+    title: '',
     content: '',
-    images: []
+    images: ['https://cdn-icons-png.flaticon.com/128/18991/18991627.png']
 };
 
 const FeedbackAddForm: React.FC = () => {
@@ -78,7 +78,17 @@ const FeedbackAddForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
-                        <FormTextEditorField
+                        <FormInputField
+                            name="title"
+                            label="Tiêu đề phản ánh"
+                            placeholder="Nhập tiêu đề"
+                            control={control}
+                            error={errors.title?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputAreaField
                             name="content"
                             label="Nội dung phản ánh"
                             placeholder="Nhập nội dung phản ánh..."
@@ -86,7 +96,8 @@ const FeedbackAddForm: React.FC = () => {
                             error={errors.content?.message}
                             required
                         />
-
+                    </div>
+                    <div className="col-span-12">
                         <FormImageUploader
                             name="images"
                             label="Upload ảnh"
@@ -94,8 +105,6 @@ const FeedbackAddForm: React.FC = () => {
                             error={errors.images?.message}
                             required
                         />
-                    </div>
-                    <div className="col-span-12">
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">

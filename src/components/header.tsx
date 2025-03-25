@@ -23,8 +23,8 @@ export const HeaderHome: FC = () => {
               />
             </div>
             <Box>
-              <h4 className="text-[20px] font-semibold leading-[1] text-white uppercase mb-2">{account ? account.fullname : 'Khách'}</h4>
-              <h5 className="text-[14px] font-medium leading-[1] tracking-widest text-white">{ account ? maskPhoneNumber(account.phoneNumber) : ''} ✦ Khu phố 9</h5>
+              <h4 className="text-[16px] font-semibold leading-[1] text-white uppercase mb-2">{account ? account.fullname : 'Khách'}</h4>
+              <h5 className="text-[13px] font-medium leading-[1] tracking-widest text-white">{ account ? maskPhoneNumber(account.phoneNumber) : ''} ✦ Khu phố 9</h5>
             </Box>
           </Box>
         ) as unknown as string
