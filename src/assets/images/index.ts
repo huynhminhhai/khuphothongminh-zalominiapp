@@ -13,6 +13,7 @@ import survey from './survey.png'
 import newss from './new.png'
 import pieChart from './pie-chart.png'
 import shape3 from './shape-3.png'
+import shape4 from './shape-4.png'
 import team from './team.png'
 import todo from './to-do-list.png'
 import todo2 from './to-do-list-2.png'
@@ -59,7 +60,8 @@ const images = {
     research,
     statistics,
     map,
-    avatarDefault
+    avatarDefault,
+    shape4
 }
 
 export default images
