@@ -11,14 +11,14 @@ export const STATISTICS: StatisticsType[] = [
     {
         label: 'Hộ dân',
         value: '774',
-        iconUrl: 'ic:round-house',
-        color: '#218838'
+        iconUrl: 'line-md:home',
+        color: '#0a7460'
     },
     {
         label: 'Nhân khẩu',
         value: '6,728',
-        iconUrl: 'mdi:user',
-        color: '#0056D2'
+        iconUrl: 'line-md:person',
+        color: '#234ead'
     },
 
 ]

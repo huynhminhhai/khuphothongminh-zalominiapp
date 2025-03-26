@@ -25,7 +25,7 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
             <div className="flex-center flex-col gap-2">
                 <Box>
                     <div className="rounded-full flex-center w-[60px] h-[60px] relative">
-                        <img className="w-[48px] h-[48px]" src={data.icon} alt={data.label} />
+                        <img className="w-[54px] h-[54px]" src={data.icon} alt={data.label} />
                     </div>
                 </Box>
                 <Box>

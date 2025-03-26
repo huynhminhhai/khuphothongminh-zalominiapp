@@ -2,8 +2,9 @@ import { Icon } from "@iconify/react"
 import { Divider } from "components/divider"
 import { HeaderSub } from "components/header-sub"
 import { MeetingList } from "components/meeting"
+import { FilterBar2 } from "components/table"
 import React from "react"
-import { Box, Page, Select } from "zmp-ui"
+import { Box, Input, Page, Select } from "zmp-ui"
 
 const MeetingPage: React.FC = () => {
 
@@ -14,12 +15,17 @@ const MeetingPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Thông tin cuộc họp" />
                 <Box>
-                    <Box px={4} pb={4} pt={1} flex>
-                        <div className="text-[#731611] flex items-center gap-1 border-r-[1px] pr-2 mr-2">
-                            <Icon fontSize={20} icon='mdi:filter-outline' />
-                            <span className="text-[16px] font-semibold">Lọc</span>
-                        </div>
-                        <Box className="filter">
+                    <Box>
+                        <FilterBar2
+                            searchComponent={
+                                <Input.Search
+                                    placeholder='Tìm kiếm...'
+                                    value={''}
+                                    onChange={(e) => console.log(e.target.value)}
+                                />
+                            }
+                        >
+                            <div className="col-span-12">
                             <Select
                                 placeholder="Placeholder"
                                 defaultValue={4}
@@ -31,7 +37,8 @@ const MeetingPage: React.FC = () => {
                                 <Option value={2} title="Sắp/Đang diễn ra" />
                                 <Option value={3} title="Đã hủy" />
                             </Select>
-                        </Box>
+                            </div>
+                        </FilterBar2>
                     </Box>
                     <Divider />
                     <Box>

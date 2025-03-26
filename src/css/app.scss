@@ -288,6 +288,22 @@ tbody tr td:not(:first-child) {
   height: 28px;
 }
 
+.filter-bar-2 .zaui-input-affix-wrapper *,
+.filter-bar-2 .zaui-input-affix-wrapper *::placeholder {
+  color: #222;
+  font-weight: 500;
+}
+
+.filter-bar-2 .zaui-input-affix-wrapper {
+  height: 38px;
+  border-radius: 24px;
+}
+
+.filter-bar-2 .zaui-input-affix-wrapper .zaui-btn-icon-only .zaui-btn-icon {
+  width: 22px;
+  height: 22px;
+}
+
 /**
 * BUTTON
 **/
