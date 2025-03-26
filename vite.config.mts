@@ -9,5 +9,14 @@ export default () => {
     root: "./src",
     base: "",
     plugins: [zaloMiniApp(), react(), tsconfigPaths()],
+    server: {
+      proxy: {
+        "/api": {
+          target: "https://qlkhupho.vnpt.me",
+          changeOrigin: true,
+          secure: false,
+        },
+      }
+    },
   });
 };

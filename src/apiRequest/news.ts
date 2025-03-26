@@ -3,10 +3,12 @@ import http from 'services/http';
 
 const newsApiRequest = {
     getNewsList: async (param: { page: number; pageSize: number }) => {
-        return await http.get<any[]>(`/posts?_page=${param.page}&_limit=${param.pageSize}`);
+        // return await http.get<any[]>(`/posts?_page=${param.page}&_limit=${param.pageSize}`);
+        return []
     },
     getNewsDetail: async (id: number) => {
-        return await http.get<any>(`/posts/${id}`);
+        // return await http.get<any>(`/posts/${id}`);
+        return []
     },
 };
 

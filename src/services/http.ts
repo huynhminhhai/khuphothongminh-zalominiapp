@@ -7,14 +7,16 @@ const request = async <T>(
     body?: any
 ): Promise<T> => {
 
+    // const fullUrl = `/api${url}`;
     const fullUrl = `${envConfig.API_ENDPOINT}${url}`;
 
-    const storedData = await getDataFromStorage(['token']);
-    const token = storedData?.token;
+    const storedData = await getDataFromStorage(["accessToken", "refreshToken"]);
+    const accessToken = storedData?.accessToken || null;
+    const refreshToken = storedData?.refreshToken || null;
 
     const headers: HeadersInit = {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
     };
 
     const options: RequestInit = {
@@ -29,17 +31,22 @@ const request = async <T>(
         
         if (!response.ok) {
             if (response.status === 401) {
-                removeDataFromStorage(['token']);
+
+                removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
                 window.location.href = '/account';
-                throw new Error('Token hết hạn');
+                throw new Error('accessToken hết hạn (request)');
             }
+
+            if (response.status === 500) {
+                throw new Error((data as any)?.message || 'Lỗi hệ thống, vui lòng thử lại sau! (request)');
+            }
+
             window.location.href = '/';
             throw new Error((data as any)?.message || 'Lỗi không xác định (request)');
         }
     
         return data;
     } catch (error) {
-        console.error('Request error:', error);
         throw error;
     }
 };

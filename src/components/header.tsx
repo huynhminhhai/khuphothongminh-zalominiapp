@@ -19,12 +19,13 @@ export const HeaderHome: FC = () => {
             <div className="w-[54px] h-[54px] rounded-full border-[2px] border-[#e9ca9433] overflow-hidden">
               <img
                 className="h-[100%] w-[100%] object-cover"
-                src={account?.avatar || images.avatarDefault}
+                src={images.avatarDefault}
               />
             </div>
             <Box>
-              <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{account ? account.fullname : 'Khách'}</h4>
-              <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">{ account ? maskPhoneNumber(account.phoneNumber) : ''} ✦ Khu phố 9</h5>
+              <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{account ? account.hoTen : 'Khách'}</h4>
+              {/* <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">{ account ? maskPhoneNumber(account.phoneNumber) : ''} ✦ Khu phố 9</h5> */}
+              <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">Khu phố: apId { account ? account.apId : ''}</h5>
             </Box>
           </Box>
         ) as unknown as string

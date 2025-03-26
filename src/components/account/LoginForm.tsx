@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Box, Button, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Button } from "zmp-ui"
 import { FormDataLogin, schemaLogin } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -9,8 +9,8 @@ import { useLoginWithZalo } from "services/loginWithZalo"
 import { useLogin } from "apiRequest/auth"
 
 const defaultValues: FormDataLogin = {
-    username: '',
-    password: ''
+    username: 'demo',
+    password: '123456'
 }
 
 const LoginForm: React.FC = () => {
@@ -44,6 +44,7 @@ const LoginForm: React.FC = () => {
             reset(defaultValues);
             setLoading(false);
         }
+
     }
 
     return (
@@ -55,7 +56,7 @@ const LoginForm: React.FC = () => {
                         <FormInputField
                             name="username"
                             label=""
-                            placeholder="Số điện thoại"
+                            placeholder="Tên đăng nhập"
                             control={control}
                             error={errors.username?.message}
                         />

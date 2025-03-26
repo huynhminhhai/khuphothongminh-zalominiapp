@@ -28,35 +28,39 @@ import ForbiddenPage from "pages/403";
 
 const MyApp = () => {
 
-  const { isLoadingFullScreen, setAuth } = useStoreApp();
+  const { isLoadingFullScreen, setToken, setAccount } = useStoreApp();
 
   const queryClient = new QueryClient()
 
   const loadAuthData = async () => {
     try {
-      const storedData = await getDataFromStorage(["account", "token"]);
+      const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken"]);
 
       if (!storedData) {
-        setAuth({ account: null, token: null });
+        setToken({ accessToken: null, refreshToken: null });
+        setAccount(null);
         return;
       }
 
       const storedAccount = storedData.account ? JSON.parse(storedData.account) : null;
-      const storedToken = storedData.token || null;
+      const storedAccessToken = storedData.accessToken || null;
+      const storedRefreshToken = storedData.refreshToken || null;
 
-      setAuth({
-        account: storedAccount,
-        token: storedToken,
+      setToken({
+        accessToken: storedAccessToken,
+        refreshToken: storedRefreshToken,
       });
+      setAccount(storedAccount);
     } catch (error) {
       console.error("Lỗi khi load dữ liệu từ storage:", error);
-      setAuth({ account: null, token: null }); // Reset nếu có lỗi
+      setToken({ accessToken: null, refreshToken: null });
+      setAccount(null);
     }
   };
 
   useEffect(() => {
     loadAuthData();
-  }, [setAuth]);
+  }, [setAccount, setToken]);
 
   return (
     <RecoilRoot>

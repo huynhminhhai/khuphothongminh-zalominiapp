@@ -1,40 +1,14 @@
 import http from 'services/http';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { removeDataFromStorage, setDataToStorage } from 'services/zalo';
+import { removeDataFromStorage } from 'services/zalo';
 import { useStoreApp } from 'store/store';
 import { useNavigate, useSnackbar } from 'zmp-ui';
 
 const authApiRequest = {
     login: async (username: string, password: string) => {
-        // const response = await http.post<{ token: string }>('/auth/login', { username, password });
+        const response = await http.post('/xacthuc/dangnhap', { tenDangNhap:username, matKhau:password });
 
-        return new Promise((resolve, reject) => {
-            // console.log('call api login with: ', { username, password });
-            setTimeout(() => {
-                const response = {
-                    token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMjM0NTY3ODkwLCJ1c2VybmFtZSI6IkpvaG5Eb2UiLCJleHBpcmVkX2F0Ijp0cnVlLCJpYXQiOjE2Mjk5MTMyNzAsImV4cCI6MTYzMDAwNjg3MH0.8JgDRry6sqhQ6y1KmT6a2ij5pHX6zyXbh8qPz8B9lsA',
-                    account: {
-                        id: 10,
-                        fullname: 'Nguyễn Văn A',
-                        role: 'admin',
-                        phoneNumber: '0848551444',
-                        avatar: 'https://tse2.mm.bing.net/th?id=OIP.WJu4G7zRFs7wEFLLLuXU3QHaD4&pid=Api&P=0&h=180',
-                        email: 'example@gmail.com',
-                        birthDate: '12/12/2000',
-                        gender: 1
-                    },
-                };
-
-                resolve(response);
-            }, 1500);
-
-        });
-
-        // if (response.token) {
-        //     localStorage.setItem('token', response.token);
-        // }
-
-        // return response;
+        return response;
     },
     loginZalo: async (token: string, userAccessToken: string) => {
         // const response = await http.post('/auth/login-zalo', { token, userAccessToken });
@@ -63,8 +37,15 @@ const authApiRequest = {
 
         // return response;
     },
-    logout: () => {
-        removeDataFromStorage(['token', 'account']);
+    getUserInfo: async () => {
+        const response = await http.get('/xacthuc/thongtinnguoidung');
+
+        return response;
+    },
+    logout: async () => {
+        const response = await http.post('/xacthuc/dangxuat', {});
+
+        return response;
     }
 }
 
@@ -72,13 +53,13 @@ export const useLogin = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
     const { openSnackbar } = useSnackbar();
-    const { setAuth } = useStoreApp();
+    const { setToken, setAccount } = useStoreApp();
 
     return useMutation({
         mutationFn: async (credentials: { username: string; password: string }) => {
             return authApiRequest.login(credentials.username, credentials.password);
         },
-        onSuccess: (data: any) => {
+        onSuccess: async (res: any) => {
 
             openSnackbar({
                 icon: true,
@@ -87,20 +68,25 @@ export const useLogin = () => {
                 action: { text: "Đóng", close: true },
                 duration: 3000,
             });
-            queryClient.invalidateQueries({ queryKey: ['account'] });
+            
+            setToken({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken });
 
-            setAuth({
-                account: data.account || null,
-                token: data.token || null,
-            });
+            try {
+                const res = await authApiRequest.getUserInfo();
+
+                setAccount((res as any).data);
+            } catch (error) {
+                console.error("Lỗi lấy thông tin người dùng:", error);
+            }
+
+            queryClient.invalidateQueries({ queryKey: ['account'] });
 
             navigate('/account');
         },
-        onError: (error: string) => {
-            console.error('Lỗi:', error);
+        onError: (error: any) => {
             openSnackbar({
                 icon: true,
-                text: error,
+                text: error?.message === "Sequence contains no elements" ? "Tên đăng nhập hoặc mật khẩu không chính xác" : "Đăng nhập thất bại",
                 type: 'error',
                 action: { text: "Đóng", close: true },
                 duration: 3000,
@@ -113,7 +99,7 @@ export const useLoginZalo = () => {
     const queryClient = useQueryClient();
 
     const { openSnackbar } = useSnackbar();
-    const { setAuth } = useStoreApp();
+    const { setToken } = useStoreApp();
 
     return useMutation({
         mutationFn: async (credentials: {token: string, userAccessToken: string }) => {
@@ -130,10 +116,7 @@ export const useLoginZalo = () => {
             });
             queryClient.invalidateQueries({ queryKey: ['account'] });
 
-            setAuth({
-                account: data.account || null,
-                token: data.token || null,
-            });
+            setToken({ accessToken: data.accessToken, refreshToken: data.refreshToken });
         },
         onError: (error: string) => {
             console.error('Lỗi:', error);
@@ -152,18 +135,28 @@ export const useLogout = () => {
     const { openSnackbar } = useSnackbar();
     const { clearAuth } = useStoreApp();
 
-    const logout = () => {
-        authApiRequest.logout();
+    const logout = async () => {
+        try {
+            await authApiRequest.logout();
+            clearAuth();
 
-        clearAuth();
-
-        openSnackbar({
-            icon: true,
-            text: "Đăng xuất thành công thành công",
-            type: 'success',
-            action: { text: "Đóng", close: true },
-            duration: 3000,
-        });
+            openSnackbar({
+                icon: true,
+                text: "Đăng xuất thành công",
+                type: 'success',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        } catch (error) {
+            console.error("Lỗi khi đăng xuất:", error);
+            openSnackbar({
+                icon: true,
+                text: "Đăng xuất thất bại, vui lòng thử lại!",
+                type: 'error',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        }
     };
 
     return logout;

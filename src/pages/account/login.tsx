@@ -9,7 +9,7 @@ const LoginPage: React.FC = () => {
 
     const navigate = useNavigate();
     const { openSnackbar } = useSnackbar();
-    const { account, setAuth } = useStoreApp();
+    const { account, setAccount, setToken } = useStoreApp();
 
     useEffect(() => {
         const checkLogin = async () => {
@@ -25,12 +25,13 @@ const LoginPage: React.FC = () => {
                 return;
             }
 
-            const storedData = await getDataFromStorage(["account", "token"]);
+            const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken"]);
 
-            if (storedData && storedData.account && storedData.token) {
+            if (storedData?.account && storedData?.accessToken && storedData?.refreshToken) {
                 try {
                     const parsedAccount = JSON.parse(storedData.account);
-                    setAuth({ account: parsedAccount, token: storedData.token });
+                    setAccount(parsedAccount);
+                    setToken({ accessToken: storedData.accessToken, refreshToken: storedData.refreshToken });
                 } catch (error) {
                     console.error("Lỗi parse account:", error);
                 }
@@ -38,7 +39,7 @@ const LoginPage: React.FC = () => {
         };
 
         checkLogin();
-    }, [account, setAuth]);
+    }, [account, setAccount, setToken]);
 
 
     return (
