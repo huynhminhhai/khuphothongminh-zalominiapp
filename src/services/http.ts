@@ -33,7 +33,7 @@ const request = async <T>(
             if (response.status === 401) {
 
                 removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
-                window.location.href = '/account';
+                window.location.href = '/login';
                 throw new Error('accessToken hết hạn (request)');
             }
 

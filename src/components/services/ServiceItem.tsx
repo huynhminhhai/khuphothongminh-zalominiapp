@@ -1,7 +1,7 @@
-import { ServicesType } from "constants/utinities";
 import React from "react";
 import { useLoginWithZalo } from "services/loginWithZalo";
 import { Box, useNavigate } from "zmp-ui";
+import { ServicesType } from "./ServiceList";
 
 type ServiceItemType = {
     data: ServicesType;
@@ -21,7 +21,7 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
     }
 
     return (
-        <Box onClick={() => handleNavigate(data.url)}>
+        <Box onClick={() => navigate(data.url)}>
             <div className="flex-center flex-col gap-2">
                 <Box>
                     <div className="rounded-full flex-center w-[60px] h-[60px] relative">

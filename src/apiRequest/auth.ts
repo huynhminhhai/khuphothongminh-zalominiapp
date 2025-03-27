@@ -81,7 +81,7 @@ export const useLogin = () => {
 
             queryClient.invalidateQueries({ queryKey: ['account'] });
 
-            navigate('/account');
+            navigate('/');
         },
         onError: (error: any) => {
             openSnackbar({
@@ -134,6 +134,7 @@ export const useLoginZalo = () => {
 export const useLogout = () => {
     const { openSnackbar } = useSnackbar();
     const { clearAuth } = useStoreApp();
+    const navigate = useNavigate();
 
     const logout = async () => {
         try {
@@ -147,6 +148,10 @@ export const useLogout = () => {
                 action: { text: "Đóng", close: true },
                 duration: 3000,
             });
+
+            navigate('/login');
+
+
         } catch (error) {
             console.error("Lỗi khi đăng xuất:", error);
             openSnackbar({

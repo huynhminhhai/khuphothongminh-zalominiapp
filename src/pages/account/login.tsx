@@ -21,7 +21,7 @@ const LoginPage: React.FC = () => {
                     action: { text: "Đóng", close: true },
                     duration: 3000,
                 });
-                navigate("/account");
+                navigate("/");
                 return;
             }
 

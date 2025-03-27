@@ -4,7 +4,7 @@ import { AuthSliceType, createAuthSlice } from './authSlice';
 
 type StoreState = AppSliceType & AuthSliceType;
 
-export const useStoreApp = create<StoreState>()((set) => ({
+export const useStoreApp = create<StoreState>()((set, get) => ({
   ...createAppSlice(set),
-  ...createAuthSlice(set),
+  ...createAuthSlice(set, get),
 }));

@@ -26,9 +26,9 @@ const HomePage: React.FunctionComponent = () => {
             account &&
             <>
               <Divider />
-              <MeetingSection />
-              <Divider />
               <TaskSection />
+              <Divider />
+              <MeetingSection />
             </>
           }
           <NewsSection />

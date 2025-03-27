@@ -15,7 +15,7 @@ export const useLoginWithZalo = () => {
 
         if (token) {
             console.log('Đã đăng nhập')
-            navigate(redirectUrl || "/account");
+            navigate(redirectUrl || "/");
             return;
         }
 
@@ -31,7 +31,7 @@ export const useLoginWithZalo = () => {
 
                 await mutateAsync({ token: phoneNumber, userAccessToken: accessToken });
 
-                navigate(redirectUrl || "/account");
+                navigate(redirectUrl || "/");
             }
             
         } catch (error) {
