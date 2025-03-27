@@ -6,19 +6,21 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
 import { FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import { useCreateNews } from "apiRequest/management/news"
+import { useStoreApp } from "store/store"
+import { useCreateNews } from "apiRequest/news"
+import { convertToFormData } from "utils/file"
 
 const defaultValues: FormDataNews = {
-    title: '',
-    description: '',
-    content: '',
-    imageUrl: '',
-}
+    TieuDe: "",
+    MoTa: "",
+    NoiDung: "",
+    TacGia: "",
+    FileAnhDaiDien: undefined,
+};
 
 const NewsAddForm: React.FC = () => {
-
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
+    
+    const { account } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataNews>(defaultValues)
@@ -37,8 +39,11 @@ const NewsAddForm: React.FC = () => {
 
     const handleConfirm = async () => {
         setConfirmVisible(false);
+
         try {
-            await createNews(formData);
+            const formDataConverted = convertToFormData({...formData, ApId: account?.apId, TinhTrangId: 1 });
+
+            await createNews(formDataConverted);
             reset(defaultValues);
         } catch (error) {
             console.error("Error:", error);
@@ -55,39 +60,50 @@ const NewsAddForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="title"
+                            name="TieuDe"
                             label="Tiêu đề"
                             placeholder="Nhập tiêu đề"
                             control={control}
-                            error={errors.title?.message}
+                            error={errors.TieuDe?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormImageUploaderSingle
-                            name="imageUrl"
-                            label="Upload ảnh"
+                            name="FileAnhDaiDien"
+                            label="Upload ảnh đại diện"
                             control={control}
-                            error={errors.imageUrl?.message}
+                            error={errors.FileAnhDaiDien?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="description"
+                            name="MoTa"
                             label="Mô tả"
                             placeholder="Nhập mô tả"
                             control={control}
-                            error={errors.description?.message}
+                            error={errors.MoTa?.message}
+                            required
+                        />
+                    </div>
+                    
+                    <div className="col-span-12">
+                        <FormTextEditorField
+                            name="NoiDung"
+                            label="Nội dung tin tức"
+                            placeholder="Nhập nội dung tin tức..."
+                            control={control}
+                            error={errors.NoiDung?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormTextEditorField
-                            name="content"
-                            label="Nội dung tin tức"
-                            placeholder="Nhập nội dung tin tức..."
+                        <FormInputField
+                            name="TacGia"
+                            label="Tác giả"
+                            placeholder="Nhập tên tác giả"
                             control={control}
-                            error={errors.content?.message}
+                            error={errors.TacGia?.message}
                             required
                         />
                     </div>

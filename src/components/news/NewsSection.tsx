@@ -1,27 +1,33 @@
-import { useGetNewsList } from "apiRequest/news"
+import { useGetNewsListNormal } from "apiRequest/news"
 import images from "assets/images"
 import { Divider } from "components/divider"
 import { NewsSectionSkeleton } from "components/skeleton"
 import TitleSection from "components/titleSection"
 import React, { useState } from "react"
-import { Box, Swiper, useNavigate } from "zmp-ui"
-
-const initParam = {
-    page: 1,
-    pageSize: 5,
-};
+import { useStoreApp } from "store/store"
+import { Box, useNavigate } from "zmp-ui"
+import { NewsType } from "./type"
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { getFullImageUrl } from "utils/file"
 
 const NewsSection: React.FC = () => {
 
-    const [param, setParam] = useState(initParam);
     const navigate = useNavigate()
+    const { account } = useStoreApp()
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 4,
+        ApId: account ? account.apId : 0,
+        keyword: ''
+    });
 
-    const { data, isLoading } = useGetNewsList(param);
-
-    const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || []
+    const { data, isLoading } = useGetNewsListNormal(param);
 
     if (isLoading) {
-        return <NewsSectionSkeleton count={1} />
+        return <NewsSectionSkeleton count={1}/>
     }
 
     return (
@@ -34,27 +40,31 @@ const NewsSection: React.FC = () => {
                     flexDirection="column"
                     justifyContent="center"
                     alignItems="center"
+                    className="w-full"
                 >
 
                     {
-                        listData && listData.length > 0 ?
+                        data.data && data.data.length > 0 ?
                             <Swiper
+                                modules={[Pagination]}
+                                spaceBetween={12}
+                                slidesPerView={1}
+                                pagination={{ clickable: true }}
                                 loop
-                                duration={12000}
-                                autoplay
+                                className="max-w-[100%]"
                             >
                                 {
-                                    listData.map((item: any, index) => (
-                                        <Swiper.Slide key={index}>
-                                            <div onClick={() => navigate(`/news-detail/?id=${item.id}`)}>
+                                    data.data.map((item: NewsType, index: number) => (
+                                        <SwiperSlide key={`${item.tinTucId}-${index}`}>
+                                            <div onClick={() => navigate(`/news-detail/?id=${item.tinTucId}`)}>
                                                 <img
                                                     className="slide-img h-[200px] w-full object-cover rounded-xl"
-                                                    src={item.imageUrl || images.thumbnailNews}
-                                                    alt={item.title}
+                                                    src={ getFullImageUrl(item.anhDaiDien) }
+                                                    alt={item.tieuDe}
                                                 />
-                                                <h3 className="text-[16px] font-medium whitespace-normal mt-2 line-clamp-2">{item.id} - {item.title}</h3>
+                                                <h3 className="text-[16px] font-medium whitespace-normal mt-2 line-clamp-2">{item.tieuDe || item.moTa}</h3>
                                             </div>
-                                        </Swiper.Slide>
+                                        </SwiperSlide>
                                     ))
                                 }
                             </Swiper>

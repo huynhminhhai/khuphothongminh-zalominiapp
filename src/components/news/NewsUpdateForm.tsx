@@ -1,6 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useUpdateNews } from "apiRequest/management/news"
-import { useGetNewsDetail } from "apiRequest/news"
+import { useGetNewsDetail, useUpdateNews } from "apiRequest/news"
 import { PrimaryButton } from "components/button"
 import { FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
@@ -8,14 +7,16 @@ import { FormDataNews, schemaNews } from "components/news/type"
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
+import { convertToFormData, loadImage } from "utils/file"
 import { Box, useNavigate, useSnackbar } from "zmp-ui"
 
 const defaultValues: FormDataNews = {
-    title: '',
-    description: '',
-    content: '',
-    imageUrl: '',
-}
+    TieuDe: "",
+    MoTa: "",
+    NoiDung: "",
+    TacGia: "",
+    FileAnhDaiDien: undefined,
+};
 
 const NewsUpdateForm = () => {
 
@@ -25,7 +26,7 @@ const NewsUpdateForm = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataNews>({
+    const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<FormDataNews>({
         resolver: yupResolver(schemaNews),
         defaultValues
     });
@@ -33,12 +34,32 @@ const NewsUpdateForm = () => {
     const [searchParams] = useSearchParams();
     const newsId = searchParams.get("id");
 
-    const { mutate: updateNews, isPending } = useUpdateNews();
+    const { mutateAsync: updateNews, isPending } = useUpdateNews();
     const { data: newsDetail } = useGetNewsDetail(Number(newsId));
 
     useEffect(() => {
         if (newsDetail) {
-            reset(newsDetail);
+            reset({
+                TieuDe: newsDetail.tieuDe,
+                MoTa: newsDetail.moTa,
+                NoiDung: newsDetail.noiDung,
+                TacGia: newsDetail.tacGia,
+                FileAnhDaiDien: undefined,
+            });
+
+            const fetchAndSetImage = async () => {
+                if (newsDetail?.anhDaiDien) {
+                    const file = await loadImage(newsDetail.anhDaiDien);
+                    if (file) {
+                        reset((prevValues) => ({
+                            ...prevValues,
+                            FileAnhDaiDien: file,
+                        }));
+                    }
+                }
+            };
+
+            fetchAndSetImage();
         }
     }, [newsDetail, reset]);
 
@@ -70,15 +91,16 @@ const NewsUpdateForm = () => {
         setFormData(updatedData)
     };
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setConfirmVisible(false);
-        if (formData && newsId) {
-            updateNews({ id: Number(newsId), data: formData }, {
-                onSuccess: () => {
-                    reset(defaultValues);
-                    navigate("/news-management");
-                },
-            });
+
+        try {
+            const formDataConverted = convertToFormData({ ...formData, TinTucId: newsId, });
+
+            await updateNews(formDataConverted);
+
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
@@ -92,39 +114,50 @@ const NewsUpdateForm = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="title"
+                            name="TieuDe"
                             label="Tiêu đề"
                             placeholder="Nhập tiêu đề"
                             control={control}
-                            error={errors.title?.message}
+                            error={errors.TieuDe?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormImageUploaderSingle
-                            name="imageUrl"
-                            label="Upload ảnh"
+                            name="FileAnhDaiDien"
+                            label="Upload ảnh đại diện"
                             control={control}
-                            error={errors.imageUrl?.message}
+                            error={errors.FileAnhDaiDien?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="description"
+                            name="MoTa"
                             label="Mô tả"
                             placeholder="Nhập mô tả"
                             control={control}
-                            error={errors.description?.message}
+                            error={errors.MoTa?.message}
+                            required
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormTextEditorField
+                            name="NoiDung"
+                            label="Nội dung tin tức"
+                            placeholder="Nhập nội dung tin tức..."
+                            control={control}
+                            error={errors.NoiDung?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormTextEditorField
-                            name="content"
-                            label="Nội dung tin tức"
-                            placeholder="Nhập nội dung tin tức..."
+                        <FormInputField
+                            name="TacGia"
+                            label="Tác giả"
+                            placeholder="Nhập tên tác giả"
                             control={control}
-                            error={errors.content?.message}
+                            error={errors.TacGia?.message}
                             required
                         />
                     </div>

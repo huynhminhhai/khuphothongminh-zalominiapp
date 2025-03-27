@@ -1,17 +1,13 @@
-import { Icon } from "@iconify/react"
-import { useQuery } from "@tanstack/react-query"
 import { useGetNewsDetail } from "apiRequest/news"
-import images from "assets/images"
 import { EmptyData } from "components/data"
-import { Divider } from "components/divider"
 import { HeaderSub } from "components/header-sub"
 import { NewsOthers } from "components/news"
 import { NewsDetailSkeleton } from "components/skeleton"
 import TitleSection from "components/titleSection"
-import { News, NEWSDATA } from "constants/utinities"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useSearchParams } from "react-router-dom"
-import { Box, Page, Text, useNavigate, useSnackbar } from "zmp-ui"
+import { getFullImageUrl } from "utils/file"
+import { Box, Page, useNavigate } from "zmp-ui"
 
 const NewsDetailPage: React.FC = () => {
 
@@ -31,21 +27,22 @@ const NewsDetailPage: React.FC = () => {
                         <NewsDetailSkeleton count={1} /> :
                         data ?
                             <Box px={4} pb={4}>
-                                <div className="flex items-center gap-2 mb-2">
-                                    <div className="h-[24px] w-[5px] bg-[#731611] block"></div>
-                                    <h3 className="text-[16px] leading-[1] font-medium">Tin tức</h3>
-                                </div>
-                                <h2 className="text-[22px] leading-[28px] font-semibold mb-2 text-[#731611]">
-                                    {data.id} - {data.title}
-                                </h2>
-                                <h4 className="text-[14px] leading-[1] font-medium">12/12/2025</h4>
-                                <Box mt={6}>
-                                    <div className="mb-3">
-                                        <img src={data.imageUrl || images.thumbnailNews} alt={data.title} />
+                                <Box pb={4} className="border-b-[2px] border-[#731611]">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="h-[24px] w-[5px] bg-[#731611] block"></div>
+                                        <h3 className="text-[18px] leading-[1] font-medium">Tin tức</h3>
                                     </div>
-                                    <div className="detail-content" dangerouslySetInnerHTML={{ __html: data.body }}></div>
+                                    <h2 className="text-[22px] leading-[30px] font-semibold mb-3 text-[#731611]">
+                                        {data.tieuDe || data.moTa}
+                                    </h2>
+                                    <h4 className="text-[14px] leading-[1] font-medium">12/12/2025</h4>
                                 </Box>
-                                <div className="block h-[1px] w-[100%] bg-[#731611] my-4"></div>
+                                <Box mt={6} pb={4} mb={4} className="border-b-[2px] border-[#731611]">
+                                    <div className="mb-3">
+                                        <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
+                                    </div>
+                                    <div className="detail-content" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
+                                </Box>
                             </Box>
                             :
                             <Box px={4} pb={10}>

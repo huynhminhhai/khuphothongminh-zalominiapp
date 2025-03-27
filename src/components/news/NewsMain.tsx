@@ -1,13 +1,14 @@
 import images from "assets/images";
-import { News } from "constants/utinities";
 import React from "react";
-import { Box, Text, useNavigate } from "zmp-ui";
+import { Box, useNavigate } from "zmp-ui";
+import { NewsType } from "./type";
+import { getFullImageUrl } from "utils/file";
 
 type NewsMainProps = {
-    data: News
+    data: NewsType
 }
 
-const NewsMain: React.FC<NewsMainProps> = ({data}) => {
+const NewsMain: React.FC<NewsMainProps> = ({ data }) => {
 
     const navigate = useNavigate()
 
@@ -15,16 +16,16 @@ const NewsMain: React.FC<NewsMainProps> = ({data}) => {
         <Box>
             <div
                 className="news-item"
-                onClick={() => navigate(`/news-detail/?id=${data.id}`)}
+                onClick={() => navigate(`/news-detail/?id=${data.tinTucId}`)}
             >
-                <div className="w-[100%] h-auto">
-                    <img className="h-[100%] w-[100%] object-cover" src={data.imageUrl || images.thumbnailNews} alt={data.title} />
+                <div className="w-[100%] h-[220px]">
+                    <img className="h-[100%] w-[100%] object-cover" src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
                 </div>
                 <Box px={4}>
                     <div className="flex-1 flex flex-col justify-center mt-3 border-b-[1px] pb-4">
-                        <h3 className="text-[18px] leading-[22px] font-semibold line-clamp-2 mb-1">{data.title}</h3>
-                        <div className="line-clamp-3 text-[16px] leading-[20px] font-normal text-[#7c7c7c] mb-2">{data.description}</div>
-                        <div className="text-end text-[14px] leading-[1] text-[#7c7c7c]">{data.publishedDate}</div>
+                        <h3 className="text-[18px] leading-[22px] font-semibold line-clamp-2 mb-1">{data.tieuDe || data.moTa}</h3>
+                        <div className="line-clamp-3 text-[16px] leading-[20px] font-normal text-[#7c7c7c] mb-2">{data.moTa}</div>
+                        {/* <div className="text-end text-[14px] leading-[1] text-[#7c7c7c]">{data.ngayDang}</div> */}
                     </div>
                 </Box>
             </div>

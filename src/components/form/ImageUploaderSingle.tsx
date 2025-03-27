@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { chooseImage } from 'zmp-sdk';
 import Label from './Label';
 import ErrorMessage from './ErrorMessage';
@@ -9,8 +9,8 @@ type ImageUploaderSingleProps = {
     name: string;
     error?: string;
     field: {
-        value: string | null; // Lưu một đường dẫn ảnh
-        onChange: (value: string | null) => void;
+        value: string | null;
+        onChange: (value: string | null | File) => void;
     };
     required?: boolean;
 };
@@ -21,37 +21,67 @@ const ImageUploaderSingle: React.FC<ImageUploaderSingleProps> = ({
     field,
     required = false,
 }) => {
+
+    const [preview, setPreview] = useState<string | null>(null);
+
+    useEffect(() => {
+        if ((field as any).value instanceof File) {
+            const blobUrl = URL.createObjectURL((field as any).value);
+            setPreview(blobUrl);
+
+        } else if (typeof field.value === "string") {
+            setPreview(field.value);
+        } else {
+            setPreview(null)
+        }
+    }, [field.value]);
+
     const handleChooseImage = () => {
         chooseImage({
-            count: 1, // Chỉ chọn 1 ảnh
-            sourceType: ['album', 'camera'],
-            success: (res) => {
-                const path = res.tempFiles[0].path; // Đường dẫn ảnh
+            count: 1,
+            sourceType: ["album", "camera"],
+            success: async (res) => {
+                const path = res.tempFiles[0].path;
 
-                field.onChange(path); // Cập nhật giá trị mới
+                try {
+                    const response = await fetch(path);
+                    const blob = await response.blob();
+                    const file = new File([blob], `upload_${Date.now()}.jpg`, { type: blob.type });
+
+                    const blobUrl = URL.createObjectURL(file);
+
+                    field.onChange(file);
+                    setPreview(blobUrl); 
+                } catch (error) {
+                    console.error("Error converting blob to file:", error);
+                }
             },
             fail: (err) => {
-                console.error('Error choosing images:', err);
+                console.error("Error choosing images:", err);
             },
         });
     };
 
     const handleRemoveImage = () => {
-        field.onChange(null); // Xóa ảnh
+        if (preview) {
+            URL.revokeObjectURL(preview);
+        }
+        field.onChange(null);
+        setPreview(null); 
     };
 
     return (
         <div className="pb-4 relative">
             <Label text={label} required={required} />
             <div
-                onClick={!field.value ? handleChooseImage : undefined}
-                className={`relative flex items-center justify-center cursor-pointer rounded-lg border-dashed border-[2px] border-[#b9bdc1] min-h-[50px] h-auto w-full ${field.value ? 'border-none' : ''
-                }`}
+                onClick={!preview ? handleChooseImage : undefined}
+                className={`relative flex items-center justify-center cursor-pointer rounded-lg border-dashed border-[2px] border-[#b9bdc1] min-h-[50px] h-auto w-full ${preview ? "border-none" : ""
+                    }`}
             >
-                {field.value ? (
+                {preview ? (
                     <div className="relative w-full h-full">
                         <img
-                            src={field.value}
+                            src={preview} // Hiển thị ảnh từ blob URL
                             alt="Uploaded"
                             className="w-full h-full object-cover rounded-lg"
                         />
@@ -69,6 +99,7 @@ const ImageUploaderSingle: React.FC<ImageUploaderSingleProps> = ({
             {error && <ErrorMessage message={error} />}
         </div>
     );
+
 };
 
 type FormImageUploaderSingleProps = {

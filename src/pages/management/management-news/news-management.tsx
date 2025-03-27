@@ -1,32 +1,37 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useDeleteNews, useGetNewsListManagement } from "apiRequest/management/news"
+import { useDeleteNews, useGetNewsListNormal, useGetNewsStatus, useUpdateNewsStatus } from "apiRequest/news"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
+import { NewsType } from "components/news/type"
 import { NewsSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import React, { useState } from "react"
-import { Box, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
-
-const initParam = {
-    page: 1,
-    pageSize: 10,
-    keyword: '',
-}
+import { useStoreApp } from "store/store"
+import { getFullImageUrl } from "utils/file"
+import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const NewsManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { openSnackbar } = useSnackbar();
+    const { account } = useStoreApp()
+
+    const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [viewCard, setViewCard] = useState<boolean>(true)
-    const [param, setParam] = useState(initParam)
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 10,
+        ApId: account ? account.apId : 0,
+        keyword: ''
+    })
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
+    const { data, isLoading } = useGetNewsListNormal(param);
+    const { data: newsStatus } = useGetNewsStatus();
     const { mutate: deleteNews } = useDeleteNews();
-
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -65,40 +70,74 @@ const NewsManagementPage: React.FC = () => {
         openConfirmModal(() => deleteNews(id));
     }
 
-    const columns: ColumnDef<any>[] = [
+    const columns: ColumnDef<NewsType>[] = [
         {
-            accessorKey: 'title',
+            id: 'anhDaiDien',
+            header: 'Ảnh',
+            cell: ({ row }) => (
+                <div className="flex w-full h-[150px]">
+                    <img className="w-full h-full object-cover"  src={getFullImageUrl(row.original.anhDaiDien)} alt={row.original.tieuDe} />
+                </div>
+            ),
+            size: 160
+        },
+        {
+            accessorKey: 'moTa',
             header: 'Tiêu đề',
             size: 300
         },
-        // {
-        //     accessorKey: 'publishedDate',
-        //     header: 'Ngày tạo',
-        // },
-        // {
-        //     accessorKey: 'views',
-        //     header: 'Lượt xem',
-        //     size: 100
-        // },
+        {
+            id: "tinhTrangId",
+            header: "Trạng thái",
+            cell: ({ row }) => {
+                const { mutate, isPending } = useUpdateNewsStatus();
+        
+                return (
+                    <Box width={150}>
+                        <Select
+                            closeOnSelect
+                            defaultValue={row.original.tinhTrangId}
+                            onChange={(value) => {
+                                mutate({
+                                    tinTucId: row.original.tinTucId,
+                                    tinhTrangId: Number(value),
+                                });
+                            }}
+                            className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
+                            disabled={isPending}
+                        >
+                            {newsStatus && newsStatus.map((item) => (
+                                <Option
+                                    value={item.tinhTrangId}
+                                    key={item.tinhTrangId}
+                                    title={item.tenTinhTrang}
+                                />
+                            ))}
+                        </Select>
+                    </Box>
+                );
+            },
+            size: 160,
+        },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/news-detail?id=${row.original.id}`)}
+                        onClick={() => navigate(`/news-detail?id=${row.original.tinTucId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/news-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/news-update?id=${row.original.tinTucId}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => removeNews(row.original.id)}
+                        onClick={() => removeNews(row.original.tinTucId)}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />
@@ -107,8 +146,6 @@ const NewsManagementPage: React.FC = () => {
             ),
         },
     ];
-
-    const { data, isLoading } = useGetNewsListManagement(param);
 
     const renderContent = () => {
         if (isLoading) {
@@ -119,7 +156,7 @@ const NewsManagementPage: React.FC = () => {
             );
         }
 
-        if (!data?.length) {
+        if (!data.data.length) {
             return (
                 <Box px={4}>
                     <EmptyData
@@ -133,16 +170,16 @@ const NewsManagementPage: React.FC = () => {
         return <Box>
             {
                 viewCard ? (
-                    <CardTanStack data={data} columns={columns} />
+                    <CardTanStack data={data.data} columns={columns} />
                 ) : (
                     <Box px={4}>
-                        <TableTanStack data={data} columns={columns} />
+                        <TableTanStack data={data.data} columns={columns} />
                     </Box>
                 )
             }
             <Box px={4}>
                 <TablePagination
-                    totalItems={100}
+                    totalItems={data.page.total}
                     pageSize={param.pageSize}
                     pageIndex={param.page}
                     onPageChange={handlePageChange}
