@@ -79,12 +79,17 @@ const NewsManagementPage: React.FC = () => {
                     <img className="w-full h-full object-cover"  src={getFullImageUrl(row.original.anhDaiDien)} alt={row.original.tieuDe} />
                 </div>
             ),
-            size: 160
+            size: 300
         },
         {
-            accessorKey: 'moTa',
+            id: 'tieuDe',
             header: 'Tiêu đề',
-            size: 300
+            cell: ({ row }) => (
+                <div>
+                    {row.original.tieuDe || row.original.moTa}
+                </div>
+            ),
+            size: 250
         },
         {
             id: "tinhTrangId",

@@ -39,7 +39,9 @@ export const convertToFormData = (data: Record<string, any>) => {
 
 export const loadImage = async (url: string): Promise<File | null> => {
   try {
-      const response = await fetch(`/api${url}`);
+      const cleanUrl = url.startsWith("/uploads") ? url.replace("/uploads", "") : url;
+
+      const response = await fetch(`${envConfig.API_ENDPOINT}${cleanUrl}`);
       if (!response.ok) throw new Error("Failed to fetch image");
 
       const blob = await response.blob();

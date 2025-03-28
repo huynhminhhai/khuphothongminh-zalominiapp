@@ -49,7 +49,9 @@ const TableTanStack = <T,>({ data, columns }: TableTanStackProps<T>) => {
                   <tr key={row.id} className={`${rowIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
                     {row.getVisibleCells().map(cell => (
                       <td key={cell.id} className="px-4 py-4">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        <div className="line-clamp-2">
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </div>
                       </td>
                     ))}
                   </tr>

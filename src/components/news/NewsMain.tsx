@@ -23,7 +23,7 @@ const NewsMain: React.FC<NewsMainProps> = ({ data }) => {
                 </div>
                 <Box px={4}>
                     <div className="flex-1 flex flex-col justify-center mt-3 border-b-[1px] pb-4">
-                        <h3 className="text-[18px] leading-[22px] font-semibold line-clamp-2 mb-1">{data.tieuDe || data.moTa}</h3>
+                        <h3 className="text-[18px] leading-[22px] font-semibold line-clamp-2 mb-2">{data.tieuDe || data.moTa}</h3>
                         <div className="line-clamp-3 text-[16px] leading-[20px] font-normal text-[#7c7c7c] mb-2">{data.moTa}</div>
                         {/* <div className="text-end text-[14px] leading-[1] text-[#7c7c7c]">{data.ngayDang}</div> */}
                     </div>

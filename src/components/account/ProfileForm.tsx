@@ -8,7 +8,6 @@ import { FormAvatarUploaderSingle, FormControllerDatePicker, FormInputField, For
 import { ConfirmModal } from "components/modal"
 import { gender } from "constants/mock"
 import { useStoreApp } from "store/store"
-import { useUpdateAccount } from "apiRequest/account"
 
 const defaultValues: FormDataProfile = {
     fullname: '',
@@ -27,8 +26,6 @@ const ProfileForm: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataProfile>(defaultValues);
     const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
-
-    const { mutateAsync } = useUpdateAccount();
 
     const { handleSubmit, reset, watch, control, formState: { errors } } = useForm<FormDataProfile>({
         resolver: yupResolver(schemaProfile),
