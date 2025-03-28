@@ -7,10 +7,11 @@ import { ConfirmModal } from "components/modal"
 import { NewsType } from "components/news/type"
 import { NewsSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import React, { useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { getFullImageUrl } from "utils/file"
 import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
+import { debounce } from "lodash";
 
 const NewsManagementPage: React.FC = () => {
 
@@ -20,18 +21,30 @@ const NewsManagementPage: React.FC = () => {
     const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [viewCard, setViewCard] = useState<boolean>(true)
+    const [search, setSearch] = useState("");
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
         ApId: account ? account.apId : 0,
         keyword: ''
     })
-    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
     const { data, isLoading } = useGetNewsListNormal(param);
     const { data: newsStatus } = useGetNewsStatus();
     const { mutate: deleteNews } = useDeleteNews();
+
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            setParam((prev) => ({ ...prev, keyword: value }));
+        }, 300),
+        []
+    );
+
+    useEffect(() => {
+        debouncedSearch(search);
+    }, [search, debouncedSearch]);
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -208,13 +221,8 @@ const NewsManagementPage: React.FC = () => {
                         <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
-                                value={param.keyword}
-                                onChange={(e) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        keyword: e.target.value
-                                    }));
-                                }}
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
                     </FilterBar>

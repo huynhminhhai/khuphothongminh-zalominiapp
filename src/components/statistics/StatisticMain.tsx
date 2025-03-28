@@ -11,9 +11,13 @@ const StatisticMain: React.FC<any> = () => {
                         className="invert brightness-0 w-[100%]"
                         src="https://images.vexels.com/media/users/3/145867/isolated/lists/015b2a1aac5e9d4d3c18376bbbae1819-sound-wave-line.png"
                         alt="shape"
-                        initial={{ opacity: 0, x: -100 }}
-                        animate={{ opacity: 0.1, x: 0 }}
-                        transition={{ duration: 1, ease: "easeInOut" }}
+                        style={{
+                            WebkitMaskImage: "linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)",
+                            maskImage: "linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)"
+                        }}
+                        initial={{ WebkitMaskSize: "0% 100%", opacity: 0 }}
+                        animate={{ WebkitMaskSize: "100% 100%", opacity: 0.18 }}
+                        transition={{ duration: 1.5, ease: "easeInOut" }}
                     />
                 </div>
                 <div className="flex flex-col gap-3">
