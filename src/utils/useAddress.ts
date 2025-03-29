@@ -60,3 +60,15 @@ const useAddress = (selectedProvince: number, selectedDistrict: number) => {
 };
 
 export default useAddress;
+
+
+export const formatAddress = (data?: any) => {
+    if (!data) return "";
+    return [
+        data.diaChi,
+        data.tenAp,
+        data.tenXa,
+        data.tenHuyen,
+        data.tenTinh
+    ].filter(Boolean).join(", ");
+};

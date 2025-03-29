@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, useNavigate, useSnackbar } from "zmp-ui";
+import { Box, useSnackbar } from "zmp-ui";
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PrimaryButton } from "components/button";
@@ -41,22 +41,17 @@ const defaultValues: FormDataResident = {
 const ResidentEditForm: React.FC = () => {
 
     const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate();
     const { loaiCuTrus, gioiTinhs, danTocs, tonGiaos, moiQuanHeGiaDinhs, fetchResidentTypes } = useStoreApp()
-
-    console.clear()
-    console.log(tonGiaos)
 
     useEffect(() => {
         fetchResidentTypes();
     }, []);
 
-    const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>({})
 
 
-    const { handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm<FormDataResident>({
+    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataResident>({
         resolver: yupResolver(schemaResident),
         defaultValues
     });
@@ -65,8 +60,6 @@ const ResidentEditForm: React.FC = () => {
     const residentId = searchParams.get("id");
 
     const { data: residentDetailData, isLoading } = useGetResidentDetail((Number(residentId)));
-
-    console.log(residentDetailData)
 
     useEffect(() => {
         if (residentDetailData) {
@@ -466,7 +459,7 @@ const ResidentEditForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Gửi yêu cầu cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton fullWidth label={isLoading ? "Đang xử lý..." : "Gửi yêu cầu cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

@@ -10,6 +10,7 @@ import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
+import { formatAddress } from "utils/useAddress"
 import { Box, Input, Page, useNavigate } from "zmp-ui"
 
 const ResidentManagementPage: React.FC = () => {
@@ -137,15 +138,7 @@ const ResidentManagementPage: React.FC = () => {
             header: 'Thường trú',
             cell: ({ row }) => (
                 <div className="line-clamp-2 text-[14px]">
-                    {
-                        row.original.noiThuongTru &&
-                        `
-                        ${row.original.noiThuongTru.diachi ? row.original.noiThuongTru.diachi : ''}
-                        ${row.original.noiThuongTru.tenXa ? row.original.noiThuongTru.tenXa : ''}
-                        ${row.original.noiThuongTru.tenHuyen ? row.original.noiThuongTru.tenHuyen : ''}
-                        ${row.original.noiThuongTru.tenTinh ? row.original.noiThuongTru.tenTinh : ''}
-                        `
-                    }
+                    {formatAddress(row.original.noiThuongTru)}
                 </div>
             ),
             size: 300
@@ -155,15 +148,7 @@ const ResidentManagementPage: React.FC = () => {
             header: 'Tạm trú',
             cell: ({ row }) => (
                 <div className="line-clamp-2 text-[14px]">
-                    {
-                        row.original.noiTamTru &&
-                        `
-                        ${row.original.noiTamTru.diachi ? row.original.noiTamTru.diachi : ''}
-                        ${row.original.noiTamTru.tenXa ? row.original.noiTamTru.tenXa : ''}
-                        ${row.original.noiTamTru.tenHuyen ? row.original.noiTamTru.tenHuyen : ''}
-                        ${row.original.noiTamTru.tenTinh ? row.original.noiTamTru.tenTinh : ''}
-                        `
-                    }
+                    {formatAddress(row.original.noiTamTru)}
                 </div>
             ),
             size: 300
@@ -174,19 +159,19 @@ const ResidentManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/profile-resident?id=${row.original.id}`)}
+                        onClick={() => navigate(`/profile-resident?id=${row.original.danCuId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/resident-profile-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/resident-profile-update?id=${row.original.danCuId}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => removeResident(row.original.id)}
+                        onClick={() => removeResident(row.original.danCuId)}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />

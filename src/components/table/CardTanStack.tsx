@@ -25,11 +25,11 @@ const CardTanStack = <T,>({ data, columns }: CardTanStackProps<T>) => {
                                 {row.getVisibleCells().map(cell => (
                                     <div key={cell.id} className="flex items-center gap-3 mb-4">
                                         {/* Hiển thị tiêu đề cột */}
-                                        <div className="text-[16px] font-medium text-gray-500 whitespace-nowrap min-w-[95px]">
+                                        <div className="text-[14px] font-medium text-gray-500  w-[95px]">
                                             {flexRender(cell.column.columnDef.header, (cell as any).getContext())}
                                         </div>
                                         {/* Hiển thị nội dung của cell */}
-                                        <div className="flex-1 text-[16px] leading-[20px] font-medium line-clamp-2">
+                                        <div className="flex-1 text-[14px] leading-[20px] font-medium line-clamp-2">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </div>
                                     </div>
