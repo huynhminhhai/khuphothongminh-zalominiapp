@@ -1,30 +1,47 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
+import { useGetResidentListNormal } from "apiRequest/resident"
+import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
+import { NewsSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import { districtOptions, provinceOptions, wardOptions } from "constants/mock"
-import { RESIDENT, ResidentType } from "constants/utinities"
-import React, { useState } from "react"
-import { getLabelOptions } from "utils/options"
-import { Box, Button, Checkbox, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
-
-const initParam = {
-    pageIndex: 1,
-    pageSize: 10,
-    keyword: '',
-    isHouseholder: false
-}
+import { debounce } from "lodash"
+import React, { useCallback, useEffect, useState } from "react"
+import { useStoreApp } from "store/store"
+import { formatDate } from "utils/date"
+import { Box, Input, Page, useNavigate } from "zmp-ui"
 
 const ResidentManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { openSnackbar } = useSnackbar();
+    const { account } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [viewCard, setViewCard] = useState<boolean>(true)
-    const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+    const [search, setSearch] = useState("");
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 10,
+        ApId: account ? account.apId : 0,
+        keyword: ''
+    })
+
+    const { data, isLoading } = useGetResidentListNormal(param);
+
+    console.log(data)
+
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            setParam((prev) => ({ ...prev, keyword: value }));
+        }, 300),
+        []
+    );
+
+    useEffect(() => {
+        debouncedSearch(search);
+    }, [search, debouncedSearch]);
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -50,7 +67,7 @@ const ResidentManagementPage: React.FC = () => {
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); // Gọi hành động đã lưu
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -62,48 +79,91 @@ const ResidentManagementPage: React.FC = () => {
     };
 
     const removeResident = (id: number) => {
-        openConfirmModal(() => {
-            console.log('Call API delete resident with id:', id);
-
-            openSnackbar({
-                text: 'Xóa thông tin hộ dân thành công',
-                type: 'success',
-                duration: 5000,
-            });
-        })
+        // openConfirmModal(() => deleteNews(id));
     }
 
-    const columns: ColumnDef<ResidentType>[] = [
+    const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'fullname',
-            header: 'Tên',
+            accessorKey: 'hoTen',
+            header: 'Họ tên',
             size: 200
         },
         {
             id: 'isParent',
             header: 'Chủ hộ',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center">
+                <div>
                     {
-                        row.original.parentId ?
-                            <Icon className="text-red-700" fontSize={25} icon='material-symbols-light:close-rounded' />
+                        row.original.laChuHo ?
+                            <Icon className="text-red-700" fontSize={25} icon='line-md:close' />
                             :
-                            <Icon className="text-green-700" fontSize={30} icon='hugeicons:tick-01' />
+                            <Icon className="text-green-700" fontSize={30} icon='line-md:confirm' />
                     }
                 </div>
             ),
             size: 100
         },
         {
-            accessorKey: 'phoneNumber',
+            accessorKey: 'soGiayTo',
+            header: 'CCCD',
+        },
+        {
+            accessorKey: 'tenGioiTinh',
+            header: 'Giới tính',
+        },
+        {
+            id: 'ngaySinh',
+            header: 'Ngày sinh',
+            cell: ({ row }) => (
+                <div>
+                    {
+                        formatDate(row.original.ngaySinh)
+                    }
+                </div>
+            ),
+            size: 100
+        },
+        {
+            accessorKey: 'dienThoai',
             header: 'SĐT',
         },
         {
-            id: 'address',
-            header: 'Địa chỉ',
+            accessorKey: 'email',
+            header: 'Email',
+        },
+        
+        {
+            id: 'thuongTru',
+            header: 'Thường trú',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center line-clamp-1">
-                    {`${row.original.addressPermanent}, ${wardOptions.find(item => item.id === row.original.wardsPermanent)?.name}, ${districtOptions.find(item => item.id === row.original.districtPermanent)?.name}, ${getLabelOptions(row.original.provincePermanent, provinceOptions)}`}
+                <div className="line-clamp-2 text-[14px]">
+                    {
+                        row.original.noiThuongTru &&
+                        `
+                        ${row.original.noiThuongTru.diachi ? row.original.noiThuongTru.diachi : ''}
+                        ${row.original.noiThuongTru.tenXa ? row.original.noiThuongTru.tenXa : ''}
+                        ${row.original.noiThuongTru.tenHuyen ? row.original.noiThuongTru.tenHuyen : ''}
+                        ${row.original.noiThuongTru.tenTinh ? row.original.noiThuongTru.tenTinh : ''}
+                        `
+                    }
+                </div>
+            ),
+            size: 300
+        },
+        {
+            id: 'tamTru',
+            header: 'Tạm trú',
+            cell: ({ row }) => (
+                <div className="line-clamp-2 text-[14px]">
+                    {
+                        row.original.noiTamTru &&
+                        `
+                        ${row.original.noiTamTru.diachi ? row.original.noiTamTru.diachi : ''}
+                        ${row.original.noiTamTru.tenXa ? row.original.noiTamTru.tenXa : ''}
+                        ${row.original.noiTamTru.tenHuyen ? row.original.noiTamTru.tenHuyen : ''}
+                        ${row.original.noiTamTru.tenTinh ? row.original.noiTamTru.tenTinh : ''}
+                        `
+                    }
                 </div>
             ),
             size: 300
@@ -112,7 +172,7 @@ const ResidentManagementPage: React.FC = () => {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                <div className="flex items-center space-x-2 whitespace-nowrap">
                     <button
                         onClick={() => navigate(`/profile-resident?id=${row.original.id}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -136,11 +196,47 @@ const ResidentManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = RESIDENT.filter(item => {
-        const matchesSearch = item.fullname.toLowerCase().includes(param.keyword.toLowerCase())
-        const matchesRelationship = param.isHouseholder ? Boolean(item.isHouseHold) : true
-        return matchesSearch && matchesRelationship
-    });
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <Box px={4}>
+                    <NewsSkeleton count={5} />
+                </Box>
+            );
+        }
+
+        if (!data.data.length) {
+            return (
+                <Box px={4}>
+                    <EmptyData
+                        title="Hiện chưa có dân cư nào!"
+                        desc="Nhấn vào nút Thêm để bắt đầu!"
+                    />
+                </Box>
+            );
+        }
+
+        return <Box>
+            {
+                viewCard ? (
+                    <CardTanStack data={data.data} columns={columns} />
+                ) : (
+                    <Box px={4}>
+                        <TableTanStack data={data.data} columns={columns} />
+                    </Box>
+                )
+            }
+            <Box px={4}>
+                <TablePagination
+                    totalItems={data.page.total}
+                    pageSize={param.pageSize}
+                    pageIndex={param.page}
+                    onPageChange={handlePageChange}
+                    onRowChange={handleRowChange}
+                />
+            </Box>
+        </Box>
+    };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -156,60 +252,13 @@ const ResidentManagementPage: React.FC = () => {
                         <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
-                                value={param.keyword}
-                                onChange={(e) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        keyword: e.target.value
-                                    }));
-                                }}
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <div className="col-span-12">
-                            <div className="flex items-center justify-start gap-2">
-                                <Checkbox
-                                    size="medium"
-                                    label=""
-                                    value=''
-                                    checked={param.isHouseholder}
-                                    onChange={() => {
-                                        setParam((prevParam) => ({
-                                            ...prevParam,
-                                            isHouseholder: !param.isHouseholder
-                                        }));
-                                    }}
-                                />
-                                <span className="text-[16px]">Chủ hộ</span>
-                            </div>
-                        </div>
                     </FilterBar>
-                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
-                        <Button
-                            size="small"
-                            variant="tertiary"
-                            onClick={() => navigate('/resident-craft-management')}
-                        >
-                            <div className="flex items-center gap-1">
-                                Danh sách hồ sơ chưa duyệt
-                                <Icon fontSize={18} icon='iconamoon:enter' />
-                            </div>
-                        </Button>
-                    </Box>
                     <Box>
-                        {viewCard ?
-                            <CardTanStack data={filteredData} columns={columns} />
-                            :
-                            <Box px={4}>
-                                <TableTanStack data={filteredData} columns={columns} />
-                            </Box>
-                        }
-                        <TablePagination
-                            totalItems={50}
-                            pageSize={param.pageSize}
-                            pageIndex={param.pageIndex}
-                            onPageChange={handlePageChange}
-                            onRowChange={handleRowChange}
-                        />
+                        {renderContent()}
                     </Box>
                 </Box>
             </Box>

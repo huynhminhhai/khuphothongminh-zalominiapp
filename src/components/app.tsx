@@ -45,7 +45,7 @@ const AuthWrapper = ({ children }) => {
       const storedAccessToken = storedData.accessToken || null;
       const storedRefreshToken = storedData.refreshToken || null;
 
-      console.log(storedAccount);
+      console.log('Thông tin account:', storedAccount);
 
       setToken({
         accessToken: storedAccessToken,

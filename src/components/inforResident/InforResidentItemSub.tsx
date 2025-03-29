@@ -2,17 +2,14 @@ import React, { useState } from "react"
 import { Box, useNavigate } from "zmp-ui"
 import { InforItemMain } from "./InforResidentItemMain"
 import { Icon } from "@iconify/react"
-import { genderLabel, relationships, ResidentType } from "constants/utinities"
-import { getLabelOptions } from "utils/options"
-import { districtOptions, provinceOptions, residentRequest, residentStatus, residentType, wardOptions } from "constants/mock"
 import SecondaryButton from "components/button/SecondaryButton"
+import { formatDate } from "utils/date"
 
 type InforResidentItemProps = {
-    data: ResidentType
-    isCraft?: boolean
+    data: any
 }
 
-const InforResidentItem: React.FC<InforResidentItemProps> = ({data, isCraft=false}) => {
+const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
 
     const navigate = useNavigate()
 
@@ -21,7 +18,7 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({data, isCraft=fals
         setIsOpen((prev) => !prev);
     };
 
-    const status = getLabelOptions(data.status, residentRequest)
+    // const status = getLabelOptions(data.status, residentRequest)
 
     return (
         <Box>
@@ -29,12 +26,7 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({data, isCraft=fals
                 <Box onClick={toggleDropdown}>
                     <div className="flex items-center justify-between mb-1">
                         <h4 className="text-[16px] leading-[1] font-medium">
-                            {data.fullname} {" "}
-                            {data.status !== 1 && 
-                                <span className="text-[12px]">
-                                    ({status})
-                                </span>
-                            }
+                            {data.hoTen} {data.laChuHo ? '(Chủ hộ)' : ''}
                         </h4>
                         <div>
                             {
@@ -47,24 +39,21 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({data, isCraft=fals
                     isOpen && (
                         <Box>
                             <Box>
-                                <InforItemMain label="Số định danh cá nhân" value={data.numberCard} />
-                                <InforItemMain label="Số điện thoại" value={data.phoneNumber} />
-                                <InforItemMain label="Ngày sinh" value={data.birthDate} />
-                                <InforItemMain label="Giới tính" value={genderLabel[data.gender]} />
-                                <InforItemMain label="Quan hệ với chủ hộ" value={getLabelOptions(data.relationship, relationships) || 'Chủ hộ'} />
-                                <InforItemMain label="Quê quán" value={`${data.address}, ${wardOptions.find(item => item.id === data.ward)?.name}, ${districtOptions.find(item => item.id === data.district)?.name}, ${getLabelOptions(data.province, provinceOptions)}`} />
-                                <InforItemMain
-                                    label="Loại cư trú"
-                                    value={`${getLabelOptions(data.residenceType, residentType)}`}
-                                />
-                                {
-                                    getLabelOptions(data.residenceStatus, residentStatus) && 
-                                    <InforItemMain
-                                        label="Tình trạng"
-                                        value={`${ getLabelOptions(data.residenceStatus, residentStatus)}`}
-                                    />
-                                }
-                                <InforItemMain label="Bảo hiểm y tế" value={data.bhyt} />
+                                <InforItemMain label="Số định danh cá nhân" value={data.soGiayTo} />
+                                <InforItemMain label="Mối quan hệ với chủ hộ" value={data.laChuHo ? 'Là chủ hộ' : data.tenMoiQuanHeVoiChuHo} />
+                                <InforItemMain label="Giới tính" value={data.tenGioiTinh} />
+                                <InforItemMain label="Ngày sinh" value={formatDate(data.ngaySinh)} />
+                                <InforItemMain label="Số điện thoại" value={data.dienThoai} />
+                                <InforItemMain label="Email" value={data.email} />
+                                <InforItemMain label="Quê quán" value={
+                                    `${data.diaChi || ''} ${data.tenAp ? ', ' + data.tenAp : ''} ${data.tenXa ? ', ' + data.tenXa : ''} ${data.tenHuyen ? ', ' + data.tenHuyen : ''} ${data.tenTinh ? ', ' + data.tenTinh : ''}`
+                                } />
+                                <InforItemMain label="Nghề nghiệp" value={data.ngheNghiep} />
+                                <InforItemMain label="Nơi làm việc" value={data.noiLamViec} />
+                                <InforItemMain label="Dân tộc" value={data.tenDanToc} />
+                                <InforItemMain label="Tôn giáo" value={data.tenTonGiao} />
+                                <InforItemMain label="Quốc gia" value={data.tenQuocGia} />
+                                <InforItemMain label="Website" value={data.website} />
                             </Box>
                             <Box mt={2}>
                                 <div className=" flex items-center justify-end gap-3">

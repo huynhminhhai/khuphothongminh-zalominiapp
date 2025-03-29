@@ -15,3 +15,10 @@ export const convertToValueLabel = (data: { id: number, name: string }[]) => {
         label: item.name
     }));
 };
+
+export const convertResidentTypes = (data: any[]) => {
+    return data.map(item => ({
+        value: item.loaiCuTruId,
+        label: item.tenLoaiCuTru
+    }));
+};

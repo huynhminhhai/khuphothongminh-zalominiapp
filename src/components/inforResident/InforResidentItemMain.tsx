@@ -1,12 +1,13 @@
 import { Icon } from "@iconify/react"
+import { useGetUserInfo } from "apiRequest/user"
 import images from "assets/images"
 import SecondaryButton from "components/button/SecondaryButton"
-import { districtOptions, economicStatus, ethnicOptions, gender, provinceOptions, religionOptions, wardOptions } from "constants/mock"
-import { genderLabel, RESIDENT, RESIDENTMAIN } from "constants/utinities"
-import React, { useEffect, useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
-import { getLabelOptions } from "utils/options"
-import { Avatar, Box, useSnackbar } from "zmp-ui"
+import { EmptyData } from "components/data"
+import UserInfoSkeleton from "components/skeleton/info/UserInfoSkeleton"
+import React from "react"
+import { useNavigate } from "react-router-dom"
+import { formatDate } from "utils/date"
+import { Avatar, Box } from "zmp-ui"
 
 export const InforItemMain = ({ label, value }: { label: string, value: string }) => {
     return (
@@ -17,93 +18,50 @@ export const InforItemMain = ({ label, value }: { label: string, value: string }
     )
 }
 
-const InforResidentItemMain: React.FC = () => {
+type InforResidentItemMainType = {
+    data: any
+}
 
-    const [loading, setLoading] = useState(false);
-    const [detailData, setDetailData] = useState<any>()
-
-    const { openSnackbar } = useSnackbar();
-    const [searchParams] = useSearchParams();
+const InforResidentItemMain: React.FC<InforResidentItemMainType> = ({data}) => {
     const navigate = useNavigate()
-
-    const userId = searchParams.get("id");
-
-    useEffect(() => {
-        const fetchResidentData = async () => {
-            setLoading(true);
-            try {
-
-                const data = RESIDENT.find(resident => resident.id === Number(userId))
-
-                if (data) {
-                    setDetailData(data)
-                } else {
-                    setDetailData(RESIDENTMAIN)
-                }
-
-
-            } catch (error) {
-                console.error("Failed to fetch resident data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchResidentData();
-    }, [userId]);
+    
+    const thongTinDanCu = data.thongTinDanCu;
 
     return (
         <Box>
-            {
-                detailData &&
+            <Box>
                 <Box>
-                    <Box>
-                        <div className="bg-[#731611] relative flex flex-col items-center justify-center py-[30px] overflow-hidden">
-                            {/* <img src={images.shape3} alt="shape3" className="bg-[#e9ca9433] absolute z-10 top-0 left-0 w-full h-full object-none" /> */}
-                            <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.1] z-0" />
-                            <Avatar size={120} src={detailData.avatar ||
-                                'https://www.pphfoundation.ca/wp-content/uploads/2018/05/default-avatar.png'
-                            } className="relative z-20 border-[4px] border-white" />
-                            <div className="relative z-20 uppercase text-[18px] leading-[24px] font-semibold mt-3 text-white">{detailData.fullname}</div>
-                        </div>
-                    </Box>
-                    <Box p={4}>
-                        <InforItemMain label="Chủ hộ" value={detailData.parentName || 'Là chủ hộ'} />
-                        <InforItemMain label="Số định danh cá nhân" value={detailData.numberCard} />
-                        <InforItemMain label="Số điện thoại" value={detailData.phoneNumber} />
-                        <InforItemMain label="Giới tính" value={getLabelOptions(detailData.gender, gender) as string} />
-                        <InforItemMain label="Ngày sinh" value={detailData.birthDate} />
-                        <InforItemMain label="Dân tộc" value={getLabelOptions(detailData.nation, ethnicOptions) as string} />
-                        <InforItemMain label="Tôn giáo" value={getLabelOptions(detailData.religion, religionOptions) as string} />
-                        <InforItemMain label="Quê quán" value={`${detailData.address}, ${wardOptions.find(item => item.id === detailData.ward)?.name}, ${districtOptions.find(item => item.id === detailData.district)?.name}, ${getLabelOptions(detailData.province, provinceOptions)}`} />
-                        <InforItemMain label="Thường trú" value={`${detailData.addressPermanent}, ${wardOptions.find(item => item.id === detailData.wardsPermanent)?.name}, ${districtOptions.find(item => item.id === detailData.districtPermanent)?.name}, ${getLabelOptions(detailData.provincePermanent, provinceOptions)}`} />
-                        <InforItemMain label="Bảo hiểm y tế" value={detailData.bhyt} />
-                        <InforItemMain label="Tình trạng hộ" value={getLabelOptions(detailData.economicStatus, economicStatus) as string} />
-                        <InforItemMain label="Gia đình văn hóa" value={detailData.culturalFamilyStatus ? 'Đạt' : 'Không đạt'} />
-                    </Box>
+                    <div className="bg-[#731611] relative flex flex-col items-center justify-center py-[30px] overflow-hidden">
+                        <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.05] z-0" />
+                        <Avatar size={120} src={data.anhDaiDien} style={{ background: '#f0f0f0' }} className="relative z-20 border-[4px] border-white" />
+                        <div className="relative z-20 uppercase text-[18px] leading-[24px] font-semibold mt-3 text-white">{thongTinDanCu.hoTen}</div>
+                    </div>
                 </Box>
-            }
-            {/* {
-                detailData && detailData.isHouseHold &&
                 <Box p={4}>
-                    <Box p={4} className="border-[1px] rounded-lg" onClick={() => navigate('/resident-member')}>
-                        <div className="flex items-center justify-between">
-                            <div className="text-[14px] font-normal">Thành viên khác trong hộ gia đình (4)</div>
-                            <div>
-                                <Icon fontSize={16} icon='mingcute:right-line' />
-                            </div>
-                        </div>
-                    </Box>
+                    <InforItemMain label="Số định danh cá nhân" value={thongTinDanCu.soGiayTo} />
+                    <InforItemMain label="Mối quan hệ với chủ hộ" value={thongTinDanCu.laChuHo ? 'Là chủ hộ' : thongTinDanCu.tenMoiQuanHeVoiChuHo} />
+                    <InforItemMain label="Giới tính" value={thongTinDanCu.tenGioiTinh} />
+                    <InforItemMain label="Ngày sinh" value={formatDate(thongTinDanCu.ngaySinh)} />
+                    <InforItemMain label="Số điện thoại" value={thongTinDanCu.dienThoai} />
+                    <InforItemMain label="Email" value={thongTinDanCu.email} />
+                    <InforItemMain label="Thường trú" value={
+                        `${thongTinDanCu.noiThuongTru.diaChi || ''} ${thongTinDanCu.noiThuongTru.tenAp ? ', ' + thongTinDanCu.noiThuongTru.tenAp : ''} ${thongTinDanCu.noiThuongTru.tenXa ? ', ' + thongTinDanCu.noiThuongTru.tenXa : ''} ${thongTinDanCu.noiThuongTru.tenHuyen ? ', ' + thongTinDanCu.noiThuongTru.tenHuyen : ''} ${thongTinDanCu.noiThuongTru.tenTinh ? ', ' + thongTinDanCu.noiThuongTru.tenTinh : ''}`
+                    } />
+                    <InforItemMain label="Quê quán" value={
+                        `${thongTinDanCu.diaChi || ''} ${thongTinDanCu.tenAp ? ', ' + thongTinDanCu.tenAp : ''} ${thongTinDanCu.tenXa ? ', ' + thongTinDanCu.tenXa : ''} ${thongTinDanCu.tenHuyen ? ', ' + thongTinDanCu.tenHuyen : ''} ${thongTinDanCu.tenTinh ? ', ' + thongTinDanCu.tenTinh : ''}`
+                    } />
+                    <InforItemMain label="Nghề nghiệp" value={thongTinDanCu.ngheNghiep} />
+                    <InforItemMain label="Nơi làm việc" value={thongTinDanCu.noiLamViec} />
+                    <InforItemMain label="Dân tộc" value={thongTinDanCu.tenDanToc} />
+                    <InforItemMain label="Tôn giáo" value={thongTinDanCu.tenTonGiao} />
+                    <InforItemMain label="Quốc gia" value={thongTinDanCu.tenQuocGia} />
+                    <InforItemMain label="Bảo hiểm y tế" value={thongTinDanCu.baoHiemYTe ? thongTinDanCu.baoHiemYTe.maSo : 'Chưa có'} />
+                    <InforItemMain label="Website" value={thongTinDanCu.website} />
                 </Box>
-            } */}
+            </Box>
             <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">
                 <Box py={3} flex alignItems="center" justifyContent="center" className="w-full">
-                    <SecondaryButton fullWidth label="Cập nhật thông tin" handleClick={() => navigate('/resident-edit?id=1')} iconLeft={<Icon fontSize={16} icon='tabler:edit' />} />
+                    <SecondaryButton fullWidth label="Cập nhật thông tin" handleClick={() => navigate(`/resident-edit?id=${thongTinDanCu.danCuId}`)} iconLeft={<Icon fontSize={16} icon='tabler:edit' />} />
                 </Box>
             </div>
         </Box>

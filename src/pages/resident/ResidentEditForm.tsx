@@ -4,28 +4,28 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { PrimaryButton } from "components/button";
 import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form";
-import { ethnicOptions, gender, jobs, religionOptions, residentRealationships, residentStatus, residentType } from "constants/mock";
 import FormControllerRadioGroup from "components/form/FormRadioGroup";
 import { ConfirmModal } from "components/modal";
-import { useSearchParams } from "react-router-dom";
-import { RESIDENT } from "constants/utinities";
 import { FormDataResident, schemaResident } from "./type";
-import useAddress from "utils/useAddress";
+import { useSearchParams } from "react-router-dom";
+import { useGetResidentCategory, useGetResidentDetail } from "apiRequest/resident";
+import MemberListSkeleton from "components/skeleton/info/MemberListSkeleton";
+import { useStoreApp } from "store/store";
+import { formatDate } from "utils/date";
 
 const defaultValues: FormDataResident = {
-    fullname: '',
-    phoneNumber: '',
-    residenceType: 1,
-    residenceStatus: 1,
-    relationship: 0,
-    birthDate: '',
-    gender: 0,
-    numberCard: '',
-    dateCard: '',
-    religion: 0,
-    nation: 0,
+    hoTen: '',
+    dienThoai: '',
+    loaiCuTruId: 1,
+    moiQuanHeVoiChuHo: 0,
+    ngaySinh: '',
+    gioiTinh: 0,
+    soGiayTo: '',
+    tonGiao: 0,
+    danToc: 0,
     bhyt: '',
-    job: 0,
+    ngheNghiep: '',
+    noiLamViec: '',
     // Thường trú
     addressPermanent: '',
     provincePermanent: 0,
@@ -41,91 +41,56 @@ const defaultValues: FormDataResident = {
 const ResidentEditForm: React.FC = () => {
 
     const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { loaiCuTrus, gioiTinhs, danTocs, tonGiaos, moiQuanHeGiaDinhs, fetchResidentTypes } = useStoreApp()
+
+    console.clear()
+    console.log(tonGiaos)
+
+    useEffect(() => {
+        fetchResidentTypes();
+    }, []);
 
     const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>({})
+
 
     const { handleSubmit, reset, control, setValue, watch, formState: { errors } } = useForm<FormDataResident>({
         resolver: yupResolver(schemaResident),
         defaultValues
     });
 
-    // Thường trú
-    const selectedPermanentProvince = watch("provincePermanent");
-    const selectedPermanentDistrict = watch("districtPermanent");
-
-    const { provinces: provincesPermanent, districts: districtsPermanent, wards: wardsPermanent } = useAddress(selectedPermanentProvince, selectedPermanentDistrict);
-
-    // Quê quán
-    const selectedProvince = watch("province");
-    const selectedDistrict = watch("district");
-
-    const { provinces, districts, wards } = useAddress(selectedProvince, selectedDistrict);
-
-    useEffect(() => {
-        setValue('districtPermanent', 0)
-        setValue('wardsPermanent', 0)
-    }, [selectedPermanentProvince, setValue])
-
-    useEffect(() => {
-        setValue('wardsPermanent', 0)
-    }, [selectedPermanentDistrict, setValue])
-
-    useEffect(() => {
-        setValue('district', 0)
-        setValue('ward', 0)
-    }, [selectedProvince, setValue])
-
-    useEffect(() => {
-        setValue('ward', 0)
-    }, [selectedDistrict, setValue])
-
-    useEffect(() => {
-        if (formData) {
-            reset(formData);
-            setValue("district", formData.district || 0);
-            setValue("ward", formData.ward || 0);
-            setValue("districtPermanent", formData.districtPermanent || 0);
-            setValue("wardsPermanent", formData.wardsPermanent || 0);
-        }
-    }, [formData, reset, setValue]);
-
     const [searchParams] = useSearchParams();
-
     const residentId = searchParams.get("id");
 
+    const { data: residentDetailData, isLoading } = useGetResidentDetail((Number(residentId)));
+
+    console.log(residentDetailData)
+
     useEffect(() => {
-        // Hàm gọi API để lấy thông tin thành viên
-        const fetchResidentData = async () => {
-            setLoading(true);
-            try {
-                // Giả sử API trả về thông tin thành viên
-                // const response = await fetch(`/api/residents/${residentId}`);
-                // const data = await response.json();
+        if (residentDetailData) {
+            reset({
+                moiQuanHeVoiChuHo: residentDetailData.moiQuanHeVoiChuHo,
+                hoTen: residentDetailData.hoTen,
+                dienThoai: residentDetailData.dienThoai,
+                email: residentDetailData.email,
+                loaiCuTruId: residentDetailData.noiThuongTru.loaiCuTruId,
+                gioiTinh: residentDetailData.gioiTinh,
+                ngaySinh: formatDate(residentDetailData.ngaySinh),
+                soGiayTo: residentDetailData.soGiayTo,
+                ngheNghiep: residentDetailData.ngheNghiep,
+                danToc: Number(residentDetailData.danToc),
+                tonGiao: Number(residentDetailData.tonGiao),
+            });
+        }
+    }, [reset, residentDetailData])
 
-                const data = RESIDENT.find(resident => resident.id === Number(residentId))
+    const { data: residentCategoryData, } = useGetResidentCategory();
 
-                if (data) {
-                    setFormData(data)
-                    reset(data)
-                }
+    console.log(residentCategoryData)
 
-            } catch (error) {
-                console.error("Failed to fetch resident data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchResidentData();
-    }, [residentId]);
+    if (isLoading) return <MemberListSkeleton />;
 
     const onSubmit: SubmitHandler<FormDataResident> = (data) => {
 
@@ -153,42 +118,13 @@ const ResidentEditForm: React.FC = () => {
 
         setConfirmVisible(true);
 
-        setFormData({...updatedData, id: formData.id})
+        setFormData({ ...updatedData, id: formData.id })
     };
-
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            // Gọi API thêm thành viên
-            console.log('call api update with: ', formData);
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Yêu cầu cập nhật thông tin thành viên thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            navigate('/resident-member');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
 
     const handleConfirm = () => {
         setConfirmVisible(false);
         if (formData) {
-            fetchApi()
+            // fetchApi()
         }
     };
 
@@ -197,52 +133,166 @@ const ResidentEditForm: React.FC = () => {
         setConfirmVisible(false);
     };
 
+    // // Thường trú
+    // const selectedPermanentProvince = watch("provincePermanent");
+    // const selectedPermanentDistrict = watch("districtPermanent");
+
+    // const { provinces: provincesPermanent, districts: districtsPermanent, wards: wardsPermanent } = useAddress(selectedPermanentProvince, selectedPermanentDistrict);
+
+    // // Quê quán
+    // const selectedProvince = watch("province");
+    // const selectedDistrict = watch("district");
+
+    // const { provinces, districts, wards } = useAddress(selectedProvince, selectedDistrict);
+
+    // useEffect(() => {
+    //     setValue('districtPermanent', 0)
+    //     setValue('wardsPermanent', 0)
+    // }, [selectedPermanentProvince, setValue])
+
+    // useEffect(() => {
+    //     setValue('wardsPermanent', 0)
+    // }, [selectedPermanentDistrict, setValue])
+
+    // useEffect(() => {
+    //     setValue('district', 0)
+    //     setValue('ward', 0)
+    // }, [selectedProvince, setValue])
+
+    // useEffect(() => {
+    //     setValue('ward', 0)
+    // }, [selectedDistrict, setValue])
+
+    // useEffect(() => {
+    //     if (formData) {
+    //         reset(formData);
+    //         setValue("district", formData.district || 0);
+    //         setValue("ward", formData.ward || 0);
+    //         setValue("districtPermanent", formData.districtPermanent || 0);
+    //         setValue("wardsPermanent", formData.wardsPermanent || 0);
+    //     }
+    // }, [formData, reset, setValue]);
+
+    // useEffect(() => {
+    //     // Hàm gọi API để lấy thông tin thành viên
+    //     const fetchResidentData = async () => {
+    //         setLoading(true);
+    //         try {
+    //             // Giả sử API trả về thông tin thành viên
+    //             // const response = await fetch(`/api/residents/${residentId}`);
+    //             // const data = await response.json();
+
+    //             const data = RESIDENT.find(resident => resident.id === Number(residentId))
+
+    //             if (data) {
+    //                 setFormData(data)
+    //                 reset(data)
+    //             }
+
+    //         } catch (error) {
+    //             console.error("Failed to fetch resident data:", error);
+    //             openSnackbar({
+    //                 text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
+    //                 type: "error",
+    //                 duration: 5000,
+    //             });
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     };
+
+    //     fetchResidentData();
+    // }, [residentId]);
+
+
+
+    // const fetchApi = () => {
+    //     setLoading(true);
+    //     try {
+    //         // Gọi API thêm thành viên
+    //         console.log('call api update with: ', formData);
+    //         // Thành công
+    //         openSnackbar({
+    //             icon: true,
+    //             text: "Yêu cầu cập nhật thông tin thành viên thành công",
+    //             type: 'success',
+    //             action: { text: "Đóng", close: true },
+    //             duration: 5000,
+    //         });
+    //         reset(defaultValues);
+    //         navigate('/resident-member');
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //         openSnackbar({
+    //             icon: true,
+    //             text: "Có lỗi xảy ra, vui lòng thử lại sau.",
+    //             type: 'error',
+    //             action: { text: "Đóng", close: true },
+    //             duration: 5000,
+    //         });
+    //     } finally {
+    //         setLoading(false);
+    //     }
+    // }
+
+
+
     return (
         <Box p={4}>
             <form>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormSelectField
-                            // disabled={getValues().relationship === 0}
-                            name="relationship"
+                            // disabled={getValues().moiQuanHeVoiChuHo === 0}
+                            name="moiQuanHeVoiChuHo"
                             label="Quan hệ với chủ hộ"
                             placeholder={"Chọn quan hệ với chủ hộ"}
                             control={control}
-                            options={residentRealationships}
-                            error={errors.relationship?.message}
+                            options={moiQuanHeGiaDinhs}
+                            error={errors.moiQuanHeVoiChuHo?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="fullname"
+                            name="hoTen"
                             label="Họ và tên"
                             placeholder="Nhập họ và tên"
                             control={control}
-                            error={errors.fullname?.message}
+                            error={errors.hoTen?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="phoneNumber"
+                            name="dienThoai"
                             label="Số điện thoại"
                             placeholder="Nhập số điện thoại"
                             control={control}
-                            error={errors.phoneNumber?.message}
+                            error={errors.dienThoai?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="email"
+                            label="Email"
+                            placeholder="Nhập email"
+                            control={control}
+                            error={errors.email?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormControllerRadioGroup
-                            name="residenceType"
+                            name="loaiCuTruId"
                             control={control}
                             label="Loại cư trú"
-                            options={residentType}
+                            options={loaiCuTrus}
                             required
                         />
                     </div>
-                    <div className="col-span-12 flexCol">
+                    {/* <div className="col-span-12 flexCol">
                         <FormControllerRadioGroup
                             name="residenceStatus"
                             control={control}
@@ -250,8 +300,8 @@ const ResidentEditForm: React.FC = () => {
                             options={residentStatus}
                             required
                         />
-                    </div>
-                    <div className="col-span-12">
+                    </div> */}
+                    {/* <div className="col-span-12">
                         <FormSelectField
                             name="province"
                             label="Quê quán"
@@ -281,7 +331,7 @@ const ResidentEditForm: React.FC = () => {
                             options={wards}
                             error={errors.ward?.message}
                         />
-                    </div>
+                    </div> */}
                     <div className="col-span-12">
                         <FormInputAreaField
                             name="address"
@@ -291,7 +341,7 @@ const ResidentEditForm: React.FC = () => {
                             error={errors.address?.message}
                         />
                     </div>
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <FormSelectField
                             name="provincePermanent"
                             label="Địa chỉ thường trú"
@@ -321,7 +371,7 @@ const ResidentEditForm: React.FC = () => {
                             options={wardsPermanent}
                             error={errors.wardsPermanent?.message}
                         />
-                    </div>
+                    </div> */}
                     <div className="col-span-12">
                         <FormInputAreaField
                             name="addressPermanent"
@@ -333,78 +383,75 @@ const ResidentEditForm: React.FC = () => {
                     </div>
                     <div className="col-span-6">
                         <FormControllerDatePicker
-                            name="birthDate"
+                            name="ngaySinh"
                             label="Ngày sinh"
                             control={control}
                             placeholder="Chọn ngày sinh"
                             required
                             dateFormat="dd/mm/yyyy"
-                            error={errors.birthDate?.message}
+                            error={errors.ngaySinh?.message}
                         />
                     </div>
                     <div className="col-span-6">
                         <FormSelectField
-                            name="gender"
+                            name="gioiTinh"
                             label="Giới tính"
                             placeholder="Chọn giới tính"
                             control={control}
-                            options={gender}
-                            error={errors.gender?.message}
+                            options={gioiTinhs}
+                            error={errors.gioiTinh?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            type="number"
-                            name="numberCard"
+                            name="soGiayTo"
                             label="Số định danh cá nhân"
                             placeholder="Nhập số định danh cá nhân"
                             control={control}
-                            error={errors.numberCard?.message}
+                            error={errors.soGiayTo?.message}
                             required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormControllerDatePicker
-                            name="dateCard"
-                            label="Ngày cấp"
-                            control={control}
-                            placeholder="Chọn ngày cấp"
-                            required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.dateCard?.message}
                         />
                     </div>
                     <div className="col-span-6">
                         <FormSelectField
-                            name="religion"
+                            name="tonGiao"
                             label="Tôn giáo"
                             placeholder="Nhập tôn giáo"
                             control={control}
-                            options={religionOptions}
-                            error={errors.religion?.message}
+                            options={tonGiaos}
+                            error={errors.tonGiao?.message}
                             required
                         />
                     </div>
                     <div className="col-span-6">
                         <FormSelectField
-                            name="nation"
+                            name="danToc"
                             label="Dân tộc"
                             placeholder="Nhập dân tộc"
                             control={control}
-                            options={ethnicOptions}
-                            error={errors.nation?.message}
+                            options={danTocs}
+                            error={errors.danToc?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormSelectField
-                            name="job"
+                        <FormInputField
+                            name="ngheNghiep"
                             label="Nghề nghiệp"
-                            placeholder="Chọn nghề nghiệp"
+                            placeholder="Nhập nghề nghiệp"
                             control={control}
-                            options={jobs}
-                            error={errors.job?.message}
+                            error={errors.ngheNghiep?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="noiLamViec"
+                            label="Nơi làm việc"
+                            placeholder="Nhập nơi làm việc"
+                            control={control}
+                            error={errors.noiLamViec?.message}
                             required
                         />
                     </div>
