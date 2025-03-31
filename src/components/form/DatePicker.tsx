@@ -6,7 +6,7 @@ import ErrorMessage from "./ErrorMessage";
 
 interface FormDatePickerProps {
     name: string;
-    label: string;
+    label?: string;
     value: string;
     required?: boolean;
     error?: string;
@@ -54,7 +54,7 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({
 
     return (
         <Box pb={4} className={`relative ${error && 'borderRed'}`}>
-            <Label required={required} text={label} name={name} />
+            <Label required={required} text={label || ''} name={name} />
 
             <DatePicker
                 title={label}
@@ -76,7 +76,7 @@ export const FormDatePicker: React.FC<FormDatePickerProps> = ({
 
 type FormControllerDatePickerProps = {
     name: string;
-    label: string;
+    label?: string;
     control: Control<any>;
     placeholder?: string;
     required?: boolean;

@@ -8,7 +8,6 @@ import { ethnicOptions, gender, jobs, religionOptions, residentRealationships, r
 import FormControllerRadioGroup from "components/form/FormRadioGroup";
 import { ConfirmModal } from "components/modal";
 import { FormDataResident, schemaResident } from "./type";
-import useAddress from "utils/useAddress";
 
 const defaultValues: FormDataResident = {
     fullname: '',

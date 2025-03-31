@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react"
-import { Box, Checkbox, Switch, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Switch } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { Controller, SubmitHandler, useForm } from "react-hook-form"
+import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormCheckboxField, FormControllerDatePicker, FormImageUploaderSingle, FormInputAreaField, FormInputField, FormSelectField, FormTextEditorField } from "components/form"
+import { FormCheckboxField, FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import { FormDataProfile, FormResidentDetail, residentSchema, schemaProfile } from "./type"
-import { economicStatus, ethnicOptions, gender, jobs, religionOptions, residentRealationships, residentStatus, residentType } from "constants/mock"
-import FormControllerRadioGroup from "components/form/FormRadioGroup"
-import { RESIDENT } from "constants/utinities"
+import { FormResidentDetail, residentSchema } from "./type"
 import { useSearchParams } from "react-router-dom"
-import useAddress from "utils/useAddress"
 import { useStoreApp } from "store/store"
 import { useGetChuHosList, useGetResidentDetail, useUpdateResident } from "apiRequest/resident"
 import http from "services/http"
 import { formatDate } from "utils/date"
+import { useAddressSelector } from "utils/useAddress"
 
 const ProfileUpdateForm: React.FC = () => {
 
@@ -29,7 +26,7 @@ const ProfileUpdateForm: React.FC = () => {
         soGiayTo: '',
         danToc: '',
         tonGiao: '',
-        quocGia: 'VN',
+        quocGia: '',
         ngheNghiep: '',
         noiLamViec: '',
         email: '',
@@ -65,17 +62,18 @@ const ProfileUpdateForm: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
     const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
+    const [chuHosData, setChuHosData] = useState<any>()
     const [houseHoldOptions, setHouseHoldOptions] = useState<{
         value: number;
         label: string;
     }[]>([])
 
-    console.log(isHouseHold)
-
-    const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<FormResidentDetail>({
+    const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
         resolver: yupResolver(residentSchema(isHouseHold)),
         defaultValues
     });
+
+    console.log(errors)
 
     const [searchParams] = useSearchParams();
     const residentId = searchParams.get("id");
@@ -84,16 +82,78 @@ const ProfileUpdateForm: React.FC = () => {
     const { data: residentDetail } = useGetResidentDetail(Number(residentId));
     const { mutateAsync: updateResident, isPending } = useUpdateResident();
 
+    const {
+        huyenOptions: huyenOptionsThuongTru,
+        xaOptions: xaOptionsThuongTru,
+        watchedTinh: watchedTinhThuongTru,
+        watchedHuyen: watchedHuyenThuongTru,
+    } = useAddressSelector({
+        prefix: "noiThuongTru",
+        tinhOptions: tinhs,
+        watch,
+        setValue,
+    });
+
+    const {
+        huyenOptions: huyenOptionsTamTru,
+        xaOptions: xaOptionsTamTru,
+        watchedTinh: watchedTinhTamTru,
+        watchedHuyen: watchedHuyenTamTru,
+    } = useAddressSelector({
+        prefix: "noiTamTru",
+        tinhOptions: tinhs,
+        watch,
+        setValue,
+    });
+
     useEffect(() => {
+
         if (residentDetail) {
+
+            console.log(residentDetail)
+
             reset({
                 ...residentDetail,
                 ngheNghiep: Number(residentDetail.ngheNghiep),
                 ngaySinh: formatDate(residentDetail.ngaySinh),
             });
-            setIsHouseHold(residentDetail.laChuHo)
+            setIsHouseHold(residentDetail.laChuHo);
+
+            if (residentDetail.noiThuongTru && residentDetail.noiThuongTru.tinh) {
+                setValue("noiThuongTru.tinh", residentDetail.noiThuongTru.tinh);
+            }
+
+            if (residentDetail.noiTamTru && residentDetail.noiTamTru.tinh) {
+                setValue("noiTamTru.tinh", residentDetail.noiTamTru.tinh);
+            }
         }
-    }, [residentDetail, reset]);
+    }, [
+        residentDetail,
+        reset,
+        setValue
+    ]);
+
+    useEffect(() => {
+        if (residentDetail) {
+            if (residentDetail.noiThuongTru && residentDetail.noiThuongTru.huyen) {
+                setValue("noiThuongTru.huyen", residentDetail.noiThuongTru.huyen);
+            }
+            if (residentDetail.noiTamTru && residentDetail.noiTamTru.huyen) {
+                setValue("noiTamTru.huyen", residentDetail.noiTamTru.huyen);
+            }
+        }
+    }, [huyenOptionsThuongTru, huyenOptionsTamTru, residentDetail, setValue]);
+
+    useEffect(() => {
+        if (residentDetail) {
+            if (residentDetail.noiThuongTru && residentDetail.noiThuongTru.xa) {
+                setValue("noiThuongTru.xa", residentDetail.noiThuongTru.xa);
+            }
+            if (residentDetail.noiTamTru && residentDetail.noiTamTru.xa) {
+                setValue("noiTamTru.xa", residentDetail.noiTamTru.xa);
+            }
+        }
+    }, [xaOptionsThuongTru, xaOptionsTamTru, residentDetail, setValue]);
 
     useEffect(() => {
         if (chuHos) {
@@ -120,6 +180,8 @@ const ProfileUpdateForm: React.FC = () => {
             const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
             const residentData = response.data;
 
+            setChuHosData(residentData)
+
             reset({
                 ...watch(),
                 noiThuongTru: {
@@ -139,6 +201,28 @@ const ProfileUpdateForm: React.FC = () => {
         }
     }
 
+    useEffect(() => {
+        if (chuHosData) {
+            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
+                setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
+            }
+            if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
+                setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
+            }
+        }
+    }, [chuHosData, huyenOptionsThuongTru, huyenOptionsTamTru, setValue])
+
+    useEffect(() => {
+        if (chuHosData) {
+            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
+                setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
+            }
+            if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
+                setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
+            }
+        }
+    }, [chuHosData, xaOptionsThuongTru, xaOptionsTamTru, setValue])
+
     const handleConfirm = async () => {
         setConfirmVisible(false);
         try {
@@ -154,10 +238,77 @@ const ProfileUpdateForm: React.FC = () => {
             }
 
             let dataSubmit = isHouseHold ?
-                { ...formData, laChuHo: isHouseHold, apId: account.apId, moiQuanHeVoiChuHo: 1, chuHoId: null } :
-                { ...formData, laChuHo: isHouseHold, apId: account.apId }
+                { ...formData, laChuHo: isHouseHold, apId: account.apId, moiQuanHeVoiChuHo: 1, chuHoId: null, danCuId: Number(residentId) } :
+                { ...formData, laChuHo: isHouseHold, apId: account.apId, danCuId: Number(residentId), }
 
-            await updateResident(dataSubmit);
+            await updateResident({
+                ...dataSubmit, noiThuongTru: {
+                    ...dataSubmit.noiThuongTru,
+                    tuNgay: null,
+                    denNgay: null
+                },
+                noiTamTru: {
+                    ...dataSubmit.noiTamTru,
+                    tuNgay: null,
+                    denNgay: null
+                }
+            });
+
+            // console.log({
+            //     ...dataSubmit,
+            //     noiThuongTru: {
+            //         thongTinCuTruId: dataSubmit.noiThuongTru.thongTinCuTruId,
+            //         loaiCuTruId: dataSubmit.noiThuongTru.loaiCuTruId,
+            //         diaChi: dataSubmit.noiThuongTru.diaChi,
+            //         xa: dataSubmit.noiThuongTru.xa,
+            //         huyen: dataSubmit.noiThuongTru.huyen,
+            //         tinh: dataSubmit.noiThuongTru.tinh,
+            //         latitude: dataSubmit.noiThuongTru.latitude || null,
+            //         longitute: dataSubmit.noiThuongTru.longitute || null,
+            //         tuNgay: null,
+            //         denNgay: null
+            //     },
+            //     noiTamTru: {
+            //         thongTinCuTruId: dataSubmit.noiTamTru.thongTinCuTruId,
+            //         loaiCuTruId: dataSubmit.noiTamTru.loaiCuTruId,
+            //         diaChi: dataSubmit.noiTamTru.diaChi,
+            //         xa: dataSubmit.noiTamTru.xa,
+            //         huyen: dataSubmit.noiTamTru.huyen,
+            //         tinh: dataSubmit.noiTamTru.tinh,
+            //         latitude: dataSubmit.noiTamTru.latitude || null,
+            //         longitute: dataSubmit.noiTamTru.longitute || null,
+            //         tuNgay: null,
+            //         denNgay: null
+            //     }
+            // })
+
+            // await updateResident({
+            //     ...dataSubmit,
+            //     noiThuongTru: {
+            //         thongTinCuTruId: dataSubmit.noiThuongTru.thongTinCuTruId,
+            //         loaiCuTruId: dataSubmit.noiThuongTru.loaiCuTruId,
+            //         diaChi: dataSubmit.noiThuongTru.diaChi,
+            //         xa: dataSubmit.noiThuongTru.xa,
+            //         huyen: dataSubmit.noiThuongTru.huyen,
+            //         tinh: dataSubmit.noiThuongTru.tinh,
+            //         latitude: dataSubmit.noiThuongTru.latitude || null,
+            //         longitute: dataSubmit.noiThuongTru.longitute || null,
+            //         tuNgay: null,
+            //         denNgay: null
+            //     },
+            //     noiTamTru: {
+            //         thongTinCuTruId: dataSubmit.noiTamTru.thongTinCuTruId,
+            //         loaiCuTruId: dataSubmit.noiTamTru.loaiCuTruId,
+            //         diaChi: dataSubmit.noiTamTru.diaChi,
+            //         xa: dataSubmit.noiTamTru.xa,
+            //         huyen: dataSubmit.noiTamTru.huyen,
+            //         tinh: dataSubmit.noiTamTru.tinh,
+            //         latitude: dataSubmit.noiTamTru.latitude || null,
+            //         longitute: dataSubmit.noiTamTru.longitute || null,
+            //         tuNgay: null,
+            //         denNgay: null
+            //     }
+            // });
 
             reset(defaultValues);
         } catch (error) {
@@ -330,16 +481,9 @@ const ProfileUpdateForm: React.FC = () => {
                             label=""
                             placeholder="Chọn quận/huyện"
                             control={control}
-                            options={
-                                [
-                                    {
-                                        value: "800",
-                                        label: "Huyện Thạnh Hóa"
-                                    }
-                                ]
-                            }
+                            options={huyenOptionsThuongTru}
                             error={errors.noiThuongTru?.huyen?.message}
-                            disabled={!isHouseHold}
+                            disabled={!isHouseHold || !watchedTinhThuongTru}
                         />
                     </div>
                     <div className="col-span-6">
@@ -348,16 +492,9 @@ const ProfileUpdateForm: React.FC = () => {
                             label=""
                             placeholder="Chọn phường/xã"
                             control={control}
-                            options={
-                                [
-                                    {
-                                        value: "27865",
-                                        label: "Thị trấn Thạnh Hóa"
-                                    }
-                                ]
-                            }
+                            options={xaOptionsThuongTru}
                             error={errors.noiThuongTru?.xa?.message}
-                            disabled={!isHouseHold}
+                            disabled={!isHouseHold || !watchedHuyenThuongTru}
                         />
                     </div>
                     <div className="col-span-12">
@@ -370,7 +507,7 @@ const ProfileUpdateForm: React.FC = () => {
                             disabled={!isHouseHold}
                         />
                     </div>
-                    <div className="col-span-6">
+                    {/* <div className="col-span-6">
                         <FormInputField
                             type="number"
                             name="noiThuongTru.latitude"
@@ -390,6 +527,24 @@ const ProfileUpdateForm: React.FC = () => {
                             disabled={!isHouseHold}
                         />
                     </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiThuongTru.tuNgay"
+                            control={control}
+                            placeholder="Ngày bắt đầu"
+                            dateFormat="dd/mm/yyyy"
+                            error={errors.noiThuongTru?.tuNgay?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiThuongTru.denNgay"
+                            control={control}
+                            placeholder="Ngày kết thúc"
+                            dateFormat="dd/mm/yyyy"
+                            error={errors.noiThuongTru?.denNgay?.message}
+                        />
+                    </div> */}
                     {/* Nơi tạm trú */}
                     {/* {!isHouseHold && (
             <> */}
@@ -409,15 +564,9 @@ const ProfileUpdateForm: React.FC = () => {
                             label=""
                             placeholder="Chọn quận/huyện"
                             control={control}
-                            options={
-                                [
-                                    {
-                                        value: "800",
-                                        label: "Huyện Thạnh Hóa"
-                                    }
-                                ]
-                            }
+                            options={huyenOptionsTamTru}
                             error={errors.noiTamTru?.huyen?.message}
+                            disabled={!watchedTinhTamTru}
                         />
                     </div>
                     <div className="col-span-6">
@@ -426,15 +575,9 @@ const ProfileUpdateForm: React.FC = () => {
                             label=""
                             placeholder="Chọn phường/xã"
                             control={control}
-                            options={
-                                [
-                                    {
-                                        value: "27865",
-                                        label: "Thị trấn Thạnh Hóa"
-                                    }
-                                ]
-                            }
+                            options={xaOptionsTamTru}
                             error={errors.noiTamTru?.xa?.message}
+                            disabled={!watchedHuyenTamTru}
                         />
                     </div>
                     <div className="col-span-12">
@@ -446,7 +589,7 @@ const ProfileUpdateForm: React.FC = () => {
                             error={errors.noiTamTru?.diaChi?.message}
                         />
                     </div>
-                    <div className="col-span-6">
+                    {/* <div className="col-span-6">
                         <FormInputField
                             type="number"
                             name="noiTamTru.latitude"
@@ -454,8 +597,8 @@ const ProfileUpdateForm: React.FC = () => {
                             control={control}
                             error={errors.noiTamTru?.latitude?.message}
                         />
-                    </div>
-                    <div className="col-span-6">
+                    </div> */}
+                    {/* <div className="col-span-6">
                         <FormInputField
                             type="number"
                             name="noiTamTru.longitute"
@@ -464,6 +607,24 @@ const ProfileUpdateForm: React.FC = () => {
                             error={errors.noiTamTru?.longitute?.message}
                         />
                     </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiTamTru.tuNgay"
+                            control={control}
+                            placeholder="Ngày bắt đầu"
+                            dateFormat="dd/mm/yyyy"
+                            error={errors.noiTamTru?.tuNgay?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiTamTru.denNgay"
+                            control={control}
+                            placeholder="Ngày kết thúc"
+                            dateFormat="dd/mm/yyyy"
+                            error={errors.noiTamTru?.denNgay?.message}
+                        />
+                    </div> */}
                     {/* </>
           )} */}
                     <div className="col-span-12">

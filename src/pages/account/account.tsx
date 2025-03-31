@@ -28,10 +28,10 @@ const AccountPage: React.FC = () => {
                                     <div className="bg-[#731611] rounded-lg px-4 py-6 relative overflow-hidden">
                                         <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.05] z-0" />
                                         <div className="flex items-center gap-3">
-                                            <Avatar size={60} src={images.avatarDefault} />
+                                            <Avatar size={60} src={account.anhDaiDien || images.avatarDefault}/>
                                             <div className="text-white">
                                                 <h3 className="text-[18px] font-semibold mb-1 uppercase">{account.hoTen}</h3>
-                                                {/* <h4 className="text-[16px] tracking-wider font-medium">{account.phoneNumber}</h4> */}
+                                                <h4 className="text-[16px] tracking-wider font-medium">{account.thongTinDanCu.dienThoai || ''}</h4>
                                             </div>
                                         </div>
                                     </div>

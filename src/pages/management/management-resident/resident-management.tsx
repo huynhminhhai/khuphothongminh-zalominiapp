@@ -93,7 +93,7 @@ const ResidentManagementPage: React.FC = () => {
                 <div>
                     {
                         !row.original.laChuHo ?
-                            <Icon className="text-red-700" fontSize={25} icon='line-md:close' />
+                            <>{row.original.hoTenChuHo}</>
                             :
                             <Icon className="text-green-700" fontSize={30} icon='line-md:confirm' />
                     }

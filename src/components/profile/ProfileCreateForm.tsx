@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, Checkbox, Switch } from "zmp-ui"
+import { Box, Switch } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
@@ -9,6 +9,8 @@ import { FormResidentDetail, residentSchema } from "./type"
 import { useStoreApp } from "store/store"
 import { useCreateResident, useGetChuHosList } from "apiRequest/resident"
 import http from "services/http"
+import { OptionsType } from "utils/options"
+import { useAddressSelector } from "utils/useAddress"
 
 const ProfileAddForm: React.FC = () => {
 
@@ -23,7 +25,7 @@ const ProfileAddForm: React.FC = () => {
     soGiayTo: '',
     danToc: '',
     tonGiao: '',
-    quocGia: 'VN',
+    quocGia: '',
     ngheNghiep: '',
     noiLamViec: '',
     email: '',
@@ -59,18 +61,40 @@ const ProfileAddForm: React.FC = () => {
   const [isConfirmVisible, setConfirmVisible] = useState(false);
   const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
   const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
-  const [houseHoldOptions, setHouseHoldOptions] = useState<{
-    value: number;
-    label: string;
-  }[]>([])
+  const [chuHosData, setChuHosData] = useState<any>()
+  const [houseHoldOptions, setHouseHoldOptions] = useState<OptionsType[]>([])
 
-  const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<FormResidentDetail>({
+  const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
     resolver: yupResolver(residentSchema(isHouseHold)),
     defaultValues
   });
 
   const { data: chuHos } = useGetChuHosList();
   const { mutateAsync: createResident, isPending } = useCreateResident();
+
+  const {
+    huyenOptions: huyenOptionsThuongTru,
+    xaOptions: xaOptionsThuongTru,
+    watchedTinh: watchedTinhThuongTru,
+    watchedHuyen: watchedHuyenThuongTru,
+  } = useAddressSelector({
+    prefix: "noiThuongTru",
+    tinhOptions: tinhs,
+    watch,
+    setValue,
+  });
+
+  const {
+    huyenOptions: huyenOptionsTamTru,
+    xaOptions: xaOptionsTamTru,
+    watchedTinh: watchedTinhTamTru,
+    watchedHuyen: watchedHuyenTamTru,
+  } = useAddressSelector({
+    prefix: "noiTamTru",
+    tinhOptions: tinhs,
+    watch,
+    setValue,
+  });
 
   useEffect(() => {
     if (chuHos) {
@@ -98,6 +122,8 @@ const ProfileAddForm: React.FC = () => {
       const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
       const residentData = response.data;
 
+      setChuHosData(residentData)
+
       reset({
         ...watch(),
         noiThuongTru: {
@@ -116,6 +142,28 @@ const ProfileAddForm: React.FC = () => {
       console.error('Lỗi khi gọi API resident detail:', error);
     }
   }
+
+  useEffect(() => {
+    if (chuHosData) {
+      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
+        setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
+      }
+      if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
+        setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
+      }
+    }
+  }, [chuHosData, huyenOptionsThuongTru, huyenOptionsTamTru, setValue])
+
+  useEffect(() => {
+    if (chuHosData) {
+      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
+        setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
+      }
+      if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
+        setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
+      }
+    }
+  }, [chuHosData, xaOptionsThuongTru, xaOptionsTamTru, setValue])
 
   const handleConfirm = async () => {
     setConfirmVisible(false);
@@ -308,16 +356,9 @@ const ProfileAddForm: React.FC = () => {
               label=""
               placeholder="Chọn quận/huyện"
               control={control}
-              options={
-                [
-                  {
-                    value: "800",
-                    label: "Huyện Thạnh Hóa"
-                  }
-                ]
-              }
+              options={huyenOptionsThuongTru}
               error={errors.noiThuongTru?.huyen?.message}
-              disabled={!isHouseHold}
+              disabled={!isHouseHold || !watchedTinhThuongTru}
             />
           </div>
           <div className="col-span-6">
@@ -326,16 +367,9 @@ const ProfileAddForm: React.FC = () => {
               label=""
               placeholder="Chọn phường/xã"
               control={control}
-              options={
-                [
-                  {
-                    value: "27865",
-                    label: "Thị trấn Thạnh Hóa"
-                  }
-                ]
-              }
+              options={xaOptionsThuongTru}
               error={errors.noiThuongTru?.xa?.message}
-              disabled={!isHouseHold}
+              disabled={!isHouseHold || !watchedHuyenThuongTru}
             />
           </div>
           <div className="col-span-12">
@@ -348,7 +382,7 @@ const ProfileAddForm: React.FC = () => {
               disabled={!isHouseHold}
             />
           </div>
-          <div className="col-span-6">
+          {/* <div className="col-span-6">
             <FormInputField
               type="number"
               name="noiThuongTru.latitude"
@@ -367,82 +401,106 @@ const ProfileAddForm: React.FC = () => {
               error={errors.noiThuongTru?.longitute?.message}
               disabled={!isHouseHold}
             />
+          </div> */}
+          {/* <div className="col-span-6">
+            <FormControllerDatePicker
+              name="noiThuongTru.tuNgay"
+              control={control}
+              placeholder="Ngày bắt đầu"
+              dateFormat="dd/mm/yyyy"
+              error={errors.noiThuongTru?.tuNgay?.message}
+            />
           </div>
+          <div className="col-span-6">
+            <FormControllerDatePicker
+              name="noiThuongTru.denNgay"
+              control={control}
+              placeholder="Ngày kết thúc"
+              dateFormat="dd/mm/yyyy"
+              error={errors.noiThuongTru?.denNgay?.message}
+            />
+          </div> */}
           {/* Nơi tạm trú */}
           {/* {!isHouseHold && (
             <> */}
-              <div className="col-span-12">
-                <FormSelectField
-                  name="noiTamTru.tinh"
-                  label="Địa chỉ tạm trú"
-                  placeholder="Chọn tỉnh/thành phố"
-                  control={control}
-                  options={tinhs}
-                  error={errors.noiTamTru?.tinh?.message}
-                />
-              </div>
-              <div className="col-span-6">
-                <FormSelectField
-                  name="noiTamTru.huyen"
-                  label=""
-                  placeholder="Chọn quận/huyện"
-                  control={control}
-                  options={
-                    [
-                      {
-                        value: "800",
-                        label: "Huyện Thạnh Hóa"
-                      }
-                    ]
-                  }
-                  error={errors.noiTamTru?.huyen?.message}
-                />
-              </div>
-              <div className="col-span-6">
-                <FormSelectField
-                  name="noiTamTru.xa"
-                  label=""
-                  placeholder="Chọn phường/xã"
-                  control={control}
-                  options={
-                    [
-                      {
-                        value: "27865",
-                        label: "Thị trấn Thạnh Hóa"
-                      }
-                    ]
-                  }
-                  error={errors.noiTamTru?.xa?.message}
-                />
-              </div>
-              <div className="col-span-12">
-                <FormInputAreaField
-                  name="noiTamTru.diaChi"
-                  label=""
-                  placeholder="Nhập địa chỉ chi tiết"
-                  control={control}
-                  error={errors.noiTamTru?.diaChi?.message}
-                />
-              </div>
-              <div className="col-span-6">
-                <FormInputField
-                  type="number"
-                  name="noiTamTru.latitude"
-                  placeholder="Nhập latitude"
-                  control={control}
-                  error={errors.noiTamTru?.latitude?.message}
-                />
-              </div>
-              <div className="col-span-6">
-                <FormInputField
-                  type="number"
-                  name="noiTamTru.longitute"
-                  placeholder="Nhập Longitute"
-                  control={control}
-                  error={errors.noiTamTru?.longitute?.message}
-                />
-              </div>
-            {/* </>
+          <div className="col-span-12">
+            <FormSelectField
+              name="noiTamTru.tinh"
+              label="Địa chỉ tạm trú"
+              placeholder="Chọn tỉnh/thành phố"
+              control={control}
+              options={tinhs}
+              error={errors.noiTamTru?.tinh?.message}
+            />
+          </div>
+          <div className="col-span-6">
+            <FormSelectField
+              name="noiTamTru.huyen"
+              label=""
+              placeholder="Chọn quận/huyện"
+              control={control}
+              options={huyenOptionsTamTru}
+              error={errors.noiTamTru?.huyen?.message}
+              disabled={!watchedTinhTamTru}
+            />
+          </div>
+          <div className="col-span-6">
+            <FormSelectField
+              name="noiTamTru.xa"
+              label=""
+              placeholder="Chọn phường/xã"
+              control={control}
+              options={xaOptionsTamTru}
+              error={errors.noiTamTru?.xa?.message}
+              disabled={!watchedHuyenTamTru}
+            />
+          </div>
+          <div className="col-span-12">
+            <FormInputAreaField
+              name="noiTamTru.diaChi"
+              label=""
+              placeholder="Nhập địa chỉ chi tiết"
+              control={control}
+              error={errors.noiTamTru?.diaChi?.message}
+            />
+          </div>
+          {/* <div className="col-span-6">
+            <FormInputField
+              type="number"
+              name="noiTamTru.latitude"
+              placeholder="Nhập latitude"
+              control={control}
+              error={errors.noiTamTru?.latitude?.message}
+            />
+          </div>
+          <div className="col-span-6">
+            <FormInputField
+              type="number"
+              name="noiTamTru.longitute"
+              placeholder="Nhập Longitute"
+              control={control}
+              error={errors.noiTamTru?.longitute?.message}
+            />
+          </div> */}
+          {/* <div className="col-span-6">
+            <FormControllerDatePicker
+              name="noiTamTru.tuNgay"
+              control={control}
+              placeholder="Ngày bắt đầu"
+              dateFormat="dd/mm/yyyy"
+              error={errors.noiTamTru?.tuNgay?.message}
+            />
+          </div>
+          <div className="col-span-6">
+            <FormControllerDatePicker
+              name="noiTamTru.denNgay"
+              control={control}
+              placeholder="Ngày kết thúc"
+              dateFormat="dd/mm/yyyy"
+              error={errors.noiTamTru?.denNgay?.message}
+            />
+          </div> */}
+          {/* </>
           )} */}
           <div className="col-span-12">
             <FormSelectField
@@ -477,6 +535,7 @@ const ProfileAddForm: React.FC = () => {
             <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
               <PrimaryButton
                 fullWidth
+                disabled={isPending}
                 label={isPending ? 'Đang xử lý...' : 'Thêm dân cư'}
                 handleClick={handleSubmit(onSubmit)}
               />

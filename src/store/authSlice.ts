@@ -15,12 +15,14 @@ type Permission = {
 };
 
 type Account = {
+    anhDaiDien: string;
     nguoiDungId: number;
     apId: number;
     tenDangNhap: string;
     hoTen: string;
     vaiTros: Role[];
     quyenXuLyChucNangs: Permission[];
+    thongTinDanCu: any;
 };
 
 export interface AuthSliceType {
