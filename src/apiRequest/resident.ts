@@ -1,6 +1,7 @@
 import http from "services/http";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "zmp-ui";
+import { update } from "lodash";
 
 const residentApiRequest = {
     getFamilyNumber: async () => {
@@ -29,6 +30,9 @@ const residentApiRequest = {
     },
     deleteResident: async (id: number) => {
         return await http.delete<any>(`/dancu/${id}`);
+    },
+    updateResident: async (formData: any) => {
+        return await http.put<any>(`/dancu`, formData);
     },
 }
 
@@ -200,7 +204,7 @@ export const useCreateResident = () => {
 };
 
 /**
-* DELETE NEWS
+* DELETE RESIDENT
 **/ 
 export const useDeleteResident = () => {
     const queryClient = useQueryClient();
@@ -219,6 +223,41 @@ export const useDeleteResident = () => {
                 duration: 3000,
             });
 
+            queryClient.invalidateQueries({ queryKey: ["residentList"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* PUT RESIDENT
+**/ 
+export const useUpdateResident = () => {
+    const { openSnackbar } = useSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await residentApiRequest.updateResident(formData);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Cập nhật dân cư thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["residentDetail"] });
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
         },
         onError: (error: string) => {

@@ -98,8 +98,6 @@ const ProfileAddForm: React.FC = () => {
       const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
       const residentData = response.data;
 
-      console.log(residentData)
-
       reset({
         ...watch(),
         noiThuongTru: {
