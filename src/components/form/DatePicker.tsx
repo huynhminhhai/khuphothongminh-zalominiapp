@@ -5,116 +5,96 @@ import Label from "./Label";
 import ErrorMessage from "./ErrorMessage";
 
 interface FormDatePickerProps {
-    name: string;
-    label?: string;
-    value: string;
-    required?: boolean;
-    error?: string;
-    helperText?: string;
-    placeholder?: string;
-    dateFormat?: string;
-    onChange: (value: string) => void;
+  name: string;
+  label?: string;
+  value: string; // Chuỗi ISO như "2000-12-12T00:00:00Z"
+  required?: boolean;
+  error?: string;
+  helperText?: string;
+  placeholder?: string;
+  onChange: (value: string) => void; // Trả về chuỗi ISO
 }
 
-export const formatDate = (date: Date | null, format: string): string => {
-    if (!date) return "";
-    const options: Intl.DateTimeFormatOptions = format
-        .split("/")
-        .reduce((acc, part, index) => {
-            if (part === "dd") acc.day = "2-digit";
-            if (part === "mm") acc.month = "2-digit";
-            if (part === "yyyy") acc.year = "numeric";
-            return acc;
-        }, {} as Intl.DateTimeFormatOptions);
-    return new Intl.DateTimeFormat("en-GB", options).format(date);
+export const formatDate = (date: Date | null): string => {
+  if (!date) return "";
+  return date.toISOString().replace(".000Z", "Z"); // "2000-12-12T00:00:00Z"
 };
 
-export const parseDate = (dateStr: string, format: string): Date | undefined => {
-    if (!dateStr) return undefined;
-    const parts = dateStr.split("/");
-    const formatParts = format.split("/");
-    const day = parseInt(parts[formatParts.indexOf("dd")], 10);
-    const month = parseInt(parts[formatParts.indexOf("mm")], 10) - 1;
-    const year = parseInt(parts[formatParts.indexOf("yyyy")], 10);
-    return new Date(year, month, day);
+export const parseDate = (dateStr: string): Date | undefined => {
+  if (!dateStr) return undefined;
+  const date = new Date(dateStr); // Chuyển chuỗi ISO thành Date
+  return isNaN(date.getTime()) ? undefined : date;
 };
 
 export const FormDatePicker: React.FC<FormDatePickerProps> = ({
-    name,
-    label,
-    value,
-    required = false,
-    error,
-    helperText,
-    placeholder = "Chọn ngày", // Sử dụng giá trị mặc định trực tiếp
-    dateFormat = "dd/mm/yyyy", // Sử dụng giá trị mặc định trực tiếp
-    onChange,
+  name,
+  label,
+  value,
+  required = false,
+  error,
+  helperText,
+  placeholder = "Chọn ngày",
+  onChange,
 }) => {
-    const dateValue = parseDate(value, dateFormat); // Chuyển giá trị chuỗi thành `Date`
+  const dateValue = parseDate(value); // Chuyển chuỗi ISO thành Date
 
-    return (
-        <Box pb={4} className={`relative ${error && 'borderRed'}`}>
-            <Label required={required} text={label || ''} name={name} />
+  return (
+    <Box pb={4} className={`relative ${error && "borderRed"}`}>
+      <Label required={required} text={label || ""} name={name} />
 
-            <DatePicker
-                title={label}
-                value={dateValue || undefined} // Truyền giá trị kiểu `Date`
-                placeholder={placeholder}
-                helperText={helperText}
-                dateFormat={dateFormat}
-                mask
-                maskClosable
-                onChange={(newDate) =>
-                    onChange(formatDate(newDate as Date | null, dateFormat))
-                }
-            />
+      <DatePicker
+        title={label}
+        value={dateValue || undefined}
+        placeholder={placeholder}
+        helperText={helperText}
+        mask
+        maskClosable
+        onChange={(newDate) => onChange(formatDate(newDate as Date | null))}
+      />
 
-            {error && <ErrorMessage message={error} />}
-        </Box>
-    );
+      {error && <ErrorMessage message={error} />}
+    </Box>
+  );
 };
 
 type FormControllerDatePickerProps = {
-    name: string;
-    label?: string;
-    control: Control<any>;
-    placeholder?: string;
-    required?: boolean;
-    dateFormat?: string;
-    helperText?: string;
-    error?: string;
+  name: string;
+  label?: string;
+  control: Control<any>;
+  placeholder?: string;
+  required?: boolean;
+  helperText?: string;
+  error?: string;
 };
 
 const FormControllerDatePicker: React.FC<FormControllerDatePickerProps> = ({
-    name,
-    label,
-    control,
-    placeholder = "Chọn ngày",
-    required = false,
-    dateFormat = "dd/mm/yyyy",
-    helperText,
-    error,
+  name,
+  label,
+  control,
+  placeholder = "Chọn ngày",
+  required = false,
+  helperText,
+  error,
 }) => {
-    return (
-        <Controller
-            name={name}
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-                <FormDatePicker
-                    name={name}
-                    label={label}
-                    value={field.value}
-                    placeholder={placeholder}
-                    required={required}
-                    dateFormat={dateFormat}
-                    helperText={helperText}
-                    onChange={field.onChange}
-                    error={error}
-                />
-            )}
+  return (
+    <Controller
+      name={name}
+      control={control}
+      defaultValue=""
+      render={({ field }) => (
+        <FormDatePicker
+          name={name}
+          label={label}
+          value={field.value}
+          placeholder={placeholder}
+          required={required}
+          helperText={helperText}
+          onChange={field.onChange}
+          error={error}
         />
-    );
+      )}
+    />
+  );
 };
 
 export default FormControllerDatePicker;

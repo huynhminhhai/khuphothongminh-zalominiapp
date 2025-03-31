@@ -142,7 +142,7 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
     tinhTrangHoGiaDinhId: yup.number().required('Tình trạng hộ gia đình là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
     giaDinhVanHoa: yup.boolean().required('Gia đình văn hóa là bắt buộc'),
     noiThuongTru: residenceSchema.required('Nơi thường trú là bắt buộc'),
-    noiTamTru: residenceSchema.required('Nơi tạm trú là bắt buộc'),
+    // noiTamTru: residenceSchema.required('Nơi tạm trú là bắt buộc'),
     // noiTamTru: residenceSchema.nullable().notRequired(),
 });
 
@@ -178,6 +178,6 @@ export interface FormResidentDetail {
     tinhTrangHoGiaDinhId: number;
     giaDinhVanHoa: boolean;
     noiThuongTru: Residence;
-    noiTamTru: Residence;
-    // noiTamTru?: Residence | null;
+    // noiTamTru: Residence;
+    noiTamTru?: Residence | null;
 }

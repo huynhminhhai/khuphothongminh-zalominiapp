@@ -11,6 +11,7 @@ import { useCreateResident, useGetChuHosList } from "apiRequest/resident"
 import http from "services/http"
 import { OptionsType } from "utils/options"
 import { useAddressSelector } from "utils/useAddress"
+import { omit } from "lodash"
 
 const ProfileAddForm: React.FC = () => {
 
@@ -25,7 +26,7 @@ const ProfileAddForm: React.FC = () => {
     soGiayTo: '',
     danToc: '',
     tonGiao: '',
-    quocGia: '',
+    quocGia: 'VN',
     ngheNghiep: '',
     noiLamViec: '',
     email: '',
@@ -180,10 +181,12 @@ const ProfileAddForm: React.FC = () => {
       }
 
       let dataSubmit = isHouseHold ?
-        { ...formData, laChuHo: isHouseHold, apId: account.apId, moiQuanHeVoiChuHo: 1, chuHoId: null } :
+        { ...omit(formData, ['noiTamTru']), laChuHo: isHouseHold, apId: account.apId, moiQuanHeVoiChuHo: 1, chuHoId: null } :
         { ...formData, laChuHo: isHouseHold, apId: account.apId }
 
-      await createResident(dataSubmit);
+      console.log(dataSubmit)
+
+      await createResident({ ...dataSubmit, tinhTrangHoGiaDinhs: 29 });
 
       reset(defaultValues);
     } catch (error) {
@@ -236,7 +239,6 @@ const ProfileAddForm: React.FC = () => {
               control={control}
               placeholder="Chọn ngày sinh"
               required
-              dateFormat="dd/mm/yyyy"
               error={errors.ngaySinh?.message}
             />
           </div>
@@ -382,7 +384,7 @@ const ProfileAddForm: React.FC = () => {
               disabled={!isHouseHold}
             />
           </div>
-          {/* <div className="col-span-6">
+          <div className="col-span-6">
             <FormInputField
               type="number"
               name="noiThuongTru.latitude"
@@ -401,13 +403,12 @@ const ProfileAddForm: React.FC = () => {
               error={errors.noiThuongTru?.longitute?.message}
               disabled={!isHouseHold}
             />
-          </div> */}
-          {/* <div className="col-span-6">
+          </div>
+          <div className="col-span-6">
             <FormControllerDatePicker
               name="noiThuongTru.tuNgay"
               control={control}
               placeholder="Ngày bắt đầu"
-              dateFormat="dd/mm/yyyy"
               error={errors.noiThuongTru?.tuNgay?.message}
             />
           </div>
@@ -416,92 +417,89 @@ const ProfileAddForm: React.FC = () => {
               name="noiThuongTru.denNgay"
               control={control}
               placeholder="Ngày kết thúc"
-              dateFormat="dd/mm/yyyy"
               error={errors.noiThuongTru?.denNgay?.message}
             />
-          </div> */}
+          </div>
           {/* Nơi tạm trú */}
-          {/* {!isHouseHold && (
-            <> */}
-          <div className="col-span-12">
-            <FormSelectField
-              name="noiTamTru.tinh"
-              label="Địa chỉ tạm trú"
-              placeholder="Chọn tỉnh/thành phố"
-              control={control}
-              options={tinhs}
-              error={errors.noiTamTru?.tinh?.message}
-            />
-          </div>
-          <div className="col-span-6">
-            <FormSelectField
-              name="noiTamTru.huyen"
-              label=""
-              placeholder="Chọn quận/huyện"
-              control={control}
-              options={huyenOptionsTamTru}
-              error={errors.noiTamTru?.huyen?.message}
-              disabled={!watchedTinhTamTru}
-            />
-          </div>
-          <div className="col-span-6">
-            <FormSelectField
-              name="noiTamTru.xa"
-              label=""
-              placeholder="Chọn phường/xã"
-              control={control}
-              options={xaOptionsTamTru}
-              error={errors.noiTamTru?.xa?.message}
-              disabled={!watchedHuyenTamTru}
-            />
-          </div>
-          <div className="col-span-12">
-            <FormInputAreaField
-              name="noiTamTru.diaChi"
-              label=""
-              placeholder="Nhập địa chỉ chi tiết"
-              control={control}
-              error={errors.noiTamTru?.diaChi?.message}
-            />
-          </div>
-          {/* <div className="col-span-6">
-            <FormInputField
-              type="number"
-              name="noiTamTru.latitude"
-              placeholder="Nhập latitude"
-              control={control}
-              error={errors.noiTamTru?.latitude?.message}
-            />
-          </div>
-          <div className="col-span-6">
-            <FormInputField
-              type="number"
-              name="noiTamTru.longitute"
-              placeholder="Nhập Longitute"
-              control={control}
-              error={errors.noiTamTru?.longitute?.message}
-            />
-          </div> */}
-          {/* <div className="col-span-6">
-            <FormControllerDatePicker
-              name="noiTamTru.tuNgay"
-              control={control}
-              placeholder="Ngày bắt đầu"
-              dateFormat="dd/mm/yyyy"
-              error={errors.noiTamTru?.tuNgay?.message}
-            />
-          </div>
-          <div className="col-span-6">
-            <FormControllerDatePicker
-              name="noiTamTru.denNgay"
-              control={control}
-              placeholder="Ngày kết thúc"
-              dateFormat="dd/mm/yyyy"
-              error={errors.noiTamTru?.denNgay?.message}
-            />
-          </div> */}
-          {/* </>
-          )} */}
+          {!isHouseHold && (
+            <>
+              <div className="col-span-12">
+                <FormSelectField
+                  name="noiTamTru.tinh"
+                  label="Địa chỉ tạm trú"
+                  placeholder="Chọn tỉnh/thành phố"
+                  control={control}
+                  options={tinhs}
+                  error={errors.noiTamTru?.tinh?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <FormSelectField
+                  name="noiTamTru.huyen"
+                  label=""
+                  placeholder="Chọn quận/huyện"
+                  control={control}
+                  options={huyenOptionsTamTru}
+                  error={errors.noiTamTru?.huyen?.message}
+                  disabled={!watchedTinhTamTru}
+                />
+              </div>
+              <div className="col-span-6">
+                <FormSelectField
+                  name="noiTamTru.xa"
+                  label=""
+                  placeholder="Chọn phường/xã"
+                  control={control}
+                  options={xaOptionsTamTru}
+                  error={errors.noiTamTru?.xa?.message}
+                  disabled={!watchedHuyenTamTru}
+                />
+              </div>
+              <div className="col-span-12">
+                <FormInputAreaField
+                  name="noiTamTru.diaChi"
+                  label=""
+                  placeholder="Nhập địa chỉ chi tiết"
+                  control={control}
+                  error={errors.noiTamTru?.diaChi?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <FormInputField
+                  type="number"
+                  name="noiTamTru.latitude"
+                  placeholder="Nhập latitude"
+                  control={control}
+                  error={errors.noiTamTru?.latitude?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <FormInputField
+                  type="number"
+                  name="noiTamTru.longitute"
+                  placeholder="Nhập Longitute"
+                  control={control}
+                  error={errors.noiTamTru?.longitute?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <FormControllerDatePicker
+                  name="noiTamTru.tuNgay"
+                  control={control}
+                  placeholder="Ngày bắt đầu"
+                  error={errors.noiTamTru?.tuNgay?.message}
+                />
+              </div>
+              <div className="col-span-6">
+                <FormControllerDatePicker
+                  name="noiTamTru.denNgay"
+                  control={control}
+                  placeholder="Ngày kết thúc"
+                  error={errors.noiTamTru?.denNgay?.message}
+                />
+              </div>
+            </>
+          )}
           <div className="col-span-12">
             <FormSelectField
               name="tinhTrangHoGiaDinhId"
