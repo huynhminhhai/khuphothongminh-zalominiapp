@@ -1,78 +1,44 @@
-import React from "react";
-import { Control, Controller } from "react-hook-form";
-import { Box, Checkbox, Text } from "zmp-ui";
-import Label from "./Label";
-import ErrorMessage from "./ErrorMessage";
+import React from 'react';
+import { useController, Control, FieldValues, Path } from 'react-hook-form';
 
-type FormCheckboxProps = {
-    label: string;
-    name: string;
-    required?: boolean;
-    checked: boolean;
-    error?: string;
-    onChange: (checked: boolean) => void;
-    value?: string; // Thêm giá trị cho thuộc tính `value`
-};
+// Props cho FormCheckboxField
+interface FormCheckboxFieldProps<T extends FieldValues> {
+  name: Path<T>; // Tên trường trong form, khớp với interface
+  label: string; // Nhãn hiển thị
+  control: Control<T>; // Control từ useForm
+  defaultChecked?: boolean; // Giá trị mặc định
+  disabled?: boolean; // Trạng thái vô hiệu hóa
+}
 
-export const FormCheckbox: React.FC<FormCheckboxProps> = ({
-    label,
+// Component FormCheckboxField
+const FormCheckboxField = <T extends FieldValues>({
+  name,
+  label,
+  control,
+  defaultChecked = false,
+  disabled = false,
+}: FormCheckboxFieldProps<T>) => {
+  const {
+    field: { onChange, value, ref },
+  } = useController({
     name,
-    required = false,
-    checked,
-    error,
-    onChange,
-    value = "on", // Giá trị mặc định cho `value`
-}) => {
-    return (
-        <Box mb={5} className="relative">
-            <Label name={name} text={label} required={required} />
-
-            <Checkbox
-                id={name}
-                checked={checked}
-                onChange={(e) => onChange(e.target.checked)}
-                value={value}
-            >
-                {label}
-            </Checkbox>
-
-            {error && <ErrorMessage message={error} />}
-        </Box>
-    );
-};
-
-type FormControllerCheckboxProps = {
-    name: string;
-    label: string;
-    control: Control<any>;
-    required?: boolean;
-    error?: string;
-};
-
-const FormControllerCheckbox: React.FC<FormControllerCheckboxProps> = ({
-    name,
-    label,
     control,
-    required = false,
-    error,
-}) => {
-    return (
-        <Controller
-            name={name}
-            control={control}
-            defaultValue={false}
-            render={({ field }) => (
-                <FormCheckbox
-                    label={label}
-                    name={name}
-                    required={required}
-                    checked={field.value}
-                    onChange={field.onChange}
-                    error={error}
-                />
-            )}
-        />
-    );
+    defaultValue: defaultChecked as any, // Ép kiểu để tương thích với type T
+  });
+
+  return (
+    <div className="flex items-center gap-2 pb-4">
+      <input
+        type="checkbox"
+        checked={!!value} // Chuyển đổi giá trị sang boolean
+        onChange={(e) => onChange(e.target.checked)} // Truyền giá trị boolean
+        ref={ref} // Tham chiếu để focus
+        disabled={disabled}
+        className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+      />
+      <label className="font-medium">{label}</label>
+    </div>
+  );
 };
 
-export default FormControllerCheckbox;
+export default FormCheckboxField

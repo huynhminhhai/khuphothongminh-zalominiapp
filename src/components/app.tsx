@@ -27,8 +27,12 @@ import ForbiddenPage from "pages/403";
 
 
 const AuthWrapper = ({ children }) => {
-  const { setToken, setAccount, accessToken } = useStoreApp();
+  const { setToken, setAccount, accessToken, fetchResidentTypes } = useStoreApp();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchResidentTypes();
+  }, []);
 
   const loadAuthData = async () => {
     try {
@@ -203,7 +207,7 @@ const MyApp = () => {
                         {/* MANAGEMENT OVERVIEW */}
                         <Route path="/overview-household" element={<HouseHoldOverviewPage></HouseHoldOverviewPage>}></Route>
                         <Route path="/resident-household" element={<ResidentOverviewPage></ResidentOverviewPage>}></Route>
-                      
+
                       </Routes>
                       <Navigation />
                     </AuthWrapper>

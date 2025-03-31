@@ -5,7 +5,7 @@ import ErrorMessage from "./ErrorMessage";
 import Label from "./Label";
 
 type InputFieldProps = {
-    label: string;
+    label?: string;
     name: string;
     type?: 'text' | 'number' | 'password';
     error?: string;
@@ -27,7 +27,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 }) => {
     return (
         <Box pb={4} className="relative">
-            <Label name={name} text={label} required={required} />
+            <Label name={name} text={label || ''} required={required} />
             <Input
                 {...field}
                 id={name}
@@ -44,7 +44,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
 type FormInputFieldProps = {
     name: string;
-    label: string;
+    label?: string;
     type?: 'text' | 'number' | 'password';
     placeholder: string;
     control: Control<any>;  // Type for the `control` prop

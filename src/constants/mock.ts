@@ -217,106 +217,87 @@ export const provinceOptions = [
 
 export const districtOptions = [
     {
-        "id": 101,
-        "name": "Ba Đình",
-        "province": { "id": 1, "name": "Hà Nội" }
+        value: 101,
+        label: "Ba Đình",
     },
     {
-        "id": 102,
-        "name": "Hoàn Kiếm",
-        "province": { "id": 1, "name": "Hà Nội" }
+        value: 102,
+        label: "Hoàn Kiếm",
     },
     {
-        "id": 103,
-        "name": "Cầu Giấy",
-        "province": { "id": 1, "name": "Hà Nội" }
+        value: 103,
+        label: "Cầu Giấy",
     },
     {
-        "id": 201,
-        "name": "Quận 1",
-        "province": { "id": 2, "name": "TP. Hồ Chí Minh" }
+        value: 201,
+        label: "Quận 1",
     },
     {
-        "id": 202,
-        "name": "Quận 3",
-        "province": { "id": 2, "name": "TP. Hồ Chí Minh" }
+        value: 202,
+        label: "Quận 3",
     },
     {
-        "id": 203,
-        "name": "Quận 7",
-        "province": { "id": 2, "name": "TP. Hồ Chí Minh" }
+        value: 203,
+        label: "Quận 7",
     },
     {
-        "id": 301,
-        "name": "Sơn Trà",
-        "province": { "id": 3, "name": "Đà Nẵng" }
+        value: 301,
+        label: "Sơn Trà",
     },
     {
-        "id": 302,
-        "name": "Hải Châu",
-        "province": { "id": 3, "name": "Đà Nẵng" }
+        value: 302,
+        label: "Hải Châu",
     },
     {
-        "id": 401,
-        "name": "Thủ Dầu Một",
-        "province": { "id": 4, "name": "Bình Dương" }
+        value: 401,
+        label: "Thủ Dầu Một",
     },
     {
-        "id": 402,
-        "name": "Dĩ An",
-        "province": { "id": 4, "name": "Bình Dương" }
+        value: 402,
+        label: "Dĩ An",
     }
 ]
 
 export const wardOptions = [
     {
-        "id": 10101,
-        "name": "Phúc Xá",
-        "district": { "id": 101, "name": "Ba Đình", "province": { "id": 1, "name": "Hà Nội" } }
+        value: 10101,
+        label: "Phúc Xá",
+        
     },
     {
-        "id": 10102,
-        "name": "Trúc Bạch",
-        "district": { "id": 101, "name": "Ba Đình", "province": { "id": 1, "name": "Hà Nội" } }
+        value: 10102,
+        label: "Trúc Bạch",
     },
     {
-        "id": 10201,
-        "name": "Hàng Bạc",
-        "district": { "id": 102, "name": "Hoàn Kiếm", "province": { "id": 1, "name": "Hà Nội" } }
+        value: 10201,
+        label: "Hàng Bạc",
     },
     {
-        "id": 20101,
-        "name": "Bến Nghé",
-        "district": { "id": 201, "name": "Quận 1", "province": { "id": 2, "name": "TP. Hồ Chí Minh" } }
+        value: 20101,
+        label: "Bến Nghé",
     },
     {
-        "id": 20102,
-        "name": "Bến Thành",
-        "district": { "id": 201, "name": "Quận 1", "province": { "id": 2, "name": "TP. Hồ Chí Minh" } }
+        value: 20102,
+        label: "Bến Thành",
     },
     {
-        "id": 20201,
-        "name": "Võ Thị Sáu",
-        "district": { "id": 202, "name": "Quận 3", "province": { "id": 2, "name": "TP. Hồ Chí Minh" } }
+        value: 20201,
+        label: "Võ Thị Sáu",
     },
     {
-        "id": 30101,
-        "name": "An Hải Bắc",
-        "district": { "id": 301, "name": "Sơn Trà", "province": { "id": 3, "name": "Đà Nẵng" } }
+        value: 30101,
+        label: "An Hải Bắc",
     },
     {
-        "id": 30102,
-        "name": "An Hải Đông",
-        "district": { "id": 301, "name": "Sơn Trà", "province": { "id": 3, "name": "Đà Nẵng" } }
+        value: 30102,
+        label: "An Hải Đông",
     },
     {
-        "id": 40101,
-        "name": "Hiệp Thành",
-        "district": { "id": 401, "name": "Thủ Dầu Một", "province": { "id": 4, "name": "Bình Dương" } }
+        value: 40101,
+        label: "Hiệp Thành",
     },
     {
-        "id": 40102,
-        "name": "Phú Lợi",
-        "district": { "id": 401, "name": "Thủ Dầu Một", "province": { "id": 4, "name": "Bình Dương" } }
+        value: 40102,
+        label: "Phú Lợi",
     }
 ]

@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useGetResidentListNormal } from "apiRequest/resident"
+import { useDeleteResident, useGetResidentListNormal } from "apiRequest/resident"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
@@ -30,8 +30,7 @@ const ResidentManagementPage: React.FC = () => {
     })
 
     const { data, isLoading } = useGetResidentListNormal(param);
-
-    console.log(data)
+    const { mutate: deleteResident } = useDeleteResident();
 
     const debouncedSearch = useCallback(
         debounce((value) => {
@@ -47,18 +46,16 @@ const ResidentManagementPage: React.FC = () => {
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
             ...prevParam,
-            pageIndex: params.pageIndex, // Cập nhật pageIndex từ params
+            page: params.pageIndex,
         }));
-        console.log(`Navigated to page: ${params.pageIndex}, pageSize: ${params.pageSize}`);
     };
 
     const handleRowChange = (newPageSize: number) => {
         setParam((prevParam) => ({
             ...prevParam,
             pageSize: newPageSize,
-            pageIndex: 1, // Reset về trang đầu tiên khi thay đổi pageSize
+            page: 1,
         }));
-        console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
     const openConfirmModal = (action: () => void) => {
@@ -80,7 +77,7 @@ const ResidentManagementPage: React.FC = () => {
     };
 
     const removeResident = (id: number) => {
-        // openConfirmModal(() => deleteNews(id));
+        openConfirmModal(() => deleteResident(id));
     }
 
     const columns: ColumnDef<any>[] = [
@@ -95,7 +92,7 @@ const ResidentManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div>
                     {
-                        row.original.laChuHo ?
+                        !row.original.laChuHo ?
                             <Icon className="text-red-700" fontSize={25} icon='line-md:close' />
                             :
                             <Icon className="text-green-700" fontSize={30} icon='line-md:confirm' />
@@ -132,7 +129,7 @@ const ResidentManagementPage: React.FC = () => {
             accessorKey: 'email',
             header: 'Email',
         },
-        
+
         {
             id: 'thuongTru',
             header: 'Thường trú',

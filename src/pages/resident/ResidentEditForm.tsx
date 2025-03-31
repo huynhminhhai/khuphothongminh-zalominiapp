@@ -41,11 +41,7 @@ const defaultValues: FormDataResident = {
 const ResidentEditForm: React.FC = () => {
 
     const { openSnackbar } = useSnackbar();
-    const { loaiCuTrus, gioiTinhs, danTocs, tonGiaos, moiQuanHeGiaDinhs, fetchResidentTypes } = useStoreApp()
-
-    useEffect(() => {
-        fetchResidentTypes();
-    }, []);
+    const { loaiCuTrus, gioiTinhs, danTocs, tonGiaos, moiQuanHeGiaDinhs } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>({})
