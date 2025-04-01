@@ -86,7 +86,7 @@ const FeedbackDetailPage: React.FC = () => {
                                     )}
                                     <Box pb={3} mb={3} className="border-b-[2px]">
                                         <h3 className="text-[20px] leading-[26px] font-semibold mb-2">
-                                            Kiến nghị về việc:  Trụ cột điện bị hư hỏng nặng sắp đỗ ngã gây nguy hiểm cho nhiều người đi đường và những hộ đang sinh sống ở đây
+                                            Kiến nghị về việc:
                                         </h3>
                                         <Box className="text-[#666666] font-medium">
                                             <div>Vào lúc 10:00 ngày 01/04/2025</div>
