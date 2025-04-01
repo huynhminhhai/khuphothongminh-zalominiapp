@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Box, Switch } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -10,7 +10,7 @@ import { useSearchParams } from "react-router-dom"
 import { useStoreApp } from "store/store"
 import { useGetChuHosList, useGetResidentDetail, useUpdateResident } from "apiRequest/resident"
 import http from "services/http"
-import { useAddressSelector } from "utils/useAddress"
+import { useAddressSelector, useResidentAddress } from "utils/useAddress"
 import { omit } from "lodash"
 
 const ProfileUpdateForm: React.FC = () => {
@@ -62,11 +62,6 @@ const ProfileUpdateForm: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
     const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
-    const [chuHosData, setChuHosData] = useState<any>()
-    const [houseHoldOptions, setHouseHoldOptions] = useState<{
-        value: number;
-        label: string;
-    }[]>([])
 
     const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
         resolver: yupResolver(residentSchema(isHouseHold)),
@@ -80,35 +75,19 @@ const ProfileUpdateForm: React.FC = () => {
     const { data: residentDetail } = useGetResidentDetail(Number(residentId));
     const { mutateAsync: updateResident, isPending } = useUpdateResident();
 
-    const {
-        huyenOptions: huyenOptionsThuongTru,
-        xaOptions: xaOptionsThuongTru,
-        watchedTinh: watchedTinhThuongTru,
-        watchedHuyen: watchedHuyenThuongTru,
-    } = useAddressSelector({
-        prefix: "noiThuongTru",
-        tinhOptions: tinhs,
-        watch,
-        setValue,
-    });
+    const thuongTruAddress = useResidentAddress("noiThuongTru", tinhs, watch, setValue);
+    const tamTruAddress = useResidentAddress("noiTamTru", tinhs, watch, setValue);
 
-    const {
-        huyenOptions: huyenOptionsTamTru,
-        xaOptions: xaOptionsTamTru,
-        watchedTinh: watchedTinhTamTru,
-        watchedHuyen: watchedHuyenTamTru,
-    } = useAddressSelector({
-        prefix: "noiTamTru",
-        tinhOptions: tinhs,
-        watch,
-        setValue,
-    });
+    const houseHoldOptions = useMemo(() => {
+        return chuHos?.map((item) => ({
+            value: item.danCuId,
+            label: item.hoTen
+        })) || [];
+    }, [chuHos]);
 
     useEffect(() => {
 
         if (residentDetail) {
-
-            console.log(residentDetail)
 
             reset({
                 ...residentDetail,
@@ -139,7 +118,7 @@ const ProfileUpdateForm: React.FC = () => {
                 setValue("noiTamTru.huyen", residentDetail.noiTamTru.huyen);
             }
         }
-    }, [huyenOptionsThuongTru, huyenOptionsTamTru, residentDetail, setValue]);
+    }, [thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, residentDetail, setValue]);
 
     useEffect(() => {
         if (residentDetail) {
@@ -150,16 +129,7 @@ const ProfileUpdateForm: React.FC = () => {
                 setValue("noiTamTru.xa", residentDetail.noiTamTru.xa);
             }
         }
-    }, [xaOptionsThuongTru, xaOptionsTamTru, residentDetail, setValue]);
-
-    useEffect(() => {
-        if (chuHos) {
-            setHouseHoldOptions(chuHos.map((item) => ({
-                value: item.danCuId,
-                label: item.hoTen
-            })))
-        }
-    }, [chuHos])
+    }, [thuongTruAddress.xaOptions, tamTruAddress.xaOptions, residentDetail, setValue]);
 
     const onSubmit: SubmitHandler<FormResidentDetail> = (data) => {
         setConfirmVisible(true);
@@ -167,58 +137,31 @@ const ProfileUpdateForm: React.FC = () => {
     };
 
     useEffect(() => {
-        if (watch().chuHoId) {
-            fetchApiResident()
-        }
-    }, [watch().chuHoId])
+        const fetchAndUpdateResident = async () => {
+            if (!watch().chuHoId) return;
 
-    const fetchApiResident = async () => {
-        try {
-            const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
-            const residentData = response.data;
+            try {
+                const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
+                const residentData = response.data;
 
-            setChuHosData(residentData)
-
-            reset({
-                ...watch(),
-                noiThuongTru: {
-                    ...watch().noiThuongTru,
-                    ...residentData.noiThuongTru
-                },
-                noiTamTru: {
-                    ...watch().noiTamTru,
-                    ...residentData.noiTamTru
-                },
-                tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
-                giaDinhVanHoa: residentData.giaDinhVanHoa
-            });
-
-        } catch (error) {
-            console.error('Lỗi khi gọi API resident detail:', error);
-        }
-    }
-
-    useEffect(() => {
-        if (chuHosData) {
-            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
-                setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
+                reset({
+                    ...watch(),
+                    noiThuongTru: {
+                        ...residentData.noiThuongTru,
+                    },
+                    noiTamTru: {
+                        ...residentData.noiTamTru,
+                    },
+                    tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
+                    giaDinhVanHoa: residentData.giaDinhVanHoa
+                });
+            } catch (error) {
+                console.error('Lỗi khi gọi API resident detail:', error);
             }
-            if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
-                setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
-            }
-        }
-    }, [chuHosData, huyenOptionsThuongTru, huyenOptionsTamTru, setValue])
+        };
 
-    useEffect(() => {
-        if (chuHosData) {
-            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
-                setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
-            }
-            if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
-                setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
-            }
-        }
-    }, [chuHosData, xaOptionsThuongTru, xaOptionsTamTru, setValue])
+        fetchAndUpdateResident();
+    }, [watch().chuHoId, watch, reset, thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, thuongTruAddress.xaOptions, tamTruAddress.xaOptions]);
 
     const handleConfirm = async () => {
         setConfirmVisible(false);
@@ -410,9 +353,9 @@ const ProfileUpdateForm: React.FC = () => {
                             label=""
                             placeholder="Chọn quận/huyện"
                             control={control}
-                            options={huyenOptionsThuongTru}
+                            options={thuongTruAddress.huyenOptions}
                             error={errors.noiThuongTru?.huyen?.message}
-                            disabled={!isHouseHold || !watchedTinhThuongTru}
+                            disabled={!isHouseHold || !thuongTruAddress.watchedTinh}
                         />
                     </div>
                     <div className="col-span-6">
@@ -421,9 +364,9 @@ const ProfileUpdateForm: React.FC = () => {
                             label=""
                             placeholder="Chọn phường/xã"
                             control={control}
-                            options={xaOptionsThuongTru}
+                            options={thuongTruAddress.xaOptions}
                             error={errors.noiThuongTru?.xa?.message}
-                            disabled={!isHouseHold || !watchedHuyenThuongTru}
+                            disabled={!isHouseHold || !thuongTruAddress.watchedHuyen}
                         />
                     </div>
                     <div className="col-span-12">
@@ -491,9 +434,9 @@ const ProfileUpdateForm: React.FC = () => {
                                     label=""
                                     placeholder="Chọn quận/huyện"
                                     control={control}
-                                    options={huyenOptionsTamTru}
+                                    options={tamTruAddress.huyenOptions}
                                     error={errors.noiTamTru?.huyen?.message}
-                                    disabled={!watchedTinhTamTru}
+                                    disabled={!tamTruAddress.watchedTinh}
                                 />
                             </div>
                             <div className="col-span-6">
@@ -502,9 +445,9 @@ const ProfileUpdateForm: React.FC = () => {
                                     label=""
                                     placeholder="Chọn phường/xã"
                                     control={control}
-                                    options={xaOptionsTamTru}
+                                    options={tamTruAddress.xaOptions}
                                     error={errors.noiTamTru?.xa?.message}
-                                    disabled={!watchedHuyenTamTru}
+                                    disabled={!tamTruAddress.watchedHuyen}
                                 />
                             </div>
                             <div className="col-span-12">

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import http from "services/http";
+import { OptionsType } from './options';
 
 interface AddressField {
   tinh: string;
@@ -81,6 +82,27 @@ export const useAddressSelector = ({
     };
     fetchWards();
   }, [watchedHuyen, setValue, prefix]);
+
+  return {
+    huyenOptions,
+    xaOptions,
+    watchedTinh,
+    watchedHuyen,
+  };
+};
+
+export const useResidentAddress = (prefix: string, tinhs: OptionsType[], watch: any, setValue: any) => {
+  const {
+    huyenOptions,
+    xaOptions,
+    watchedTinh,
+    watchedHuyen,
+  } = useAddressSelector({
+    prefix,
+    tinhOptions: tinhs,
+    watch,
+    setValue,
+  });
 
   return {
     huyenOptions,

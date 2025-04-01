@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Box, Switch } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -9,8 +9,7 @@ import { FormResidentDetail, residentSchema } from "./type"
 import { useStoreApp } from "store/store"
 import { useCreateResident, useGetChuHosList } from "apiRequest/resident"
 import http from "services/http"
-import { OptionsType } from "utils/options"
-import { useAddressSelector } from "utils/useAddress"
+import { useResidentAddress } from "utils/useAddress"
 import { omit } from "lodash"
 
 const ProfileAddForm: React.FC = () => {
@@ -62,8 +61,6 @@ const ProfileAddForm: React.FC = () => {
   const [isConfirmVisible, setConfirmVisible] = useState(false);
   const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
   const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
-  const [chuHosData, setChuHosData] = useState<any>()
-  const [houseHoldOptions, setHouseHoldOptions] = useState<OptionsType[]>([])
 
   const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
     resolver: yupResolver(residentSchema(isHouseHold)),
@@ -73,38 +70,15 @@ const ProfileAddForm: React.FC = () => {
   const { data: chuHos } = useGetChuHosList();
   const { mutateAsync: createResident, isPending } = useCreateResident();
 
-  const {
-    huyenOptions: huyenOptionsThuongTru,
-    xaOptions: xaOptionsThuongTru,
-    watchedTinh: watchedTinhThuongTru,
-    watchedHuyen: watchedHuyenThuongTru,
-  } = useAddressSelector({
-    prefix: "noiThuongTru",
-    tinhOptions: tinhs,
-    watch,
-    setValue,
-  });
+  const thuongTruAddress = useResidentAddress("noiThuongTru", tinhs, watch, setValue);
+  const tamTruAddress = useResidentAddress("noiTamTru", tinhs, watch, setValue);
 
-  const {
-    huyenOptions: huyenOptionsTamTru,
-    xaOptions: xaOptionsTamTru,
-    watchedTinh: watchedTinhTamTru,
-    watchedHuyen: watchedHuyenTamTru,
-  } = useAddressSelector({
-    prefix: "noiTamTru",
-    tinhOptions: tinhs,
-    watch,
-    setValue,
-  });
-
-  useEffect(() => {
-    if (chuHos) {
-      setHouseHoldOptions(chuHos.map((item) => ({
-        value: item.danCuId,
-        label: item.hoTen
-      })))
-    }
-  }, [chuHos])
+  const houseHoldOptions = useMemo(() => {
+    return chuHos?.map((item) => ({
+      value: item.danCuId,
+      label: item.hoTen
+    })) || [];
+  }, [chuHos]);
 
 
   const onSubmit: SubmitHandler<FormResidentDetail> = (data) => {
@@ -113,58 +87,31 @@ const ProfileAddForm: React.FC = () => {
   };
 
   useEffect(() => {
-    if (watch().chuHoId) {
-      fetchApiResident()
-    }
-  }, [watch().chuHoId])
+    const fetchAndUpdateResident = async () => {
+      if (!watch().chuHoId) return;
 
-  const fetchApiResident = async () => {
-    try {
-      const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
-      const residentData = response.data;
+      try {
+        const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
+        const residentData = response.data;
 
-      setChuHosData(residentData)
-
-      reset({
-        ...watch(),
-        noiThuongTru: {
-          ...watch().noiThuongTru,
-          ...residentData.noiThuongTru
-        },
-        noiTamTru: {
-          ...watch().noiTamTru,
-          ...residentData.noiTamTru
-        },
-        tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
-        giaDinhVanHoa: residentData.giaDinhVanHoa
-      });
-
-    } catch (error) {
-      console.error('Lỗi khi gọi API resident detail:', error);
-    }
-  }
-
-  useEffect(() => {
-    if (chuHosData) {
-      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
-        setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
+        reset({
+          ...watch(),
+          noiThuongTru: {
+            ...residentData.noiThuongTru,
+          },
+          noiTamTru: {
+            ...residentData.noiTamTru,
+          },
+          tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
+          giaDinhVanHoa: residentData.giaDinhVanHoa
+        });
+      } catch (error) {
+        console.error('Lỗi khi gọi API resident detail:', error);
       }
-      if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
-        setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
-      }
-    }
-  }, [chuHosData, huyenOptionsThuongTru, huyenOptionsTamTru, setValue])
+    };
 
-  useEffect(() => {
-    if (chuHosData) {
-      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
-        setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
-      }
-      if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
-        setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
-      }
-    }
-  }, [chuHosData, xaOptionsThuongTru, xaOptionsTamTru, setValue])
+    fetchAndUpdateResident();
+  }, [watch().chuHoId, watch, reset, thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, thuongTruAddress.xaOptions, tamTruAddress.xaOptions]);
 
   const handleConfirm = async () => {
     setConfirmVisible(false);
@@ -184,9 +131,7 @@ const ProfileAddForm: React.FC = () => {
         { ...omit(formData, ['noiTamTru']), laChuHo: isHouseHold, apId: account.apId, moiQuanHeVoiChuHo: 1, chuHoId: null } :
         { ...formData, laChuHo: isHouseHold, apId: account.apId }
 
-      console.log(dataSubmit)
-
-      await createResident({ ...dataSubmit, tinhTrangHoGiaDinhs: 29 });
+      await createResident(dataSubmit);
 
       reset(defaultValues);
     } catch (error) {
@@ -358,9 +303,9 @@ const ProfileAddForm: React.FC = () => {
               label=""
               placeholder="Chọn quận/huyện"
               control={control}
-              options={huyenOptionsThuongTru}
+              options={thuongTruAddress.huyenOptions}
               error={errors.noiThuongTru?.huyen?.message}
-              disabled={!isHouseHold || !watchedTinhThuongTru}
+              disabled={!isHouseHold || !thuongTruAddress.watchedTinh}
             />
           </div>
           <div className="col-span-6">
@@ -369,9 +314,9 @@ const ProfileAddForm: React.FC = () => {
               label=""
               placeholder="Chọn phường/xã"
               control={control}
-              options={xaOptionsThuongTru}
+              options={thuongTruAddress.xaOptions}
               error={errors.noiThuongTru?.xa?.message}
-              disabled={!isHouseHold || !watchedHuyenThuongTru}
+              disabled={!isHouseHold || !thuongTruAddress.watchedHuyen}
             />
           </div>
           <div className="col-span-12">
@@ -439,9 +384,9 @@ const ProfileAddForm: React.FC = () => {
                   label=""
                   placeholder="Chọn quận/huyện"
                   control={control}
-                  options={huyenOptionsTamTru}
+                  options={tamTruAddress.huyenOptions}
                   error={errors.noiTamTru?.huyen?.message}
-                  disabled={!watchedTinhTamTru}
+                  disabled={!tamTruAddress.watchedTinh}
                 />
               </div>
               <div className="col-span-6">
@@ -450,9 +395,9 @@ const ProfileAddForm: React.FC = () => {
                   label=""
                   placeholder="Chọn phường/xã"
                   control={control}
-                  options={xaOptionsTamTru}
+                  options={tamTruAddress.xaOptions}
                   error={errors.noiTamTru?.xa?.message}
-                  disabled={!watchedHuyenTamTru}
+                  disabled={!tamTruAddress.watchedHuyen}
                 />
               </div>
               <div className="col-span-12">
