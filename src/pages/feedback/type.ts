@@ -15,3 +15,39 @@ export type FormDataFeedback = {
     content: string;
     images?: string[];
 };
+
+export interface FormDataPhanAnh {
+    phanAnhId?: number;
+    noiDung: string;
+    diaChi: string;
+    maXa: string;
+    maHuyen: string;
+    maTinh: string;
+    latitude?: number | null;
+    longitude?: number | null;
+    congKhaiThongTinCaNhan: boolean;
+    congKhaiPhanAnh: boolean;
+    tinhTrangId?: number;
+    tapTinPhanAnhFormFiles?: File[];
+}
+
+export const phanAnhSchema = yup.object().shape({
+    noiDung: yup.string().required("Chưa nhập nội dung"),
+    diaChi: yup.string().required("Chưa nhập địa chỉ"),
+    maXa: yup.string().required("Chưa chọn mục này"),
+    maHuyen: yup.string().required("Chưa chọn mục này"),
+    maTinh: yup.string().required("Chưa chọn mục này"),
+    latitude: yup
+        .number().nullable(),
+    longitute: yup
+        .number().nullable(),
+    congKhaiThongTinCaNhan: yup.boolean().required(),
+    congKhaiPhanAnh: yup.boolean().required(),
+    // tinhTrangId: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
+    tapTinPhanAnhFormFiles: yup
+    .array()
+    .of(yup.mixed<File>().required("Tệp không hợp lệ"))
+    .default([])
+    .ensure()
+    .min(1, "Vui lòng tải lên ít nhất một tệp"),
+});

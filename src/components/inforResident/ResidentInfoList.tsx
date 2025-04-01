@@ -1,7 +1,7 @@
 import React from "react";
 import { Box } from "zmp-ui";
 
-const formatAddress = (data?: any) => {
+export const formatAddress = (data?: any) => {
     if (!data) return "";
     return [
         data.diaChi,

@@ -5,7 +5,7 @@ import FeedbackAddForm from "./FeedbackAddForm"
 
 const FeedbackAddPage: React.FC = () => {
     return (
-        <Page className="relative flex-1 flex flex-col bg-white">
+        <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
                 <HeaderSub title="Thêm Góp ý - Phản ánh" />
                 <FeedbackAddForm />

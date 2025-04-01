@@ -24,12 +24,23 @@ export const convertToFormData = (data: Record<string, any>) => {
     if (value === undefined || value === null) return;
 
     if (value instanceof File) {
+      // Trường hợp là File đơn lẻ
       formData.append(key, value);
     } else if (Array.isArray(value)) {
-      value.forEach((item, index) => {
-        formData.append(`${key}[${index}]`, item);
-      });
+      // Trường hợp là mảng
+      if (value.length > 0 && value.every((item) => item instanceof File)) {
+        // Nếu là mảng File[], append từng file với key không có index
+        value.forEach((file: File) => {
+          formData.append(key, file);
+        });
+      } else {
+        // Nếu là mảng các giá trị khác (string, number, ...)
+        value.forEach((item) => {
+          formData.append(key, item.toString());
+        });
+      }
     } else {
+      // Trường hợp là giá trị đơn (string, number, ...)
       formData.append(key, value.toString());
     }
   });
@@ -39,15 +50,15 @@ export const convertToFormData = (data: Record<string, any>) => {
 
 export const loadImage = async (url: string): Promise<File | null> => {
   try {
-      const cleanUrl = url.startsWith("/uploads") ? url.replace("/uploads", "") : url;
+    const cleanUrl = url.startsWith("/uploads") ? url.replace("/uploads", "") : url;
 
-      const response = await fetch(`${envConfig.API_ENDPOINT}${cleanUrl}`);
-      if (!response.ok) throw new Error("Failed to fetch image");
+    const response = await fetch(`${envConfig.API_ENDPOINT}${cleanUrl}`);
+    if (!response.ok) throw new Error("Failed to fetch image");
 
-      const blob = await response.blob();
-      return new File([blob], "uploaded-image.jpg", { type: blob.type });
+    const blob = await response.blob();
+    return new File([blob], "uploaded-image.jpg", { type: blob.type });
   } catch (error) {
-      console.error("Error loading image:", error);
-      return null;
+    console.error("Error loading image:", error);
+    return null;
   }
 };

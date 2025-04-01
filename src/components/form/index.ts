@@ -11,3 +11,4 @@ export { default as FormImageUploader } from "./ImageUploaderField";
 export { default as FormImageUploaderSingle } from "./ImageUploaderSingle";
 export { default as FormImagePickerMultiple } from "./ImagePickerMultiple";
 export { default as FormAvatarUploaderSingle } from "./AvatarUploaderSingle";
+export { default as FormSwitchField } from "./FormSwitchField";

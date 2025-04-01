@@ -1,70 +1,81 @@
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Box, useNavigate, useSnackbar } from "zmp-ui"
-import { FormDataFeedback, schemaFeedback } from "./type";
+import { FormDataPhanAnh, phanAnhSchema } from "./type";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmModal } from "components/modal";
 import { PrimaryButton } from "components/button";
-import { FormImageUploader, FormInputAreaField, FormInputField } from "components/form";
+import { FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
+import { useStoreApp } from "store/store";
+import { useAddressSelectorWithoutPrefix, useResidentAddress } from "utils/useAddress";
+import { useCreateFeeback, useGetFeedbackStatus } from "apiRequest/feeback";
+import { convertToFormData } from "utils/file";
 
-const defaultValues: FormDataFeedback = {
-    title: '',
-    content: '',
-    images: []
+const defaultValues: FormDataPhanAnh = {
+    noiDung: "",
+    diaChi: "",
+    maXa: "",
+    maHuyen: "",
+    maTinh: "",
+    latitude: null,
+    longitude: null,
+    congKhaiThongTinCaNhan: false,
+    congKhaiPhanAnh: false,
+    tinhTrangId: 0,
+    tapTinPhanAnhFormFiles: []
 };
 
 const FeedbackAddForm: React.FC = () => {
+
+    const { tinhs } = useStoreApp()
 
     const { openSnackbar } = useSnackbar();
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [formData, setFormData] = useState<FormDataFeedback>(defaultValues)
+    const [formData, setFormData] = useState<FormDataPhanAnh>(defaultValues)
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataFeedback>({
-        resolver: yupResolver(schemaFeedback),
+    const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataPhanAnh>({
+        resolver: yupResolver(phanAnhSchema),
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<FormDataFeedback> = (data) => {
+    const { mutateAsync: createFeedback, isPending } = useCreateFeeback();
+
+    // const { data: feedbackStatus } = useGetFeedbackStatus();
+
+    // const feedbackStatusOptions = useMemo(() => {
+    //     return feedbackStatus?.map((item) => ({
+    //         value: item.tinhTrangId,
+    //         label: item.tenTinhTrang
+    //     })) || [];
+    // }, [feedbackStatus]);
+
+    const phanAnhAddress = useAddressSelectorWithoutPrefix({
+        tinhOptions: tinhs,
+        watch,
+        setValue,
+    });
+
+    const onSubmit: SubmitHandler<FormDataPhanAnh> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
     };
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            // Gọi API thêm thành viên
-            console.log('call api add with: ', { ...formData });
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Gửi phản ánh thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            navigate('/feedback-history');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setConfirmVisible(false);
-        if (formData) {
-            fetchApi()
+        try {
+
+            const dataSubmit = convertToFormData({...formData, tinhTrangId: 10});
+
+            console.log(dataSubmit);
+            
+            await createFeedback(dataSubmit);
+
+            reset(defaultValues);
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
@@ -77,7 +88,7 @@ const FeedbackAddForm: React.FC = () => {
         <Box p={4}>
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <FormInputField
                             name="title"
                             label="Tiêu đề phản ánh"
@@ -86,29 +97,120 @@ const FeedbackAddForm: React.FC = () => {
                             error={errors.title?.message}
                             required
                         />
-                    </div>
+                    </div> */}
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="content"
+                            name="noiDung"
                             label="Nội dung phản ánh"
                             placeholder="Nhập nội dung phản ánh..."
                             control={control}
-                            error={errors.content?.message}
+                            error={errors.noiDung?.message}
                             required
                         />
                     </div>
+
                     <div className="col-span-12">
-                        <FormImageUploader
-                            name="images"
-                            label="Upload ảnh"
+                        <FormSelectField
+                            name="maTinh"
+                            label="Địa chỉ thường trú"
+                            placeholder="Chọn tỉnh/thành phố"
                             control={control}
-                            error={errors.images?.message}
-                            // required
+                            options={tinhs}
+                            error={errors.maTinh?.message}
+                            required
                         />
                     </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="maHuyen"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={phanAnhAddress.huyenOptions}
+                            error={errors.maHuyen?.message}
+                            disabled={!phanAnhAddress.watchedTinh}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="maXa"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={phanAnhAddress.xaOptions}
+                            error={errors.maXa?.message}
+                            disabled={!phanAnhAddress.watchedHuyen}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputAreaField
+                            name="diaChi"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
+                            control={control}
+                            error={errors.diaChi?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormInputField
+                            type="number"
+                            name="latitude"
+                            placeholder="Nhập latitude"
+                            control={control}
+                            error={errors.latitude?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormInputField
+                            type="number"
+                            name="longitude"
+                            placeholder="Nhập Longitute"
+                            control={control}
+                            error={errors.longitude?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <div className="mb-1 font-medium text-[16px]">Công khai <span className="text-[#dc2626]">(*)</span></div>
+                    </div>
+                    <div className="col-span-6">
+                        <FormSwitchField
+                            name="congKhaiThongTinCaNhan"
+                            label="Thông tin cá nhân"
+                            control={control}
+                            size="medium"
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSwitchField
+                            name="congKhaiPhanAnh"
+                            label="Phản ánh"
+                            control={control}
+                            size="medium"
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormImageUploader
+                            name="tapTinPhanAnhFormFiles"
+                            label="Upload ảnh"
+                            control={control}
+                            error={errors.tapTinPhanAnhFormFiles?.message}
+                            required
+                        />
+                    </div>
+                    {/* <div className="col-span-12">
+                        <FormSelectField
+                            name="tinhTrangId"
+                            label="Tình trạng"
+                            placeholder="Tình trạng"
+                            control={control}
+                            options={feedbackStatusOptions}
+                            error={errors.tinhTrangId?.message}
+                        />
+                    </div> */}
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Gửi phản ánh"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Gửi phản ánh"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
