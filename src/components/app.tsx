@@ -8,7 +8,7 @@ import { NewsDetailPage, NewsPage } from "pages/news";
 import { ResidentAddPage, ResidentCraftPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
 import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
-import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage } from "pages/feedback";
+import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { FeedbackAnswerPage, FeedbackManagementPage, HouseHoldOverviewPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
@@ -117,6 +117,7 @@ const MyApp = () => {
                         <Route path="/feedback" element={<FeedbackPage></FeedbackPage>}></Route>
                         <Route path="/feedback-detail" element={<FeedbackDetailPage></FeedbackDetailPage>}></Route>
                         <Route path="/feedback-add" element={<FeedbackAddPage></FeedbackAddPage>}></Route>
+                        <Route path="/feedback-update" element={<FeedbackUpdatePage></FeedbackUpdatePage>}></Route>
                         <Route path="/feedback-history" element={<FeedbackHistoryPage></FeedbackHistoryPage>}></Route>
 
                         {/* SURVEY */}

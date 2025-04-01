@@ -13,13 +13,13 @@ const FeedbackMenu: React.FC = () => {
                 <div className="flex items-center justify-center gap-3">
                     <Button variant="primary" size="small" fullWidth onClick={() => navigate('/feedback-add')}>
                         <div className="flex items-center justify-center gap-1">
-                            <Icon fontSize={16} icon='tabler:edit' />
+                            <Icon fontSize={16} icon='line-md:edit' />
                             <span>Gửi phản ánh</span>
                         </div>
                     </Button>
                     <Button variant="secondary" size="small" fullWidth onClick={() => navigate('/feedback-history')}>
                         <div className="flex items-center justify-center gap-1">
-                            <Icon fontSize={16} icon='material-symbols:history' />
+                            <Icon fontSize={16} icon='line-md:telegram' />
                             <span>Phản ánh đã gửi</span>
                         </div>
                     </Button>

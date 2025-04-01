@@ -257,7 +257,7 @@ const FeedbackManagementPage: React.FC = () => {
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/feedback-answer?id=${row.original.phanAnhId}`)}
+                        onClick={() => navigate(`/feedback-update?id=${row.original.phanAnhId}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />

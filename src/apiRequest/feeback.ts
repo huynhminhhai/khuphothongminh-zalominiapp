@@ -25,6 +25,12 @@ const feebackApiRequest = {
             tinhTrangId: param.tinhTrangId
         });
     },
+    updateFeedback: async (formData: any) => {
+        return await http.putFormData<any>("/phananh", formData);
+    },
+    deleteFileFeedback: async (id: number) => {
+        return await http.delete<any>(`/taptinphananh/${id}`);
+    },
 }
 
 /**
@@ -186,38 +192,107 @@ export const useDeleteFeedback = () => {
 
 /**
 * PUT FEEDBACK STATUS
-**/ 
+**/
 export const useUpdateFeedbackStatus = () => {
 
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
-            mutationFn: async (param: { phanAnhId: number; tinhTrangId: number; }) => {
-                return await feebackApiRequest.updateFeedbackStatus(param);
-            },
-            onSuccess: () => {
-    
-                openSnackbar({
-                    icon: true,
-                    text: "Cập nhật trạng thái phản ánh thành công",
-                    type: 'success',
-                    action: { text: "Đóng", close: true },
-                    duration: 3000,
-                });
+        mutationFn: async (param: { phanAnhId: number; tinhTrangId: number; }) => {
+            return await feebackApiRequest.updateFeedbackStatus(param);
+        },
+        onSuccess: () => {
 
-                queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
-                queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+            openSnackbar({
+                icon: true,
+                text: "Cập nhật trạng thái phản ánh thành công",
+                type: 'success',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
 
-            },
-            onError: (error: string) => {
-                openSnackbar({
-                    icon: true,
-                    text: error,
-                    type: 'error',
-                    action: { text: "Đóng", close: true },
-                    duration: 3000,
-                });
-            },
-        });
+            queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: error,
+                type: 'error',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* PUT FEEDBACK
+**/
+export const useUpdateFeedback = () => {
+    const { openSnackbar } = useSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await feebackApiRequest.updateFeedback(formData);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Cập nhật phản ánh thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* DELETE FILE FEEDBACK
+**/
+export const useDeleteFileFeedback = () => {
+    const queryClient = useQueryClient();
+    const { openSnackbar } = useSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await feebackApiRequest.deleteFileFeedback(id);
+        },
+        onSuccess: () => {
+            // openSnackbar({
+            //     icon: true,
+            //     text: "Xóa phản ánh thành công",
+            //     type: "success",
+            //     action: { text: "Đóng", close: true },
+            //     duration: 3000,
+            // });
+
+            // queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
 };

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Box, useNavigate, useSnackbar } from "zmp-ui"
 import { FormDataPhanAnh, phanAnhSchema } from "./type";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -7,9 +7,11 @@ import { ConfirmModal } from "components/modal";
 import { PrimaryButton } from "components/button";
 import { FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
 import { useStoreApp } from "store/store";
-import { useAddressSelectorWithoutPrefix, useResidentAddress } from "utils/useAddress";
-import { useCreateFeeback, useGetFeedbackStatus } from "apiRequest/feeback";
-import { convertToFormData } from "utils/file";
+import { useAddressSelectorWithoutPrefix } from "utils/useAddress";
+import { useDeleteFileFeedback, useGetFeebackDetail, useUpdateFeedback } from "apiRequest/feeback";
+import { convertToFormData, loadImage } from "utils/file";
+import { useSearchParams } from "react-router-dom";
+import { omit } from "lodash";
 
 const defaultValues: FormDataPhanAnh = {
     noiDung: "",
@@ -25,23 +27,24 @@ const defaultValues: FormDataPhanAnh = {
     tapTinPhanAnhFormFiles: []
 };
 
-const FeedbackAddForm: React.FC = () => {
+const FeedbackUpdateForm: React.FC = () => {
 
     const { tinhs } = useStoreApp()
-
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
-
-    const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataPhanAnh>(defaultValues)
+    const [initialImages, setInitialImages] = useState<{ tapTinPhanAnhId: number; tapTin: string }[]>([]);
 
     const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataPhanAnh>({
         resolver: yupResolver(phanAnhSchema),
         defaultValues
     });
 
-    const { mutateAsync: createFeedback, isPending } = useCreateFeeback();
+    const [searchParams] = useSearchParams();
+    const feedbackId = searchParams.get("id");
+
+    const { mutateAsync: updateFeedback, isPending } = useUpdateFeedback();
+    const { data: feedbackDetail } = useGetFeebackDetail(Number(feedbackId));
+    const { mutate: deleteFileFeedback } = useDeleteFileFeedback();
 
     // const { data: feedbackStatus } = useGetFeedbackStatus();
 
@@ -58,6 +61,57 @@ const FeedbackAddForm: React.FC = () => {
         setValue,
     });
 
+    useEffect(() => {
+        if (feedbackDetail) {
+            reset({ ...omit(feedbackDetail, ['tapTinPhanAnhs']), tapTinPhanAnhFormFiles: [] });
+
+            const fetchAndSetImages = async () => {
+                if (feedbackDetail?.tapTinPhanAnhs) {
+                    const imageItems = Array.isArray(feedbackDetail.tapTinPhanAnhs)
+                        ? feedbackDetail.tapTinPhanAnhs
+                        : [feedbackDetail.tapTinPhanAnhs];
+
+                    const files = await Promise.all(
+                        imageItems.map(async (url) => await loadImage(url.tapTin))
+                    );
+
+                    const validFiles = files.filter((file): file is File => file !== null);
+
+                    if (validFiles.length > 0) {
+                        reset((prevValues) => ({
+                            ...prevValues,
+                            tapTinPhanAnhFormFiles: validFiles,
+                        }));
+                    }
+
+                    setInitialImages(imageItems.map((item) => ({
+                        tapTinPhanAnhId: item.tapTinPhanAnhId,
+                        tapTin: item.tapTin,
+                    })));
+                }
+            };
+
+            fetchAndSetImages();
+        }
+    }, [feedbackDetail, reset]);
+
+    useEffect(() => {
+        if (feedbackDetail) {
+            if (feedbackDetail.maHuyen) {
+                setValue("maHuyen", feedbackDetail.maHuyen);
+            }
+        }
+    }, [phanAnhAddress.huyenOptions, feedbackDetail, setValue]);
+
+    useEffect(() => {
+        if (feedbackDetail) {
+            if (feedbackDetail.maXa) {
+                setValue("maXa", feedbackDetail.maXa);
+            }
+        }
+    }, [phanAnhAddress.xaOptions, feedbackDetail, setValue]);
+
+
     const onSubmit: SubmitHandler<FormDataPhanAnh> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
@@ -67,18 +121,23 @@ const FeedbackAddForm: React.FC = () => {
         setConfirmVisible(false);
         try {
 
-            const dataSubmit = convertToFormData({...formData, tinhTrangId: 10});
-            
-            await createFeedback(dataSubmit);
+            if (initialImages.length > 0) {
+                await Promise.all(
+                    initialImages.map(async (image) => {
+                        deleteFileFeedback(image.tapTinPhanAnhId);
+                    })
+                );
+            }
 
-            reset(defaultValues);
+            const dataSubmit = convertToFormData(formData);
+
+            await updateFeedback(dataSubmit);
         } catch (error) {
             console.error("Error:", error);
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -208,7 +267,7 @@ const FeedbackAddForm: React.FC = () => {
                     </div> */}
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Gửi phản ánh"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật phản ánh"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -224,4 +283,4 @@ const FeedbackAddForm: React.FC = () => {
     )
 }
 
-export default FeedbackAddForm
+export default FeedbackUpdateForm
