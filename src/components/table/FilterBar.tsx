@@ -33,7 +33,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
     return (
         <div className="bg-[#f9f9f9] flex flex-col px-4 py-2 gap-2">      
             <Box>
-                <div className="grid grid-cols-3 gap-2">
+                <div className={`grid ${showAddButton ? "grid-cols-3" : "grid-cols-2"} gap-2`}>
                     {/* FILTER */}
                     {showFilter && (
                         <div

@@ -115,6 +115,7 @@ export const useUpdateNewsStatus = () => {
                 });
 
                 queryClient.invalidateQueries({ queryKey: ["newsList"] });
+                queryClient.invalidateQueries({ queryKey: ["newsDetail"] });
 
             },
             onError: (error: string) => {

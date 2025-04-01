@@ -75,15 +75,7 @@ const FeedbackDetailPage: React.FC = () => {
                         <NewsDetailSkeleton count={1} /> :
                         data ?
                             <Box>
-                                <Box px={4} pb={4} className="relative">
-                                    {status && (
-                                        <div
-                                            style={{ backgroundColor: statusColor }}
-                                            className="py-2 px-4 mb-3 w-fit text-white font-semibold uppercase"
-                                        >
-                                            {status.tenTinhTrang}
-                                        </div>
-                                    )}
+                                <Box px={4} className="relative">
                                     <Box pb={3} mb={3} className="border-b-[2px]">
                                         <h3 className="text-[20px] leading-[26px] font-semibold mb-2">
                                             Kiến nghị về việc:
@@ -104,6 +96,16 @@ const FeedbackDetailPage: React.FC = () => {
                                         </div>
                                     </Box>
                                 </Box>
+                                <Box flex alignItems="center" justifyContent="flex-end">
+                                    {status && (
+                                        <div
+                                            style={{ backgroundColor: statusColor }}
+                                            className="py-2 px-4 w-fit text-white font-semibold uppercase"
+                                        >
+                                            {status.tenTinhTrang}
+                                        </div>
+                                    )}
+                                    </Box>
                                 <Box>
                                     <Swiper autoplay duration={8000} style={{ borderRadius: 0 }}>
                                         {

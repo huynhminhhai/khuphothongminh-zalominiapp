@@ -1,60 +1,77 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
+import { useGetHuyenList, useGetXaList } from "apiRequest/app"
+import { useDeleteFeedback, useGetFeedbackListNormal, useGetFeedbackStatus, useUpdateFeedbackStatus } from "apiRequest/feeback"
+import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
+import { FeedbackSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-// import { Feedback, FEEDBACKDATA, FEEDBACKRESPONSES } from "constants/utinities"
-import React, { useState } from "react"
-import { Box, Input, Page, Select, Switch, useNavigate, useSnackbar } from "zmp-ui"
-
-const initParam = {
-    pageIndex: 1,
-    pageSize: 10,
-    keyword: '',
-    status: 3
-}
+import { debounce } from "lodash"
+import React, { useCallback, useEffect, useState } from "react"
+import { openUrlInWebview } from "services/zalo"
+import { useStoreApp } from "store/store"
+import { getFullImageUrl } from "utils/file"
+import { Box, Input, Page, Select, Swiper, useNavigate } from "zmp-ui"
 
 const FeedbackManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { openSnackbar } = useSnackbar();
-    const { Option } = Select
-    const [feedbackData, setFeedbackData] = useState(FEEDBACKDATA);
+    const { account } = useStoreApp()
+
+    const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [viewCard, setViewCard] = useState<boolean>(true)
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
-    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+    const [search, setSearch] = useState("");
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 10,
+        ApId: account ? account.apId : 0,
+        keyword: ''
+    })
 
-    const [param, setParam] = useState(initParam)
+    const { data, isLoading } = useGetFeedbackListNormal(param);
+    const { data: feedbackStatus } = useGetFeedbackStatus();
+    const { mutate: deleteFeedback } = useDeleteFeedback();
+
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            setParam((prev) => ({ ...prev, keyword: value }));
+        }, 300),
+        []
+    );
+
+    useEffect(() => {
+        debouncedSearch(search);
+    }, [search, debouncedSearch]);
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
             ...prevParam,
-            pageIndex: params.pageIndex, // Cập nhật pageIndex từ params
+            page: params.pageIndex,
         }));
-        console.log(`Navigated to page: ${params.pageIndex}, pageSize: ${params.pageSize}`);
     };
 
-    // Hàm thay đổi số mục trên mỗi trang
     const handleRowChange = (newPageSize: number) => {
         setParam((prevParam) => ({
             ...prevParam,
             pageSize: newPageSize,
-            pageIndex: 1, // Reset về trang đầu tiên khi thay đổi pageSize
+            page: 1,
         }));
-        console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
     const openConfirmModal = (action: () => void, title: string, message: string) => {
-        setConfirmAction(() => action);  // Lưu hành động xác nhận
+        setConfirmAction(() => action);
         setModalContent({ title, message });
-        setConfirmVisible(true);  // Mở modal
+        setConfirmVisible(true);
     };
 
     const handleConfirm = () => {
         if (confirmAction) {
-            confirmAction(); // Gọi hành động đã lưu
+            confirmAction();
             setConfirmVisible(false);
             setConfirmAction(null);
         }
@@ -65,109 +82,188 @@ const FeedbackManagementPage: React.FC = () => {
         setConfirmAction(null);
     };
 
-    const removeNews = (id: number) => {
+    const removeFeedback = (id: number) => {
         openConfirmModal(() => {
-            console.log('Call API delete feedback with id:', id);
-
-            // Hiển thị thông báo
-            openSnackbar({
-                text: 'Xóa phản ánh thành công',
-                type: 'success',
-                duration: 5000,
-            });
+            deleteFeedback(id);
         }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa phản ánh này?');
-    };
+    }
 
-    const updateStatus = async (id, newStatus) => {
-        openConfirmModal(() => {
-            try {
-                console.log('call api update status with: id', id)
-                console.log(newStatus)
-
-                // Cập nhật lại dữ liệu sau khi API thành công
-                setFeedbackData(prev =>
-                    prev.map(item =>
-                        item.id === id ? { ...item, status: newStatus } : item
-                    )
-                );
-
-                openSnackbar({
-                    text: 'Thay đổi phản ánh thành công',
-                    type: 'success',
-                    duration: 5000,
-                });
-            } catch (error) {
-                console.error("Error updating status:", error);
-            }
-        }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
-    };
-
-    const columns: ColumnDef<Feedback>[] = [
+    const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'title',
-            header: 'Tiêu đề',
-            size: 300
-        },
-        {
-            id: 'isAnswer',
-            header: 'Phản hồi',
+            id: 'tapTinPhanAnhs',
+            header: 'Ảnh',
+            size: 300,
             cell: ({ row }) => {
 
-                const hasReplied = FEEDBACKRESPONSES.some(reply => reply.feedbackId === row.original.id);
+                return (
+                    <Box>
+                        <Swiper className="w-full h-[150px]" autoplay duration={8000} style={{ borderRadius: 0 }}>
+                            {
+                                row.original.tapTinPhanAnhs ?
+                                    row.original.tapTinPhanAnhs.map((item, index) => (
+                                        <Swiper.Slide key={index}>
+                                            <img
+                                                onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                className="slide-img object-cover w-full h-full"
+                                                src={getFullImageUrl(item.tapTin)}
+                                                alt={row.original?.noiDung}
+                                            />
+                                        </Swiper.Slide>
+                                    ))
+                                    :
+                                    <Swiper.Slide>
+                                        <img
+                                            className="slide-img"
+                                            src="https://actiosoftware.com/wp-content/uploads/2024/02/resposta-do-smiley-do-cliente-do-feedback-da-avaliacao-1.jpg"
+                                            alt={row.original?.noiDung}
+                                        />
+                                    </Swiper.Slide>
+                            }
+                        </Swiper>
+                    </Box>
+                )
+            }
+        },
+        {
+            id: 'tieuDe',
+            header: 'Tiêu đề',
+            size: 300,
+            cell: ({ row }) => {
 
                 return (
-                    <div className="flex items-center justify-center">
-                        {
-                            hasReplied
-                                ?
-                                <Icon className="text-green-700" fontSize={30} icon='lets-icons:check-fill' />
-                                :
-                                <Icon className="text-red-700" fontSize={25} icon='ic:round-do-not-disturb-on' />
-                        }
+                    <div >Kiến nghị: </div>
+                )
+            }
+        },
+        {
+            accessorKey: 'noiDung',
+            header: 'Nội dung',
+            size: 300
+        },
+        // {
+        //     id: 'isAnswer',
+        //     header: 'Phản hồi',
+        //     cell: ({ row }) => {
+
+        //         return (
+        //             <div className="flex items-center justify-center">
+
+        //             </div>
+        //         )
+        //     }
+        // },
+        {
+            id: 'tinhTrangId',
+            header: 'Trạng thái',
+            cell: ({ row }) => {
+                const { mutate, isPending } = useUpdateFeedbackStatus();
+
+                return (
+                    <Box width={150}>
+                        <Select
+                            closeOnSelect
+                            defaultValue={row.original.tinhTrangId}
+                            onChange={(value) => {
+                                openConfirmModal(() => {
+                                    mutate({
+                                        phanAnhId: row.original.phanAnhId,
+                                        tinhTrangId: Number(value),
+                                    });
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
+                            }}
+                            className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
+                            disabled={isPending}
+                        >
+                            {feedbackStatus && feedbackStatus.map((item) => (
+                                <Option
+                                    value={item.tinhTrangId}
+                                    key={item.tinhTrangId}
+                                    title={item.tenTinhTrang}
+                                />
+                            ))}
+                        </Select>
+                    </Box>
+                );
+            }
+        },
+        {
+            id: 'published',
+            header: 'Công khai',
+            cell: ({ row }) => {
+
+                return (
+                    <div className="flex items-center justify-start gap-2">
+                        <div className="flex items-center gap-1">
+                            {row.original.congKhaiThongTinCaNhan ? (
+                                <Icon className="text-green-700" fontSize={16} icon='line-md:confirm' />
+                            ) : (
+                                <Icon className="text-red-700" fontSize={16} icon='line-md:confirm' />
+                            )}
+                            <span className="text-[12px] flex-1">Thông tin cá nhân</span>
+                        </div>
+
+                        <div className="flex items-center gap-1">
+                            {row.original.congKhaiPhanAnh ? (
+                                <Icon className="text-green-700" fontSize={16} icon='line-md:confirm' />
+                            ) : (
+                                <Icon className="text-red-700" fontSize={16} icon='line-md:confirm' />
+                            )}
+                            <span className="text-[12px] flex-1">Phản ánh</span>
+                        </div>
                     </div>
                 )
             }
         },
         {
-            id: 'status',
-            header: 'Đăng tải',
+            id: 'address',
+            header: 'Địa chỉ',
             cell: ({ row }) => {
-                const currentStatus = row.original.status; // Trạng thái hiện tại
-                const handleToggle = () => {
-                    const newStatus = currentStatus === 1 ? 2 : 1; // Đảo trạng thái
-                    updateStatus(row.original.id, newStatus); // Gọi API cập nhật trạng thái
-                };
+
+                const { tinhs } = useStoreApp()
+                const [maTinh, setMaTinh] = useState<string | null>(null);
+                const [maHuyen, setMaHuyen] = useState<string | null>(null);
+
+                useEffect(() => {
+                    if (row.original) {
+                        setMaTinh(row.original.maTinh || null);
+                        setMaHuyen(row.original.maHuyen || null);
+                    }
+                }, [row.original]);
+
+                const { data: huyens } = useGetHuyenList(maTinh ?? "");
+                const { data: xas } = useGetXaList(maHuyen ?? "");
 
                 return (
-                    <Box flex flexDirection="column" alignItems="center" className="gap-2 feedback-switch">
-                        <Switch
-                            size="medium"
-                            checked={currentStatus === 2}
-                            onChange={handleToggle}
-                        />
-                    </Box>
-                );
+                    <div>
+                        {`${row.original?.diaChi || ""} 
+                                ${tinhs?.find(tinh => tinh.value === row.original?.maTinh)?.label || ""} 
+                                ${huyens?.find(huyen => huyen.maHuyen === row.original?.maHuyen)?.tenHuyen || ""} 
+                                ${xas?.find(xa => xa.maXa === row.original?.maXa)?.tenXa || ""}`
+                            .replace(/ ,/g, "")
+                            .trim()}
+                    </div>
+                )
             }
         },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/feedback-detail?id=${row.original.id}`)}
+                        onClick={() => navigate(`/feedback-detail?id=${row.original.phanAnhId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/feedback-answer?id=${row.original.id}`)}
+                        onClick={() => navigate(`/feedback-answer?id=${row.original.phanAnhId}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => removeNews(row.original.id)}
+                        onClick={() => removeFeedback(row.original.phanAnhId)}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />
@@ -177,11 +273,46 @@ const FeedbackManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = feedbackData.filter(item => {
-        const matchesSearch = item.title.toLowerCase().includes(param.keyword.toLowerCase());
-        const matchesStatus = param.status === 3 || item.status === param.status;
-        return matchesSearch && matchesStatus;
-    });
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <Box px={4}>
+                    <FeedbackSkeleton count={5} />
+                </Box>
+            );
+        }
+
+        if (!data.data.length) {
+            return (
+                <Box px={4}>
+                    <EmptyData
+                        title="Hiện chưa có phản ánh nào!"
+                    />
+                </Box>
+            );
+        }
+
+        return <Box>
+            {
+                viewCard ? (
+                    <CardTanStack data={data.data} columns={columns} />
+                ) : (
+                    <Box px={4}>
+                        <TableTanStack data={data.data} columns={columns} />
+                    </Box>
+                )
+            }
+            <Box px={4}>
+                <TablePagination
+                    totalItems={data.page.total}
+                    pageSize={param.pageSize}
+                    pageIndex={param.page}
+                    onPageChange={handlePageChange}
+                    onRowChange={handleRowChange}
+                />
+            </Box>
+        </Box>
+    };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -205,7 +336,7 @@ const FeedbackManagementPage: React.FC = () => {
                                 }}
                             />
                         </div>
-                        <div className="col-span-12">
+                        {/* <div className="col-span-12">
                             <Select
                                 defaultValue={3}
                                 closeOnSelect
@@ -220,23 +351,10 @@ const FeedbackManagementPage: React.FC = () => {
                                 <Option value={1} title="Chưa đăng tải" />
                                 <Option value={2} title="Đã đăng tải" />
                             </Select>
-                        </div>
+                        </div> */}
                     </FilterBar>
                     <Box>
-                        {viewCard ?
-                            <CardTanStack data={filteredData} columns={columns} />
-                            :
-                            <Box px={4}>
-                                <TableTanStack data={filteredData} columns={columns} />
-                            </Box>
-                        }
-                        <TablePagination
-                            totalItems={80}
-                            pageSize={param.pageSize}
-                            pageIndex={param.pageIndex}
-                            onPageChange={handlePageChange}
-                            onRowChange={handleRowChange}
-                        />
+                        {renderContent()}
                     </Box>
                 </Box>
             </Box>

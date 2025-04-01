@@ -42,12 +42,12 @@ const ManagementPage: React.FC = () => {
                 <Box m={4}>
                     <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tổ chức, dân cư</div>
-                        <Item
+                        {/* <Item
                             title="Quản lý tổ chức"
                             prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/team-management')}
-                        />
+                        /> */}
                         <Item
                             title="Quản lý dân cư"
                             prefix={<img src={images.home} alt='feedback' className="w-[30px] h-auto" />}
@@ -84,16 +84,16 @@ const ManagementPage: React.FC = () => {
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/transactions-management')}
                         />
-                        <Item
+                        {/* <Item
                             title="Báo cáo tài chính"
                             prefix={<img src={images.report} alt='feedback' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/report-finance-management')}
-                        />
+                        /> */}
                     </List>
                 </Box>
 
-                <Box m={4}>
+                {/* <Box m={4}>
                     <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Thống kê báo cáo</div>
                         <Item
@@ -109,7 +109,7 @@ const ManagementPage: React.FC = () => {
                             onClick={() => navigate('/overview-household')}
                         />
                     </List>
-                </Box>
+                </Box> */}
             </Box>
         </Page>
     )

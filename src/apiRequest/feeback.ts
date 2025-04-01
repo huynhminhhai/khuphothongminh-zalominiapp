@@ -16,11 +16,20 @@ const feebackApiRequest = {
     getFeedbackDetail: async (id: number) => {
         return await http.get<any>(`/phananh/chitiet/${id}`);
     },
+    deleteFeedback: async (id: number) => {
+        return await http.delete<any>(`/phananh/${id}`);
+    },
+    updateFeedbackStatus: async (param: { phanAnhId: number; tinhTrangId: number; }) => {
+        return await http.put<any>(`/phananh/tinhtrang`, {
+            phanAnhId: param.phanAnhId,
+            tinhTrangId: param.tinhTrangId
+        });
+    },
 }
 
 /**
 * GET FEEDBACK LIST
-**/ 
+**/
 export const useGetFeedbackListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
     return useQuery({
         queryKey: ['feedbackList', param.page, param.pageSize, param.ApId, param.keyword],
@@ -35,7 +44,7 @@ export const useGetFeedbackListNormal = (param: { page: number; pageSize: number
 
 /**
 * GET FEEDBACK LIST (INFINITE)
-**/ 
+**/
 export const useGetFeedbackList = (param: { page: number; pageSize: number, ApId: number; keyword: string }) => {
 
     return useInfiniteQuery({
@@ -62,7 +71,7 @@ export const useGetFeedbackList = (param: { page: number; pageSize: number, ApId
 
 /**
 * GET FEEDBACK STATUS
-**/ 
+**/
 export const useGetFeedbackStatus = () => {
     return useQuery({
         queryKey: ["feedbackStatus"],
@@ -82,7 +91,7 @@ export const useGetFeedbackStatus = () => {
 
 /**
 * POST FEEDBACK
-**/ 
+**/
 export const useCreateFeeback = () => {
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
@@ -119,7 +128,7 @@ export const useCreateFeeback = () => {
 
 /**
 * GET FEEDBACK DETAIL
-**/ 
+**/
 export const useGetFeebackDetail = (id: number) => {
 
     return useQuery({
@@ -139,4 +148,76 @@ export const useGetFeebackDetail = (id: number) => {
         staleTime: 1000 * 60 * 5,
         retry: 1,
     });
+};
+
+/**
+* DELETE FEEDBACK
+**/
+export const useDeleteFeedback = () => {
+    const queryClient = useQueryClient();
+    const { openSnackbar } = useSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await feebackApiRequest.deleteFeedback(id);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Xóa phản ánh thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* PUT FEEDBACK STATUS
+**/ 
+export const useUpdateFeedbackStatus = () => {
+
+    const { openSnackbar } = useSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+            mutationFn: async (param: { phanAnhId: number; tinhTrangId: number; }) => {
+                return await feebackApiRequest.updateFeedbackStatus(param);
+            },
+            onSuccess: () => {
+    
+                openSnackbar({
+                    icon: true,
+                    text: "Cập nhật trạng thái phản ánh thành công",
+                    type: 'success',
+                    action: { text: "Đóng", close: true },
+                    duration: 3000,
+                });
+
+                queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
+                queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+
+            },
+            onError: (error: string) => {
+                openSnackbar({
+                    icon: true,
+                    text: error,
+                    type: 'error',
+                    action: { text: "Đóng", close: true },
+                    duration: 3000,
+                });
+            },
+        });
 };
