@@ -43,20 +43,26 @@ const SERVICES: ServicesType[] = [
         icon: images.survey,
         // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của khảo sát", quyen: "XEM" },
     },
-    {
-        label: 'Thông tin tổ chức',
-        url: '/team',
-        icon: images.team,
-    },
-    {
-        label: 'Bản đồ',
-        url: '/maps',
-        icon: images.map,
-    },
+    // {
+    //     label: 'Thông tin tổ chức',
+    //     url: '/team',
+    //     icon: images.team,
+    // },
+    // {
+    //     label: 'Bản đồ',
+    //     url: '/maps',
+    //     icon: images.map,
+    // },
     {
         label: 'Tình hình tài chính',
         url: '/transactions',
         icon: images.money,
+    },
+    {
+        label: 'Nhiệm vụ',
+        url: '/task',
+        icon: images.todo,
+        // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của khảo sát", quyen: "XEM" },
     },
 ]
 

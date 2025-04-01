@@ -15,7 +15,7 @@ const MemberResidentSection: React.FC<{danCuId: number}> = ({danCuId}) => {
 
     if (isLoading) return <MemberListSkeleton />;
     if (error) return <EmptyData title="Có lỗi khi lấy danh sách người dùng" />;
-    if (familyMembers.length === 0) return <EmptyData title="Không có thành viên nào" />
+    if (!familyMembers || familyMembers.length <= 0) return <EmptyData title="Không có thành viên nào" />
 
     return (
         <Box pt={4}>
@@ -25,7 +25,7 @@ const MemberResidentSection: React.FC<{danCuId: number}> = ({danCuId}) => {
                 <InforResidentCraftList /> */}
                 <Box>
                     {
-                        familyMembers && familyMembers.map((item: any) => (
+                        familyMembers.map((item: any) => (
                             <InforResidentItemSub key={item.danCuId} data={item} />
                         ))
                     }

@@ -6,7 +6,7 @@ import { PrimaryButton } from "components/button";
 import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form";
 import FormControllerRadioGroup from "components/form/FormRadioGroup";
 import { ConfirmModal } from "components/modal";
-import { FormDataResident, schemaResident } from "./type";
+// import { FormDataResident, schemaResident } from "./type";
 import { useSearchParams } from "react-router-dom";
 import { useGetResidentCategory, useGetResidentDetail } from "apiRequest/resident";
 import MemberListSkeleton from "components/skeleton/info/MemberListSkeleton";

@@ -1,56 +1,100 @@
 import * as yup from 'yup';
 
-export const schemaResident = yup.object().shape({
-    hoTen: yup.string().required('Họ tên không được để trống'),
+const residenceSchema = yup.object().shape({
+    loaiCuTruId: yup.number().required('Loại cư trú là bắt buộc'),
+    diaChi: yup.string().required('Địa chỉ là bắt buộc'),
+    xa: yup.string().required('Xã là bắt buộc'),
+    huyen: yup.string().required('Huyện là bắt buộc'),
+    tinh: yup.string().required('Tỉnh là bắt buộc'),
+    latitude: yup
+        .number().nullable(),
+    longitute: yup
+        .number().nullable(),
+    tuNgay: yup.string().nullable(),
+    denNgay: yup.string().nullable(),
+});
+
+export const residentSchema = () => yup.object().shape({
+    laChuHo: yup.boolean().required('Trạng thái chủ hộ là bắt buộc'),
+    // chuHoId: yup
+    //     .number()
+    //     .test('required-or-empty', 'Chưa chọn mục này', function (value) {
+    //         if (value === undefined || value === null || value === 0) {
+    //             return this.createError({ message: 'Chưa chọn mục này' });
+    //         }
+
+    //         return true;
+    //     }),
+    hoTen: yup.string().required('Họ tên là bắt buộc'),
+    ngaySinh: yup
+        .string()
+        .required('Ngày sinh là bắt buộc')
+    ,
+    gioiTinh: yup.number().required('Giới tính là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
+    soGiayTo: yup
+        .string()
+        .required('Số giấy tờ là bắt buộc')
+        .matches(/^[0-9]{12}$/, 'Số định danh cá nhân phải bao gồm 12 số'),
+    danToc: yup.string().required('Dân tộc là bắt buộc'),
+    tonGiao: yup.string().required('Tôn giáo là bắt buộc'),
+    // quocGia: yup.string().required('Quốc gia là bắt buộc'),
+    ngheNghiep: yup.string().required('Nghề nghiệp là bắt buộc'),
+    noiLamViec: yup.string().required('Nơi làm việc là bắt buộc'),
+    email: yup
+        .string()
+        .email('Email không hợp lệ')
+        .required('Email là bắt buộc'),
     dienThoai: yup
         .string()
         .required('Số điện thoại không được để trống')
         .matches(/^(\+84|0)(9|3|7|8|5|6)[0-9]{8}$/, 'Số điện thoại không hợp lệ'),
-    gioiTinh: yup.number().required('Chưa chọn giới tính').notOneOf([0], 'Chưa chọn mục này'),
-    ngaySinh: yup.string().required('Chưa chọn ngày sinh'),
-    moiQuanHeVoiChuHo: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
-    soGiayTo: yup.string().typeError('CCCD phải là một số').required("CCCD phải là một số"),
-    ngheNghiep: yup.string().required("Không được để trống"),
-    noiLamViec: yup.string().required("Không được để trống"),
-    tonGiao: yup.number().required('Chưa chọn tôn giáo').notOneOf([0], 'Chưa chọn mục này'),
-    danToc: yup.number().required('Chưa chọn dân tộc').notOneOf([0], 'Chưa chọn mục này'),
-    loaiCuTruId: yup.number().required("Chưa chọn mục này"),
-    // residenceStatus: yup.number().required("Chưa chọn mục này"),
-    // Thường trú
-    addressPermanent: yup.string().required('Địa chỉ không được để trống'),
-    provincePermanent: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
-    districtPermanent: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
-    wardsPermanent: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
-    // quê quán
-    address: yup.string().required('Địa chỉ không được để trống'),
-    province: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
-    district: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
-    ward: yup.number().required('Chưa chọn mục này').notOneOf([0], 'Chưa chọn mục này'),
+    moiQuanHeVoiChuHo: yup
+        .number()
+        .test('required-or-empty', 'Chưa chọn mục này', function (value) {
+
+            if (value === undefined || value === null || value === 0) {
+                return this.createError({ message: 'Chưa chọn mục này' });
+            }
+
+            return true;
+        }),
+    // tinhTrangHoGiaDinhId: yup.number().required('Tình trạng hộ gia đình là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
+    giaDinhVanHoa: yup.boolean().required('Gia đình văn hóa là bắt buộc'),
+    noiThuongTru: residenceSchema.required('Nơi thường trú là bắt buộc'),
 });
 
-export type FormDataResident = {
-    hoTen: string;
-    dienThoai: string;
-    email?: string;
+interface Residence {
+    thongTinCuTruId?: any;
     loaiCuTruId: number;
-    // residenceStatus: number;
-    moiQuanHeVoiChuHo: number;
+    diaChi: string;
+    xa: string;
+    huyen: string;
+    tinh: string;
+    latitude?: number | null;
+    longitute?: number | null;
+    tuNgay?: string | null;
+    denNgay?: string | null;
+}
+
+export interface FormResidentDetail {
+    laChuHo: boolean;
+    chuHoId?: number;
+    hoTen: string;
     ngaySinh: string;
     gioiTinh: number;
     soGiayTo: string;
-    tonGiao: number;
-    danToc: number;
-    bhyt?: string;
+    danToc: string;
+    tonGiao: string;
+    quocGia?: string;
     ngheNghiep: string;
     noiLamViec: string;
-    // Thường trú
-    addressPermanent: string;
-    provincePermanent: number;
-    districtPermanent: number;
-    wardsPermanent: number;
-    // quê quán
-    address: string;
-    province: number;
-    district: number;
-    ward: number;
-};
+    email: string;
+    dienThoai: string;
+    website?: string;
+    moiQuanHeVoiChuHo?: number;
+    tinhTrangHoGiaDinhId?: number;
+    giaDinhVanHoa: boolean;
+    noiThuongTru: Residence;
+    // noiTamTru: Residence;
+    noiTamTru?: Residence | null;
+}

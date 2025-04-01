@@ -61,6 +61,7 @@ const ProfileAddForm: React.FC = () => {
   const [isConfirmVisible, setConfirmVisible] = useState(false);
   const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
   const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
+  const [chuHosData, setChuHosData] = useState<any>()
 
   const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
     resolver: yupResolver(residentSchema(isHouseHold)),
@@ -86,32 +87,63 @@ const ProfileAddForm: React.FC = () => {
     setFormData(data)
   };
 
+  /**
+  * CALL CHU HO API
+  **/
+
   useEffect(() => {
-    const fetchAndUpdateResident = async () => {
-      if (!watch().chuHoId) return;
+    if (watch().chuHoId) {
+      fetchApiResident()
+    }
+  }, [watch().chuHoId])
 
-      try {
-        const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
-        const residentData = response.data;
+  const fetchApiResident = async () => {
+    try {
+      const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
+      const residentData = response.data;
 
-        reset({
-          ...watch(),
-          noiThuongTru: {
-            ...residentData.noiThuongTru,
-          },
-          noiTamTru: {
-            ...residentData.noiTamTru,
-          },
-          tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
-          giaDinhVanHoa: residentData.giaDinhVanHoa
-        });
-      } catch (error) {
-        console.error('Lỗi khi gọi API resident detail:', error);
+      setChuHosData(residentData)
+
+      reset({
+        ...watch(),
+        noiThuongTru: {
+          ...watch().noiThuongTru,
+          ...residentData.noiThuongTru
+        },
+        noiTamTru: {
+          ...watch().noiTamTru,
+          ...residentData.noiTamTru
+        },
+        tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
+        giaDinhVanHoa: residentData.giaDinhVanHoa
+      });
+
+    } catch (error) {
+      console.error('Lỗi khi gọi API resident detail:', error);
+    }
+  }
+
+  useEffect(() => {
+    if (chuHosData) {
+      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
+        setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
       }
-    };
+      if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
+        setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
+      }
+    }
+  }, [chuHosData, thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, setValue])
 
-    fetchAndUpdateResident();
-  }, [watch().chuHoId, watch, reset, thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, thuongTruAddress.xaOptions, tamTruAddress.xaOptions]);
+  useEffect(() => {
+    if (chuHosData) {
+      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
+        setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
+      }
+      if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
+        setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
+      }
+    }
+  }, [chuHosData, thuongTruAddress.xaOptions, tamTruAddress.xaOptions, setValue])
 
   const handleConfirm = async () => {
     setConfirmVisible(false);
@@ -127,9 +159,18 @@ const ProfileAddForm: React.FC = () => {
         return;
       }
 
-      let dataSubmit = isHouseHold ?
-        { ...omit(formData, ['noiTamTru']), laChuHo: isHouseHold, apId: account.apId, moiQuanHeVoiChuHo: 1, chuHoId: null } :
-        { ...formData, laChuHo: isHouseHold, apId: account.apId }
+      let dataSubmit = {
+        ...formData,
+        laChuHo: isHouseHold,
+        apId: account.apId,
+        ...(isHouseHold
+          ? { moiQuanHeVoiChuHo: 1, chuHoId: null }
+          : {}),
+      };
+
+      if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.xa === '') {
+        dataSubmit = omit(dataSubmit, ['noiTamTru']);
+      }
 
       await createResident(dataSubmit);
 

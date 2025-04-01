@@ -1,351 +1,481 @@
-import React, { useEffect, useState } from "react";
-import { Box, useNavigate, useSnackbar } from "zmp-ui";
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { PrimaryButton } from "components/button";
-import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form";
-import { ethnicOptions, gender, jobs, religionOptions, residentRealationships, residentStatus, residentType } from "constants/mock";
-import FormControllerRadioGroup from "components/form/FormRadioGroup";
-import { ConfirmModal } from "components/modal";
-import { FormDataResident, schemaResident } from "./type";
-
-const defaultValues: FormDataResident = {
-    fullname: '',
-    phoneNumber: '',
-    residenceType: 1,
-    residenceStatus: 1,
-    relationship: 0,
-    birthDate: '',
-    gender: 0,
-    numberCard: '',
-    dateCard: '',
-    religion: 0,
-    nation: 0,
-    bhyt: '',
-    job: 0,
-    // Thường trú
-    addressPermanent: '',
-    provincePermanent: 0,
-    districtPermanent: 0,
-    wardsPermanent: 0,
-    // quê quán
-    address: '',
-    province: 0,
-    district: 0,
-    ward: 0
-};
+import React, { useEffect, useState } from "react"
+import { Box } from "zmp-ui"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { PrimaryButton } from "components/button"
+import { FormCheckboxField, FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form"
+import { ConfirmModal } from "components/modal"
+import { FormResidentDetail, residentSchema } from "./type"
+import { useStoreApp } from "store/store"
+import { useCreateResident } from "apiRequest/resident"
+import { useResidentAddress } from "utils/useAddress"
+import { omit } from "lodash"
 
 const ResidentAddForm: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
+    const { ngheNghieps, danTocs, gioiTinhs, loaiCuTrus, moiQuanHeGiaDinhs, tinhs, tonGiaos, tinhTrangHoGiaDinhs, account } = useStoreApp()
 
-    const [loading, setLoading] = useState(false);
+    const defaultValues: FormResidentDetail = {
+        laChuHo: false,
+        chuHoId: 0,
+        hoTen: '',
+        ngaySinh: '',
+        gioiTinh: 0,
+        soGiayTo: '',
+        danToc: '',
+        tonGiao: '',
+        quocGia: 'VN',
+        ngheNghiep: '',
+        noiLamViec: '',
+        email: '',
+        dienThoai: '',
+        website: '',
+        moiQuanHeVoiChuHo: 0,
+        tinhTrangHoGiaDinhId: 0,
+        giaDinhVanHoa: false,
+        noiThuongTru: {
+            loaiCuTruId: loaiCuTrus[0].value,
+            diaChi: '',
+            xa: '',
+            huyen: '',
+            tinh: '',
+            latitude: null,
+            longitute: null,
+            tuNgay: null,
+            denNgay: null,
+        },
+        noiTamTru: {
+            loaiCuTruId: loaiCuTrus[1].value,
+            diaChi: '',
+            xa: '',
+            huyen: '',
+            tinh: '',
+            latitude: null,
+            longitute: null,
+            tuNgay: null,
+            denNgay: null,
+        },
+    };
+
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [formData, setFormData] = useState<FormDataResident>(defaultValues)
+    const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
+    const [chuHosData, setChuHosData] = useState<any>()
 
-    const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataResident>({
-        resolver: yupResolver(schemaResident),
+    const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
+        resolver: yupResolver(residentSchema()),
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<FormDataResident> = (data) => {
+    const { mutateAsync: createResident, isPending } = useCreateResident();
+
+    const thuongTruAddress = useResidentAddress("noiThuongTru", tinhs, watch, setValue);
+    const tamTruAddress = useResidentAddress("noiTamTru", tinhs, watch, setValue);
+
+    const onSubmit: SubmitHandler<FormResidentDetail> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
     };
 
-    // Thường trú
-    const selectedPermanentProvince = watch("provincePermanent");
-    const selectedPermanentDistrict = watch("districtPermanent");
+    /**
+    * CALL CHU HO API
+    **/
 
-    const { provinces: provincesPermanent, districts: districtsPermanent, wards: wardsPermanent } = useAddress(selectedPermanentProvince, selectedPermanentDistrict);
+    useEffect(() => {
+        if (account && account.thongTinDanCu) {
 
-    // Quê quán
-    const selectedProvince = watch("province");
-    const selectedDistrict = watch("district");
+            const residentData = account.thongTinDanCu
 
-    const { provinces, districts, wards } = useAddress(selectedProvince, selectedDistrict);
+            setChuHosData(residentData)
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            // Gọi API thêm thành viên
-            console.log('call api add with: ', { ...formData });
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Yêu cầu thêm thành viên thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
+            reset({
+                ...watch(),
+                noiThuongTru: {
+                    ...watch().noiThuongTru,
+                    ...residentData.noiThuongTru
+                },
+                noiTamTru: {
+                    ...watch().noiTamTru,
+                    ...residentData.noiTamTru
+                },
+                tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
+                giaDinhVanHoa: residentData.giaDinhVanHoa
             });
-            reset(defaultValues);
-            navigate('/resident-member');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
         }
-    }
+    }, [account])
 
-    const handleConfirm = () => {
+    useEffect(() => {
+        if (chuHosData) {
+            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
+                setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
+            }
+            if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
+                setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
+            }
+        }
+    }, [chuHosData, thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, setValue])
+
+    useEffect(() => {
+        if (chuHosData) {
+            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
+                setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
+            }
+            if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
+                setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
+            }
+        }
+    }, [chuHosData, thuongTruAddress.xaOptions, tamTruAddress.xaOptions, setValue])
+
+    const handleConfirm = async () => {
         setConfirmVisible(false);
-        if (formData) {
-            fetchApi()
+        try {
+
+            if (!account) {
+                console.error("Error: account is null");
+                return;
+            }
+
+            if (!formData) {
+                console.error("Error: formData is null");
+                return;
+            }
+
+            let dataSubmit = {
+                ...formData,
+                laChuHo: false,
+                apId: account.apId,
+                chuHoId: account.thongTinDanCu.danCuId,
+            };
+
+            if (!formData.noiTamTru || formData.noiTamTru.xa === '') {
+                dataSubmit = omit(dataSubmit, ['noiTamTru']);
+            }
+
+            await createResident(dataSubmit);
+
+            reset(defaultValues);
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
-    useEffect(() => {
-        setValue('districtPermanent', 0)
-        setValue('wardsPermanent', 0)
-    }, [selectedPermanentProvince, setValue])
-
-    useEffect(() => {
-        setValue('wardsPermanent', 0)
-    }, [selectedPermanentDistrict, setValue])
-
-    useEffect(() => {
-        setValue('district', 0)
-        setValue('ward', 0)
-    }, [selectedProvince, setValue])
-
-    useEffect(() => {
-        setValue('ward', 0)
-    }, [selectedDistrict, setValue])
-    
     return (
         <Box p={4}>
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
-                        <FormSelectField
-                            name="relationship"
-                            label="Quan hệ với chủ hộ"
-                            placeholder="Chọn quan hệ với chủ hộ"
-                            control={control}
-                            options={residentRealationships}
-                            error={errors.relationship?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
                         <FormInputField
-                            name="fullname"
+                            name="hoTen"
                             label="Họ và tên"
                             placeholder="Nhập họ và tên"
                             control={control}
-                            error={errors.fullname?.message}
+                            error={errors.hoTen?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="phoneNumber"
+                            name="dienThoai"
                             label="Số điện thoại"
                             placeholder="Nhập số điện thoại"
                             control={control}
-                            error={errors.phoneNumber?.message}
+                            error={errors.dienThoai?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormControllerRadioGroup
-                            name="residenceType"
+                        <FormInputField
+                            name="email"
+                            label="Email"
+                            placeholder="Nhập email"
                             control={control}
-                            label="Loại cư trú"
-                            options={residentType}
+                            error={errors.email?.message}
                             required
-                        />
-                    </div>
-                    <div className="col-span-12 flexCol">
-                        <FormControllerRadioGroup
-                            name="residenceStatus"
-                            control={control}
-                            label="Tình trạng"
-                            options={residentStatus}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormSelectField
-                            name="province"
-                            label="Quê quán"
-                            placeholder="Chọn tỉnh/thành phố"
-                            control={control}
-                            options={provinces}
-                            error={errors.province?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="district"
-                            label=""
-                            placeholder="Chọn quận/huyện"
-                            control={control}
-                            options={districts}
-                            error={errors.district?.message}
-                        />
-                    </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="ward"
-                            label=""
-                            placeholder="Chọn phường/xã"
-                            control={control}
-                            options={wards}
-                            error={errors.ward?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputAreaField
-                            name="address"
-                            label=""
-                            placeholder="Nhập địa chỉ chi tiết"
-                            control={control}
-                            error={errors.address?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormSelectField
-                            name="provincePermanent"
-                            label="Địa chỉ thường trú"
-                            placeholder="Chọn tỉnh/thành phố"
-                            control={control}
-                            options={provincesPermanent}
-                            error={errors.provincePermanent?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="districtPermanent"
-                            label=""
-                            placeholder="Chọn quận/huyện"
-                            control={control}
-                            options={districtsPermanent}
-                            error={errors.districtPermanent?.message}
-                        />
-                    </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="wardsPermanent"
-                            label=""
-                            placeholder="Chọn phường/xã"
-                            control={control}
-                            options={wardsPermanent}
-                            error={errors.wardsPermanent?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputAreaField
-                            name="addressPermanent"
-                            label=""
-                            placeholder="Nhập địa chỉ chi tiết"
-                            control={control}
-                            error={errors.addressPermanent?.message}
                         />
                     </div>
                     <div className="col-span-6">
                         <FormControllerDatePicker
-                            name="birthDate"
+                            name="ngaySinh"
                             label="Ngày sinh"
                             control={control}
                             placeholder="Chọn ngày sinh"
                             required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.birthDate?.message}
+                            error={errors.ngaySinh?.message}
                         />
                     </div>
                     <div className="col-span-6">
                         <FormSelectField
-                            name="gender"
+                            name="gioiTinh"
                             label="Giới tính"
                             placeholder="Chọn giới tính"
                             control={control}
-                            options={gender}
-                            error={errors.gender?.message}
+                            options={gioiTinhs}
+                            error={errors.gioiTinh?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
                             type="number"
-                            name="numberCard"
+                            name="soGiayTo"
                             label="Số định danh cá nhân"
                             placeholder="Nhập số định danh cá nhân"
                             control={control}
-                            error={errors.numberCard?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormControllerDatePicker
-                            name="dateCard"
-                            label="Ngày cấp"
-                            control={control}
-                            placeholder="Chọn ngày cấp"
-                            required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.dateCard?.message}
-                        />
-                    </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="religion"
-                            label="Tôn giáo"
-                            placeholder="Nhập tôn giáo"
-                            control={control}
-                            options={religionOptions}
-                            error={errors.religion?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="nation"
-                            label="Dân tộc"
-                            placeholder="Nhập dân tộc"
-                            control={control}
-                            options={ethnicOptions}
-                            error={errors.nation?.message}
+                            error={errors.soGiayTo?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormSelectField
-                            name="job"
+                            name="ngheNghiep"
                             label="Nghề nghiệp"
                             placeholder="Chọn nghề nghiệp"
                             control={control}
-                            options={jobs}
-                            error={errors.job?.message}
+                            options={ngheNghieps}
+                            error={errors.ngheNghiep?.message}
+                            required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="bhyt"
-                            label="Bảo hiểm y tế"
-                            placeholder="Nhập mã bảo hiểm y tế"
+                            name="noiLamViec"
+                            label="Nơi làm việc"
+                            placeholder="Nhập nơi làm việc"
                             control={control}
-                            error={errors.bhyt?.message}
+                            error={errors.noiLamViec?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="tonGiao"
+                            label="Tôn giáo"
+                            placeholder="Nhập tôn giáo"
+                            control={control}
+                            options={tonGiaos}
+                            error={errors.tonGiao?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="danToc"
+                            label="Dân tộc"
+                            placeholder="Nhập dân tộc"
+                            control={control}
+                            options={danTocs}
+                            error={errors.danToc?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="moiQuanHeVoiChuHo"
+                            label="Quan hệ với chủ hộ"
+                            placeholder="Chọn quan hệ với chủ hộ"
+                            control={control}
+                            options={moiQuanHeGiaDinhs}
+                            error={errors.moiQuanHeVoiChuHo?.message}
+                            required
+                        />
+                    </div>
+                    {/* Nơi thường trú */}
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="noiThuongTru.tinh"
+                            label="Địa chỉ thường trú"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={tinhs}
+                            error={errors.noiThuongTru?.tinh?.message}
+                            required
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="noiThuongTru.huyen"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={thuongTruAddress.huyenOptions}
+                            error={errors.noiThuongTru?.huyen?.message}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="noiThuongTru.xa"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={thuongTruAddress.xaOptions}
+                            error={errors.noiThuongTru?.xa?.message}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputAreaField
+                            name="noiThuongTru.diaChi"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
+                            control={control}
+                            error={errors.noiThuongTru?.diaChi?.message}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormInputField
+                            type="number"
+                            name="noiThuongTru.latitude"
+                            placeholder="Nhập latitude"
+                            control={control}
+                            error={errors.noiThuongTru?.latitude?.message}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormInputField
+                            type="number"
+                            name="noiThuongTru.longitute"
+                            placeholder="Nhập Longitute"
+                            control={control}
+                            error={errors.noiThuongTru?.longitute?.message}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiThuongTru.tuNgay"
+                            control={control}
+                            placeholder="Ngày bắt đầu"
+                            error={errors.noiThuongTru?.tuNgay?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiThuongTru.denNgay"
+                            control={control}
+                            placeholder="Ngày kết thúc"
+                            error={errors.noiThuongTru?.denNgay?.message}
+                        />
+                    </div>
+                    {/* Nơi tạm trú */}
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="noiTamTru.tinh"
+                            label="Địa chỉ tạm trú"
+                            placeholder="Chọn tỉnh/thành phố"
+                            control={control}
+                            options={tinhs}
+                            error={errors.noiTamTru?.tinh?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="noiTamTru.huyen"
+                            label=""
+                            placeholder="Chọn quận/huyện"
+                            control={control}
+                            options={tamTruAddress.huyenOptions}
+                            error={errors.noiTamTru?.huyen?.message}
+                            disabled={!tamTruAddress.watchedTinh}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="noiTamTru.xa"
+                            label=""
+                            placeholder="Chọn phường/xã"
+                            control={control}
+                            options={tamTruAddress.xaOptions}
+                            error={errors.noiTamTru?.xa?.message}
+                            disabled={!tamTruAddress.watchedHuyen}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputAreaField
+                            name="noiTamTru.diaChi"
+                            label=""
+                            placeholder="Nhập địa chỉ chi tiết"
+                            control={control}
+                            error={errors.noiTamTru?.diaChi?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormInputField
+                            type="number"
+                            name="noiTamTru.latitude"
+                            placeholder="Nhập latitude"
+                            control={control}
+                            error={errors.noiTamTru?.latitude?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormInputField
+                            type="number"
+                            name="noiTamTru.longitute"
+                            placeholder="Nhập Longitute"
+                            control={control}
+                            error={errors.noiTamTru?.longitute?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiTamTru.tuNgay"
+                            control={control}
+                            placeholder="Ngày bắt đầu"
+                            error={errors.noiTamTru?.tuNgay?.message}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormControllerDatePicker
+                            name="noiTamTru.denNgay"
+                            control={control}
+                            placeholder="Ngày kết thúc"
+                            error={errors.noiTamTru?.denNgay?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="tinhTrangHoGiaDinhId"
+                            label="Tình trạng hộ gia đình"
+                            placeholder="Chọn tình trạng hộ gia đình"
+                            control={control}
+                            options={tinhTrangHoGiaDinhs}
+                            error={errors.tinhTrangHoGiaDinhId?.message}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormCheckboxField
+                            name="giaDinhVanHoa"
+                            label="Gia đình văn hóa"
+                            control={control}
+                            defaultChecked={false}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="website"
+                            label="Website"
+                            placeholder="Nhập website"
+                            control={control}
+                            error={errors.website?.message}
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Gửi yêu cầu thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton
+                                fullWidth
+                                disabled={isPending}
+                                label={isPending ? 'Đang xử lý...' : 'Thêm dân cư'}
+                                handleClick={handleSubmit(onSubmit)}
+                            />
                         </Box>
                     </div>
                 </div>
@@ -353,7 +483,7 @@ const ResidentAddForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn gửi yêu cầu thêm thành viên này không?"
+                message="Bạn có chắc chắn muốn thêm hồ sơ này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
@@ -361,4 +491,4 @@ const ResidentAddForm: React.FC = () => {
     )
 }
 
-export default ResidentAddForm;
+export default ResidentAddForm

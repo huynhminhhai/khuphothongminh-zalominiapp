@@ -38,7 +38,7 @@ const residentApiRequest = {
 
 /**
 * GET RESIDENT DATA
-**/ 
+**/
 export const useGetResidentData = () => {
     const [familyNumberQuery, residentNumberQuery] = useQueries({
         queries: [
@@ -48,7 +48,9 @@ export const useGetResidentData = () => {
                     const res = await residentApiRequest.getFamilyNumber();
                     return res.data;
                 },
-                staleTime: 1000 * 60 * 10,
+                staleTime: 0,
+                refetchOnMount: true,
+                refetchOnWindowFocus: true,
                 retry: 1,
             },
             {
@@ -57,7 +59,9 @@ export const useGetResidentData = () => {
                     const res = await residentApiRequest.getResidentNumber();
                     return res.data;
                 },
-                staleTime: 1000 * 60 * 10,
+                staleTime: 0,
+                refetchOnMount: true,
+                refetchOnWindowFocus: true,
                 retry: 1,
             },
         ],
@@ -68,7 +72,7 @@ export const useGetResidentData = () => {
 
 /**
 * GET FAMILY MEMBERS
-**/ 
+**/
 export const useGetFamilyMembers = (id: number) => {
     return useQuery({
         queryKey: ["familyMembers", id],
@@ -89,7 +93,7 @@ export const useGetFamilyMembers = (id: number) => {
 
 /**
 * GET RESIDENT DETAIL
-**/ 
+**/
 export const useGetResidentDetail = (id: number) => {
     return useQuery({
         queryKey: ["residentDetail", id],
@@ -110,7 +114,7 @@ export const useGetResidentDetail = (id: number) => {
 
 /**
 * GET RESIDENT CATEGORY
-**/ 
+**/
 export const useGetResidentCategory = () => {
     return useQuery({
         queryKey: ["residentCategory"],
@@ -130,7 +134,7 @@ export const useGetResidentCategory = () => {
 
 /**
 * GET RESIDENT LIST
-**/ 
+**/
 export const useGetResidentListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
     return useQuery({
         queryKey: ['residentList', param.page, param.pageSize, param.ApId, param.keyword],
@@ -150,7 +154,7 @@ export const useGetResidentListNormal = (param: { page: number; pageSize: number
 
 /**
 * GET CHU HO LIST
-**/ 
+**/
 export const useGetChuHosList = () => {
     return useQuery({
         queryKey: ['chuhosList'],
@@ -164,14 +168,16 @@ export const useGetChuHosList = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
+        refetchOnMount: true,
+        refetchOnWindowFocus: true,
         retry: 1,
     });
 };
 
 /**
 * POST RESIDENT
-**/ 
+**/
 export const useCreateResident = () => {
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
@@ -190,6 +196,8 @@ export const useCreateResident = () => {
             });
 
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
+            queryClient.invalidateQueries({ queryKey: ["chuhosList"] });
+            queryClient.invalidateQueries({ queryKey: ["familyMembers"] });
         },
         onError: (error: string) => {
             openSnackbar({
@@ -205,7 +213,7 @@ export const useCreateResident = () => {
 
 /**
 * DELETE RESIDENT
-**/ 
+**/
 export const useDeleteResident = () => {
     const queryClient = useQueryClient();
     const { openSnackbar } = useSnackbar();
@@ -239,7 +247,7 @@ export const useDeleteResident = () => {
 
 /**
 * PUT RESIDENT
-**/ 
+**/
 export const useUpdateResident = () => {
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
