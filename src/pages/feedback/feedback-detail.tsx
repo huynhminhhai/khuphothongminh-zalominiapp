@@ -38,34 +38,6 @@ const FeedbackDetailPage: React.FC = () => {
     const { data: huyens } = useGetHuyenList(maTinh ?? "");
     const { data: xas } = useGetXaList(maHuyen ?? "");
 
-    // useEffect(() => {
-    //     // Hàm gọi API để lấy thông tin thành viên
-    //     const fetchResponseData = async () => {
-    //         setLoading(true);
-    //         try {
-    //             // Giả sử API trả về thông tin thành viên
-    //             // const response = await fetch(`/api/residents/${feedbackId}`);
-    //             // const data = await response.json();
-
-    //             const data = FEEDBACKRESPONSES.find(response => response.feedbackId === Number(feedbackId))
-
-    //             setResponseData(data)
-
-    //         } catch (error) {
-    //             console.error("Failed to fetch response data:", error);
-    //             openSnackbar({
-    //                 text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
-    //                 type: "error",
-    //                 duration: 5000,
-    //             });
-    //         } finally {
-    //             setLoading(false);
-    //         }
-    //     };
-
-    //     fetchResponseData();
-    // }, [feedbackId]);
-
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[30px]">
             <Box>

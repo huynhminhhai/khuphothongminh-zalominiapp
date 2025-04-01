@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { Box, Select } from "zmp-ui"
-import { RESIDENT, RESIDENTCRAFT, ResidentType } from "constants/utinities"
+// import { RESIDENT, RESIDENTCRAFT, ResidentType } from "constants/utinities"
 import { Divider } from "components/divider"
 import { InforResidentItemSub } from "."
 

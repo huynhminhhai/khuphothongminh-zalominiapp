@@ -4,7 +4,7 @@ import SecondaryButton from "components/button/SecondaryButton";
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal";
 import { ethnicOptions, religionOptions } from "constants/mock";
-import { genderLabel, RESIDENT, RESIDENTCRAFT } from "constants/utinities";
+// import { genderLabel, RESIDENT, RESIDENTCRAFT } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import { getLabelOptions } from "utils/options";
