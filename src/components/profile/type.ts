@@ -94,6 +94,7 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
     laChuHo: yup.boolean().required('Trạng thái chủ hộ là bắt buộc'),
     chuHoId: yup
         .number()
+        .typeError('Chưa chọn mục này')
         .test('required-or-empty', 'Chưa chọn mục này', function (value) {
 
             if (!isHouseHold && (value === undefined || value === null || value === 0)) {
@@ -131,6 +132,7 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
         .matches(/^(\+84|0)(9|3|7|8|5|6)[0-9]{8}$/, 'Số điện thoại không hợp lệ'),
     moiQuanHeVoiChuHo: yup
         .number()
+        .typeError('Chưa chọn mục này')
         .test('required-or-empty', 'Chưa chọn mục này', function (value) {
 
             if (!isHouseHold && (value === undefined || value === null || value === 0)) {

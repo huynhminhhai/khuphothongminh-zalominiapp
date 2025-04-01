@@ -267,6 +267,8 @@ export const useUpdateResident = () => {
 
             queryClient.invalidateQueries({ queryKey: ["residentDetail"] });
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
+            queryClient.invalidateQueries({ queryKey: ["chuhosList"] });
+            queryClient.invalidateQueries({ queryKey: ["familyMembers"] });
         },
         onError: (error: string) => {
             openSnackbar({

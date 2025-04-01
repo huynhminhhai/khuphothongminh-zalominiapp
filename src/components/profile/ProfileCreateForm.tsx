@@ -35,7 +35,7 @@ const ProfileAddForm: React.FC = () => {
     tinhTrangHoGiaDinhId: 0,
     giaDinhVanHoa: false,
     noiThuongTru: {
-      loaiCuTruId: loaiCuTrus[0].value,
+      loaiCuTruId: loaiCuTrus[0]?.value || 1,
       diaChi: '',
       xa: '',
       huyen: '',
@@ -46,7 +46,7 @@ const ProfileAddForm: React.FC = () => {
       denNgay: null,
     },
     noiTamTru: {
-      loaiCuTruId: loaiCuTrus[1].value,
+      loaiCuTruId: loaiCuTrus[1]?.value || 2,
       diaChi: '',
       xa: '',
       huyen: '',

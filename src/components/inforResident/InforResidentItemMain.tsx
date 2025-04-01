@@ -5,6 +5,7 @@ import React from "react"
 import { useNavigate } from "react-router-dom"
 import { Avatar, Box } from "zmp-ui"
 import ResidentInfoList from "./ResidentInfoList"
+import { EmptyData } from "components/data"
 
 type InforResidentItemMainType = {
     data: any

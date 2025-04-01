@@ -36,7 +36,7 @@ const ProfileUpdateForm: React.FC = () => {
         tinhTrangHoGiaDinhId: 0,
         giaDinhVanHoa: false,
         noiThuongTru: {
-            loaiCuTruId: loaiCuTrus[0].value,
+            loaiCuTruId: loaiCuTrus[0]?.value || 1,
             diaChi: '',
             xa: '',
             huyen: '',
@@ -47,7 +47,7 @@ const ProfileUpdateForm: React.FC = () => {
             denNgay: null,
         },
         noiTamTru: {
-            loaiCuTruId: loaiCuTrus[1].value,
+            loaiCuTruId: loaiCuTrus[1]?.value || 2,
             diaChi: '',
             xa: '',
             huyen: '',
@@ -96,6 +96,14 @@ const ProfileUpdateForm: React.FC = () => {
 
             reset({
                 ...residentDetail,
+                noiThuongTru: {
+                    ...residentDetail.noiThuongTru,
+                    loaiCuTruId: loaiCuTrus[0]?.value || 1,
+                },
+                noiTamTru: {
+                    ...residentDetail.noiTamTru,
+                    loaiCuTruId: loaiCuTrus[1]?.value || 2,
+                },
                 ngheNghiep: Number(residentDetail.ngheNghiep),
             });
             setIsHouseHold(residentDetail.laChuHo);
@@ -212,14 +220,6 @@ const ProfileUpdateForm: React.FC = () => {
                 console.error("Error: formData is null");
                 return;
             }
-
-            // let dataSubmit = isHouseHold ?
-            //     { ...omit(formData, ['noiTamTru']), laChuHo: isHouseHold, apId: account.apId, moiQuanHeVoiChuHo: 1, chuHoId: null, danCuId: Number(residentId) } :
-            //     { ...formData, laChuHo: isHouseHold, apId: account.apId, danCuId: Number(residentId), }
-
-            // if (!formData.noiTamTru || formData.noiTamTru.xa === '') {
-            //     dataSubmit = omit(dataSubmit, ['noiTamTru']);
-            //   }
 
             let dataSubmit = {
                 ...formData,

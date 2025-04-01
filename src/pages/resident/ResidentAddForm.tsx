@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box } from "zmp-ui"
+import { Box, useNavigate } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
@@ -12,6 +12,8 @@ import { useResidentAddress } from "utils/useAddress"
 import { omit } from "lodash"
 
 const ResidentAddForm: React.FC = () => {
+
+    const navigate = useNavigate();
 
     const { ngheNghieps, danTocs, gioiTinhs, loaiCuTrus, moiQuanHeGiaDinhs, tinhs, tonGiaos, tinhTrangHoGiaDinhs, account } = useStoreApp()
 
@@ -34,7 +36,7 @@ const ResidentAddForm: React.FC = () => {
         tinhTrangHoGiaDinhId: 0,
         giaDinhVanHoa: false,
         noiThuongTru: {
-            loaiCuTruId: loaiCuTrus[0].value,
+            loaiCuTruId: loaiCuTrus[0]?.value || 1,
             diaChi: '',
             xa: '',
             huyen: '',
@@ -45,7 +47,7 @@ const ResidentAddForm: React.FC = () => {
             denNgay: null,
         },
         noiTamTru: {
-            loaiCuTruId: loaiCuTrus[1].value,
+            loaiCuTruId: loaiCuTrus[1]?.value || 2,
             diaChi: '',
             xa: '',
             huyen: '',
@@ -62,7 +64,7 @@ const ResidentAddForm: React.FC = () => {
     const [chuHosData, setChuHosData] = useState<any>()
 
     const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
-        resolver: yupResolver(residentSchema()),
+        resolver: yupResolver(residentSchema(true)),
         defaultValues
     });
 
@@ -153,6 +155,8 @@ const ResidentAddForm: React.FC = () => {
             await createResident(dataSubmit);
 
             reset(defaultValues);
+
+            navigate("/resident");
         } catch (error) {
             console.error("Error:", error);
         }

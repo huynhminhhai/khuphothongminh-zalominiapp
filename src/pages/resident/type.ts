@@ -14,17 +14,19 @@ const residenceSchema = yup.object().shape({
     denNgay: yup.string().nullable(),
 });
 
-export const residentSchema = () => yup.object().shape({
+export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
     laChuHo: yup.boolean().required('Trạng thái chủ hộ là bắt buộc'),
-    // chuHoId: yup
-    //     .number()
-    //     .test('required-or-empty', 'Chưa chọn mục này', function (value) {
-    //         if (value === undefined || value === null || value === 0) {
-    //             return this.createError({ message: 'Chưa chọn mục này' });
-    //         }
+    chuHoId: yup
+        .number()
+        .typeError('Chưa chọn mục này')
+        .test('required-or-empty', 'Chưa chọn mục này', function (value) {
 
-    //         return true;
-    //     }),
+            if (!isHouseHold && (value === undefined || value === null || value === 0)) {
+                return this.createError({ message: 'Chưa chọn mục này' });
+            }
+
+            return true;
+        }),
     hoTen: yup.string().required('Họ tên là bắt buộc'),
     ngaySinh: yup
         .string()
@@ -50,15 +52,16 @@ export const residentSchema = () => yup.object().shape({
         .matches(/^(\+84|0)(9|3|7|8|5|6)[0-9]{8}$/, 'Số điện thoại không hợp lệ'),
     moiQuanHeVoiChuHo: yup
         .number()
+        .typeError('Chưa chọn mục này')
         .test('required-or-empty', 'Chưa chọn mục này', function (value) {
 
-            if (value === undefined || value === null || value === 0) {
+            if (!isHouseHold && (value === undefined || value === null || value === 0)) {
                 return this.createError({ message: 'Chưa chọn mục này' });
             }
 
             return true;
         }),
-    // tinhTrangHoGiaDinhId: yup.number().required('Tình trạng hộ gia đình là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
+    tinhTrangHoGiaDinhId: yup.number().required('Tình trạng hộ gia đình là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
     giaDinhVanHoa: yup.boolean().required('Gia đình văn hóa là bắt buộc'),
     noiThuongTru: residenceSchema.required('Nơi thường trú là bắt buộc'),
 });
@@ -92,7 +95,7 @@ export interface FormResidentDetail {
     dienThoai: string;
     website?: string;
     moiQuanHeVoiChuHo?: number;
-    tinhTrangHoGiaDinhId?: number;
+    tinhTrangHoGiaDinhId: number;
     giaDinhVanHoa: boolean;
     noiThuongTru: Residence;
     // noiTamTru: Residence;

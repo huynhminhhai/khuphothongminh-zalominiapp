@@ -3,6 +3,7 @@ import { Box, useNavigate } from "zmp-ui"
 import { Icon } from "@iconify/react"
 import SecondaryButton from "components/button/SecondaryButton"
 import ResidentInfoList from "./ResidentInfoList"
+import { useStoreApp } from "store/store"
 
 type InforResidentItemProps = {
     data: any
@@ -11,6 +12,8 @@ type InforResidentItemProps = {
 const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
 
     const navigate = useNavigate()
+
+    const { account } = useStoreApp();
 
     const [isOpen, setIsOpen] = useState(false);
     const toggleDropdown = () => {
@@ -38,11 +41,15 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
                             <Box>
                                 <ResidentInfoList residentDetailData={data} />
                             </Box>
-                            <Box mt={2}>
-                                <div className=" flex items-center justify-end gap-3">
-                                    <SecondaryButton label="Cập nhật" handleClick={() => navigate(`/resident-edit?id=${data.id}`)} size="small" />
-                                </div>
-                            </Box>
+                            {
+                                account?.thongTinDanCu?.laChuHo && (
+                                    <Box mt={2}>
+                                        <div className=" flex items-center justify-end gap-3">
+                                            <SecondaryButton label="Cập nhật" handleClick={() => navigate(`/resident-edit?id=${data.danCuId}`)} size="small" />
+                                        </div>
+                                    </Box>
+                                )
+                            }
                         </Box>
                     )
                 }

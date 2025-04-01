@@ -12,7 +12,9 @@ const InforResidentSection: React.FC = () => {
 
     if (isLoading) return <UserInfoSkeleton />;
     if (error) return <EmptyData title="Có lỗi khi lấy thông tin người dùng" />;
-    if (!userInfo.thongTinDanCu) return <EmptyData title="Không tìm thấy thông tin hộ dân" />
+    if (!userInfo.thongTinDanCu) return <Box px={4}>
+        <EmptyData desc="Không tìm thấy thông tin dân cư" />
+    </Box>
 
     return (
         <Box>

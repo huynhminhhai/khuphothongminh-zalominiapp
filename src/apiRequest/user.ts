@@ -14,7 +14,6 @@ export const useGetUserInfo = () => {
             try {
                 const res = await userApiRequest.getUserInfo();
 
-                console.log(res)
                 return res.data;
             } catch (error) {
                 console.error("Lỗi khi lấy thông tin người dùng:", error);
