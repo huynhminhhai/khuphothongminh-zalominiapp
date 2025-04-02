@@ -1,7 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { NewsType } from 'components/news/type';
 import http from 'services/http';
-import { useSnackbar } from 'zmp-ui';
+import { useNavigate, useSnackbar } from 'zmp-ui';
 
 const newsApiRequest = {
     getNewsList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
@@ -142,7 +141,7 @@ export const useGetNewsDetail = (id: number) => {
 
                 const res = await newsApiRequest.getNewsDetail(id);
 
-                return res.data as NewsType
+                return res.data
             } catch (error) {
                 console.error(error);
                 throw error;
@@ -160,6 +159,7 @@ export const useGetNewsDetail = (id: number) => {
 export const useCreateNews = () => {
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
+    const navigator = useNavigate()
 
     return useMutation({
         mutationFn: async (formData: any) => {
@@ -175,6 +175,8 @@ export const useCreateNews = () => {
             });
 
             queryClient.invalidateQueries({ queryKey: ["newsList"] });
+
+            navigator('/news-management')
         },
         onError: (error: string) => {
             openSnackbar({

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import { Box } from "zmp-ui"
 import { FormDataNews, schemaNews } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -16,10 +16,11 @@ const defaultValues: FormDataNews = {
     NoiDung: "",
     TacGia: "",
     FileAnhDaiDien: undefined,
+    NgayXuatBan: new Date().toISOString().split("T")[0]
 };
 
 const NewsAddForm: React.FC = () => {
-    
+
     const { account } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
@@ -41,7 +42,9 @@ const NewsAddForm: React.FC = () => {
         setConfirmVisible(false);
 
         try {
-            const formDataConverted = convertToFormData({...formData, ApId: account?.apId, TinhTrangId: 1 });
+            const dataSubmit = { ...formData, ApId: account?.apId, TinhTrangId: 1 }
+
+            const formDataConverted = convertToFormData(dataSubmit);
 
             await createNews(formDataConverted);
             reset(defaultValues);
@@ -86,7 +89,7 @@ const NewsAddForm: React.FC = () => {
                             required
                         />
                     </div>
-                    
+
                     <div className="col-span-12">
                         <FormTextEditorField
                             name="NoiDung"

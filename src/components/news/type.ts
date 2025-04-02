@@ -10,6 +10,7 @@ export const schemaNews = yup.object().shape({
         .test("required", "Vui lòng chọn một tệp ảnh", (value) => {
             return value instanceof File;
         }),
+    // NgayXuatBan: yup.string().required('Không được sé trống'), 
 });
 
 export type FormDataNews = {
@@ -18,6 +19,7 @@ export type FormDataNews = {
     MoTa: string;
     NoiDung: string;
     TacGia: string;
+    NgayXuatBan?: string;
 };
 
 export type NewsType = {
@@ -28,7 +30,8 @@ export type NewsType = {
     moTa: string,
     noiDung: string,
     tacGia: string,
-    tinhTrangId: number
+    tinhTrangId: number,
+    ngayXuatBan: string
 }
 
 export const getTenTinhTrang = (tinhTrangId: number, danhSachTinhTrang: { tinhTrangId: number; tenTinhTrang: string }[]) => {

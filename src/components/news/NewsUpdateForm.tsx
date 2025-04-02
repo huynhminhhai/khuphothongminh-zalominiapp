@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 import { convertToFormData, loadImage } from "utils/file"
-import { Box, useSnackbar } from "zmp-ui"
+import { Box } from "zmp-ui"
 
 const defaultValues: FormDataNews = {
     TieuDe: "",
@@ -16,11 +16,10 @@ const defaultValues: FormDataNews = {
     NoiDung: "",
     TacGia: "",
     FileAnhDaiDien: undefined,
+    NgayXuatBan: new Date().toISOString().split("T")[0]
 };
 
 const NewsUpdateForm = () => {
-
-    const { openSnackbar } = useSnackbar();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
@@ -49,6 +48,7 @@ const NewsUpdateForm = () => {
             const fetchAndSetImage = async () => {
                 if (newsDetail?.anhDaiDien) {
                     const file = await loadImage(newsDetail.anhDaiDien);
+
                     if (file) {
                         reset((prevValues) => ({
                             ...prevValues,
@@ -64,37 +64,18 @@ const NewsUpdateForm = () => {
 
     const onSubmit: SubmitHandler<FormDataNews> = (data) => {
 
-        const updatedData = {};
-
-        let hasChanges = false;
-
-        Object.keys(data).forEach((key) => {
-            if (data[key] !== formData[key]) {
-                updatedData[key] = data[key];
-                hasChanges = true;
-            }
-        });
-
-        if (!hasChanges) {
-            openSnackbar({
-                icon: true,
-                text: "Không có thay đổi nào để cập nhật.",
-                type: 'warning',
-                duration: 3000,
-            });
-            return;
-        }
-
         setConfirmVisible(true);
 
-        setFormData(updatedData)
+        setFormData(data)
     };
 
     const handleConfirm = async () => {
         setConfirmVisible(false);
 
         try {
-            const formDataConverted = convertToFormData({ ...formData, TinTucId: newsId, });
+            const dataSubmit = {...formData, TinTucId: Number(newsId), ApId: newsDetail.apId, TinhTrangId: newsDetail.tinhTrangId, NgayXuatBan: newsDetail.ngayXuatBan}
+
+            const formDataConverted = convertToFormData(dataSubmit);
 
             await updateNews(formDataConverted);
 
