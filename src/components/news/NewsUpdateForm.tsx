@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 import { convertToFormData, loadImage } from "utils/file"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, useSnackbar } from "zmp-ui"
 
 const defaultValues: FormDataNews = {
     TieuDe: "",
@@ -21,12 +21,11 @@ const defaultValues: FormDataNews = {
 const NewsUpdateForm = () => {
 
     const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
 
-    const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<FormDataNews>({
+    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataNews>({
         resolver: yupResolver(schemaNews),
         defaultValues
     });

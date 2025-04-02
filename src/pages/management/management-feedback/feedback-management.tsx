@@ -327,12 +327,9 @@ const FeedbackManagementPage: React.FC = () => {
                         <div className="col-span-12">
                             <Input
                                 placeholder="Tìm kiếm..."
-                                value={param.keyword}
+                                value={search}
                                 onChange={(e) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        keyword: e.target.value
-                                    }));
+                                    setSearch(e.target.value)
                                 }}
                             />
                         </div>

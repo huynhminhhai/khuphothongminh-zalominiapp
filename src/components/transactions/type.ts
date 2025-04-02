@@ -1,19 +1,23 @@
 import * as yup from 'yup';
 
 export const schemaTransactions = yup.object().shape({
-    amount: yup.number().transform((value, originalValue) => (originalValue === "" ? null : value))
-    .nullable()
-    .required("Không được để trống"),
-    description: yup.string().required('Không được để trống'),
-    category: yup.string().required('Không được để trống'),
-    transaction_type: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
-    transaction_date: yup.string().required('Không được để trống'),
+    loaiGiaoDichTaiChinhId: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
+    soTien: yup.number().transform((value, originalValue) => (originalValue === "" ? null : value))
+            .nullable()
+            .required("Không được để trống")
+            .moreThan(0, "Số tiền phải lớn hơn 0"),
+    ngayGiaoDich: yup.string().required("Ngày giao dịch là bắt buộc"),
+    noiDung: yup.string().required("Nội dung là bắt buộc"),
+    congKhai: yup.boolean().required("Trạng thái công khai là bắt buộc"),
+    hoatDong: yup.boolean().required("Trạng thái hoạt động là bắt buộc"),
 });
 
 export type FormDataTranscations = {
-    transaction_type: number;      
-    amount: number;
-    description: string;
-    category: string;
-    transaction_date: string
+    thuChiId?: number;
+    loaiGiaoDichTaiChinhId: number;
+    soTien: number;
+    ngayGiaoDich: string;
+    noiDung: string;
+    congKhai: boolean;
+    hoatDong: boolean;
 }

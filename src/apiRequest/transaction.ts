@@ -1,6 +1,7 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { TransactionsType } from "constants/utinities";
 import http from "services/http";
+import { useNavigate, useSnackbar } from "zmp-ui";
 
 const transactionApiRequest = {
     getTransactionList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
@@ -11,6 +12,15 @@ const transactionApiRequest = {
     },
     getTransactionDetail: async (id: number) => {
         return await http.get<any>(`/thuchi/chitiet/${id}`);
+    },
+    deleteTransaction: async (id: number) => {
+        return await http.delete<any>(`/thuchi/${id}`)
+    },
+    createTransaction: async (formData: any) => {
+        return await http.post<any>("/thuchi", formData);
+    },
+    updateTransaction: async (formData: any) => {
+        return await http.put<any>("/thuchi", formData);
     },
 }
 
@@ -97,5 +107,111 @@ export const useGetTransactionDetail = (id: number) => {
         enabled: !!id,
         staleTime: 1000 * 60 * 5,
         retry: 1,
+    });
+};
+
+/**
+* DELETE TRANSACTION
+**/ 
+export const useDeleteTransaction = () => {
+    const queryClient = useQueryClient();
+    const { openSnackbar } = useSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await transactionApiRequest.deleteTransaction(id);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Xóa thu/chi thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["transactionList"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* POST TRANSACTION
+**/ 
+export const useCreateTransaction = () => {
+    const { openSnackbar } = useSnackbar();
+    const queryClient = useQueryClient();
+    const navigator = useNavigate()
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await transactionApiRequest.createTransaction(formData);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Tạo thu/chi thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["transactionList"] });
+
+            navigator('/transactions')
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* PUT TRANSACTION
+**/ 
+export const useUpdateTransaction = () => {
+    const { openSnackbar } = useSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await transactionApiRequest.updateTransaction(formData);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Cập nhật thu/chi thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["transactionDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["transactionList"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
     });
 };
