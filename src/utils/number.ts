@@ -4,5 +4,5 @@ export function convertNumberVND(amount: number): string {
 }
 
 export function maskPhoneNumber(phone: string): string {
-    return phone.replace(/(\d{3})\d+(\d{2})/, '$1*****$2');
+    return phone?.replace(/(\d{3})\d+(\d{2})/, '$1*****$2');
 }

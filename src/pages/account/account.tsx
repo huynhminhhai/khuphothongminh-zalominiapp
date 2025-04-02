@@ -31,7 +31,7 @@ const AccountPage: React.FC = () => {
                                             <Avatar size={60} src={account.anhDaiDien || images.avatarDefault}/>
                                             <div className="text-white">
                                                 <h3 className="text-[18px] font-semibold mb-1 uppercase">{account.hoTen}</h3>
-                                                <h4 className="text-[16px] tracking-wider font-medium">{account.thongTinDanCu.dienThoai || ''}</h4>
+                                                <h4 className="text-[16px] tracking-wider font-medium">{account.thongTinDanCu?.dienThoai || ''}</h4>
                                             </div>
                                         </div>
                                     </div>

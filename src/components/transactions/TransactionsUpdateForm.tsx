@@ -3,13 +3,11 @@ import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField, FormTextEditorField } from "components/form"
+import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataTranscations, schemaTransactions } from "./type"
 import { useSearchParams } from "react-router-dom"
-import { TRANSACTIONSDATA } from "constants/utinities"
 import { useGetTransactionDetail, useGetTransactionType, useUpdateTransaction } from "apiRequest/transaction"
-import { useStoreApp } from "store/store"
 
 const defaultValues: FormDataTranscations = {
     noiDung: '',

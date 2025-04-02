@@ -167,7 +167,7 @@ export const useCreateTransaction = () => {
 
             queryClient.invalidateQueries({ queryKey: ["transactionList"] });
 
-            navigator('/transactions')
+            navigator('/transactions-management')
         },
         onError: (error: string) => {
             openSnackbar({
