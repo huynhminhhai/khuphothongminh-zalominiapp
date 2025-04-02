@@ -43,7 +43,7 @@ export const useGetFeedbackListNormal = (param: { page: number; pageSize: number
             const res = await feebackApiRequest.getFeedbackList(param);
             return res
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     });
 };
@@ -70,7 +70,7 @@ export const useGetFeedbackList = (param: { page: number; pageSize: number, ApId
         getNextPageParam: (lastPage: any, allPages) => {
             return lastPage.length === param.pageSize ? allPages.length + 1 : undefined;
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     })
 };
@@ -90,7 +90,7 @@ export const useGetFeedbackStatus = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 10,
+        staleTime: 0,
         retry: 1,
     });
 };
@@ -151,7 +151,7 @@ export const useGetFeebackDetail = (id: number) => {
             }
         },
         enabled: !!id,
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     });
 };

@@ -40,7 +40,7 @@ export const useGetNewsListNormal = (param: { page: number; pageSize: number; Ap
             const res = await newsApiRequest.getNewsList(param);
             return res
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     });
 };
@@ -67,7 +67,7 @@ export const useGetNewsList = (param: { page: number; pageSize: number, ApId: nu
         getNextPageParam: (lastPage: any, allPages) => {
             return lastPage.length === param.pageSize ? allPages.length + 1 : undefined;
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     })
 };
@@ -87,7 +87,7 @@ export const useGetNewsStatus = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 10, // Dữ liệu sẽ không fetch lại trong 10 phút
+        staleTime: 0, // Dữ liệu sẽ không fetch lại trong 10 phút
         retry: 1, // Thử lại 1 lần nếu lỗi
     });
 };
@@ -149,7 +149,7 @@ export const useGetNewsDetail = (id: number) => {
             }
         },
         enabled: !!id,
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     });
 };

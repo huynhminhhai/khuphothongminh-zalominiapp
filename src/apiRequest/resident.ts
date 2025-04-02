@@ -86,7 +86,7 @@ export const useGetFamilyMembers = (id: number) => {
             }
         },
         enabled: !!id,
-        staleTime: 1000 * 60 * 10,
+        staleTime: 0,
         retry: 1,
     });
 };
@@ -107,7 +107,7 @@ export const useGetResidentDetail = (id: number) => {
             }
         },
         enabled: !!id,
-        staleTime: 1000 * 60 * 10,
+        staleTime: 0,
         retry: 1,
     });
 };
@@ -127,7 +127,7 @@ export const useGetResidentCategory = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 10,
+        staleTime: 0,
         retry: 1,
     });
 };
@@ -147,7 +147,7 @@ export const useGetResidentListNormal = (param: { page: number; pageSize: number
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     });
 };

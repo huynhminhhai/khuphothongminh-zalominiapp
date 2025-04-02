@@ -26,7 +26,7 @@ const transactionApiRequest = {
 
 /**
 * GET TRANSACTION LIST
-**/ 
+**/
 export const useGetTransactionListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
     return useQuery({
         queryKey: ['transactionList', param.page, param.pageSize, param.ApId, param.keyword],
@@ -34,14 +34,14 @@ export const useGetTransactionListNormal = (param: { page: number; pageSize: num
             const res = await transactionApiRequest.getTransactionList(param);
             return res
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     });
 };
 
 /**
 * GET TRANSACTION LIST (INFINITE)
-**/ 
+**/
 export const useGetTransactionList = (param: { page: number; pageSize: number, ApId: number; keyword: string }) => {
 
     return useInfiniteQuery({
@@ -61,14 +61,14 @@ export const useGetTransactionList = (param: { page: number; pageSize: number, A
         getNextPageParam: (lastPage: any, allPages) => {
             return lastPage.length === param.pageSize ? allPages.length + 1 : undefined;
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     })
 };
 
 /**
 * GET TRANSACTION TYPE
-**/ 
+**/
 export const useGetTransactionType = () => {
     return useQuery({
         queryKey: ["transactionType"],
@@ -81,14 +81,14 @@ export const useGetTransactionType = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 10, 
+        staleTime: 0,
         retry: 1,
     });
 };
 
 /**
 * GET TRANSACTION DETAIL
-**/ 
+**/
 export const useGetTransactionDetail = (id: number) => {
 
     return useQuery({
@@ -105,14 +105,14 @@ export const useGetTransactionDetail = (id: number) => {
             }
         },
         enabled: !!id,
-        staleTime: 1000 * 60 * 5,
+        staleTime: 0,
         retry: 1,
     });
 };
 
 /**
 * DELETE TRANSACTION
-**/ 
+**/
 export const useDeleteTransaction = () => {
     const queryClient = useQueryClient();
     const { openSnackbar } = useSnackbar();
@@ -146,7 +146,7 @@ export const useDeleteTransaction = () => {
 
 /**
 * POST TRANSACTION
-**/ 
+**/
 export const useCreateTransaction = () => {
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
@@ -183,7 +183,7 @@ export const useCreateTransaction = () => {
 
 /**
 * PUT TRANSACTION
-**/ 
+**/
 export const useUpdateTransaction = () => {
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
