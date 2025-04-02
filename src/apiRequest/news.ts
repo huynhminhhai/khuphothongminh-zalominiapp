@@ -5,7 +5,7 @@ import { useSnackbar } from 'zmp-ui';
 
 const newsApiRequest = {
     getNewsList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/tintuc?current=${param.page}&size=${param.pageSize}&${param.ApId}&TextSearch=${param.keyword}`);
+        return await http.get<any>(`/tintuc?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
     },
     getNewsDetail: async (id: number) => {
         return await http.get<any>(`/tintuc/chitiet/${id}`);

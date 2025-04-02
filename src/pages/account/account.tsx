@@ -30,7 +30,7 @@ const AccountPage: React.FC = () => {
                                         <div className="flex items-center gap-3">
                                             <Avatar size={60} src={account.anhDaiDien || images.avatarDefault}/>
                                             <div className="text-white">
-                                                <h3 className="text-[18px] font-semibold mb-1 uppercase">{account.hoTen}</h3>
+                                                <h3 className="text-[18px] font-semibold mb-1 uppercase">{account.thongTinDanCu?.hoTen}</h3>
                                                 <h4 className="text-[16px] tracking-wider font-medium">{account.thongTinDanCu?.dienThoai || ''}</h4>
                                             </div>
                                         </div>

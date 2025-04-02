@@ -15,7 +15,7 @@ const NewsOthers: React.FC<NewsOthersProps> = ({ idNews }) => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 4,
-        ApId: account ? account.apId : 0,
+        ApId: account ? account.thongTinDanCu?.apId : 0,
         keyword: ''
     });
 

@@ -86,7 +86,7 @@ export const useLogin = () => {
         onError: (error: any) => {
             openSnackbar({
                 icon: true,
-                text: error?.message === "Sequence contains no elements" ? "Tên đăng nhập hoặc mật khẩu không chính xác" : "Đăng nhập thất bại",
+                text: error?.message,
                 type: 'error',
                 action: { text: "Đóng", close: true },
                 duration: 3000,

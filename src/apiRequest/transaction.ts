@@ -5,7 +5,7 @@ import { useNavigate, useSnackbar } from "zmp-ui";
 
 const transactionApiRequest = {
     getTransactionList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/thuchi?current=${param.page}&size=${param.pageSize}&${param.ApId}&TextSearch=${param.keyword}`);
+        return await http.get<any>(`/thuchi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
     },
     getTransactionType: async () => {
         return await http.get<any>(`/thuchi/danhmuc`);
