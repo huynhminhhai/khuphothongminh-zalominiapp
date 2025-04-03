@@ -42,8 +42,6 @@ const MeetingList: React.FC = () => {
         onLoadMore: fetchNextPage,
     });
 
-
-
     const renderContent = () => {
         if (isLoading) {
             return <Box px={4}><NewsSkeleton count={5} /></Box>

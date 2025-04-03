@@ -23,6 +23,7 @@ const NewsManagementPage: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [viewCard, setViewCard] = useState<boolean>(true)
+    const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const [search, setSearch] = useState("");
     const [param, setParam] = useState({
         page: 1,
@@ -61,8 +62,9 @@ const NewsManagementPage: React.FC = () => {
         }));
     };
 
-    const openConfirmModal = (action: () => void) => {
+    const openConfirmModal = (action: () => void, title: string, message: string) => {
         setConfirmAction(() => action);
+        setModalContent({ title, message });
         setConfirmVisible(true);
     };
 
@@ -80,7 +82,9 @@ const NewsManagementPage: React.FC = () => {
     };
 
     const removeNews = (id: number) => {
-        openConfirmModal(() => deleteNews(id));
+        openConfirmModal(() => {
+            deleteNews(id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa phản ánh này?');
     }
 
     const columns: ColumnDef<NewsType>[] = [
@@ -89,7 +93,7 @@ const NewsManagementPage: React.FC = () => {
             header: 'Ảnh',
             cell: ({ row }) => (
                 <div className="flex w-full h-[150px]">
-                    <img className="w-full h-full object-cover"  src={getFullImageUrl(row.original.anhDaiDien)} alt={row.original.tieuDe} />
+                    <img className="w-full h-full object-cover" src={getFullImageUrl(row.original.anhDaiDien)} alt={row.original.tieuDe} />
                 </div>
             ),
             size: 300
@@ -109,17 +113,19 @@ const NewsManagementPage: React.FC = () => {
             header: "Trạng thái",
             cell: ({ row }) => {
                 const { mutate, isPending } = useUpdateNewsStatus();
-        
+
                 return (
                     <Box width={150}>
                         <Select
                             closeOnSelect
                             defaultValue={row.original.tinhTrangId}
                             onChange={(value) => {
-                                mutate({
-                                    tinTucId: row.original.tinTucId,
-                                    tinhTrangId: Number(value),
-                                });
+                                openConfirmModal(() => {
+                                    mutate({
+                                        tinTucId: row.original.tinTucId,
+                                        tinhTrangId: Number(value),
+                                    });
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái tin tức này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={isPending}

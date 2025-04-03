@@ -1,133 +1,114 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Box, useNavigate, useSnackbar } from "zmp-ui"
-import { FormDataTask, schemaTask } from "./type"
+import { compareNguoiThucHienNhiemVus, convertParticipants, convertTaskBack, FormDataTask, schemaTask } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormImageUploader, FormInputAreaField, FormInputField, FormSelectField } from "components/form"
+import { FormControllerDatePicker, FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { STAFFOPTION, TASKS } from "constants/utinities"
 import { taskPriority, taskStatus } from "constants/mock"
 import { useSearchParams } from "react-router-dom"
+import { useGetMeetingDetail, useGetMeetingStatus } from "apiRequest/meeting"
+import { useGetTaskDetail, useGetTaskStatus, useUpdateTask } from "apiRequest/task"
+import { useQueryClient } from "@tanstack/react-query"
 
 const defaultValues: FormDataTask = {
-    title: '',
-    description: '',
-    assignedTo: 0,
-    dueDate: '',
-    status: 1,
-    priority: 0
+    tieuDe: '',
+    noiDung: '',
+    chuTri: 0,
+    ngayGiao: '',
+    thoiHanXuLy: '',
+    tinhTrangId: 0,
+    thanhVien: []
 }
 
 const TaskUpdateForm: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
-
-    const [loading, setLoading] = useState(false);
+    const queryClient = useQueryClient();
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataTask>(defaultValues)
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataTask>({
+    const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormDataTask>({
         resolver: yupResolver(schemaTask),
         defaultValues
     });
 
     const [searchParams] = useSearchParams();
-
     const taskId = searchParams.get("id");
 
+    const { mutateAsync: updateTask, isPending } = useUpdateTask();
+    const { data: taskStatus } = useGetTaskStatus();
+    const { data: meetingStatus } = useGetMeetingStatus();
+    const { data: taskDetail } = useGetTaskDetail(Number(taskId));
+
+    const nguoiThamDus = useMemo(() => {
+        return meetingStatus?.nguoiThamDus?.map((item) => ({
+            value: item.nguoiThamDuId,
+            label: item.hoTen
+        })) || [];
+    }, [meetingStatus]);
+
+    const tinhTrangs = useMemo(() => {
+        return taskStatus?.map((item) => ({
+            value: item.tinhTrangId,
+            label: item.tenTinhTrang
+        })) || [];
+    }, [taskStatus]);
+
+    const chuTriId = watch("chuTri");
+    const thanhVienId = watch("thanhVien");
+
+    const danhSachThanhVien = useMemo(() => {
+        return nguoiThamDus.filter(
+            (nguoi: any) => nguoi.value !== chuTriId
+        );
+    }, [chuTriId, nguoiThamDus]);
+
     useEffect(() => {
-        // Hàm gọi API để lấy thông tin thành viên
-        const fetchTaskData = async () => {
-            setLoading(true);
-            try {
-                const data = TASKS.find(task => task.id === Number(taskId))
+        if (thanhVienId?.includes(chuTriId)) {
+            setValue("thanhVien", thanhVienId.filter((id: number) => id !== chuTriId));
+        }
+    }, [chuTriId, setValue, watch]);
 
-                if (data) {
-                    setFormData(data)
-                    reset(data)
-                }
+    useEffect(() => {
+        if (taskDetail) {
 
-            } catch (error) {
-                console.error("Failed to fetch resident data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
+            const dataConvertBack = convertTaskBack(taskDetail);
 
-        fetchTaskData();
-    }, [taskId]);
+            reset({ ...dataConvertBack })
+        }
+    }, [taskDetail, reset])
+
 
     const onSubmit: SubmitHandler<FormDataTask> = (data) => {
-        const updatedData = {};
-
-        let hasChanges = false;
-
-        Object.keys(data).forEach((key) => {
-            if (data[key] !== formData[key]) {
-                updatedData[key] = data[key];
-                hasChanges = true;
-            }
-        });
-
-        if (!hasChanges) {
-            openSnackbar({
-                icon: true,
-                text: "Không có thay đổi nào để cập nhật.",
-                type: 'warning',
-                duration: 3000,
-            });
-            return; // Không thực hiện tiếp tục gửi yêu cầu
-        }
-
         setConfirmVisible(true);
         setFormData(data)
     };
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            // Gọi API thêm thành viên
-            console.log('call api update with: ', formData);
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật thông tin nhiệm vụ thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            navigate('/task-management');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setConfirmVisible(false);
         if (formData) {
-            fetchApi()
+            try {
+                const prepareDataSubmit = { ...formData, nhiemVuId: taskDetail.nhiemVuId, apId: taskDetail.apId, tinhTrangId: taskDetail.tinhTrangId }
+
+                const dataConvertParticipants = convertParticipants(prepareDataSubmit)
+
+                const dataCompare = compareNguoiThucHienNhiemVus(taskDetail, dataConvertParticipants)
+
+                const dataSubmit = { ...dataConvertParticipants, nguoiThucHienNhiemVus: dataCompare }
+
+                await updateTask(dataSubmit);
+
+                queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
+
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -137,56 +118,65 @@ const TaskUpdateForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="title"
+                            name="tieuDe"
                             label="Tiêu đề"
                             placeholder="Nhập tiêu đề"
                             control={control}
-                            error={errors.title?.message}
+                            error={errors.tieuDe?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="description"
+                            name="noiDung"
                             label="Mô tả"
                             placeholder="Nhập mô tả"
                             control={control}
-                            error={errors.description?.message}
+                            error={errors.noiDung?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormSelectField
-                            name="assignedTo"
+                            name="chuTri"
                             label="Giao cho"
                             placeholder="Chọn cán bộ"
                             control={control}
-                            options={STAFFOPTION}
-                            error={errors.assignedTo?.message}
+                            options={nguoiThamDus}
+                            error={errors.chuTri?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectMultipleField
+                            name="thanhVien"
+                            label="Người hỗ trợ"
+                            placeholder="Chọn người hỗ trợ"
+                            control={control}
+                            options={danhSachThanhVien}
+                            error={errors.thanhVien?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormControllerDatePicker
-                            name="dueDate"
+                            name="ngayGiao"
+                            label="Ngày giao"
+                            placeholder="Chọn ngày giao"
+                            control={control}
+                            required={true}
+                            error={errors.ngayGiao?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormControllerDatePicker
+                            name="thoiHanXuLy"
                             label="Thời hạn"
                             placeholder="Chọn thời hạn"
                             control={control}
                             required={true}
-                            error={errors.dueDate?.message}
+                            error={errors.thoiHanXuLy?.message}
                         />
                     </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="status"
-                            label="Trạng thái"
-                            placeholder="Chọn trạng thái"
-                            control={control}
-                            options={taskStatus}
-                            error={errors.status?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-6">
+                    {/* <div className="col-span-6">
                         <FormSelectField
                             name="priority"
                             label="Mức độ ưu tiên"
@@ -196,18 +186,18 @@ const TaskUpdateForm: React.FC = () => {
                             error={errors.priority?.message}
                             required
                         />
-                    </div>
-                    <div className="col-span-12">
+                    </div> */}
+                    {/* <div className="col-span-12">
                         <FormImageUploader
                             name="imageUrl"
                             label="Chọn ảnh đính kèm"
                             control={control}
                             error={errors.imageUrl?.message}
                         />
-                    </div>
+                    </div> */}
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Thêm nhiệm vụ"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật nhiệm vụ"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

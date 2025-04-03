@@ -21,7 +21,7 @@ const NewsDetailPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Chi tiết tin tức" onBackClick={() => navigate('/news')} />
+                <HeaderSub title="Chi tiết tin tức" />
                 {
                     isLoading ?
                         <NewsDetailSkeleton count={1} /> :

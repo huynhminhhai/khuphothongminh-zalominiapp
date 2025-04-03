@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Button, Modal, useSnackbar } from 'zmp-ui';
-import { FormDataReportTask, schemaReportTask } from './type';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Box, Button, Modal } from 'zmp-ui';
+import { FormDataReportTask, schemaReportTask, TaskType } from './type';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ConfirmModal } from 'components/modal';
-import { FormImageUploader, FormSelectField, FormTextEditorField } from 'components/form';
-import { taskStatus } from 'constants/mock';
-import { TaskType } from 'constants/utinities';
+import { FormSelectField } from 'components/form';
+import { useGetTaskStatus, useUpdateTaskStatus } from 'apiRequest/task';
 
 type TaskUpdateFormModalProps = {
     visible: boolean;
@@ -15,7 +14,7 @@ type TaskUpdateFormModalProps = {
 }
 
 const defaultValues: FormDataReportTask = {
-    status: 0,
+    tinhTrangId: 0,
 }
 
 const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
@@ -24,9 +23,6 @@ const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
     taskData
 }) => {
 
-    const { openSnackbar } = useSnackbar();
-
-    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState<FormDataReportTask>(defaultValues)
     const [isConfirmVisible, setConfirmVisible] = useState(false);
 
@@ -35,6 +31,18 @@ const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
         defaultValues
     });
 
+
+    const { data: taskStatus } = useGetTaskStatus();
+    const { mutate, isPending } = useUpdateTaskStatus();
+
+    const taskStatusTypeOpton = useMemo(() => {
+        return taskStatus?.map((item) => ({
+            value: item.tinhTrangId,
+            label: item.tenTinhTrang
+        })) || [];
+    }, [taskStatus]);
+
+
     const onSubmit: SubmitHandler<FormDataReportTask> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
@@ -42,51 +50,25 @@ const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
 
     useEffect(() => {
         reset({
-            status: taskData.status,
-            note: taskData.note,
-            imageReport: taskData.imageReport
+            tinhTrangId: taskData.tinhTrangId,
         })
-    }, [])
-
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            console.log('call api update with: ', { ...formData });
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật tiến độ thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-
-            reset(defaultValues);
-            
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-            onClose()
-        }
-    }
+    }, [taskData])
 
     const handleConfirm = () => {
         setConfirmVisible(false);
         if (formData) {
-            fetchApi()
+            try {
+                mutate({
+                    nhiemVuId: taskData.nhiemVuId,
+                    tinhTrangId: formData.tinhTrangId,
+                });
+            } catch (error) {
+
+            }
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -105,30 +87,13 @@ const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
                     <div className="grid grid-cols-12 gap-x-3">
                         <div className="col-span-12">
                             <FormSelectField
-                                name="status"
+                                name="tinhTrangId"
                                 label="Trạng thái"
                                 placeholder="Chọn trạng thái"
                                 control={control}
-                                options={taskStatus}
-                                error={errors.status?.message}
+                                options={taskStatusTypeOpton}
+                                error={errors.tinhTrangId?.message}
                                 required
-                            />
-                        </div>
-                        <div className="col-span-12">
-                            <FormTextEditorField
-                                name="note"
-                                label="Ghi chú"
-                                placeholder="Nhập nội dung ghi chú..."
-                                control={control}
-                                error={errors.note?.message}
-                            />
-                        </div>
-                        <div className="col-span-12">
-                            <FormImageUploader
-                                name="imageReport"
-                                label="Chọn ảnh đính kèm"
-                                control={control}
-                                error={errors.imageReport?.message}
                             />
                         </div>
                     </div>
@@ -149,8 +114,9 @@ const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
                         onClick={handleSubmit(onSubmit)}
                         fullWidth
                         size='medium'
+                        disabled={isPending}
                     >
-                        Cập nhật
+                        {isPending ? 'Đang xử lý' : 'Cập nhật'}
                     </Button>
                 </div>
             </Box>

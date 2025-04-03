@@ -4,7 +4,7 @@ import { Box, useNavigate } from "zmp-ui"
 import MeetingItem from "./MeetingItem"
 import { useStoreApp } from "store/store"
 import { NewsSectionSkeleton } from "components/skeleton"
-import { useGetMeetingListNormal, useGetMeetingTodayList } from "apiRequest/meeting"
+import { useGetMeetingTodayList } from "apiRequest/meeting"
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/react"
 import 'swiper/css';
@@ -52,7 +52,7 @@ const MeetingSection: React.FC<any> = () => {
                                 }
                             </Swiper>
                             :
-                            <>Chưa có tin tức</>
+                            <>Chưa có cuộc họp nào</>
                     }
                 </Box>
             </Box>

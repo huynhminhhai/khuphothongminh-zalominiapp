@@ -798,20 +798,7 @@ export const TERMDATA: TermType[] = [
     },
 ]
 
-export type TaskType = {
-    id: number;
-    title: string;
-    description: string;
-    assignedTo: number;
-    dueDate: string;
-    status: number;
-    priority: number;
-    imageUrl?: string[];
-    note?: string;
-    imageReport?: string[];
-}
-
-export const TASKS: TaskType[] = [
+export const TASKS = [
     {
         id: 1,
         title: "Hoàn thành tài liệu mới",
