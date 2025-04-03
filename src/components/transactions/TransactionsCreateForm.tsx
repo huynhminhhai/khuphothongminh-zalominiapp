@@ -35,10 +35,10 @@ const TransactionsAddForm: React.FC = () => {
 
     const transactionTypeOpton = useMemo(() => {
         return transactionType?.map((item) => ({
-          value: item.loaiGiaoDichTaiChinhId,
-          label: item.tenLoaiGiaoDichTaiChinh
+            value: item.loaiGiaoDichTaiChinhId,
+            label: item.tenLoaiGiaoDichTaiChinh
         })) || [];
-      }, [transactionType]);
+    }, [transactionType]);
 
     const onSubmit: SubmitHandler<FormDataTranscations> = (data) => {
         setConfirmVisible(true);
@@ -49,7 +49,7 @@ const TransactionsAddForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData) {
             try {
-                await createTransaction({ ...formData, apId: account?.apId });
+                await createTransaction({ ...formData, ApId: account?.thongTinDanCu?.apId });
 
                 reset(defaultValues);
             } catch (error) {

@@ -1,36 +1,59 @@
 import TitleSection from "components/titleSection"
-import React from "react"
-import { Box, Swiper, useNavigate } from "zmp-ui"
-import { MEETINGDATA } from "constants/utinities"
+import React, { useState } from "react"
+import { Box, useNavigate } from "zmp-ui"
 import MeetingItem from "./MeetingItem"
+import { useStoreApp } from "store/store"
+import { NewsSectionSkeleton } from "components/skeleton"
+import { useGetMeetingListNormal, useGetMeetingTodayList } from "apiRequest/meeting"
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from "swiper/react"
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 const MeetingSection: React.FC<any> = () => {
 
     const navigate = useNavigate()
+    const { account } = useStoreApp()
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 4,
+        ApId: account ? account.thongTinDanCu?.apId : 0,
+        keyword: ''
+    });
 
-    const firstTwoMeetings = MEETINGDATA.slice(0, 3);
+    const { data, isLoading } = useGetMeetingTodayList();
+
+    if (isLoading) {
+        return <NewsSectionSkeleton count={1} />
+    }
 
     return (
         <Box>
             <Box px={4} pt={4} pb={0}>
                 <TitleSection title="Cuộc họp hôm nay" handleClick={() => navigate('/meeting')} />
                 <Box>
-                    <Swiper
-                        loop
-                        duration={12000}
-                        autoplay
-                        className="pb-6"
-                    >
-                        {
-                            firstTwoMeetings.map((item, index) => (
-                                <Swiper.Slide key={index}>
-                                    <Box key={index}>
-                                        <MeetingItem data={item} />
-                                    </Box>
-                                </Swiper.Slide>
-                            ))
-                        }
-                    </Swiper>
+
+                    {
+                        data.data && data.data.length > 0 ?
+                            <Swiper
+                                modules={[Pagination]}
+                                spaceBetween={12}
+                                slidesPerView={1}
+                                pagination={{ clickable: true }}
+                                loop
+                                className="max-w-[100%]"
+                            >
+                                {
+                                    data.data.map((item: any, index: number) => (
+                                        <SwiperSlide key={`${item.tinTucId}-${index}`}>
+                                            <MeetingItem data={item} />
+                                        </SwiperSlide>
+                                    ))
+                                }
+                            </Swiper>
+                            :
+                            <>Chưa có tin tức</>
+                    }
                 </Box>
             </Box>
         </Box>

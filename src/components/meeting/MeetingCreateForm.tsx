@@ -1,81 +1,122 @@
-import React, { useState } from "react"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import React, { useEffect, useMemo, useState } from "react"
+import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormControllerTimePicker, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import { FormDataMeeting, schemaMeeting } from "./type"
-import { RESIDENTOPTION, STAFFOPTION } from "constants/utinities"
+import { convertMeetingTime, convertParticipants, FormDataMeeting, schemaMeeting } from "./type"
+import { useStoreApp } from "store/store"
+import { useCreateMeeting, useGetMeetingStatus } from "apiRequest/meeting"
 
 const defaultValues: FormDataMeeting = {
-    title: '',
-    description: '',
-    meetingDate: '',
-    startTime: '',
-    endTime: '',
-    address: '',
-    linkOnl: '',
-    resident: undefined,
-    staff: []
+    tieuDe: '',
+    noiDung: '',
+    ngayHop: '',
+    thoiGianBatDau: '',
+    thoiGianKetThuc: '',
+    diaDiem: '',
+    linkHopOnLine: '',
+    tinhTrangId: 0,
+    chuTri: 0,
+    thuKy: null,
+    thanhVien: []
 }
 
 const MeetingAddForm: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
+    const { account } = useStoreApp()
 
-    const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataMeeting>(defaultValues)
 
-    const { handleSubmit, reset, control, watch, formState: { errors } } = useForm<FormDataMeeting>({
+    const { handleSubmit, control, reset, watch, setValue, formState: { errors } } = useForm<FormDataMeeting>({
         resolver: yupResolver(schemaMeeting),
         defaultValues
     });
+
+    const { mutateAsync: createMeeting, isPending } = useCreateMeeting();
+    const { data: meetingStatus } = useGetMeetingStatus();
+
+    const nguoiThamDus = useMemo(() => {
+        return meetingStatus?.nguoiThamDus?.map((item) => ({
+            value: item.nguoiThamDuId,
+            label: item.hoTen
+        })) || [];
+    }, [meetingStatus]);
+
+    // const loaiNguoiThamDus = useMemo(() => {
+    //     return meetingStatus?.loaiNguoiThamDus?.map((item) => ({
+    //         value: item.loaiNguoiThamDuId,
+    //         label: item.tenLoaiNguoiThamDu
+    //     })) || [];
+    // }, [meetingStatus]);
+
+    const tinhTrangs = useMemo(() => {
+        return meetingStatus?.tinhTrangs?.map((item) => ({
+            value: item.tinhTrangId,
+            label: item.tenTinhTrang
+        })) || [];
+    }, [meetingStatus]);
+
+    const thuKyId = watch("thuKy");
+    const chuTriId = watch("chuTri");
+    const thanhVienId = watch("thanhVien");
+
+    const danhSachThanhVien1 = useMemo(() => {
+        return nguoiThamDus.filter(
+            (nguoi: any) => nguoi.value !== chuTriId
+        );
+    }, [chuTriId, nguoiThamDus]);
+
+    const danhSachThanhVien2 = useMemo(() => {
+        return danhSachThanhVien1.filter(
+            (nguoi: any) => nguoi.value !== thuKyId
+        );
+    }, [thuKyId, nguoiThamDus, danhSachThanhVien1]);
+
+    useEffect(() => {
+        if (thuKyId === chuTriId) {
+            setValue("thuKy", null);
+        }
+
+        if (thanhVienId?.includes(chuTriId)) {
+            setValue("thanhVien", thanhVienId.filter((id: number) => id !== chuTriId));
+        }
+
+        if (thuKyId) {
+            if (thanhVienId?.includes(thuKyId)) {
+                setValue("thanhVien", thanhVienId.filter((id: number) => id !== thuKyId));
+            }
+        }
+    }, [chuTriId, thuKyId, setValue, watch]);
 
     const onSubmit: SubmitHandler<FormDataMeeting> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
     };
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            console.log('call api add with: ', { ...formData });
-            // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Thêm cuộc họp thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-            reset(defaultValues);
-            navigate('/meeting-management');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setConfirmVisible(false);
-        if (formData) {
-            fetchApi()
+        if (formData && account) {
+            try {
+
+                const prepareDataSubmit = { ...formData, apId: account?.thongTinDanCu?.apId, tinhTrangId: tinhTrangs[0].value }
+
+                const dataConvertDate = convertMeetingTime(prepareDataSubmit)
+
+                const dataConvertParticipants = convertParticipants(dataConvertDate)
+
+                await createMeeting(dataConvertParticipants);
+
+                reset(defaultValues);
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -85,97 +126,106 @@ const MeetingAddForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="title"
+                            name="tieuDe"
                             label="Tiêu đề"
                             placeholder="Nhập tiêu đề"
                             control={control}
-                            error={errors.title?.message}
+                            error={errors.tieuDe?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormControllerDatePicker
-                            name="meetingDate"
+                            name="ngayHop"
                             label="Ngày họp"
                             control={control}
                             placeholder="Chọn ngày họp"
                             required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.meetingDate?.message}
+                            error={errors.ngayHop?.message}
                         />
                     </div>
                     <div className="col-span-6">
                         <FormControllerTimePicker
-                            name="startTime"
+                            name="thoiGianBatDau"
                             label="Thời gian bắt đầu"
                             placeholder="Chọn thời gian họp"
                             control={control}
                             required={true}
-                            error={errors.startTime?.message}
+                            error={errors.thoiGianBatDau?.message}
                         />
                     </div>
                     <div className="col-span-6">
                         <FormControllerTimePicker
-                            name="endTime"
+                            name="thoiGianKetThuc"
                             label="Thời gian kết thúc"
                             placeholder="Chọn thời gian họp"
                             control={control}
                             required={true}
-                            error={errors.endTime?.message}
+                            error={errors.thoiGianKetThuc?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="address"
+                            name="diaDiem"
                             label="Địa điểm"
                             placeholder="Nhập địa điểm"
                             control={control}
-                            error={errors.address?.message}
+                            error={errors.diaDiem?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="linkOnl"
+                            name="linkHopOnLine"
                             label="Link họp online (nếu có)"
                             placeholder="Nhập địa điểm"
                             control={control}
-                            error={errors.linkOnl?.message}
+                            error={errors.linkHopOnLine?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormSelectField
-                            name="resident"
-                            label="Người dân"
-                            placeholder="Chọn người dân"
+                            name="chuTri"
+                            label="Chủ trì"
+                            placeholder="Chọn chủ trì"
                             control={control}
-                            options={RESIDENTOPTION}
-                            error={errors.resident?.message}
+                            options={nguoiThamDus}
+                            error={errors.chuTri?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="thuKy"
+                            label="Thư ký"
+                            placeholder="Chọn thư ký"
+                            control={control}
+                            options={danhSachThanhVien1}
+                            error={errors.thuKy?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormSelectMultipleField
-                            name="staff"
-                            label="Cán bộ"
+                            name="thanhVien"
+                            label="Thành viên"
                             placeholder="Chọn cán bộ"
                             control={control}
-                            options={STAFFOPTION}
-                            error={errors.staff?.message}
+                            options={danhSachThanhVien2}
+                            error={errors.thanhVien?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="description"
-                            label="Mô tả"
-                            placeholder="Nhập mô tả"
+                            name="noiDung"
+                            label="Nội dung"
+                            placeholder="Nhập nội dung"
                             control={control}
-                            error={errors.description?.message}
+                            error={errors.noiDung?.message}
                             required
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Thêm cuộc họp"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton fullWidth disabled={isPending} label={isPending ? "Đang xử lý..." : "Thêm cuộc họp"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

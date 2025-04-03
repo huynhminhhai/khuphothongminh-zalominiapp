@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, useNavigate } from "zmp-ui";
+import { Box } from "zmp-ui";
 import NewsItem from "./NewsItem";
 import NewsMain from "./NewsMain";
 import { useInfiniteScroll } from "utils/useInfiniteScroll";
@@ -10,7 +10,6 @@ import { useStoreApp } from "store/store";
 
 const NewsList: React.FC = () => {
 
-    const navigate = useNavigate()
     const { account } = useStoreApp()
     const [param, setParam] = useState({
         page: 1,

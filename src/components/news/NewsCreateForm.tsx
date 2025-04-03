@@ -40,17 +40,20 @@ const NewsAddForm: React.FC = () => {
 
     const handleConfirm = async () => {
         setConfirmVisible(false);
-
-        try {
-            const dataSubmit = { ...formData, ApId: account?.apId, TinhTrangId: 1 }
-
-            const formDataConverted = convertToFormData(dataSubmit);
-
-            await createNews(formDataConverted);
-            reset(defaultValues);
-        } catch (error) {
-            console.error("Error:", error);
+        if (formData && account) {
+            try {
+                const dataSubmit = { ...formData, ApId: account.thongTinDanCu?.apId, TinhTrangId: 1 }
+    
+                const formDataConverted = convertToFormData(dataSubmit);
+    
+                await createNews(formDataConverted);
+                
+                reset(defaultValues);
+            } catch (error) {
+                console.error("Error:", error);
+            }
         }
+
     };
 
     const handleCancel = () => {

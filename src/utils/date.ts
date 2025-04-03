@@ -84,3 +84,11 @@ export const formatDate = (dateString: string): string => {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
 };
+
+export const getHourFromDate = (dateString: string): string => {
+
+    if (!dateString) return "";
+
+    const date = new Date(dateString.replace(" ", "T"));
+    return date.toLocaleTimeString("vi-VN", { hour12: false, hour: "2-digit", minute: "2-digit" });
+};

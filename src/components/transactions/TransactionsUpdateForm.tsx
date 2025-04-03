@@ -66,7 +66,6 @@ const TransactionsUpdateForm: React.FC = () => {
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
