@@ -166,7 +166,7 @@ const CreateSurveyForm: React.FC = () => {
             });
 
 
-            navigate('/survey-management')
+            // navigate('/survey-management')
         }
     };
 
@@ -222,17 +222,17 @@ const CreateSurveyForm: React.FC = () => {
 
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-[2px]">
-                                Tiêu đề khảo sát <span className="text-red-600">(*)</span>
+                                Ngày hết hạn <span className="text-red-600">(*)</span>
                             </label>
                             <DatePicker
                                 placeholder="Chọn ngày hết hạn"
                                 dateFormat='dd/mm/yyyy'
-                                value={formData.expiryDate ? parseDate(formData.expiryDate, 'dd/mm/yyyy') : undefined}
+                                value={formData.expiryDate ? parseDate(formData.expiryDate) : undefined}
                                 onChange={(date) => {
                                     if (date) {
                                         setFormData((prev) => ({
                                             ...prev,
-                                            expiryDate: formatDate(date as Date | null, 'dd/mm/yyyy'),
+                                            expiryDate: formatDate(date as Date | null),
                                         }));
                                     }
 

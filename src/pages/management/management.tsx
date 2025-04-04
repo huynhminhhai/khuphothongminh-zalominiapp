@@ -12,7 +12,7 @@ const ManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col pb-[66px]" style={{ backgroundColor: '#f0f0f0' }}>
             <Box>
-                <HeaderSub title="Quản trị ứng dụng" />
+                <HeaderSub title="Quản trị ứng dụng" onBackClick={() => navigate('/')} />
                 
                 <Box m={4}>
                     <List className="bg-white rounded-lg">

@@ -1,4 +1,5 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { TaskType } from "components/task/type";
 import http from "services/http";
 import { useNavigate, useSnackbar } from "zmp-ui";
 
@@ -30,6 +31,12 @@ const taskApiRequest = {
     updateTask: async (formData: any) => {
         return await http.put<any>("/nhiemvu", formData);
     },
+    addFileTask: async (formData: any) => {
+        return await http.postFormData<any>("/taptinnhiemvu/many", formData);
+    },
+    deleteFileTask: async (id: number) => {
+        return await http.delete<any>(`/taptinnhiemvu/${id}`)
+    }
 }
 
 /**
@@ -101,7 +108,7 @@ export const useGetTaskDetail = (id: number) => {
 
                 const res = await taskApiRequest.getTaskDetail(id);
 
-                return res.data
+                return res.data as TaskType
             } catch (error) {
                 console.error(error);
                 throw error;
@@ -264,6 +271,74 @@ export const useUpdateTask = () => {
 
             queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
             queryClient.invalidateQueries({ queryKey: ["taskList"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* POST FILE TASK
+**/ 
+export const useAddFileTask = () => {
+    const { openSnackbar } = useSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await taskApiRequest.addFileTask(formData);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Thêm tập tin nhiệm vụ thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: `Lỗi: ${error}`,
+                type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* DELETE File TASK
+**/ 
+export const useDeleteFileTask = () => {
+    const queryClient = useQueryClient();
+    const { openSnackbar } = useSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await taskApiRequest.deleteFileTask(id);
+        },
+        onSuccess: () => {
+            openSnackbar({
+                icon: true,
+                text: "Xóa tập tin thành công",
+                type: "success",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
         },
         onError: (error: string) => {
             openSnackbar({

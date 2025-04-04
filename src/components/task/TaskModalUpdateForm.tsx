@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Button, Modal } from 'zmp-ui';
 import { FormDataReportTask, schemaReportTask, TaskType } from './type';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ConfirmModal } from 'components/modal';
 import { FormSelectField } from 'components/form';
 import { useGetTaskStatus, useUpdateTaskStatus } from 'apiRequest/task';
@@ -86,19 +86,20 @@ const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
                 <Box py={4}>
                     <div className="grid grid-cols-12 gap-x-3">
                         <div className="col-span-12">
-                            <FormSelectField
+                            <Controller
                                 name="tinhTrangId"
-                                label="Trạng thái"
-                                placeholder="Chọn trạng thái"
                                 control={control}
-                                options={taskStatusTypeOpton}
-                                error={errors.tinhTrangId?.message}
-                                required
+                                render={({ field }) => (
+                                    <select {...field} id="tinhTrangId" className='w-full h-[46px] bg-gray-100 border-[0px] rounded px-4 font-medium'>
+                                        {taskStatusTypeOpton.map((item, index) => (
+                                            <option key={index} value={item.value}>
+                                                {item.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
                             />
                         </div>
-                        {/* <div className="col-span-12">
-                            <input type="file" name="file" id="fileTask" />
-                        </div> */}
                     </div>
                 </Box>
 

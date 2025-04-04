@@ -32,9 +32,6 @@ const TransactionDetailPage: React.FC = () => {
                             detailData ?
                                 <Box>
                                     <Box px={4} pb={4}>
-                                        <h3 className="text-[22px] leading-[28px] font-semibold">{type?.tenLoaiGiaoDichTaiChinh}</h3>
-                                    </Box>
-                                    <Box px={4} pb={4}>
                                         <div className="text-[22px] font-semibold" style={{ color: typeColor }}>{type?.tenLoaiGiaoDichTaiChinh === "Thu" ? '+' : '-'}{detailData.soTien.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</div>
                                     </Box>
                                     <hr />

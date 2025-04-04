@@ -102,25 +102,6 @@ const TransactionsManagementPage: React.FC = () => {
             header: 'Nội dung'
         },
         {
-            id: 'type',
-            header: 'Loại',
-            cell: ({ row }) => {
-
-                const { data: transactionType } = useGetTransactionType();
-
-                const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === row.original.loaiGiaoDichTaiChinhId);
-                const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#7c7c7c";
-             
-                return (
-                    <div style={{ color: typeColor }}>
-                        {
-                            type?.tenLoaiGiaoDichTaiChinh
-                        }
-                    </div>
-                )
-            }
-        },
-        {
             id: 'amount',
             header: 'Số tiền',
             cell: ({ row }) => {
@@ -133,7 +114,9 @@ const TransactionsManagementPage: React.FC = () => {
                 return (
                     <div style={{ color: typeColor }}>
                         {
-                            convertNumberVND(row.original.soTien)
+                            `
+                              ${type?.tenLoaiGiaoDichTaiChinh === "Thu" ? "+" : "-"}  ${convertNumberVND(row.original.soTien)}
+                            `
                         }
                     </div>
                 )

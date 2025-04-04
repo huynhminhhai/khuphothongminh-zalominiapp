@@ -43,6 +43,12 @@ interface NguoiThucHienNhiemVu {
     chuTri: boolean;
 }
 
+interface TapTinNhiemVu {
+    tapTinNhiemVuId: number;
+    nhiemVuId: number;
+    tapTin: string;
+}
+
 export type TaskType = {
     nhiemVuId: number;
     apId: number;
@@ -53,6 +59,7 @@ export type TaskType = {
     tinhTrangId: number;
     tinhTrang: TinhTrang;
     nguoiThucHienNhiemVus: NguoiThucHienNhiemVu[];
+    tapTinNhiemVus?: TapTinNhiemVu[];
 }
 
 export function convertParticipants(task: any) {
