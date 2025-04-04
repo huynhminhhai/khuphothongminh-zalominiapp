@@ -150,7 +150,7 @@ const ReportFinanceManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Báo cáo tài chính" />
+                <HeaderSub title="Báo cáo tài chính" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton

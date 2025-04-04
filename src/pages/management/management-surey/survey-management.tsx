@@ -130,7 +130,7 @@ const SurveyManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý khảo sát" />
+                <HeaderSub title="Quản lý khảo sát" onBackClick={() => navigate('/management')} />
                 <Box>
                     <Box pb={4}>
                         <FilterBar

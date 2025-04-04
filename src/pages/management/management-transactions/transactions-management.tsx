@@ -222,7 +222,7 @@ const TransactionsManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý thu chi" />
+                <HeaderSub title="Quản lý thu chi" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton

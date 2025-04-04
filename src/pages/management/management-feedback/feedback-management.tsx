@@ -317,7 +317,7 @@ const FeedbackManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý phản ánh" />
+                <HeaderSub title="Quản lý phản ánh" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={false}
