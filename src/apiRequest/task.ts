@@ -108,7 +108,7 @@ export const useGetTaskDetail = (id: number) => {
 
                 const res = await taskApiRequest.getTaskDetail(id);
 
-                return res.data as TaskType
+                return res.data
             } catch (error) {
                 console.error(error);
                 throw error;

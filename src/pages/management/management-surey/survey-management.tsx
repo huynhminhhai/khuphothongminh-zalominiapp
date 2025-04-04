@@ -1,12 +1,17 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
+import { useDeleteSurvey, useGetSurveyListNormal, useGetSurveyStatus } from "apiRequest/survey"
 import images from "assets/images"
+import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
+import { NewsSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import { SURVEYDATA, SurveyType } from "constants/utinities"
-import React, { useState } from "react"
-import { Box, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { debounce } from "lodash"
+import React, { useCallback, useEffect, useState } from "react"
+import { useStoreApp } from "store/store"
+import { formatDate } from "utils/date"
+import { Box, Input, Page, useNavigate } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
@@ -17,33 +22,53 @@ const initParam = {
 const SurveyManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { openSnackbar } = useSnackbar();
+    const { account } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [surveyId, setSurveyId] = useState<number | undefined>(undefined);
-    const [viewCard, setViewCard] = useState<boolean>(true)
-    const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+    const [viewCard, setViewCard] = useState<boolean>(true)
+    const [modalContent, setModalContent] = useState({ title: '', message: '' });
+    const [search, setSearch] = useState("");
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 10,
+        ApId: account ? account.thongTinDanCu?.apId : 0,
+        keyword: ''
+    })
+
+    const { data, isLoading } = useGetSurveyListNormal(param);
+    const { data: surveyStatus } = useGetSurveyStatus();
+    const { mutate: deleteSurvey } = useDeleteSurvey();
+
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            setParam((prev) => ({ ...prev, keyword: value }));
+        }, 300),
+        []
+    );
+
+    useEffect(() => {
+        debouncedSearch(search);
+    }, [search, debouncedSearch]);
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
             ...prevParam,
-            pageIndex: params.pageIndex, // Cập nhật pageIndex từ params
+            page: params.pageIndex,
         }));
-        console.log(`Navigated to page: ${params.pageIndex}, pageSize: ${params.pageSize}`);
     };
 
     const handleRowChange = (newPageSize: number) => {
         setParam((prevParam) => ({
             ...prevParam,
             pageSize: newPageSize,
-            pageIndex: 1, // Reset về trang đầu tiên khi thay đổi pageSize
+            page: 1,
         }));
-        console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
-    const openConfirmModal = (action: () => void) => {
+    const openConfirmModal = (action: () => void, title: string, message: string) => {
         setConfirmAction(() => action);
+        setModalContent({ title, message });
         setConfirmVisible(true);
     };
 
@@ -62,35 +87,39 @@ const SurveyManagementPage: React.FC = () => {
 
     const removeSurvey = (id: number) => {
         openConfirmModal(() => {
-            console.log('Call api delete survey with id: ', 1)
-
-            openSnackbar({
-                text: 'Xóa khảo sát thành công',
-                type: 'success',
-                duration: 5000,
-            });
-        })
+            deleteSurvey(id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa khảo sát này?');
     }
 
-    const columns: ColumnDef<SurveyType>[] = [
+    const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'title',
+            accessorKey: 'tieuDe',
             header: 'Tiêu đề',
             size: 300
         },
         {
-            accessorKey: 'expiryDate',
-            header: 'Thời hạn',
+            id: 'startDate',
+            header: 'Từ ngày',
+            cell: ({row}) => (
+                <div>{formatDate(row.original.tuNgay)}</div>
+            )
         },
         {
-            accessorKey: 'countAnswer',
+            id: 'expiryDate',
+            header: 'Đến ngày',
+            cell: ({row}) => (
+                <div>{formatDate(row.original.denNgay)}</div>
+            )
+        },
+        {
+            accessorKey: 'soLuongThamGiaKhaoSat',
             header: 'Lượt khảo sát',
         },
         {
             id: 'chart',
-            header: 'Tổng quan',
+            header: 'Kết quả',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center" onClick={() => navigate(`/survey-charts?id=${row.original.id}`)}>
+                <div className="flex items-center justify-start" onClick={() => navigate(`/survey-charts?id=${row.original.id}`)}>
                     <img width={30} src={images.pieChart} alt={row.original.title} />
                 </div>
             )
@@ -99,21 +128,21 @@ const SurveyManagementPage: React.FC = () => {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/survey-detail?id=${row.original.id}`)}
+                        onClick={() => navigate(`/survey-detail?id=${row.original.khaoSatId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/survey-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/survey-update?id=${row.original.khaoSatId}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => removeSurvey(Number(row.original.id))}
+                        onClick={() => removeSurvey(Number(row.original.khaoSatId))}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />
@@ -123,9 +152,46 @@ const SurveyManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = SURVEYDATA.filter(item =>
-        item.title.toLowerCase().includes(param.keyword.toLowerCase())
-    );
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <Box px={4}>
+                    <NewsSkeleton count={5} />
+                </Box>
+            );
+        }
+
+        if (!data.data.length) {
+            return (
+                <Box px={4}>
+                    <EmptyData
+                        title="Hiện chưa có khảo sát nào!"
+                    />
+                </Box>
+            );
+        }
+
+        return <Box>
+            {
+                viewCard ? (
+                    <CardTanStack data={data.data} columns={columns} />
+                ) : (
+                    <Box px={4}>
+                        <TableTanStack data={data.data} columns={columns} />
+                    </Box>
+                )
+            }
+            <Box px={4}>
+                <TablePagination
+                    totalItems={data.page.total}
+                    pageSize={param.pageSize}
+                    pageIndex={param.page}
+                    onPageChange={handlePageChange}
+                    onRowChange={handleRowChange}
+                />
+            </Box>
+        </Box>
+    };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -142,38 +208,22 @@ const SurveyManagementPage: React.FC = () => {
                             <div className="col-span-12">
                                 <Input
                                     placeholder="Tìm kiếm..."
-                                    value={param.keyword}
+                                    value={search}
                                     onChange={(e) => {
-                                        setParam((prevParam) => ({
-                                            ...prevParam,
-                                            keyword: e.target.value
-                                        }));
+                                        setSearch(e.target.value)
                                     }}
                                 />
                             </div>
                         </FilterBar>
                         <Box>
-                            {viewCard ?
-                                <CardTanStack data={filteredData} columns={columns} />
-                                :
-                                <Box px={4}>
-                                    <TableTanStack data={filteredData} columns={columns} />
-                                </Box>
-                            }
-                            <TablePagination
-                                totalItems={50}
-                                pageSize={param.pageSize}
-                                pageIndex={param.pageIndex}
-                                onPageChange={handlePageChange}
-                                onRowChange={handleRowChange}
-                            />
+                            {renderContent()}
                         </Box>
                     </Box>
                 </Box>
                 <ConfirmModal
                     visible={isConfirmVisible}
-                    title="Xác nhận"
-                    message="Bạn có chắc chắn muốn xóa khảo sát này không?"
+                    title={modalContent.title}
+                    message={modalContent.message}
                     onConfirm={handleConfirm}
                     onCancel={handleCancel}
                 />

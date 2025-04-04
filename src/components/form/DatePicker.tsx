@@ -17,7 +17,7 @@ interface FormDatePickerProps {
 
 export const formatDate = (date: Date | null): string => {
   if (!date) return "";
-  return date.toISOString().replace(".000Z", "Z"); // "2000-12-12T00:00:00Z"
+  return date.toLocaleString("sv-SE", { timeZone: "Asia/Ho_Chi_Minh" }).replace(" ", "T") + "Z"; // "2000-12-12T00:00:00Z"
 };
 
 export const parseDate = (dateStr: string): Date | undefined => {
