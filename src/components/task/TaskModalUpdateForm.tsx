@@ -96,6 +96,9 @@ const TaskUpdateFormModal: React.FC<TaskUpdateFormModalProps> = ({
                                 required
                             />
                         </div>
+                        {/* <div className="col-span-12">
+                            <input type="file" name="file" id="fileTask" />
+                        </div> */}
                     </div>
                 </Box>
 

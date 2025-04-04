@@ -52,7 +52,7 @@ const MeetingSection: React.FC<any> = () => {
                                 }
                             </Swiper>
                             :
-                            <>Chưa có cuộc họp nào</>
+                            <Box py={4} className="text-center">Chưa có cuộc họp nào</Box>
                     }
                 </Box>
             </Box>

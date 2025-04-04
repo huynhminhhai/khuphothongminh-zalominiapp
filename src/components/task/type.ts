@@ -70,7 +70,6 @@ export function convertParticipants(task: any) {
         const existing = findExisting(task.chuTri);
         participants.push({
             nguoiThucHienNhiemVuId: existing.nguoiThucHienNhiemVuId || 0,
-            nhiemVuId: task.nhiemVuId || 0,
             nguoiThucHienId: task.chuTri,
             chuTri: true
         });
@@ -82,7 +81,6 @@ export function convertParticipants(task: any) {
             const existing = findExisting(member);
             participants.push({
                 nguoiThucHienNhiemVuId: existing.nguoiThucHienNhiemVuId || 0,
-                nhiemVuId: task.nhiemVuId || 0,
                 nguoiThucHienId: member,
                 chuTri: false
             });
@@ -125,20 +123,18 @@ export function compareNguoiThucHienNhiemVus(detailData, formData) {
     const detailMembers = detailData.nguoiThucHienNhiemVus;
     const formMembers = formData.nguoiThucHienNhiemVus;
 
-    // Tạo map từ detailMembers để dễ tra cứu
+    // Tạo map từ detailMembers để dễ tra cứu dựa trên nguoiThucHienId
     const detailMap = new Map();
     detailMembers.forEach(member => {
-        const key = `${member.nguoiThucHienId}-${member.chuTri}`;
-        detailMap.set(key, member);
+        detailMap.set(member.nguoiThucHienId, member);
     });
 
     // Kết quả sau khi so sánh
     const result = formMembers.map(formMember => {
-        const key = `${formMember.nguoiThucHienId}-${formMember.chuTri}`;
-        const matchingDetail = detailMap.get(key);
+        const matchingDetail = detailMap.get(formMember.nguoiThucHienId);
 
         if (matchingDetail) {
-            // Nếu trùng nguoiThucHienId và chuTri, lấy nguoiThucHienNhiemVuId từ detail
+            // Nếu trùng nguoiThucHienId, lấy nguoiThucHienNhiemVuId từ detail
             return {
                 ...formMember,
                 nguoiThucHienNhiemVuId: matchingDetail.nguoiThucHienNhiemVuId

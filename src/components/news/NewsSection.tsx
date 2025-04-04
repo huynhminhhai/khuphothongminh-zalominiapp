@@ -69,7 +69,7 @@ const NewsSection: React.FC = () => {
                                 }
                             </Swiper>
                             :
-                            <>Chưa có tin tức</>
+                            <Box py={4} className="text-center">Chưa có tin tức</Box>
                     }
 
                 </Box>

@@ -31,7 +31,7 @@ const TaskSection: React.FC<any> = () => {
     return (
         <Box>
             <Box px={4} pt={4} pb={0}>
-                <TitleSection title="Nhiệm vụ hôm nay" handleClick={() => navigate('/task')} />
+                <TitleSection title="Nhiệm vụ mới nhất" handleClick={() => navigate('/task')} />
                 <Box>
                     {
                         data.data && data.data.length > 0 ?
@@ -52,7 +52,7 @@ const TaskSection: React.FC<any> = () => {
                                 }
                             </Swiper>
                             :
-                            <>Chưa có nhiệm vụ nào</>
+                            <Box py={4} className="text-center">Chưa có nhiệm vụ nào</Box>
                     }
                 </Box>
             </Box>
