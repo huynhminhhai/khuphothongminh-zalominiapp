@@ -57,7 +57,7 @@ const AvatarUploaderSingle: React.FC<AvatarUploaderSingleProps> = ({
                                 <img
                                     src={field.value}
                                     alt="Uploaded"
-                                    className="w-full h-full object-cover rounded-full"
+                                    className="w-full h-full object-cover rounded-full !bg-slate-100"
                                 />
                                 <button
                                     onClick={handleRemoveImage}
@@ -67,7 +67,7 @@ const AvatarUploaderSingle: React.FC<AvatarUploaderSingleProps> = ({
                                 </button>
                             </div>
                         ) : (
-                            <Avatar size={140} src={field.value || ''} />
+                            <Avatar size={140} src={field.value || ''} className='!bg-slate-100' />
                         )}
                             <div
                                 className="absolute bottom-0 left-[60%] border-[1px] bg-white p-3 rounded-full"

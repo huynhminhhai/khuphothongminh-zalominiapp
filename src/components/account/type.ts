@@ -11,17 +11,13 @@ export type FormDataLogin = {
 }
 
 export const schemaProfile = yup.object().shape({
-    fullname: yup.string().required('Không được để trống'),
-    phoneNumber: yup.string().required('Không được để trống'),
+    hoTen: yup.string().required('Không được để trống'),
 });
 
 export type FormDataProfile = {
-    fullname: string;      
-    phoneNumber: string;
-    email?: string;
-    avatar?: string;
-    birthDate?: string;
-    gender?: string;
+    hoTen: string;      
+    tenDangNhap?: string;
+    anhDaiDien?: string;
 }
 
 export const schemaChangePassword = yup.object().shape({

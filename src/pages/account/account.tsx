@@ -24,7 +24,7 @@ const AccountPage: React.FC = () => {
                     {
                         accessToken && account ?
                             <>
-                                <Box m={4}>
+                                {/* <Box m={4}>
                                     <div className="bg-[#731611] rounded-lg px-4 py-6 relative overflow-hidden">
                                         <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.05] z-0" />
                                         <div className="flex items-center gap-3">
@@ -35,7 +35,7 @@ const AccountPage: React.FC = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </Box>
+                                </Box> */}
                                 <Box m={4}>
                                     <List className="bg-white rounded-lg">
                                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tài khoản</div>
@@ -45,12 +45,12 @@ const AccountPage: React.FC = () => {
                                             prefix={<img src={images.resume} width={30} />}
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
                                         />
-                                        <Item
+                                        {/* <Item
                                             onClick={() => navigate('/change-password')}
                                             title="Đổi mật khẩu"
                                             prefix={<img src={images.changePw} width={30} />}
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                        />
+                                        /> */}
                                         <Item
                                             onClick={logout}
                                             title="Đăng xuất"
