@@ -5,8 +5,13 @@ import MemberResidentSection from "./MemberResidentSection"
 import { useGetUserInfo } from "apiRequest/user"
 import UserInfoSkeleton from "components/skeleton/info/UserInfoSkeleton"
 import { EmptyData } from "components/data"
+import { useStoreApp } from "store/store"
 
 const InforResidentSection: React.FC = () => {
+
+    const  { isResidentMainTab, setIsResidentMainTab } = useStoreApp()
+
+    console.log(isResidentMainTab)
 
     const { data: userInfo, isLoading, error } = useGetUserInfo();
 
@@ -19,11 +24,11 @@ const InforResidentSection: React.FC = () => {
     return (
         <Box>
             <Box>
-                <Tabs className="tab-resident">
-                    <Tabs.Tab key="tab1" label="Thông tin cá nhân">
+                <Tabs className="tab-resident" activeKey={isResidentMainTab} onChange={(value) => setIsResidentMainTab(value)}>
+                    <Tabs.Tab key="residentTab" label="Thông tin cá nhân">
                         <InforResidentItemMain data={userInfo} />
                     </Tabs.Tab>
-                    <Tabs.Tab key="tab2" label="Thông tin gia đình">
+                    <Tabs.Tab key="memberTab" label="Thông tin gia đình">
                         <MemberResidentSection danCuId={userInfo.thongTinDanCu.danCuId} />
                     </Tabs.Tab>
                 </Tabs>

@@ -30,10 +30,6 @@ const AuthWrapper = ({ children }) => {
   const { setToken, setAccount, accessToken, fetchResidentTypes } = useStoreApp();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchResidentTypes();
-  }, []);
-
   const loadAuthData = async () => {
     try {
       const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken"]);
@@ -44,6 +40,8 @@ const AuthWrapper = ({ children }) => {
         navigate("/login");
         return;
       }
+
+      fetchResidentTypes();
 
       const storedAccount = storedData.account ? JSON.parse(storedData.account) : null;
       const storedAccessToken = storedData.accessToken || null;

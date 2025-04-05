@@ -10,10 +10,10 @@ type MeetingItemProps = {
 }
 
 export const MeetingStatus: React.FC<{ meetingDate: string, startTime: string, endTime: string }> = ({ meetingDate, startTime, endTime }) => {
-    const { status, bgColor } = getMeetingStatus(meetingDate, startTime, endTime);
+    const { status, bgColor, color } = getMeetingStatus(meetingDate, startTime, endTime);
 
     return (
-        <div style={{ backgroundColor: bgColor }} className="mt-2 py-1 px-2 text-white w-fit rounded-xl text-[12px] leading-[1] font-medium">
+        <div style={{ backgroundColor: bgColor, color  }} className="mt-2 py-[6px] px-3 text-white w-fit rounded-xl text-[12px] leading-[1] font-semibold">
             {status}
         </div>
     );

@@ -3,17 +3,18 @@ import { useSnackbar } from "zmp-ui";
 import { getAccessTokenAccount, getPhoneNumberAccount } from "./zalo";
 import { useStoreApp } from "store/store";
 import { useLoginZalo } from "apiRequest/auth";
+import envConfig from "envConfig";
 
 export const useLoginWithZalo = () => {
 
     const navigate = useNavigate();
     const { openSnackbar } = useSnackbar();
-    const { setIsLoadingFullScreen, token } = useStoreApp();
+    const { setIsLoadingFullScreen, account } = useStoreApp();
     const { mutateAsync } = useLoginZalo();
 
     const loginWithZalo = async (redirectUrl?: string) => {
 
-        if (token) {
+        if (account) {
             console.log('Đã đăng nhập')
             navigate(redirectUrl || "/");
             return;
@@ -26,12 +27,19 @@ export const useLoginWithZalo = () => {
 
             if (phoneNumber) {
                 const accessToken = await getAccessTokenAccount();
-                
-                console.log("call api login zalo with: ", { token: phoneNumber, userAccessToken: accessToken });
+
+                if (!accessToken) {
+                    openSnackbar({
+                        icon: true,
+                        text: "Có lỗi xảy ra, vui lòng thử lagi.",
+                        type: "error",
+                        action: { text: "Đóng", close: true },
+                        duration: 5000,
+                    });
+                    return;
+                }
 
                 await mutateAsync({ token: phoneNumber, userAccessToken: accessToken });
-
-                navigate(redirectUrl || "/");
             }
             
         } catch (error) {
