@@ -1,87 +1,90 @@
-import React, { useEffect, useState } from "react"
-import { Box, Button } from "zmp-ui"
-import { Feedback, SURVEYDATA, SurveyType } from "constants/utinities"
-import images from "assets/images"
+import React, { useCallback, useEffect, useState } from "react"
+import { Box, Input } from "zmp-ui"
 import SurveyItem from "./SurveyItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
 import { EmptyData } from "components/data"
 import { NewsSkeleton } from "components/skeleton"
-
-// type SurveyListProps = {
-//     data: SurveyType[]
-// }
-
-const initParam = {
-    pageSize: 5,
-};
+import { useStoreApp } from "store/store"
+import { debounce } from "lodash"
+import { useGetSurveyList } from "apiRequest/survey"
+import { FilterBar2 } from "components/table"
+import { Divider } from "components/divider"
 
 const SurveyList: React.FC = () => {
 
-    const [param, setParam] = useState(initParam);
-    const [listData, setListData] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
-
-    const loadMore = () => {
-        setParam((prev) => ({
-            ...prev,
-            pageSize: prev.pageSize + 5,
-        }));
-    };
-
-    const loaderRef = useInfiniteScroll({
-        hasMore: hasMore && listData.length > 0,
-        loading,
-        onLoadMore: loadMore,
+    const { account } = useStoreApp()
+    const [search, setSearch] = useState("");
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 5,
+        ApId: account ? account.thongTinDanCu?.apId : 0,
+        keyword: '',
+        nguoiThucHienId: account ? account?.nguoiDungId : 0
     });
 
-    const fetchSurvey = async () => {
-
-        if (loading && !hasMore) return;
-
-        setLoading(true);
-
-        try {
-            const data = SURVEYDATA.slice(listData.length, listData.length + param.pageSize);
-
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            setListData(prevList => [...prevList, ...data]);
-
-            setHasMore(data.length > 0 && data.length === param.pageSize);
-
-        } catch (error) {
-            console.error("Error fetching news:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const debouncedSearch = useCallback(
+        debounce((value) => {
+            setParam((prev) => ({ ...prev, keyword: value }));
+        }, 300),
+        []
+    );
 
     useEffect(() => {
-        if (hasMore) {
-            fetchSurvey();
-        }
-    }, [param]);
+        debouncedSearch(search);
+    }, [search, debouncedSearch]);
 
-    return (
-        <Box>
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetSurveyList(param);
+
+    const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
+
+    const loaderRef = useInfiniteScroll({
+        hasMore: hasNextPage,
+        loading: isFetchingNextPage,
+        onLoadMore: fetchNextPage,
+    });
+
+    const renderContent = () => {
+        if (isLoading) {
+            return <Box px={4}><NewsSkeleton count={5} /></Box>
+        }
+
+        return <Box>
             <Box>
-                <div className="grid grid-cols-1">
-                    {listData.length === 0 && !loading ? (
+                {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
+                    <Box px={4}>
                         <EmptyData title="Hiện chưa có khảo sát nào!" desc=" Khi có khảo sát từ ban quản lý, bạn có thể tham gia và đóng góp ý kiến ngay tại đây. Vui lòng quay lại sau!" />
-                    ) : (
+                    </Box>
+                ) : (
+                    <>
                         <Box px={4}>
-                            {listData.map((item, index) => (
+                            {listData.map((item: any, index) => (
                                 <SurveyItem key={index} data={item} />
                             ))}
                         </Box>
-                    )}
-                </div>
+                    </>
+                )}
             </Box>
-            <div ref={loaderRef} className="px-4">
-                {loading && <NewsSkeleton count={listData.length === 0 ? 4 : 1} />}
-                {listData.length > 0 && !hasMore && <p className="text-center pt-4">Đã hiển thị tất cả khảo sát</p>}
+            <div ref={loaderRef} className="px-4 pb-4">
+                {isFetchingNextPage && <NewsSkeleton count={1} />}
+                {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả khảo</p>}
             </div>
+        </Box>
+    };
+
+    return (
+        <Box>
+            <FilterBar2
+                searchComponent={
+                    <Input.Search
+                        placeholder='Tìm kiếm...'
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                    />
+                }
+            >
+            </FilterBar2>
+            <Divider />
+            {renderContent()}
         </Box>
     )
 }

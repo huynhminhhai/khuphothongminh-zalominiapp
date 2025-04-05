@@ -157,21 +157,17 @@ const CreateSurveyForm: React.FC = () => {
         });
 
         return {
-            khaoSatId: 0,
+
             apId: account?.thongTinDanCu?.apId,
             tieuDe: data.title,
             noiDung: data.description,
             tuNgay: new Date().toISOString(),
             denNgay: data.expiryDate,
-            tinhTrangId: 0,
+
             cauHoiKhaoSats: data.questions.map((q) => ({
-                cauHoiKhaoSatId: 0,
-                khaoSatId: 0,
                 noiDung: q.question,
                 loaiCauHoiKhaoSatId: typeMap[q.type],
                 chiTietCauHoiKhaoSats: q.options?.map((opt) => ({
-                    chiTietCauHoiKhaoSatId: 0,
-                    cauHoiKhaoSatId: 0,
                     noiDungChiTiet: opt,
                     coYKienKhac: false,
                 })) || [],
@@ -323,7 +319,7 @@ const CreateSurveyForm: React.FC = () => {
                                                     <button
                                                         type="button"
                                                         onClick={() => handleRemoveOption(q.questionId, index)}
-                                                        className="ml-2 text-white bg-red-700 p-2 rounded-lg"
+                                                        className="ml-2 text-white bg-[#c46574] p-2 rounded-lg"
                                                     >
                                                         <Icon fontSize={18} icon="material-symbols:delete" />
                                                     </button>
@@ -341,7 +337,7 @@ const CreateSurveyForm: React.FC = () => {
                                                         ),
                                                     }))
                                                 }
-                                                className="mt-2 text-white flex items-center gap-1 bg-indigo-500 p-2 rounded-lg ml-auto"
+                                                className="mt-2 text-white flex items-center gap-1 bg-blue-500 p-2 rounded-lg ml-auto"
                                             >
                                                 <Icon fontSize={18} icon="material-symbols:add-rounded" />
                                             </button>
@@ -351,7 +347,7 @@ const CreateSurveyForm: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={() => removeQuestion(q.questionId)}
-                                        className="mt-2 text-white font-medium bg-red-700 flex items-center gap-1 p-2 rounded-lg ml-auto"
+                                        className="mt-2 text-white font-medium bg-[#c46574] flex items-center gap-1 p-2 rounded-lg ml-auto"
                                     >
                                         <Icon fontSize={18} icon="material-symbols:delete" />
                                         Xóa câu hỏi

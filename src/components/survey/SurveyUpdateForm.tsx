@@ -3,78 +3,15 @@ import { Box, Button, DatePicker, Modal } from 'zmp-ui';
 import { PrimaryButton } from 'components/button';
 import { Icon } from '@iconify/react';
 import SecondaryButton from 'components/button/SecondaryButton';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { useSnackbar } from 'zmp-ui';
+import { useSearchParams } from 'react-router-dom';
 import SurveyPreviewModal from './SurveyPreviewModal';
 import { ConfirmModal } from 'components/modal';
 import { useGetSurveyDetail, useGetSurveyStatus, useUpdateSurvey } from 'apiRequest/survey';
 import { SurveyDetail, SurveyType, SurveyUpdateAPI } from './type';
 import { formatDate, parseDate } from 'components/form/DatePicker';
 
-// interface QuestionType {
-//     questionId: number;
-//     type: 'text' | 'multiple-choice' | 'one-choice';
-//     question: string;
-//     options: string[];
-// }
-
-// interface SurveyType {
-//     id?: number;
-//     title: string;
-//     description: string;
-//     expiryDate: string;
-//     questions: QuestionType[];
-// }
-
-// interface ChiTietCauHoiKhaoSat {
-//     chiTietCauHoiKhaoSatId: number;
-//     cauHoiKhaoSatId: number;
-//     noiDungChiTiet: string;
-//     coYKienKhac: boolean;
-// }
-
-// interface CauHoiKhaoSat {
-//     cauHoiKhaoSatId: number;
-//     khaoSatId: number;
-//     noiDung: string;
-//     chiTietCauHoiKhaoSats: ChiTietCauHoiKhaoSat[];
-// }
-
-// interface SurveyDetail {
-//     khaoSatId: number;
-//     apId: number;
-//     tieuDe: string;
-//     noiDung: string;
-//     tuNgay: string;
-//     denNgay: string;
-//     tinhTrangId: number;
-//     cauHoiKhaoSats: CauHoiKhaoSat[];
-// }
-
-// interface SurveyUpdateAPI {
-//     khaoSatId: number;
-//     tieuDe: string;
-//     noiDung: string;
-//     tuNgay: string;
-//     denNgay: string;
-//     tinhTrangId: number;
-//     cauHoiKhaoSats: {
-//         cauHoiKhaoSatId: number;
-//         khaoSatId: number;
-//         noiDung: string;
-//         loaiCauHoiKhaoSatId: number;
-//         chiTietCauHoiKhaoSats: {
-//             chiTietCauHoiKhaoSatId: number;
-//             cauHoiKhaoSatId: number;
-//             noiDungChiTiet: string;
-//             coYKienKhac: boolean;
-//             thuTu: number;
-//         }[];
-//     }[];
-// }
-
 const defaultValues: SurveyType = {
-    id: 1,
+    id: 0,
     title: '',
     description: '',
     expiryDate: '',
@@ -87,8 +24,6 @@ const SurveyUpdateForm: React.FC = () => {
     const [previewVisible, setPreviewVisible] = useState<boolean>(false);
     const [descModal, setDescModal] = useState<string>('');
     const [isConfirmVisible, setConfirmVisible] = useState<boolean>(false);
-
-    const navigate = useNavigate();
 
     const [searchParams] = useSearchParams();
     const surveyId = searchParams.get('id');
@@ -107,15 +42,23 @@ const SurveyUpdateForm: React.FC = () => {
     useEffect(() => {
         if (surveyDetail) {
 
+            const typeMap: { [key: string]: 'text' | 'multiple-choice' | 'one-choice' } = {
+                "Câu hỏi nhập nội dung trả lời": 'text',
+                "Câu hỏi chọn nhiều đáp án": 'multiple-choice',
+                "Câu hỏi chọn một đáp án": 'one-choice', 
+            };
+
             const mappedFormData: SurveyType = {
+
                 id: surveyDetail.khaoSatId,
                 title: surveyDetail.tieuDe,
                 description: surveyDetail.noiDung,
                 expiryDate: surveyDetail.denNgay,
+                
                 questions: surveyDetail.cauHoiKhaoSats.map((q) => ({
                     questionId: q.cauHoiKhaoSatId,
                     question: q.noiDung,
-                    type: q.chiTietCauHoiKhaoSats.tenLoaiCauHoiKhaoSat === "Câu hỏi chọn một đáp án" ? 'text' : q.chiTietCauHoiKhaoSats.tenLoaiCauHoiKhaoSat === 'Câu hỏi chọn nhiều đáp án' ? 'multiple-choice' : 'one-choice',
+                    type: typeMap[q.tenLoaiCauHoiKhaoSat] || 'text',
                     options: q.chiTietCauHoiKhaoSats.map((opt) => opt.noiDungChiTiet),
                 })),
             };
@@ -238,6 +181,9 @@ const SurveyUpdateForm: React.FC = () => {
             }
         });
 
+        console.log(data)
+        console.log(detailData)
+
         return {
             khaoSatId: Number(surveyId),
             tieuDe: data.title,
@@ -245,17 +191,20 @@ const SurveyUpdateForm: React.FC = () => {
             tuNgay: detailData.tuNgay,
             denNgay: data.expiryDate,
             tinhTrangId: detailData.tinhTrangId,
-            cauHoiKhaoSats: data.questions.map((q, index) => ({
-                cauHoiKhaoSatId: q.questionId >= 1000000000 ? 0 : q.questionId,
+
+            cauHoiKhaoSats: data.questions.map((q) => ({
+
+                cauHoiKhaoSatId: q.questionId >= 1000000000 ? null : q.questionId,
                 khaoSatId: data.id || 0,
                 noiDung: q.question,
                 loaiCauHoiKhaoSatId: typeMap[q.type],
+                
                 chiTietCauHoiKhaoSats: q.options?.map((opt, optIndex) => {
                     const detailQuestion = detailData.cauHoiKhaoSats.find((dq) => dq.cauHoiKhaoSatId === q.questionId);
                     const detailOption = detailQuestion?.chiTietCauHoiKhaoSats[optIndex];
                     return {
-                        chiTietCauHoiKhaoSatId: detailOption?.chiTietCauHoiKhaoSatId || 0,
-                        cauHoiKhaoSatId: q.questionId >= 1000000000 ? 0 : q.questionId,
+                        chiTietCauHoiKhaoSatId: detailOption?.chiTietCauHoiKhaoSatId || null,
+                        cauHoiKhaoSatId: q.questionId >= 1000000000 ? null : q.questionId,
                         noiDungChiTiet: opt,
                         coYKienKhac: detailOption?.coYKienKhac || false,
                         thuTu: optIndex + 1,
@@ -272,9 +221,9 @@ const SurveyUpdateForm: React.FC = () => {
 
             const payload = mapToApiUpdateFormat(formData, surveyDetail);
 
-            await updateSurvey(payload)
+            console.log('payload: ', payload)
 
-            // navigate('/survey-management');
+            await updateSurvey(payload)
         } catch (error) {
             console.error(error);
         }
@@ -378,9 +327,9 @@ const SurveyUpdateForm: React.FC = () => {
                                             }}
                                             className="mt-1 p-2 h-[40px] w-full border border-gray-300 rounded-lg"
                                         >
-                                            <option value="text">Văn bản</option>
-                                            <option value="multiple-choice">Trắc nghiệm</option>
-                                            <option value="one-choice">Lựa chọn đơn</option>
+                                            <option value="text">Câu hỏi nhập nội dung trả lời</option>
+                                            <option value="multiple-choice">Câu hỏi chọn nhiều đáp án</option>
+                                            <option value="one-choice">Câu hỏi chọn một đáp án</option>
                                         </select>
                                     </div>
 
@@ -400,7 +349,7 @@ const SurveyUpdateForm: React.FC = () => {
                                                     <button
                                                         type="button"
                                                         onClick={() => handleRemoveOption(q.questionId, index)}
-                                                        className="ml-2 text-white bg-red-700 p-2 rounded-lg"
+                                                        className="ml-2 text-white bg-[#c46574] p-2 rounded-lg"
                                                     >
                                                         <Icon fontSize={18} icon="material-symbols:close-rounded" />
                                                     </button>
@@ -418,7 +367,7 @@ const SurveyUpdateForm: React.FC = () => {
                                                         ),
                                                     }));
                                                 }}
-                                                className="mt-2 text-white bg-indigo-500 p-2 rounded-lg ml-auto flex items-center"
+                                                className="mt-2 text-white bg-blue-500 p-2 rounded-lg ml-auto flex items-center"
                                             >
                                                 <Icon fontSize={18} icon="material-symbols:add-rounded" />
                                             </button>
@@ -428,7 +377,7 @@ const SurveyUpdateForm: React.FC = () => {
                                     <button
                                         type="button"
                                         onClick={() => removeQuestion(q.questionId)}
-                                        className="mt-2 text-white font-medium bg-red-700 flex items-center gap-1 p-2 rounded-lg ml-auto"
+                                        className="mt-2 text-white font-medium bg-[#c46574] flex items-center gap-1 p-2 rounded-lg ml-auto"
                                     >
                                         Xóa câu hỏi
                                     </button>

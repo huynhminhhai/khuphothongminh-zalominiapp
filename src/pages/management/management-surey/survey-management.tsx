@@ -119,7 +119,7 @@ const SurveyManagementPage: React.FC = () => {
             id: 'chart',
             header: 'Kết quả',
             cell: ({ row }) => (
-                <div className="flex items-center justify-start" onClick={() => navigate(`/survey-charts?id=${row.original.id}`)}>
+                <div className="flex items-center justify-start" onClick={() => navigate(`/survey-charts?id=${row.original.khaoSatId}`)}>
                     <img width={30} src={images.pieChart} alt={row.original.title} />
                 </div>
             )

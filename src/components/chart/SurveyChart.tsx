@@ -23,10 +23,67 @@ type ChartData = {
   chart: JSX.Element;
 };
 
-const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResults }) => {
+interface SurveyDetail {
+  khaoSatId: number;
+  apId: number;
+  tieuDe: string;
+  noiDung: string;
+  tuNgay: string;
+  denNgay: string;
+  tinhTrangId: number;
+  tenTinhTrang: string;
+  cauHoiKhaoSats: {
+    cauHoiKhaoSatId: number;
+    khaoSatId: number;
+    noiDung: string;
+    loaiCauHoiKhaoSatId: number;
+    tenLoaiCauHoiKhaoSat: string;
+    chiTietCauHoiKhaoSats: {
+      chiTietCauHoiKhaoSatId: number;
+      cauHoiKhaoSatId: number;
+      noiDungChiTiet: string;
+      coYKienKhac: boolean;
+    }[];
+  }[];
+  soLuongCauHoiKhaoSat: number;
+  ketQuaKhaoSats: {
+    cauHoiKhaoSatId: number;
+    noiDungCauHoi: string;
+    noiDungCauTraLoi: string;
+    luotChon: number;
+    tongLuotThamGia: number;
+  }[];
+  soLuongThamGiaKhaoSat: number;
+}
+
+const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }) => {
   const [chartsData, setChartsData] = useState<ChartData[]>([]);
 
   useEffect(() => {
+    const surveyResults: SurveyResult[] = surveyDetail.cauHoiKhaoSats.map((question) => {
+      const typeMap: { [key: string]: 'text' | 'multiple-choice' | 'one-choice' } = {
+        "Câu hỏi nhập nội dung trả lời": 'text',
+        "Câu hỏi chọn nhiều đáp án": 'multiple-choice',
+        "Câu hỏi chọn một đáp án": 'one-choice',
+      };
+
+      const answers = question.chiTietCauHoiKhaoSats.map((option) => {
+        const result = surveyDetail.ketQuaKhaoSats.find(
+          (res) => res.cauHoiKhaoSatId === question.cauHoiKhaoSatId && res.noiDungCauTraLoi === option.noiDungChiTiet
+        );
+        return {
+          answer: option.noiDungChiTiet,
+          count: result ? result.luotChon : 0,
+        };
+      });
+
+      return {
+        question: question.noiDung,
+        type: typeMap[question.tenLoaiCauHoiKhaoSat] || 'text',
+        answers,
+      };
+    }).filter((survey) => survey.type !== 'text');
+
     const data: ChartData[] = surveyResults.map((survey) => {
       const { type, question, answers } = survey;
       let chartData: ChartData;
@@ -47,37 +104,28 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
                   ],
                 }}
                 options={{
-                  // responsive: true,
-                  // maintainAspectRatio: false,
                   plugins: {
                     datalabels: {
                       color: '#fff',
-                      font: {
-                        weight: 'bold',
-                        size: 12,
-                      },
+                      font: { weight: 'bold', size: 12 },
                       formatter: (value, context) => {
                         const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
-                        const percentage = ((value / total) * 100).toFixed(1);
+                        const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
                         return `${percentage}%`;
-                      }
+                      },
                     },
                     tooltip: {
                       callbacks: {
                         label: (context) => {
                           const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
                           const value = context.raw as number;
-                          const percentage = ((value / total) * 100).toFixed(1);
+                          const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
                           return `${percentage}%`;
                         },
                       },
                     },
                   },
-                  elements: {
-                    arc: {
-                      borderWidth: 4,
-                    },
-                  },
+                  elements: { arc: { borderWidth: 4 } },
                 }}
               />
             ),
@@ -101,15 +149,10 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
                 }}
                 options={{
                   plugins: {
-                    legend: {
-                      display: false,
-                    },
+                    legend: { display: false },
                     datalabels: {
                       color: '#000',
-                      font: {
-                        size: 14,
-                        // weight: 'bold',
-                      },
+                      font: { size: 14 },
                       anchor: 'end',
                       align: 'top',
                       formatter: (value) => value,
@@ -117,40 +160,18 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
                   },
                   scales: {
                     x: {
-                      ticks: {
-                        color: '#000',
-                        font: {
-                          // weight: 'normal',
-                          size: 10
-                        }
-                      },
-                      // border: {
-                      //   display: false
-                      // },
-                      grid: {
-                        display: false
-                      }
+                      ticks: { color: '#000', font: { size: 10 } },
+                      grid: { display: false },
                     },
                     y: {
                       beginAtZero: true,
-                      ticks: {
-                        color: '#000',
-                        font: {
-                          // weight: 'bold',
-                          size: 12
-                        }
-                      },
-                      border: {
-                        display: false
-                      },
-                      grid: {
-                        display: false
-                      }
+                      ticks: { color: '#000', font: { size: 12 } },
+                      border: { display: false },
+                      grid: { display: false },
                     },
                   },
                 }}
               />
-
             ),
           };
           break;
@@ -159,26 +180,8 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
           chartData = {
             question,
             chart: (
-              <div className="overflow-auto max-h-[300px]">
-                <table className="min-w-full table-auto border-collapse">
-                  <thead>
-                    <tr className="sticky top-[-1px] bg-white z-10">
-                      <th className="border-b p-2 text-left font-medium">STT</th>
-                      <th className="border-b p-2 text-center font-medium">Câu trả lời</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {answers.map((a, index) => (
-                      <tr
-                        key={index}
-                        className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
-                      >
-                        <td className="border-b p-2">{index + 1}</td>
-                        <td className="border-b p-2">{a.answer}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <div className="text-center p-4">
+                <p>Không có dữ liệu thống kê cho câu hỏi này.</p>
               </div>
             ),
           };
@@ -192,20 +195,17 @@ const SurveyCharts: React.FC<{ surveyResults: SurveyResult[] }> = ({ surveyResul
     });
 
     setChartsData(data);
-  }, [surveyResults]);
+  }, [surveyDetail]);
 
   return (
     <Box>
       {chartsData.map((chart, index) => (
-        <Box p={4}>
+        <Box p={4} key={index}>
           <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">
-            <div key={index}>
-              <h3 className="text-[16px] leading-[22px] font-medium mb-1">{chart.question}</h3>
-              {chart.chart}
-            </div>
+            <h3 className="text-[16px] leading-[22px] font-medium mb-1">{chart.question}</h3>
+            {chart.chart}
           </div>
         </Box>
-
       ))}
     </Box>
   );
