@@ -6,6 +6,7 @@ import { getLabelOptions } from "utils/options"
 import { Box, useNavigate } from "zmp-ui"
 import { TaskType } from "./type"
 import { formatDate } from "utils/date"
+import { getTinhTrangTaskColor } from "utils/renderColor"
 
 type TaskItemProps = {
     data: TaskType
@@ -14,6 +15,8 @@ type TaskItemProps = {
 const TaskItem: React.FC<TaskItemProps> = ({data}) => {
 
     const navigate = useNavigate()
+
+    const { color, bg } = getTinhTrangTaskColor(data.tinhTrang.tenTinhTrang);
 
     return (
         <Box
@@ -40,7 +43,7 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                                             getLabelOptions(data.priority, taskPriority)
                                         }
                                     </div> */}
-                                    <div className="text-[12px] text-white font-medium leading-[1] bg-gray-500 px-2 py-[6px] rounded-xl">
+                                    <div className={`${color} ${bg} text-[12px] font-semibold leading-[1] px-3 py-[6px] rounded-xl`}>
                                         {
                                             data.tinhTrang.tenTinhTrang
                                         }
@@ -49,7 +52,7 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                             </div>
 
                             <div className="flex items-center justify-between w-[100%]">
-                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-[#7c7c7c]"><Icon fontSize={18} icon='bxs:calendar' /> {formatDate(data.thoiHanXuLy)}</h4>
+                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-[#666666]"><Icon fontSize={18} icon='bxs:calendar' /> {formatDate(data.thoiHanXuLy)}</h4>
                             </div>
                             
                         </div>

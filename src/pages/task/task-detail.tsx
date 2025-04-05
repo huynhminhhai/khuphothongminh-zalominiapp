@@ -12,6 +12,7 @@ import { useSearchParams } from "react-router-dom"
 import { openUrlInWebview } from "services/zalo"
 import { formatDate } from "utils/date"
 import { convertToFormData, getFullImageUrl } from "utils/file"
+import { getTinhTrangTaskColor } from "utils/renderColor"
 import { Box, Page, Swiper, useNavigate } from "zmp-ui"
 
 const TaskDetailPage: React.FC = () => {
@@ -27,6 +28,8 @@ const TaskDetailPage: React.FC = () => {
     const { data: detailData, isLoading } = useGetTaskDetail(Number(taskId));
     const { mutateAsync: addFileTask, isPending } = useAddFileTask();
     const { mutate: deleteFileTask } = useDeleteFileTask();
+
+    const { color, bg } = getTinhTrangTaskColor(detailData?.tinhTrang?.tenTinhTrang);
 
     const isImage = (fileName: string) => {
         return /\.(jpg|jpeg|png|gif|webp)$/i.test(fileName);
@@ -108,7 +111,7 @@ const TaskDetailPage: React.FC = () => {
                                     <Box px={4} pb={4} pt={2} className="text-[16px] font-medium">
                                         <div className="flex items-center justify-between w-full py-3">
                                             <div>Trạng thái</div>
-                                            <div className="text-[14px] text-white font-medium leading-[1] bg-gray-500 px-3 py-[6px] rounded-xl">
+                                            <div className={`${color} ${bg} text-[14px] text-white font-semibold leading-[1] bg-gray-500 px-3 py-[6px] rounded-xl`}>
                                                 {
                                                     detailData.tinhTrang.tenTinhTrang
                                                 }
@@ -154,19 +157,22 @@ const TaskDetailPage: React.FC = () => {
                                         <Box>
                                             {detailData?.tapTinNhiemVus && detailData.tapTinNhiemVus.length > 0 ? (
                                                 detailData.tapTinNhiemVus.map((item, index) => (
-                                                    <div
-                                                        className="px-3 py-2 mb-2 bg-gray-100 rounded-lg flex items-center gap-2 justify-between"
-                                                        key={index}
-                                                        onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                    >
-                                                        <div className="flex items-center gap-1">
-                                                            {isImage(item.tapTin) ? (
-                                                                <Icon icon="mdi:file-image-outline" fontSize={22} className="text-[#222222]" />
-                                                            ) : (
-                                                                <Icon icon="codex:file" fontSize={22} className="text-[#222222]" />
-                                                            )}
-                                                            <div className="text-[14px] font-medium">{`Tập tin ${index + 1}`}</div>
+                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
+                                                        <div
+                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
+                                                            
+                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                        >
+                                                            <div className="flex items-center gap-1">
+                                                                {isImage(item.tapTin) ? (
+                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} className="text-[#222222]" />
+                                                                ) : (
+                                                                    <Icon icon="codex:file" fontSize={22} className="text-[#222222]" />
+                                                                )}
+                                                                <div className="text-[14px] font-medium">{`Tập tin ${index + 1}`}</div>
+                                                            </div>
                                                         </div>
+
                                                         <Box onClick={() => {
                                                             openConfirmModal(() => {
                                                                 deleteFileTask(item.tapTinNhiemVuId);

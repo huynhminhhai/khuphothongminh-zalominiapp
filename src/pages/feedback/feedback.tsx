@@ -6,11 +6,13 @@ import { FeedbackSkeleton } from "components/skeleton"
 import React, { useState } from "react"
 import { useStoreApp } from "store/store"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
-import { Box, Page } from "zmp-ui"
+import { Box, Page, useNavigate } from "zmp-ui"
 
 const FeedbackPage: React.FC = () => {
 
     const { account } = useStoreApp()
+
+    const navigate = useNavigate()
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
@@ -31,7 +33,7 @@ const FeedbackPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Góp ý - Phản ánh" />
+                <HeaderSub title="Góp ý - Phản ánh" onBackClick={() => navigate('/')} />
                 <Box px={4} pb={4}>
                     <FeedbackMenu />
                     <Box>

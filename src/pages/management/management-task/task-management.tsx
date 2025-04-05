@@ -110,7 +110,7 @@ const TaskManagementPage: React.FC = () => {
                             onChange={(value) => {
                                 openConfirmModal(() => {
                                     mutate({
-                                        nhiemVuId: row.original.phanAnhId,
+                                        nhiemVuId: row.original.nhiemVuId,
                                         tinhTrangId: Number(value),
                                     });
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
