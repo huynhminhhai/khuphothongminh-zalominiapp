@@ -193,7 +193,7 @@ const MeetingDetailPage: React.FC = () => {
                                     </div>
                                 </div> */}
                             </Box> :
-                            <EmptyData />
+                            <EmptyData title="Không tìm thấy cuộc họp" />
                     }
                 </Box>
             </Box>

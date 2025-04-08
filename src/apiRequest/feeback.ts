@@ -31,6 +31,9 @@ const feebackApiRequest = {
     deleteFileFeedback: async (id: number) => {
         return await http.delete<any>(`/taptinphananh/${id}`);
     },
+    getMyFeedbackList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NguoiThucHienId: number; }) => {
+        return await http.get<any>(`/phananh/cuatoi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NguoiThucHienId=${param.NguoiThucHienId}`);
+    },
 }
 
 /**
@@ -59,6 +62,33 @@ export const useGetFeedbackList = (param: { page: number; pageSize: number, ApId
             try {
 
                 const res = await feebackApiRequest.getFeedbackList({ ...param, page: pageParam });
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        initialPageParam: 1,
+        getNextPageParam: (lastPage: any, allPages) => {
+            return lastPage.length === param.pageSize ? allPages.length + 1 : undefined;
+        },
+        staleTime: 0,
+        retry: 1,
+    })
+};
+
+/**
+* GET MY FEEDBACK LIST (INFINITE)
+**/
+export const useGetMyFeedbackList = (param: { page: number; pageSize: number, ApId: number; keyword: string, NguoiThucHienId: number }) => {
+
+    return useInfiniteQuery({
+        queryKey: ['myFeedbackList', param.pageSize, param.ApId, param.keyword, param.NguoiThucHienId],
+        queryFn: async ({ pageParam = 1 }) => {
+            try {
+
+                const res = await feebackApiRequest.getMyFeedbackList({ ...param, page: pageParam });
 
                 return res.data
             } catch (error) {

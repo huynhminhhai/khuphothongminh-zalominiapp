@@ -25,13 +25,13 @@ const LoginPage: React.FC = () => {
                 return;
             }
 
-            const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken"]);
+            const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken", "hanSuDungToken"]);
 
             if (storedData?.account && storedData?.accessToken && storedData?.refreshToken) {
                 try {
                     const parsedAccount = JSON.parse(storedData.account);
                     setAccount(parsedAccount);
-                    setToken({ accessToken: storedData.accessToken, refreshToken: storedData.refreshToken });
+                    setToken({ accessToken: storedData.accessToken, refreshToken: storedData.refreshToken, hanSuDungToken: storedData.hanSuDungToken });
                 } catch (error) {
                     console.error("Lỗi parse account:", error);
                 }

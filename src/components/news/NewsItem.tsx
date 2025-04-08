@@ -23,8 +23,8 @@ const NewsItem: React.FC<NewsItemProps> = ({ data }) => {
                 </div>
                 <div className='flex-1 flex flex-col justify-center'>
                     <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-1">{data.tieuDe || data.moTa}</h3>
-                    <div className="line-clamp-3 text-[14px] leading-[18px] font-normal text-[#7c7c7c] mb-2">{data.moTa}</div>
-                    <div className="text-end text-[12px] text-[#7c7c7c] font-normal leading-[1] ">{formatDate(data.ngayXuatBan)}</div>
+                    <div className="line-clamp-3 text-[14px] leading-[18px] font-medium text-[#666666] mb-2">{data.moTa}</div>
+                    <div className="text-end text-[12px] text-[#666666] font-medium leading-[1] ">{formatDate(data.ngayXuatBan)}</div>
                 </div>
             </div>
         </Box>

@@ -11,14 +11,12 @@ const InforResidentSection: React.FC = () => {
 
     const  { isResidentMainTab, setIsResidentMainTab } = useStoreApp()
 
-    console.log(isResidentMainTab)
-
     const { data: userInfo, isLoading, error } = useGetUserInfo();
 
     if (isLoading) return <UserInfoSkeleton />;
     if (error) return <EmptyData title="Có lỗi khi lấy thông tin người dùng" />;
     if (!userInfo.thongTinDanCu) return <Box px={4}>
-        <EmptyData desc="Không tìm thấy thông tin dân cư" />
+        <EmptyData title="Chưa có thông tin dân cư" desc="Vui lòng liên hệ với ban quản trị khu phố/ấp để đăng ký thông tin cư dân" />
     </Box>
 
     return (

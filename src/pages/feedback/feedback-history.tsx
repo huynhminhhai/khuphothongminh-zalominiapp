@@ -1,85 +1,62 @@
+import { useGetMyFeedbackList } from "apiRequest/feeback";
 import { EmptyData } from "components/data";
-import { FeedbackItem, FeedbackList } from "components/feedback"
+import { FeedbackItem } from "components/feedback"
 import { HeaderSub } from "components/header-sub"
 import { FeedbackSkeleton } from "components/skeleton";
-import { FEEDBACKDATA } from "constants/utinities";
 import React, { useEffect, useState } from "react"
+import { useStoreApp } from "store/store";
 import { useInfiniteScroll } from "utils/useInfiniteScroll";
 import { Box, Page, useNavigate } from "zmp-ui"
 
-const initParam = {
-    pageSize: 5,
-};
-
 const FeedbackHistoryPage: React.FC = () => {
-    const [param, setParam] = useState(initParam);
-    const [listData, setListData] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+
+    const { account } = useStoreApp()
 
     const navigate = useNavigate()
-
-    const feedbackWithStatus2 = [];
-
-    const loadMore = () => {
-        setParam((prev) => ({
-            ...prev,
-            pageSize: prev.pageSize + 5,
-        }));
-    };
-
-    const loaderRef = useInfiniteScroll({
-        hasMore: hasMore && listData.length > 0,
-        loading,
-        onLoadMore: loadMore,
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 5,
+        ApId: account ? account.thongTinDanCu?.apId : 0,
+        keyword: '',
+        NguoiThucHienId: account ? account?.nguoiDungId : 0
     });
 
-    const fetchFeedback = async () => {
-        if (loading && !hasMore) return;
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyFeedbackList(param);
 
-        setLoading(true);
+    const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
 
-        try {
-            const data = feedbackWithStatus2.slice(listData.length, listData.length + param.pageSize);
-            
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            setListData(prevList => [...prevList, ...data]);
-
-            setHasMore(data.length > 0 && data.length === param.pageSize);
-
-        } catch (error) {
-            console.error("Error fetching news:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        if(hasMore){
-            fetchFeedback();
-        }
-    }, [param]);
+    const loaderRef = useInfiniteScroll({
+        hasMore: hasNextPage,
+        loading: isFetchingNextPage,
+        onLoadMore: fetchNextPage,
+    });
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
-            <Box px={4}>
+            <Box px={4} pb={4}>
                 <HeaderSub title="Phản ánh đã gửi" />
                 <Box>
-                    {listData.length === 0 && !loading ? (
-                        <EmptyData title="Chưa có dữ liệu" handleClick={() => navigate('/feedback-add')} textBtn="Thêm phản ánh" />
-                    ) : (
-                        <div className="grid grid-cols-1">
-                            {listData.map((item, index) => (
-                                <FeedbackItem key={index} data={item} />
-                            ))}
-                        </div>
-                    )}
-                    <div ref={loaderRef} >
-                        {loading && <FeedbackSkeleton count={listData.length === 0 ? 2 : 1} />}
-                        {listData.length > 0 && !hasMore && <p className="text-center">Đã hiển thị tất cả phản ánh</p>}
-                    </div>
+                    {
+                        isLoading ? <FeedbackSkeleton count={5} /> :
+                            <div className="grid grid-cols-1">
+                                {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
+                                    <Box px={4}>
+                                        <EmptyData title="Bạn chưa có phản ánh nào!" />
+                                    </Box>
+                                ) : (
+                                    <>
+                                        {listData.map((item, index) => (
+                                                <FeedbackItem key={index} data={item} />
+                                            ))}
+                                    </>
+                                )}
+                            </div>
+                    }
                 </Box>
+                <div ref={loaderRef} className="px-4">
+                    {isFetchingNextPage && <FeedbackSkeleton count={1} />}
+                    {listData.length > 0 && !hasNextPage && <p className="text-center">Đã hiển thị tất cả phản ánh của bạn</p>}
+                </div>
             </Box>
         </Page>
     )

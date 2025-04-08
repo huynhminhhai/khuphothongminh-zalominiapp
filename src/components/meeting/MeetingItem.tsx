@@ -38,7 +38,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                         <h3 className="text-[16px] leading-[22px] font-semibold line-clamp-2 mb-2">{data.tieuDe}</h3>
                         <div className="flex flex-col">
                             <Box>
-                                <ul className="flex flex-col gap-[6px] text-[13px] leading-4 font-normal text-[#7c7c7c] mb-1">
+                                <ul className="flex flex-col gap-[6px] text-[14px] leading-4 font-normal text-[#666666] mb-1">
                                     <li className="flex items-start gap-2">
                                         <Icon fontSize={18} icon='tdesign:location-filled'/> <span className="flex-1 font-medium line-clamp-2 whitespace-normal">{data.diaDiem}</span>
                                     </li>

@@ -19,7 +19,7 @@ const TransactionDetailPage: React.FC = () => {
     const { data: transactionType } = useGetTransactionType();
 
     const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === detailData?.loaiGiaoDichTaiChinhId);
-    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#7c7c7c";
+    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#666666";
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
@@ -67,7 +67,7 @@ const TransactionDetailPage: React.FC = () => {
                                     </Box>
                                 </Box>
                                 :
-                                <EmptyData />
+                                <EmptyData title="Không tìm thấy khoản thu/chi" />
                     }
                 </Box>
             </Box>

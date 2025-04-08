@@ -111,7 +111,7 @@ const TaskDetailPage: React.FC = () => {
                                     <Box px={4} pb={4} pt={2} className="text-[16px] font-medium">
                                         <div className="flex items-center justify-between w-full py-3">
                                             <div>Trạng thái</div>
-                                            <div className={`${color} ${bg} text-[14px] text-white font-semibold leading-[1] bg-gray-500 px-3 py-[6px] rounded-xl`}>
+                                            <div className={`${color} ${bg} text-[14px] font-semibold leading-[1] px-3 py-[6px] rounded-xl`}>
                                                 {
                                                     detailData.tinhTrang.tenTinhTrang
                                                 }

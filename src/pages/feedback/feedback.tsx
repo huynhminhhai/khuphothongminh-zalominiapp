@@ -58,7 +58,7 @@ const FeedbackPage: React.FC = () => {
                     </Box>
                     <div ref={loaderRef} className="px-4">
                         {isFetchingNextPage && <FeedbackSkeleton count={1} />}
-                        {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả phản ánh</p>}
+                        {listData.length > 0 && !hasNextPage && <p className="text-center">Đã hiển thị tất cả phản ánh</p>}
                     </div>
                 </Box>
             </Box>

@@ -109,7 +109,7 @@ const TransactionsManagementPage: React.FC = () => {
                 const { data: transactionType } = useGetTransactionType();
 
                 const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === row.original.loaiGiaoDichTaiChinhId);
-                const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#7c7c7c";
+                const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#666666";
                 
                 return (
                     <div style={{ color: typeColor }}>

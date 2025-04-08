@@ -22,7 +22,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
     const { data: feedbackStatus } = useGetFeedbackStatus();
 
     const status = feedbackStatus?.find(item => item.tinhTrangId === data.tinhTrangId);
-    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "#7c7c7c";
+    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "#666666";
 
     useEffect(() => {
         if (data) {

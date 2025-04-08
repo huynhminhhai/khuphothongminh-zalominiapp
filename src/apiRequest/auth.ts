@@ -52,8 +52,10 @@ export const useLogin = () => {
                 duration: 3000,
             });
 
-            setToken({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken });
+            console.log(res.data)
 
+            setToken({ accessToken: res?.data?.accessToken, refreshToken: res?.data?.refreshToken, hanSuDungToken: res?.data?.hanSuDung });
+            
             try {
                 const res = await authApiRequest.getUserInfo();
 
@@ -98,7 +100,7 @@ export const useLoginZalo = () => {
                 duration: 3000,
             });
 
-            setToken({ accessToken: res.data.accessToken, refreshToken: res.data.refreshToken });
+            setToken({ accessToken: res?.data?.accessToken, refreshToken: res?.data?.refreshToken, hanSuDungToken: res?.data?.hanSuDung });
 
             try {
                 const res = await authApiRequest.getUserInfo();

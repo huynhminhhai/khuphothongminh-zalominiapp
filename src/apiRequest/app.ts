@@ -25,7 +25,7 @@ export const useGetHuyenList = (maTinh: string) => {
             }
         },
         enabled: !!maTinh,
-        staleTime: 0,
+        staleTime: 1000 * 60 * 60 * 24,
         retry: 1,
     });
 };
@@ -49,7 +49,7 @@ export const useGetXaList = (maHuyen: string) => {
             }
         },
         enabled: !!maHuyen,
-        staleTime: 0,
+        staleTime: 1000 * 60 * 60 * 24,
         retry: 1,
     });
 };

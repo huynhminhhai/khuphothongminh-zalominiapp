@@ -6,6 +6,7 @@ import { NewsDetailSkeleton } from "components/skeleton"
 import TitleSection from "components/titleSection"
 import React from "react"
 import { useSearchParams } from "react-router-dom"
+import { formatDate } from "utils/date"
 import { getFullImageUrl } from "utils/file"
 import { Box, Page, useNavigate } from "zmp-ui"
 
@@ -35,7 +36,7 @@ const NewsDetailPage: React.FC = () => {
                                     <h2 className="text-[22px] leading-[30px] font-semibold mb-3 text-[#731611]">
                                         {data.tieuDe || data.moTa}
                                     </h2>
-                                    <h4 className="text-[14px] leading-[1] font-medium">{data.ngayXuatBan}</h4>
+                                    <h4 className="text-[14px] leading-[1] font-medium">{formatDate(data.ngayXuatBan)}</h4>
                                 </Box>
                                 <Box mt={6} pb={4} mb={4} className="border-b-[2px] border-[#731611]">
                                     <div className="mb-3">

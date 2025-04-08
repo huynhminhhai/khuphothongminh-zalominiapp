@@ -29,8 +29,9 @@ export interface AuthSliceType {
     account: Account | null;
     accessToken: string | null;
     refreshToken: string | null;
+    hanSuDungToken: string | null;
     setAccount: (account: Account | null) => void;
-    setToken: (tokens: { accessToken: string | null; refreshToken: string | null }) => void;
+    setToken: (tokens: { accessToken: string | null; refreshToken: string | null, hanSuDungToken: string | null }) => void;
     clearAuth: () => void;
     hasPermission: (moTaChucNang: string, quyen: "XEM" | "SUA" | "XOA") => boolean;
     hasRole: (vaiTro: string) => boolean;
@@ -40,6 +41,7 @@ export const createAuthSlice = (set: any, get: any): AuthSliceType => ({
     account: null,
     accessToken: null,
     refreshToken: null,
+    hanSuDungToken: null,
 
     setAccount: (account) => {
         set({ account });
@@ -50,18 +52,18 @@ export const createAuthSlice = (set: any, get: any): AuthSliceType => ({
         }
     },
 
-    setToken: ({ accessToken, refreshToken }) => {
-        set({ accessToken, refreshToken });
+    setToken: ({ accessToken, refreshToken, hanSuDungToken }) => {
+        set({ accessToken, refreshToken, hanSuDungToken });
         if (accessToken && refreshToken) {
-            setDataToStorage({ accessToken, refreshToken });
+            setDataToStorage({ accessToken, refreshToken, hanSuDungToken });
         } else {
-            removeDataFromStorage(["accessToken", "refreshToken"]);
+            removeDataFromStorage(["accessToken", "refreshToken", "hanSuDungToken"]);
         }
     },
 
     clearAuth: () => {
-        set({ account: null, accessToken: null, refreshToken: null });
-        removeDataFromStorage(["account", "accessToken", "refreshToken"]);
+        set({ account: null, accessToken: null, refreshToken: null, hanSuDungToken: null });
+        removeDataFromStorage(["account", "accessToken", "refreshToken", "hanSuDungToken"]);
     },
 
     hasPermission: (moTaChucNang, quyen) => {

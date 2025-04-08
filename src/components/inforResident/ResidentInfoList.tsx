@@ -1,4 +1,5 @@
 import React from "react";
+import { useStoreApp } from "store/store";
 import { Box } from "zmp-ui";
 
 export const formatAddress = (data?: any) => {
@@ -31,6 +32,9 @@ interface ResidentInfoListProps {
 }
 
 const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData }) => {
+
+    const { ngheNghieps } = useStoreApp()
+
     const infoItems = [
         { label: "Số định danh cá nhân", value: residentDetailData.soGiayTo },
         { label: "Mối quan hệ với chủ hộ", value: residentDetailData.laChuHo ? "Là chủ hộ" : residentDetailData.tenMoiQuanHeVoiChuHo },
@@ -41,7 +45,7 @@ const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData 
         { label: "Thường trú", value: formatAddress(residentDetailData.noiThuongTru), condition: !!residentDetailData.noiThuongTru },
         { label: "Tạm trú", value: formatAddress(residentDetailData.noiTamTru), condition: !!residentDetailData.noiTamTru },
         { label: "Địa chỉ hiện tại", value: formatAddress(residentDetailData), condition: !!residentDetailData },
-        { label: "Nghề nghiệp", value: residentDetailData.ngheNghiep },
+        { label: "Nghề nghiệp", value: ngheNghieps.find((item: any) => item.value === Number(residentDetailData?.ngheNghiep))?.label },
         { label: "Nơi làm việc", value: residentDetailData.noiLamViec },
         { label: "Dân tộc", value: residentDetailData.tenDanToc },
         { label: "Tôn giáo", value: residentDetailData.tenTonGiao },

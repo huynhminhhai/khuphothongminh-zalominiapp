@@ -32,31 +32,47 @@ const AuthWrapper = ({ children }) => {
 
   const loadAuthData = async () => {
     try {
-      const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken"]);
+      const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken", "hanSuDungToken"]);
 
       if (!storedData || !storedData.accessToken) {
-        setToken({ accessToken: null, refreshToken: null });
+        setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
         setAccount(null);
         navigate("/login");
         return;
       }
-
-      fetchResidentTypes();
-
+      
       const storedAccount = storedData.account ? JSON.parse(storedData.account) : null;
       const storedAccessToken = storedData.accessToken || null;
       const storedRefreshToken = storedData.refreshToken || null;
+      const storedHanSuDungToken = storedData.hanSuDungToken || null;
 
       console.log('Thông tin account:', storedAccount);
+      console.log('Hạn sử dụng token:', storedHanSuDungToken);
+
+      if (storedHanSuDungToken) {
+        const now = new Date(); // Thời gian hiện tại
+        const expiry = new Date(storedHanSuDungToken); // Chuyển chuỗi hanSuDungToken thành Date
+
+        if (now > expiry) {
+          // Nếu hết hạn, reset token và account, rồi chuyển hướng đến login
+          setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
+          setAccount(null);
+          navigate("/login");
+          return;
+        }
+      }
+
+      fetchResidentTypes();
 
       setToken({
         accessToken: storedAccessToken,
         refreshToken: storedRefreshToken,
+        hanSuDungToken: storedHanSuDungToken
       });
       setAccount(storedAccount);
     } catch (error) {
       console.error("Lỗi khi load dữ liệu từ storage:", error);
-      setToken({ accessToken: null, refreshToken: null });
+      setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
       setAccount(null);
       navigate("/login");
     }

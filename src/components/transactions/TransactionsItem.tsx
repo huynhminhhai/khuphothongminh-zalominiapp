@@ -16,7 +16,7 @@ const TransactionsItem: React.FC<TransactionsItemProps> = ({ data }) => {
     const { data: transactionType } = useGetTransactionType();
 
     const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === data?.loaiGiaoDichTaiChinhId);
-    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#7c7c7c";
+    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#666666";
 
     return (
         <Box
@@ -40,7 +40,7 @@ const TransactionsItem: React.FC<TransactionsItemProps> = ({ data }) => {
                             </div>
 
                             <div className="flex items-center justify-between w-[100%]">
-                                <h4 className="flex items-center gap-2 text-[14px] font-medium text-[#7c7c7c]"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.ngayGiaoDich)}</h4>
+                                <h4 className="flex items-center gap-2 text-[14px] font-medium text-[#666666]"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.ngayGiaoDich)}</h4>
                                 <div className="text-[18px] font-medium" style={{ color: typeColor }}>{type?.tenLoaiGiaoDichTaiChinh === "Thu" ? '+' : '-'}{data.soTien.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</div>
                             </div>
 
