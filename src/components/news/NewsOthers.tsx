@@ -16,7 +16,11 @@ const NewsOthers: React.FC<NewsOthersProps> = ({ idNews }) => {
         page: 1,
         pageSize: 4,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        NgayXuatBanTuNgay: '',
+        NgayXuatBanDenNgay: '',
+        TacGia: '',
+        TieuDe: '',
     });
 
     const { data, isLoading } = useGetNewsListNormal(param);

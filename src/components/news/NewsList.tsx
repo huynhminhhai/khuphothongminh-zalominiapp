@@ -15,12 +15,16 @@ const NewsList: React.FC = () => {
         page: 1,
         pageSize: 5,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        NgayXuatBanTuNgay: '',
+        NgayXuatBanDenNgay: '',
+        TacGia: '',
+        TieuDe: '',
     });
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetNewsList(param);
 
-    const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
+    const listData = data?.pages?.reduce((acc, page) => [...acc, ...page], []) || [];
 
     const loaderRef = useInfiniteScroll({
         hasMore: hasNextPage,

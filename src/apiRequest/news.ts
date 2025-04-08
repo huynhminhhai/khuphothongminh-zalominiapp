@@ -3,8 +3,8 @@ import http from 'services/http';
 import { useNavigate, useSnackbar } from 'zmp-ui';
 
 const newsApiRequest = {
-    getNewsList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/tintuc?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getNewsList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
+        return await http.get<any>(`/tintuc?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NgayXuatBanTuNgay=${param.NgayXuatBanTuNgay}&NgayXuatBanDenNgay=${param.NgayXuatBanDenNgay}&TacGia=${param.TacGia}&TieuDe=${param.TieuDe}`);
     },
     getNewsDetail: async (id: number) => {
         return await http.get<any>(`/tintuc/chitiet/${id}`);
@@ -32,9 +32,9 @@ const newsApiRequest = {
 /**
 * GET NEWS LIST
 **/ 
-export const useGetNewsListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
+export const useGetNewsListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
     return useQuery({
-        queryKey: ['newsList', param.page, param.pageSize, param.ApId, param.keyword],
+        queryKey: ['newsList', param.page, param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
         queryFn: async () => {
             const res = await newsApiRequest.getNewsList(param);
             return res

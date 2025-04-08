@@ -79,7 +79,7 @@ const ManagementPage: React.FC = () => {
                             onClick={() => navigate('/meeting-management')}
                         />
                         <Item
-                            title="Quản lý tài chính"
+                            title="Quản lý thu/chi"
                             prefix={<img src={images.money} alt='feedback' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/transactions-management')}

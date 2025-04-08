@@ -10,42 +10,59 @@ import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "compone
 import React, { useCallback, useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { getFullImageUrl } from "utils/file"
-import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
+import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 import { debounce } from "lodash";
+import { formatDate, parseDate } from "components/form/DatePicker"
 
 const NewsManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { account } = useStoreApp()
-
     const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [viewCard, setViewCard] = useState<boolean>(true)
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
-    const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({
+        search: "",
+        tacGia: "",
+        tieuDe: "",
+    });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        NgayXuatBanTuNgay: '',
+        NgayXuatBanDenNgay: '',
+        TacGia: '',
+        TieuDe: '',
     })
 
     const { data, isLoading } = useGetNewsListNormal(param);
     const { data: newsStatus } = useGetNewsStatus();
     const { mutate: deleteNews } = useDeleteNews();
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.tieuDe, 'TieuDe');
+    useDebouncedParam(filters.tacGia, 'TacGia');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -226,9 +243,41 @@ const NewsManagementPage: React.FC = () => {
                     >
                         <div className="col-span-12">
                             <Input
-                                placeholder="Tìm kiếm..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Tìm kiếm nhanh..."
+                                value={filters.search}
+                                onChange={(e) => updateFilter('search', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Tiêu đề..."
+                                value={filters.tieuDe}
+                                onChange={(e) => updateFilter('tieuDe', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Tác giả..."
+                                value={filters.tacGia}
+                                onChange={(e) => updateFilter('tacGia', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <DatePicker
+                                placeholder="Từ ngày"
+                                mask
+                                maskClosable
+                                value={parseDate(param.NgayXuatBanTuNgay)}
+                                onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanTuNgay: formatDate(e) }))}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <DatePicker
+                                placeholder="Đến ngày"
+                                mask
+                                maskClosable
+                                value={parseDate(param.NgayXuatBanDenNgay)}
+                                onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanDenNgay: formatDate(e) }))}
                             />
                         </div>
                     </FilterBar>
