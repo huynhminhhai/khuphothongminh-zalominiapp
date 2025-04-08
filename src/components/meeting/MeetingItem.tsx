@@ -39,11 +39,11 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                         <div className="flex flex-col">
                             <Box>
                                 <ul className="flex flex-col gap-[6px] text-[14px] leading-4 font-normal text-[#666666] mb-1">
-                                    <li className="flex items-start gap-2">
-                                        <Icon fontSize={18} icon='tdesign:location-filled'/> <span className="flex-1 font-medium line-clamp-2 whitespace-normal">{data.diaDiem}</span>
+                                    <li className="flex items-start gap-1">
+                                        <Icon fontSize={18} icon='qlementine-icons:location-16'/> <span className="flex-1 font-medium line-clamp-2 whitespace-normal">{data.diaDiem}</span>
                                     </li>
-                                    <li className="flex items-start gap-2">
-                                        <Icon fontSize={18} icon='mingcute:time-fill' /> <span className="font-medium flex-1">{getHourFromDate(data.thoiGianBatDau)} - {getHourFromDate(data.thoiGianKetThuc)}</span>
+                                    <li className="flex items-start gap-1">
+                                        <Icon fontSize={18} icon='ion:time-outline' /> <span className="font-medium flex-1">{getHourFromDate(data.thoiGianBatDau)} - {getHourFromDate(data.thoiGianKetThuc)}</span>
                                     </li>
                                 </ul>
                                 {/* {

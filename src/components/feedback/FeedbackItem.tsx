@@ -52,7 +52,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
             </Box>
             <Box mt={2}>
                 <h3 className="text-[16px] leading-[20px] font-medium line-clamp-2 mb-1">{data.noiDung}</h3>
-                <div className="text-[#666666] font-medium flex items-center gap-2">
+                <div className="text-[#666666] font-medium flex items-center gap-1">
                     <Icon fontSize={24} icon='qlementine-icons:location-16' />
                     <div className="line-clamp-1">
                         {`${data?.diaChi || ""} 

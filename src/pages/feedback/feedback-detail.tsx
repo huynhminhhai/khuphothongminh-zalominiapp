@@ -68,7 +68,7 @@ const FeedbackDetailPage: React.FC = () => {
                                         </div>
                                     </Box>
                                 </Box>
-                                <Box flex alignItems="center" justifyContent="flex-end">
+                                {/* <Box flex alignItems="center" justifyContent="flex-end">
                                     {status && (
                                         <div
                                             style={{ backgroundColor: statusColor }}
@@ -77,7 +77,7 @@ const FeedbackDetailPage: React.FC = () => {
                                             {status.tenTinhTrang}
                                         </div>
                                     )}
-                                    </Box>
+                                </Box> */}
                                 <Box>
                                     <Swiper autoplay duration={8000} style={{ borderRadius: 0 }}>
                                         {

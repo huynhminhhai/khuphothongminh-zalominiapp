@@ -31,18 +31,19 @@ const NewsDetailPage: React.FC = () => {
                                 <Box pb={4} className="border-b-[2px] border-[#731611]">
                                     <div className="flex items-center gap-2 mb-3">
                                         <div className="h-[24px] w-[5px] bg-[#731611] block"></div>
-                                        <h3 className="text-[18px] leading-[1] font-medium">Tin tức</h3>
+                                        <h3 className="text-[16px] leading-[1] font-medium">Tin tức</h3>
                                     </div>
                                     <h2 className="text-[22px] leading-[30px] font-semibold mb-3 text-[#731611]">
                                         {data.tieuDe || data.moTa}
                                     </h2>
-                                    <h4 className="text-[14px] leading-[1] font-medium">{formatDate(data.ngayXuatBan)}</h4>
+                                    <h4 className="text-[13px] leading-[1] font-medium">{formatDate(data.ngayXuatBan)}</h4>
                                 </Box>
                                 <Box mt={6} pb={4} mb={4} className="border-b-[2px] border-[#731611]">
                                     <div className="mb-3">
                                         <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
                                     </div>
                                     <div className="detail-content" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
+                                    <Box className="text-end text-black font-semibold">{data.tacGia}</Box>
                                 </Box>
                             </Box>
                             :

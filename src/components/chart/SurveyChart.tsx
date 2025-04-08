@@ -100,8 +100,8 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                     {
                       data: answers.map((a) => a.count),
                       backgroundColor: generateColors(answers.length),
-                      borderWidth: 8,
                       borderRadius: 8,
+                      borderWidth: 4,
                     },
                   ],
                 }}
@@ -127,7 +127,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                       },
                     },
                   },
-                  elements: { arc: { borderWidth: 8 } },
+                  elements: { arc: { borderWidth: 2 } },
                 }}
               />
             ),

@@ -52,7 +52,7 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                             </div>
 
                             <div className="flex items-center justify-between w-[100%]">
-                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-[#666666]"><Icon fontSize={18} icon='bxs:calendar' /> {formatDate(data.thoiHanXuLy)}</h4>
+                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-[#666666]"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.thoiHanXuLy)}</h4>
                             </div>
                             
                         </div>
