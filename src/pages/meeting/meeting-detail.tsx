@@ -122,7 +122,7 @@ const MeetingDetailPage: React.FC = () => {
                                                 <div className="flex items-center gap-3 text-[#666666]">
                                                     <Avatar size={30} src={thuKy?.anhDaiDien || images.avatar} />
                                                     <Box>
-                                                        thư ký cuộc họp: <span className="text-[#000]">{detailData.thanhVienCuocHops.find(thanhVien => thanhVien.loaiNguoiThamDuId === 2)?.hoTenNguoiThamDu}</span>
+                                                        thư ký cuộc họp: <span className="text-[#000]">{thuKy?.hoTenNguoiThamDu}</span>
                                                     </Box>
                                                 </div>
                                             }
@@ -150,7 +150,7 @@ const MeetingDetailPage: React.FC = () => {
                                                     </Box>
                                                     <Box flex className="gap-2">
                                                         {detailData.linkHopOnLine}
-                                                        <div className="flex items-center justify-center text-[10px] text-[#fff] leading-[1] rounded-lg w-fit" onClick={() => handleCopy(detailData.linkOnl as string)}>
+                                                        <div className="flex items-center justify-center text-[10px] text-[#fff] leading-[1] rounded-lg w-fit" onClick={() => handleCopy(detailData.linkHopOnLine as string)}>
                                                             <Icon fontSize={20} className="text-[#808080]" icon='solar:copy-bold' />
                                                         </div>
                                                     </Box>
@@ -211,32 +211,6 @@ const MeetingDetailPage: React.FC = () => {
                                             {detailData.noiDung}
                                         </Box>
                                     </Box>
-                                    {/* <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">
-                                    <div className="flex items-center justify-around p-4 w-full">
-                                        <div
-                                            className="flex items-center gap-2 text-green-700 bg-[#15803c1e] px-4 py-2 rounded-3xl"
-                                            onClick={() => {
-                                                detailData.id && acceptMeeeting(detailData.id, true)
-                                            }}
-                                        >
-                                            <div>
-                                                <Icon icon='mdi:tick-circle-outline' fontSize={28} />
-                                            </div>
-                                            <div className="text-[16px] font-semibold">Chấp nhận</div>
-                                        </div>
-                                        <div
-                                            className="flex items-center gap-2 text-red-700 bg-[#b91c1c15] px-4 py-2 rounded-3xl"
-                                            onClick={() => {
-                                                detailData.id && acceptMeeeting(detailData.id, false)
-                                            }}
-                                        >
-                                            <div>
-                                                <Icon icon='carbon:close-outline' fontSize={28} />
-                                            </div>
-                                            <div className="text-[16px] font-semibold">Từ chối</div>
-                                        </div>
-                                    </div>
-                                </div> */}
                                 </Box> :
                                 <EmptyData title="Không tìm thấy cuộc họp" />
                     }

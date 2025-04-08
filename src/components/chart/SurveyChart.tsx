@@ -4,6 +4,7 @@ import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, BarElement, Categ
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { generateColors } from 'utils/chart';
 import { Box } from 'zmp-ui';
+import { formatDate } from 'utils/date';
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement, BarElement, CategoryScale, LinearScale, ChartDataLabels);
 
@@ -58,6 +59,8 @@ interface SurveyDetail {
 
 const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }) => {
   const [chartsData, setChartsData] = useState<ChartData[]>([]);
+
+  console.log(surveyDetail)
 
   useEffect(() => {
     const surveyResults: SurveyResult[] = surveyDetail.cauHoiKhaoSats.map((question) => {
@@ -206,6 +209,16 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
 
   return (
     <Box>
+      <Box p={4}>
+        <div className="bg-white box-shadow-4 rounded-xl px-3 py-4 text-center text-[#666666]">
+          <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-1">{surveyDetail.tieuDe}</h3>
+          <div className='font-medium mt-2'>{formatDate(surveyDetail.tuNgay)} - {formatDate(surveyDetail.denNgay)}</div>
+            <div className='mt-2'>
+              <p className='font-medium'>Số lượng câu hỏi: <span className='text-black font-semibold'>{surveyDetail.soLuongCauHoiKhaoSat}</span></p>
+              <p className='font-medium'>Người tham gia khảo sát: <span className='text-black font-semibold'>{surveyDetail.soLuongThamGiaKhaoSat}</span></p>
+            </div>
+        </div>
+      </Box>
       {chartsData.map((chart, index) => (
         <Box p={4} key={index}>
           <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">
