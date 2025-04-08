@@ -1,5 +1,5 @@
 import logo from './skyscraper.png'
-import avatar from './avatar.webp'
+import avatar from './avatar.jpg'
 import shape1 from './shape1.png'
 import shape2 from './shape2.png'
 import home from './home.png'

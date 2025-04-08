@@ -1,27 +1,79 @@
 import { Icon } from "@iconify/react";
 import { useGetMeetingDetail } from "apiRequest/meeting";
+import images from "assets/images";
+import SecondaryButton from "components/button/SecondaryButton";
 import { EmptyData } from "components/data";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
+import http from "services/http";
 import { copyToClipboard } from "utils/copyToClipboard";
 import { formatDate, getHourFromDate, renderDayOfWeek } from "utils/date";
-import { Avatar, Box, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { Avatar, Box, Modal, Page, useSnackbar } from "zmp-ui"
 
 const MeetingDetailPage: React.FC = () => {
 
     const { openSnackbar } = useSnackbar();
     const [searchParams] = useSearchParams();
-    const [totalMember, setTotalMember] = useState(0);
+    const [memberList, setMemberList] = useState<any>([])
+    const [host, setHost] = useState<any>(null)
+    const [thuKy, setThuKy] = useState<any>(null)
+    const [detailData, setDetailData] = useState<any>(null);
+    const [popupVisible, setPopupVisible] = useState(false);
 
     const newsId = searchParams.get("id");
 
-    const { data: detailData, isLoading } = useGetMeetingDetail(Number(newsId));
+    const { data: fetchedDetailData, isLoading } = useGetMeetingDetail(Number(newsId));
+
+    const fetchUserInfos = async () => {
+        try {
+            const memberIds = fetchedDetailData.thanhVienCuocHops.map((member) => member.nguoiThamDuId);
+
+            const userInfos = await Promise.all(
+                memberIds.map((id: number) => http.get(`/nguoidung/id?id=${id}`))
+            );
+
+            const updatedMembers = fetchedDetailData.thanhVienCuocHops.map((member, index) => ({
+                ...member,
+                anhDaiDien: userInfos[index]?.data?.anhDaiDien || '', // Thêm anhDaiDien, mặc định '' nếu không có
+            }));
+
+            setDetailData((prev) => ({
+                ...prev,
+                thanhVienCuocHops: updatedMembers,
+            }));
+        } catch (error) {
+            console.error('Lỗi khi lấy thông tin thành viên:', error);
+            openSnackbar({
+                text: 'Có lỗi khi lấy thông tin thành viên!',
+                type: 'error',
+            });
+        }
+    };
+
+    useEffect(() => {
+        if (fetchedDetailData) {
+            setDetailData(fetchedDetailData);
+
+            if (fetchedDetailData.thanhVienCuocHops) {
+                fetchUserInfos()
+            }
+        }
+
+
+    }, [fetchedDetailData]);
 
     useEffect(() => {
         if (detailData) {
-            setTotalMember(detailData.thanhVienCuocHops?.filter(thanhVien => thanhVien.loaiNguoiThamDuId === 3)?.length);
+
+            const member = detailData.thanhVienCuocHops?.filter(thanhVien => thanhVien.loaiNguoiThamDuId === 3)
+            const host = detailData.thanhVienCuocHops.find(thanhVien => thanhVien.loaiNguoiThamDuId === 1)
+            const thuKy = detailData.thanhVienCuocHops.find(thanhVien => thanhVien.loaiNguoiThamDuId === 2)
+
+            setMemberList(member)
+            setHost(host)
+            setThuKy(thuKy)
         }
     }, [detailData]);
 
@@ -57,21 +109,23 @@ const MeetingDetailPage: React.FC = () => {
                                 <Box>
                                     <Box px={4}>
                                         <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.tieuDe}</h3>
-                                        <div className="mt-6 flex items-center gap-3">
-                                            <Avatar size={30} src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg" />
-                                            <div className="text-[16px] font-medium text-[#808080]">chủ trì cuộc họp <span className="text-[#000]">{detailData.thanhVienCuocHops.find(thanhVien => thanhVien.loaiNguoiThamDuId === 1)?.hoTenNguoiThamDu}</span></div>
+                                        <div className="mt-4 flex items-center gap-3">
+                                            <Avatar size={30} src={host?.anhDaiDien || images.avatar} />
+                                            <div className="text-[16px] font-medium text-[#808080]">chủ trì cuộc họp <span className="text-[#000]">{host?.hoTenNguoiThamDu}</span></div>
                                         </div>
                                     </Box>
                                     <Box p={4} className="text-[16px] font-medium">
                                         <div className="flex flex-col gap-4">
-                                            <div className="flex items-center gap-3">
-                                                <Box>
-                                                    <Icon className="text-[#808080]" fontSize={26} icon='dashicons:welcome-write-blog' />
-                                                </Box>
-                                                <Box>
-                                                    thư ký cuộc họp: <span className="text-[#000]">{detailData.thanhVienCuocHops.find(thanhVien => thanhVien.loaiNguoiThamDuId === 2)?.hoTenNguoiThamDu}</span>
-                                                </Box>
-                                            </div>
+                                            {
+                                                thuKy &&
+
+                                                <div className="flex items-center gap-3 text-[#666666]">
+                                                    <Avatar size={30} src={thuKy?.anhDaiDien || images.avatar} />
+                                                    <Box>
+                                                        thư ký cuộc họp: <span className="text-[#000]">{detailData.thanhVienCuocHops.find(thanhVien => thanhVien.loaiNguoiThamDuId === 2)?.hoTenNguoiThamDu}</span>
+                                                    </Box>
+                                                </div>
+                                            }
                                             <div className="flex items-start gap-3">
                                                 <Box>
                                                     <Icon className="text-[#808080]" fontSize={26} icon='mdi:calendar-outline' />
@@ -103,29 +157,52 @@ const MeetingDetailPage: React.FC = () => {
                                                 </div>
                                             }
 
-                                            <div className="flex flex-col gap-2 mt-2">
+                                            <div className="flex flex-col gap-2 mt-2" onClick={() => setPopupVisible(true)}>
                                                 <div className="flex items-center gap-1">
-                                                    {detailData.thanhVienCuocHops && detailData.thanhVienCuocHops?.filter(thanhVien => thanhVien.loaiNguoiThamDuId === 3).slice(0, 5).map((_, index) => (
-                                                        <Avatar
-                                                            key={index}
-                                                            size={30}
-                                                            src="https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
-                                                        />
-                                                    ))}
-                                                    {totalMember > 5 && (
+                                                    <Box>
+                                                        {memberList?.slice(0, 5)?.map((member, index) => (
+                                                            <Avatar
+                                                                key={index}
+                                                                size={30}
+                                                                src={member?.anhDaiDien || images.avatar}
+                                                            />
+                                                        ))}
+                                                    </Box>
+                                                    {memberList.length > 5 && (
                                                         <div
                                                             className="ml-2"
-                                                            onClick={() => console.log(123)}
                                                         >
-                                                            +{totalMember - 5}
+                                                            +{memberList.length - 5}
                                                         </div>
                                                     )}
                                                 </div>
                                                 <div>
-                                                    <div className="text-[#808080]"><span className="text-[#000] font-semibold">{totalMember}</span> thành viên tham gia</div>
-                                                    {/* <div className="text-[#808080] mt-2"><span className="text-[#000] font-semibold">1080</span> người dân tham gia</div> */}
+                                                    <div className="text-[#808080]"><span className="text-[#000] font-semibold">{memberList.length}</span> thành viên tham gia</div>
                                                 </div>
                                             </div>
+                                            <Modal
+                                                visible={popupVisible}
+                                                title="Thành viên tham gia"
+                                                verticalActions
+                                            >
+                                                <div className="max-h-[400px] overflow-y-auto relative mt-6 mb-3">
+                                                    {
+                                                        memberList.map((member, index) => (
+                                                            <Box mb={3} flex alignItems="center" className="gap-2" key={index}>
+                                                                <Avatar
+                                                                    key={index}
+                                                                    size={30}
+                                                                    src={member?.anhDaiDien || images.avatar}
+                                                                />
+                                                                <div className="font-medium text-[#666666]">{member?.hoTenNguoiThamDu}</div>
+                                                            </Box>
+                                                        ))
+                                                    }
+                                                </div>
+                                                <Box flex justifyContent="flex-end">
+                                                    <SecondaryButton size="medium" handleClick={() => setPopupVisible(false)} label="Đóng"></SecondaryButton>
+                                                </Box>
+                                            </Modal>
                                         </div>
                                     </Box>
                                     <Box className="text-[16px]">
