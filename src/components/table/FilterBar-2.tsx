@@ -55,7 +55,7 @@ const FilterBar2: React.FC<FilterBar2Props> = ({
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                     className="overflow-hidden"
                 >
-                    <div className="grid grid-cols-12 gap-3 pb-2">{children}</div>
+                    <div className="grid grid-cols-12 gap-1 pb-2">{children}</div>
                 </motion.div>
             )}
         </div>

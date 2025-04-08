@@ -4,8 +4,8 @@ import http from "services/http";
 import { useSnackbar } from "zmp-ui";
 
 export const meetingApiRequest = {
-    getMeeitngList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/cuochop?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getMeeitngList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; }) => {
+        return await http.get<any>(`/cuochop?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&TieuDe=${param.TieuDe}&ThoiGianBatDau=${param.ThoiGianBatDau}&ThoiGianKetThuc=${param.ThoiGianKetThuc}&DiaDiem=${param.DiaDiem}`);
     },
     getMeeitngTodayList: async () => {
         return await http.get<any>(`/cuochop/trongngay`);
@@ -39,9 +39,9 @@ export const meetingApiRequest = {
 /**
 * GET MEETING LIST
 **/ 
-export const useGetMeetingListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
+export const useGetMeetingListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; }) => {
     return useQuery({
-        queryKey: ['meetingList', param.page, param.pageSize, param.ApId, param.keyword],
+        queryKey: ['meetingList', param.page, param.pageSize, param.ApId, param.keyword, param.TieuDe, param.ThoiGianBatDau, param.ThoiGianKetThuc, param.DiaDiem],
 
         queryFn: async () => {
             const res = await meetingApiRequest.getMeeitngList(param);
@@ -55,10 +55,10 @@ export const useGetMeetingListNormal = (param: { page: number; pageSize: number;
 /**
 * GET NEWS LIST (INFINITE)
 **/ 
-export const useGetMeetingList = (param: { page: number; pageSize: number, ApId: number; keyword: string }) => {
+export const useGetMeetingList = (param: { page: number; pageSize: number, ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; }) => {
 
     return useInfiniteQuery({
-        queryKey: ['meetingList', param.pageSize, param.ApId, param.keyword],
+        queryKey: ['meetingList', param.pageSize, param.ApId, param.keyword, param.TieuDe, param.ThoiGianBatDau, param.ThoiGianKetThuc, param.DiaDiem],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -134,8 +134,8 @@ export const useGetMeetingStatus = () => {
                 throw error;
             }
         },
-        staleTime: 0, // Dữ liệu sẽ không fetch lại trong 10 phút
-        retry: 1, // Thử lại 1 lần nếu lỗi
+        staleTime: 1000 * 60 * 60 * 24, 
+        retry: 1,
     });
 };
 

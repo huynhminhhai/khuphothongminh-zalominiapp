@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Box, Input } from "zmp-ui"
+import { Box, DatePicker, Input } from "zmp-ui"
 import MeetingItem from "./MeetingItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll";
 import { NewsSkeleton } from "components/skeleton";
@@ -9,28 +9,46 @@ import { useGetMeetingList } from "apiRequest/meeting";
 import { debounce } from "lodash";
 import { Divider } from "components/divider";
 import { FilterBar2 } from "components/table";
+import { formatDate, parseDate } from "components/form/DatePicker";
 
 const MeetingList: React.FC = () => {
 
     const { account } = useStoreApp()
-    const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({
+        search: "",
+        tieuDe: "",
+        diaDiem: "",
+    });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        TieuDe: '',
+        ThoiGianBatDau: '',
+        ThoiGianKetThuc: '',
+        DiaDiem: '',
     });
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.tieuDe, 'TieuDe');
+    useDebouncedParam(filters.diaDiem, 'DiaDiem');
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMeetingList(param);
 
@@ -78,11 +96,43 @@ const MeetingList: React.FC = () => {
                 searchComponent={
                     <Input.Search
                         placeholder='Tìm kiếm...'
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        value={filters.search}
+                        onChange={(e) => updateFilter('search', e.target.value)}
                     />
                 }
             >
+                <div className="col-span-6">
+                    <Input
+                        placeholder="Tiêu đề..."
+                        value={filters.tieuDe}
+                        onChange={(e) => updateFilter('tieuDe', e.target.value)}
+                    />
+                </div>
+                <div className="col-span-6">
+                    <Input
+                        placeholder="Địa điểm..."
+                        value={filters.diaDiem}
+                        onChange={(e) => updateFilter('diaDiem', e.target.value)}
+                    />
+                </div>
+                <div className="col-span-6">
+                    <DatePicker
+                        placeholder="Từ ngày"
+                        mask
+                        maskClosable
+                        value={parseDate(param.ThoiGianBatDau)}
+                        onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianBatDau: formatDate(e) }))}
+                    />
+                </div>
+                <div className="col-span-6">
+                    <DatePicker
+                        placeholder="Đến ngày"
+                        mask
+                        maskClosable
+                        value={parseDate(param.ThoiGianKetThuc)}
+                        onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianKetThuc: formatDate(e) }))}
+                    />
+                </div>
             </FilterBar2>
             <Divider />
             {renderContent()}

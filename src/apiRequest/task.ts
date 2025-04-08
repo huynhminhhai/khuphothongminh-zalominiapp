@@ -135,8 +135,8 @@ export const useGetTaskStatus = () => {
                 throw error;
             }
         },
-        staleTime: 0, // Dữ liệu sẽ không fetch lại trong 10 phút
-        retry: 1, // Thử lại 1 lần nếu lỗi
+        staleTime: 1000 * 60 * 60 * 24, 
+        retry: 1, 
     });
 };
 

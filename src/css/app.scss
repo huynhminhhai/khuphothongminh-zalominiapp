@@ -211,6 +211,15 @@ tbody tr td:not(:first-child) {
   overflow: hidden;
 }
 
+.truncate {
+  white-space: nowrap;
+  /* Ngăn xuống dòng */
+  overflow: hidden;
+  /* Ẩn phần vượt quá */
+  text-overflow: ellipsis;
+  /* Thêm dấu ... */
+}
+
 .clip-path-1 {
   clip-path: polygon(5% 0, 100% 0%, 95% 100%, 0% 100%);
 }
@@ -296,6 +305,10 @@ tbody tr td:not(:first-child) {
 .filter-bar-2 .zaui-input-affix-wrapper *::placeholder {
   color: #222;
   font-weight: 500;
+}
+
+.filter-bar-2 .zaui-input-affix-wrapper *::placeholder {
+  color: #666666;
 }
 
 .filter-bar-2 .zaui-input-affix-wrapper {

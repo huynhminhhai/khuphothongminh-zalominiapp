@@ -6,22 +6,13 @@ import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { NewsSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import { transactionsOptions } from "constants/mock"
 import { TransactionColor, TransactionsType } from "constants/utinities"
 import { debounce } from "lodash"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
 import { convertNumberVND } from "utils/number"
-import { getLabelOptions } from "utils/options"
-import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
-
-const initParam = {
-    pageIndex: 1,
-    pageSize: 10,
-    keyword: '',
-    transaction_type: 0
-}
+import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const TransactionsManagementPage: React.FC = () => {
 
@@ -34,27 +25,41 @@ const TransactionsManagementPage: React.FC = () => {
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [viewCard, setViewCard] = useState<boolean>(true)
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
-    const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({
+        search: "",
+        noiDung: "",
+    });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        LoaiGiaoDichTaiChinhId: 0,
+        NoiDung: ''
     })
 
     const { data, isLoading } = useGetTransactionListNormal(param);
     const { mutate: deleteTransaction } = useDeleteTransaction();
+    const { data: transactionType } = useGetTransactionType();
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.noiDung, 'NoiDung');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -110,7 +115,7 @@ const TransactionsManagementPage: React.FC = () => {
 
                 const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === row.original.loaiGiaoDichTaiChinhId);
                 const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#666666";
-                
+
                 return (
                     <div style={{ color: typeColor }}>
                         {
@@ -125,7 +130,7 @@ const TransactionsManagementPage: React.FC = () => {
         {
             id: 'transaction_date',
             header: 'Ngày thu/chi',
-            cell: ({row}) => {
+            cell: ({ row }) => {
                 return (
                     <div>
                         {formatDate(row.original.ngayGiaoDich)}
@@ -215,15 +220,33 @@ const TransactionsManagementPage: React.FC = () => {
                     >
                         <div className="col-span-12">
                             <Input
-                                placeholder="Tìm kiếm..."
-                                value={param.keyword}
-                                onChange={(e) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        keyword: e.target.value
-                                    }));
-                                }}
+                                placeholder="Tìm kiếm nhanh..."
+                                value={filters.search}
+                                onChange={(e) => updateFilter('search', e.target.value)}
                             />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Nội dung..."
+                                value={filters.noiDung}
+                                onChange={(e) => updateFilter('noiDung', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Select
+                                placeholder="Loại giao dich"
+                                value={param.LoaiGiaoDichTaiChinhId}
+                                closeOnSelect
+                                onChange={(e) => setParam(prev => ({ ...prev, LoaiGiaoDichTaiChinhId: Number(e) }))}
+                            >
+                                <Option title="Tất cả" value={0}/>
+                                {
+                                    transactionType?.map((item) => (
+                                        <Option key={item.loaiGiaoDichTaiChinhId} value={item.loaiGiaoDichTaiChinhId} title={item.tenLoaiGiaoDichTaiChinh} />
+                                    ))
+                                }
+                                
+                            </Select>
                         </div>
                     </FilterBar>
                     <Box>

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Box, Input } from "zmp-ui"
+import { Box, Input, Select } from "zmp-ui"
 import TransactionsItem from "./TransactionsItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
 import { EmptyData } from "components/data"
 import { NewsSkeleton } from "components/skeleton"
 import { useStoreApp } from "store/store"
-import { useGetTransactionList } from "apiRequest/transaction"
+import { useGetTransactionList, useGetTransactionType } from "apiRequest/transaction"
 import { FilterBar2 } from "components/table"
 import { Divider } from "components/divider"
 import { debounce } from "lodash"
@@ -13,25 +13,22 @@ import { debounce } from "lodash"
 const TransactionsList: React.FC = () => {
 
     const { account } = useStoreApp()
-    const [search, setSearch] = useState("");
+    const { Option } = Select;
+
+    const [filters, setFilters] = useState({
+        search: "",
+        noiDung: "",
+    });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        LoaiGiaoDichTaiChinhId: 0,
+        NoiDung: ''
     });
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
-
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
-
+    const { data: transactionType } = useGetTransactionType();
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetTransactionList(param);
 
     const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
@@ -41,6 +38,26 @@ const TransactionsList: React.FC = () => {
         loading: isFetchingNextPage,
         onLoadMore: fetchNextPage,
     });
+
+
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.noiDung, 'NoiDung');
 
     const renderContent = () => {
         if (isLoading) {
@@ -80,12 +97,35 @@ const TransactionsList: React.FC = () => {
             <FilterBar2
                 searchComponent={
                     <Input.Search
-                        placeholder='Tìm kiếm...'
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder='Tìm kiếm nhanh...'
+                        value={filters.search}
+                        onChange={(e) => updateFilter('search', e.target.value)}
                     />
                 }
             >
+                <div className="col-span-6">
+                    <Input
+                        placeholder="Nội dung..."
+                        value={filters.noiDung}
+                        onChange={(e) => updateFilter('noiDung', e.target.value)}
+                    />
+                </div>
+                <div className="col-span-6">
+                    <Select
+                        placeholder="Loại giao dich"
+                        value={param.LoaiGiaoDichTaiChinhId}
+                        closeOnSelect
+                        onChange={(e) => setParam(prev => ({ ...prev, LoaiGiaoDichTaiChinhId: Number(e) }))}
+                    >
+                        <Option title="Tất cả" value={0}/>
+                        {
+                            transactionType?.map((item) => (
+                                <Option key={item.loaiGiaoDichTaiChinhId} value={item.loaiGiaoDichTaiChinhId} title={item.tenLoaiGiaoDichTaiChinh} />
+                            ))
+                        }
+
+                    </Select>
+                </div>
             </FilterBar2>
             <Divider />
             {renderContent()}

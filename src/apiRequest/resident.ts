@@ -1,7 +1,6 @@
 import http from "services/http";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSnackbar } from "zmp-ui";
-import { update } from "lodash";
 
 const residentApiRequest = {
     getFamilyNumber: async () => {

@@ -4,8 +4,8 @@ import http from "services/http";
 import { useNavigate, useSnackbar } from "zmp-ui";
 
 const transactionApiRequest = {
-    getTransactionList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/thuchi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getTransactionList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string }) => {
+        return await http.get<any>(`/thuchi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&LoaiGiaoDichTaiChinhId=${param.LoaiGiaoDichTaiChinhId}&NoiDung=${param.NoiDung}`);
     },
     getTransactionType: async () => {
         return await http.get<any>(`/thuchi/danhmuc`);
@@ -27,9 +27,9 @@ const transactionApiRequest = {
 /**
 * GET TRANSACTION LIST
 **/
-export const useGetTransactionListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
+export const useGetTransactionListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string; }) => {
     return useQuery({
-        queryKey: ['transactionList', param.page, param.pageSize, param.ApId, param.keyword],
+        queryKey: ['transactionList', param.page, param.pageSize, param.ApId, param.keyword, param.LoaiGiaoDichTaiChinhId, param.NoiDung],
         queryFn: async () => {
             const res = await transactionApiRequest.getTransactionList(param);
             return res
@@ -42,10 +42,10 @@ export const useGetTransactionListNormal = (param: { page: number; pageSize: num
 /**
 * GET TRANSACTION LIST (INFINITE)
 **/
-export const useGetTransactionList = (param: { page: number; pageSize: number, ApId: number; keyword: string }) => {
+export const useGetTransactionList = (param: { page: number; pageSize: number, ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string; }) => {
 
     return useInfiniteQuery({
-        queryKey: ['transactionList', param.pageSize, param.ApId, param.keyword],
+        queryKey: ['transactionList', param.pageSize, param.ApId, param.keyword, param.LoaiGiaoDichTaiChinhId, param.NoiDung],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -81,7 +81,7 @@ export const useGetTransactionType = () => {
                 throw error;
             }
         },
-        staleTime: 0,
+        staleTime: 1000 * 60 * 60 * 24,
         retry: 1,
     });
 };

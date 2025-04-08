@@ -2,18 +2,18 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { useDeleteMeeting, useGetMeetingListNormal, useGetMeetingStatus } from "apiRequest/meeting"
 import { EmptyData } from "components/data"
+import { formatDate, parseDate } from "components/form/DatePicker"
 import { HeaderSub } from "components/header-sub"
 import { MeetingStatus } from "components/meeting/MeetingItem"
 import { ConfirmModal } from "components/modal"
 import { NewsSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import { MEETINGDATA } from "constants/utinities"
 import { debounce } from "lodash"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { copyToClipboard } from "utils/copyToClipboard"
-import { formatDate, getHourFromDate } from "utils/date"
-import { Box, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { getHourFromDate, formatDate as formatDateMeeting } from "utils/date"
+import { Box, DatePicker, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
 
 const MeetingManagementPage: React.FC = () => {
 
@@ -25,28 +25,45 @@ const MeetingManagementPage: React.FC = () => {
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [viewCard, setViewCard] = useState<boolean>(true)
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
-    const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({
+        search: "",
+        tieuDe: "",
+        diaDiem: "",
+    });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        TieuDe: '',
+        ThoiGianBatDau: '',
+        ThoiGianKetThuc: '',
+        DiaDiem: '',
     })
 
     const { data, isLoading } = useGetMeetingListNormal(param);
     const { data: meetingStatus } = useGetMeetingStatus();
     const { mutate: deleteMeeting } = useDeleteMeeting();
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.tieuDe, 'TieuDe');
+    useDebouncedParam(filters.diaDiem, 'DiaDiem');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -119,7 +136,7 @@ const MeetingManagementPage: React.FC = () => {
             header: 'Thời gian họp',
             cell: ({ row }) => (
                 <div className="flex flex-col justify-center">
-                    <div>{formatDate(row.original.thoiGianBatDau)}</div>
+                    <div>{formatDateMeeting(row.original.thoiGianBatDau)}</div>
                     <div>{getHourFromDate(row.original.thoiGianBatDau)} - {getHourFromDate(row.original.thoiGianKetThuc)}</div>
                 </div>
             ),
@@ -139,7 +156,7 @@ const MeetingManagementPage: React.FC = () => {
                         {
                             row.original.linkHopOnLine &&
                             <div className="flex justify-start items-center gap-1">
-                                <div>sao chép</div>
+                                <div className="truncate max-w-[220px]">{row.original.linkHopOnLine}</div>
                                 <div className="flex items-center justify-center text-[10px] text-[#fff] leading-[1] rounded-lg w-fit" onClick={() => handleCopy(row.original.linkHopOnLine as string)}>
                                     <Icon fontSize={20} className="text-[#808080]" icon='solar:copy-bold' />
                                 </div>
@@ -155,7 +172,7 @@ const MeetingManagementPage: React.FC = () => {
             header: 'Trạng thái',
             cell: ({ row }) => (
                 <div className="flex justify-start items-center">
-                    <MeetingStatus meetingDate={formatDate(row.original.thoiGianBatDau)} startTime={getHourFromDate(row.original.thoiGianBatDau)} endTime={getHourFromDate(row.original.thoiGianKetThuc)} />
+                    <MeetingStatus meetingDate={formatDateMeeting(row.original.thoiGianBatDau)} startTime={getHourFromDate(row.original.thoiGianBatDau)} endTime={getHourFromDate(row.original.thoiGianKetThuc)} />
                 </div>
             ),
             size: 160
@@ -242,14 +259,41 @@ const MeetingManagementPage: React.FC = () => {
                     >
                         <div className="col-span-12">
                             <Input
-                                placeholder="Tìm kiếm..."
-                                value={param.keyword}
-                                onChange={(e) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        keyword: e.target.value
-                                    }));
-                                }}
+                                placeholder="Tìm kiếm nhanh..."
+                                value={filters.search}
+                                onChange={(e) => updateFilter('search', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Tiêu đề..."
+                                value={filters.tieuDe}
+                                onChange={(e) => updateFilter('tieuDe', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Địa điểm..."
+                                value={filters.diaDiem}
+                                onChange={(e) => updateFilter('diaDiem', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <DatePicker
+                                placeholder="Từ ngày"
+                                mask
+                                maskClosable
+                                value={parseDate(param.ThoiGianBatDau)}
+                                onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianBatDau: formatDate(e) }))}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <DatePicker
+                                placeholder="Đến ngày"
+                                mask
+                                maskClosable
+                                value={parseDate(param.ThoiGianKetThuc)}
+                                onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianKetThuc: formatDate(e) }))}
                             />
                         </div>
                     </FilterBar>

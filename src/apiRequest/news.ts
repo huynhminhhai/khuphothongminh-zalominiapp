@@ -47,10 +47,10 @@ export const useGetNewsListNormal = (param: { page: number; pageSize: number; Ap
 /**
 * GET NEWS LIST (INFINITE)
 **/ 
-export const useGetNewsList = (param: { page: number; pageSize: number, ApId: number; keyword: string }) => {
+export const useGetNewsList = (param: { page: number; pageSize: number, ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
 
     return useInfiniteQuery({
-        queryKey: ['newsList', param.pageSize, param.ApId, param.keyword],
+        queryKey: ['newsList', param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
