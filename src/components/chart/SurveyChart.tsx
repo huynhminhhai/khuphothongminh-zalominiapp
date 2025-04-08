@@ -100,6 +100,8 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                     {
                       data: answers.map((a) => a.count),
                       backgroundColor: generateColors(answers.length),
+                      borderWidth: 8,
+                      borderRadius: 8,
                     },
                   ],
                 }}
@@ -111,7 +113,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                       formatter: (value, context) => {
                         const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
                         const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                        return `${percentage}%`;
+                        return value === 0 ? '' : `${percentage}%`; // Bỏ 0.0%, trả về rỗng nếu value = 0
                       },
                     },
                     tooltip: {
@@ -120,12 +122,12 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                           const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
                           const value = context.raw as number;
                           const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                          return `${percentage}%`;
+                          return value === 0 ? '' : `${percentage}%`; // Bỏ 0.0% trong tooltip
                         },
                       },
                     },
                   },
-                  elements: { arc: { borderWidth: 4 } },
+                  elements: { arc: { borderWidth: 8 } },
                 }}
               />
             ),
@@ -160,12 +162,17 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                   },
                   scales: {
                     x: {
-                      ticks: { color: '#000', font: { size: 10 } },
+                      ticks: { color: '#000', font: { size: 10 }, display: false },
                       grid: { display: false },
                     },
                     y: {
                       beginAtZero: true,
-                      ticks: { color: '#000', font: { size: 12 } },
+                      ticks: {
+                        color: '#000',
+                        font: { size: 12 },
+                        stepSize: 1, // Bước nhảy là 1
+                        callback: (value) => Number(value).toFixed(0), // Chỉ hiển thị số nguyên
+                      },
                       border: { display: false },
                       grid: { display: false },
                     },

@@ -1,5 +1,6 @@
 import { SurveyType } from 'constants/utinities';
 import React from 'react';
+import { formatDate } from 'utils/date';
 import { Box, Button, Modal } from 'zmp-ui';
 
 type SurveyPreviewModalProps = {
@@ -24,7 +25,7 @@ const SurveyPreviewModal: React.FC<SurveyPreviewModalProps> = ({
       <Box p={4}>
         {/* Tiêu đề và mô tả */}
         <h3 className='text-[18px] text-[black] leading-[22px] font-semibold text-center mb-2'>{formData.title}</h3>
-        <p className="text-[16px] text-gray-600 mb-1 text-center">Thời hạn: <span className='font-semibold text-[black]'>{formData.expiryDate}</span></p>
+        <p className="text-[16px] text-gray-600 mb-1 text-center">Thời hạn: <span className='font-semibold text-[black]'>{formatDate(formData.expiryDate)}</span></p>
         <p className="text-[16px] text-gray-600 mb-4 text-center">{formData.description}</p>
 
         {/* Danh sách câu hỏi */}

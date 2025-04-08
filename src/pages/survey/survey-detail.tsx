@@ -4,7 +4,7 @@ import { HeaderSub } from "components/header-sub";
 import { ConfirmModal } from "components/modal";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { isExpired } from "utils/date";
+import { formatDate, isExpired } from "utils/date";
 import { Box, Button, Checkbox, Modal, Page, Radio, useSnackbar } from "zmp-ui";
 
 interface QuestionType {
@@ -195,10 +195,10 @@ const SurveyDetailPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Khảo sát" />
                 <Box>
-                    <Box p={4} className="text-center text-gray-500 font-medium border-t border-b">
+                    <Box p={4} className="text-center text-[#666666] font-medium border-t border-b">
                         <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-2">{detailData?.tieuDe}</h3>
                         <p className="text-[14px] leading-1 mb-1">
-                            Thời hạn: <span className="text-black font-semibold">{detailData?.denNgay.split(' ')[0]}</span>
+                            Thời hạn: <span className="text-black font-semibold">{formatDate(detailData?.denNgay as string)}</span>
                         </p>
                         <p className="text-[14px] leading-1">{detailData?.noiDung}</p>
                     </Box>
@@ -239,7 +239,7 @@ const SurveyDetailPage: React.FC = () => {
                                                         handleAnswerChange(q.cauHoiKhaoSatId, newOptions);
                                                     }}
                                                 />
-                                                <span>{opt.noiDungChiTiet}</span>
+                                                <span className="font-medium text-[#666666]">{opt.noiDungChiTiet}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -258,7 +258,7 @@ const SurveyDetailPage: React.FC = () => {
                                                     }
                                                     onChange={() => handleAnswerChange(q.cauHoiKhaoSatId, opt.noiDungChiTiet)}
                                                 />
-                                                <span>{opt.noiDungChiTiet}</span>
+                                                <span className="font-medium text-[#666666]">{opt.noiDungChiTiet}</span>
                                             </div>
                                         ))}
                                     </div>
