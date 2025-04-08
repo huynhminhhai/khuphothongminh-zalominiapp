@@ -4,7 +4,7 @@ import Label from "./Label"; // Component Label của bạn
 import ErrorMessage from "./ErrorMessage"; // Component ErrorMessage của bạn
 
 // Component CanToggle đã chỉnh sửa
-const CanToggle = ({
+export const CanToggle = ({
     checked = false,
     disabled = false,
     onChange,

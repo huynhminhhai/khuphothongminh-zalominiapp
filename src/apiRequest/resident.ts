@@ -1,6 +1,6 @@
 import http from "services/http";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useSnackbar } from "zmp-ui";
+import { useNavigate, useSnackbar } from "zmp-ui";
 
 const residentApiRequest = {
     getFamilyNumber: async () => {
@@ -18,8 +18,8 @@ const residentApiRequest = {
     getResidentCategory: async () => {
         return await http.get<any>(`/dancu/danhmuc`);
     },
-    getResidentList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/dancu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getResidentList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; SoGiayTo?: string; LaChuHo?: boolean;}) => {
+        return await http.get<any>(`/dancu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&HoTen=${param.HoTen}&SoGiayTo=${param.SoGiayTo}&LaChuHo=${param.LaChuHo}`);
     },
     getChuHosList: async () => {
         return await http.get<any>(`/dancu/chuhos`);
@@ -134,9 +134,9 @@ export const useGetResidentCategory = () => {
 /**
 * GET RESIDENT LIST
 **/
-export const useGetResidentListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
+export const useGetResidentListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; SoGiayTo?: string; LaChuHo?: boolean; }) => {
     return useQuery({
-        queryKey: ['residentList', param.page, param.pageSize, param.ApId, param.keyword],
+        queryKey: ['residentList', param.page, param.pageSize, param.ApId, param.keyword, param.HoTen, param.SoGiayTo, param.LaChuHo],
         queryFn: async () => {
             try {
                 const res = await residentApiRequest.getResidentList(param);
@@ -180,6 +180,7 @@ export const useGetChuHosList = () => {
 export const useCreateResident = () => {
     const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
+    const navigator = useNavigate();
 
     return useMutation({
         mutationFn: async (formData: any) => {
@@ -197,6 +198,8 @@ export const useCreateResident = () => {
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
             queryClient.invalidateQueries({ queryKey: ["chuhosList"] });
             queryClient.invalidateQueries({ queryKey: ["familyMembers"] });
+
+            navigator('/resident-management');
         },
         onError: (error: string) => {
             openSnackbar({

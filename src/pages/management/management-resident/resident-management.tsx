@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { useDeleteResident, useGetResidentListNormal } from "apiRequest/resident"
 import { EmptyData } from "components/data"
+import { CanToggle } from "components/form/FormSwitchField"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { NewsSkeleton } from "components/skeleton"
@@ -21,27 +22,43 @@ const ResidentManagementPage: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [viewCard, setViewCard] = useState<boolean>(true)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
-    const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({
+        search: "",
+        hoTen: "",
+        soGiayTo: "",
+    });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
         ApId: account ? account.thongTinDanCu?.apId : 0,
-        keyword: ''
+        keyword: '',
+        HoTen: '',
+        SoGiayTo: '',
+        LaChuHo: false
     })
 
     const { data, isLoading } = useGetResidentListNormal(param);
     const { mutate: deleteResident } = useDeleteResident();
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.hoTen, 'HoTen');
+    useDebouncedParam(filters.soGiayTo, 'SoGiayTo');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -233,9 +250,31 @@ const ResidentManagementPage: React.FC = () => {
                     >
                         <div className="col-span-12">
                             <Input
-                                placeholder="Tìm kiếm..."
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder="Tìm kiếm nhanh..."
+                                value={filters.search}
+                                onChange={(e) => updateFilter('search', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Họ tên..."
+                                value={filters.hoTen}
+                                onChange={(e) => updateFilter('hoTen', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Mã định danh..."
+                                value={filters.soGiayTo}
+                                onChange={(e) => updateFilter('soGiayTo', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-12">
+                            <CanToggle
+                                checked={param.LaChuHo}
+                                onChange={(value: boolean) => setParam((prev) => ({...prev, LaChuHo: value}))}
+                                labelOff={'Tất cả'}
+                                labelOn={'Chủ hộ'}
                             />
                         </div>
                     </FilterBar>
