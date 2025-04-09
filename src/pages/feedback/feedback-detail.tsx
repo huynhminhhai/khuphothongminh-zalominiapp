@@ -26,7 +26,7 @@ const FeedbackDetailPage: React.FC = () => {
     const { data: feedbackStatus } = useGetFeedbackStatus();
 
     const status = feedbackStatus?.find(item => item.tinhTrangId === data?.tinhTrangId);
-    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "#666666";
+    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "var(--gray-color)";
 
     useEffect(() => {
         if (data) {
@@ -52,7 +52,7 @@ const FeedbackDetailPage: React.FC = () => {
                                         <h3 className="text-[20px] leading-[26px] font-semibold mb-2">
                                             Kiến nghị về việc:
                                         </h3>
-                                        <Box className="text-[#666666] font-medium">
+                                        <Box className="text-gray-color font-medium">
                                             <div>Vào lúc 10:00 ngày 01/04/2025</div>
                                             <div>- tại {`${data?.diaChi || ""} 
                                                 ${tinhs?.find(tinh => tinh.value === data?.maTinh)?.label || ""} 

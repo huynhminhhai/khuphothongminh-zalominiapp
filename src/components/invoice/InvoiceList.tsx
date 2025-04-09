@@ -93,7 +93,7 @@ const InvoiceList: React.FC = () => {
                                     <div className="w-[16px] h-[16px] bg-[#f4f5f6] rounded-full absolute bottom-[-6px] right-[-25px]"></div>
                                     <Box flex flexDirection="column" className="gap-[2px]">
                                         <span className="text-[18px] font-semibold">Rác sinh hoạt</span>
-                                        <span className="text-[12px] text-[#666666] font-medium">SDS345688999</span>
+                                        <span className="text-[12px] text-gray-color font-medium">SDS345688999</span>
                                     </Box>
                                     <div className={`bg-[#f5f1ee] text-[#c7373e] text-[12px] font-semibold leading-[1] px-3 py-[6px] rounded-xl`}>
                                         Chưa thanh toán
@@ -101,12 +101,12 @@ const InvoiceList: React.FC = () => {
                                 </Box>
                                 <div className="grid grid-cols-2 pt-4">
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[14px] font-medium text-[#666666]">Chi phí</span>
-                                        <span className="text-[16px] font-semibold text-[#003080]">340.000 đ</span>
+                                        <span className="text-[14px] font-medium text-gray-color">Chi phí</span>
+                                        <span className="text-[16px] font-semibold text-primary-color">340.000 đ</span>
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[14px] font-medium text-[#666666]">Thời hạn</span>
-                                        <span className="text-[16px] font-semibold text-[#003080]">28/04/2025</span>
+                                        <span className="text-[14px] font-medium text-gray-color">Thời hạn</span>
+                                        <span className="text-[16px] font-semibold text-primary-color">28/04/2025</span>
                                     </div>
                                 </div>
                             </Box>
@@ -121,7 +121,7 @@ const InvoiceList: React.FC = () => {
                                     <div className="w-[16px] h-[16px] bg-[#f4f5f6] rounded-full absolute bottom-[-6px] right-[-25px]"></div>
                                     <Box flex flexDirection="column" className="gap-[2px]">
                                         <span className="text-[18px] font-semibold">Nước sinh hoạt</span>
-                                        <span className="text-[12px] text-[#666666] font-medium">SDS345688999</span>
+                                        <span className="text-[12px] text-gray-color font-medium">SDS345688999</span>
                                     </Box>
                                     <div className={`bg-[#f5f1ee] text-[#c7373e] text-[12px] font-semibold leading-[1] px-3 py-[6px] rounded-xl`}>
                                         Chưa thanh toán
@@ -129,12 +129,12 @@ const InvoiceList: React.FC = () => {
                                 </Box>
                                 <div className="grid grid-cols-2 pt-4">
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[14px] font-medium text-[#666666]">Chi phí</span>
-                                        <span className="text-[16px] font-semibold text-[#003080]">1.280.000 đ</span>
+                                        <span className="text-[14px] font-medium text-gray-color">Chi phí</span>
+                                        <span className="text-[16px] font-semibold text-primary-color">1.280.000 đ</span>
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[14px] font-medium text-[#666666]">Thời hạn</span>
-                                        <span className="text-[16px] font-semibold text-[#003080]">28/04/2025</span>
+                                        <span className="text-[14px] font-medium text-gray-color">Thời hạn</span>
+                                        <span className="text-[16px] font-semibold text-primary-color">28/04/2025</span>
                                     </div>
                                 </div>
                             </Box>
@@ -149,7 +149,7 @@ const InvoiceList: React.FC = () => {
                                     <div className="w-[16px] h-[16px] bg-[#f4f5f6] rounded-full absolute bottom-[-6px] right-[-25px]"></div>
                                     <Box flex flexDirection="column" className="gap-[2px]">
                                         <span className="text-[18px] font-semibold">Rác sinh hoạt</span>
-                                        <span className="text-[12px] text-[#666666] font-medium">SDS345688999</span>
+                                        <span className="text-[12px] text-gray-color font-medium">SDS345688999</span>
                                     </Box>
                                     <div className={`bg-[#eaf0ea] text-[#157c0c] text-[12px] font-semibold leading-[1] px-3 py-[6px] rounded-xl`}>
                                         Đã thanh toán
@@ -157,12 +157,12 @@ const InvoiceList: React.FC = () => {
                                 </Box>
                                 <div className="grid grid-cols-2 pt-4">
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[14px] font-medium text-[#666666]">Chi phí</span>
-                                        <span className="text-[16px] font-semibold text-[#003080]">340.000 đ</span>
+                                        <span className="text-[14px] font-medium text-gray-color">Chi phí</span>
+                                        <span className="text-[16px] font-semibold text-primary-color">340.000 đ</span>
                                     </div>
                                     <div className="flex flex-col gap-1">
-                                        <span className="text-[14px] font-medium text-[#666666]">Thời hạn</span>
-                                        <span className="text-[16px] font-semibold text-[#003080]">28/03/2025</span>
+                                        <span className="text-[14px] font-medium text-gray-color">Thời hạn</span>
+                                        <span className="text-[16px] font-semibold text-primary-color">28/03/2025</span>
                                     </div>
                                 </div>
                             </Box>

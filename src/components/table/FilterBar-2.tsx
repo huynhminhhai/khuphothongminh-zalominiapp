@@ -36,8 +36,8 @@ const FilterBar2: React.FC<FilterBar2Props> = ({
                             >
                                 {
                                     filterVisible ?
-                                    <Icon color="#222222" icon="line-md:filter-minus" fontSize={22} /> :
-                                    <Icon color="#222222" icon="line-md:filter-plus" fontSize={22} />
+                                    <Icon icon="line-md:filter-minus" fontSize={22} /> :
+                                    <Icon icon="line-md:filter-plus" fontSize={22} />
                                 }
                             </div>
                         )}

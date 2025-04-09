@@ -19,7 +19,7 @@ const TransactionDetailPage: React.FC = () => {
     const { data: transactionType } = useGetTransactionType();
 
     const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === detailData?.loaiGiaoDichTaiChinhId);
-    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#666666";
+    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "var(--gray-color)";
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">

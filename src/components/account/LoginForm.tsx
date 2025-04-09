@@ -52,7 +52,7 @@ const LoginForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12 relative">
-                        <Icon icon='mdi:user' fontSize={20} color="#003080" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
+                        <Icon icon='mdi:user' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
                             name="username"
                             label=""
@@ -62,7 +62,7 @@ const LoginForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12 relative">
-                        <Icon icon='mdi:password' fontSize={20} color="#003080" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
+                        <Icon icon='mdi:password' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
                             name="password"
                             type={isHide ? 'password' : 'text'}
@@ -74,7 +74,7 @@ const LoginForm: React.FC = () => {
                         <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHide(prev => !prev)}>
                             <Icon
                                 fontSize={20}
-                                color="#003080"
+                                color="var(--primary-color)"
                                 icon={isHide ? 'mdi:eye-off' : 'mdi:eye'}
                             />
                         </div>
@@ -83,7 +83,7 @@ const LoginForm: React.FC = () => {
                         <Button disabled={loading} fullWidth onClick={handleSubmit(onSubmit)}>
                             {loading ? "Đang xử lý..." : "Đăng nhập"}
                         </Button>
-                        <div className="mt-3 font-medium">Bạn không có tài khoản? <span onClick={() => loginWithZalo()} className="font-semibold text-[#003080]">Đăng nhập với zalo</span></div>
+                        <div className="mt-3 font-medium">Bạn không có tài khoản? <span onClick={() => loginWithZalo()} className="font-semibold text-[var(--primary-color)]">Đăng nhập với zalo</span></div>
                     </div>
                 </div>
             </Box>

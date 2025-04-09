@@ -28,17 +28,17 @@ const NewsDetailPage: React.FC = () => {
                         <NewsDetailSkeleton count={1} /> :
                         data ?
                             <Box px={4} pb={4}>
-                                <Box pb={4} className="border-b-[2px] border-[#003080]">
+                                <Box pb={4} className="border-b-[2px] border-primary-color">
                                     <div className="flex items-center gap-2 mb-3">
-                                        <div className="h-[24px] w-[5px] bg-[#003080] block"></div>
+                                        <div className="h-[24px] w-[5px] bg-primary-cborder-primary-color block"></div>
                                         <h3 className="text-[16px] leading-[1] font-medium">Tin tức</h3>
                                     </div>
-                                    <h2 className="text-[22px] leading-[30px] font-semibold mb-3 text-[#003080]">
+                                    <h2 className="text-[22px] leading-[30px] font-semibold mb-3 text-primary-cborder-primary-color">
                                         {data.tieuDe || data.moTa}
                                     </h2>
                                     <h4 className="text-[13px] leading-[1] font-medium">{formatDate(data.ngayXuatBan)}</h4>
                                 </Box>
-                                <Box mt={6} pb={4} mb={4} className="border-b-[2px] border-[#003080]">
+                                <Box mt={6} pb={4} mb={4} className="border-b-[2px] border-primary-color">
                                     <div className="mb-3">
                                         <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
                                     </div>

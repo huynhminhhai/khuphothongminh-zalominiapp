@@ -43,6 +43,12 @@
   font-display: swap;
 }
 
+:root {
+  --primary-color: #003080;
+  --gray-color: #666666;
+  --black-color: #222222;
+}
+
 body {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
@@ -63,7 +69,7 @@ body {
 }
 
 .zaui-page.home {
-  background-color: #003080;
+  background-color: var(--primary-color);
   margin-top: 0;
 }
 
@@ -91,7 +97,7 @@ body {
 
   // & .zaui-icon,
   // & .zaui-header-title {
-  //   // color: #003080;
+  //   // color: var(--primary-color);
   //   // font-weight: 600;
   // }
 }
@@ -122,11 +128,11 @@ select {
 
 input[type='checkbox'],
 input[type='radio'] {
-  accent-color: #003080;
+  accent-color: var(--primary-color);
 }
 
 .zaui-checkbox-checked .zaui-checkbox-inner {
-  background-color: #003080;
+  background-color: var(--primary-color);
 }
 
 .zaui-modal-content {
@@ -177,7 +183,7 @@ tbody tr td:not(:first-child) {
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #003080 !important;
+  background-color: var(--primary-color) !important;
 }
 
 /**
@@ -256,7 +262,7 @@ tbody tr td:not(:first-child) {
 }
 
 .zaui-bottom-navigation-item-active {
-  color: #003080;
+  color: var(--primary-color);
 }
 
 /**
@@ -294,7 +300,7 @@ tbody tr td:not(:first-child) {
 
 .tab-resident .zaui-tabs-tabbar-item.zaui-tabs-tabbar-item-active {
   background-color: #e9ca9433;
-  color: #003080;
+  color: var(--primary-color);
 }
 
 .select-member input {
@@ -308,7 +314,7 @@ tbody tr td:not(:first-child) {
 }
 
 .filter-bar-2 .zaui-input-affix-wrapper *::placeholder {
-  color: #666666;
+  color: var(--gray-color);
 }
 
 .filter-bar-2 .zaui-input-affix-wrapper {
@@ -333,11 +339,11 @@ tbody tr td:not(:first-child) {
 }
 
 .zaui-btn-primary {
-  background-color: #003080;
+  background-color: var(--primary-color);
 }
 
 .zaui-btn-primary:active {
-  background-color: #003080;
+  background-color: var(--primary-color);
 }
 
 /**
@@ -364,7 +370,7 @@ textarea[name="address"] {
 }
 
 .zaui-radio-checked .zaui-radio-checkmark {
-  background-color: #003080;
+  background-color: var(--primary-color);
 }
 
 .flexCol .radio-group {
@@ -501,7 +507,7 @@ div.ql-editor {
   height: 48px;
   border-radius: 50%;
   display: inline-block;
-  border-top: 4px solid #003080;
+  border-top: 4px solid var(--primary-color);
   border-right: 4px solid transparent;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
@@ -516,7 +522,7 @@ div.ql-editor {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border-left: 4px solid #003080;
+  border-left: 4px solid var(--primary-color);
   border-bottom: 4px solid transparent;
   animation: rotation 0.5s linear infinite reverse;
 }
@@ -542,7 +548,7 @@ div.ql-editor {
 
 .login-page .login-form input {
   height: 46px;
-  background-color: #00308018;
+  background-color: var(--primary-color)18;
   padding-left: 38px;
   padding-right: 28px;
 }
@@ -550,7 +556,7 @@ div.ql-editor {
 .login-page .login-form input,
 .login-page .login-form input::placeholder {
   font-size: 16px;
-  color: #003080;
+  color: var(--primary-color);
   font-weight: 600;
 }
 
@@ -591,7 +597,7 @@ div.ql-editor {
 **/
 
 .dashed-border-bottom {
-  background-image: linear-gradient(to right, #666666 60%, rgba(255, 255, 255, 0) 0%);
+  background-image: linear-gradient(to right, var(--gray-color) 60%, rgba(255, 255, 255, 0) 0%);
   background-position: bottom;
   background-size: 12px 0.5px;
   background-repeat: repeat-x;

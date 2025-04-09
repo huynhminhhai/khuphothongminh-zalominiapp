@@ -20,7 +20,7 @@ const InforResidentItemMain: React.FC<InforResidentItemMainType> = ({ data }) =>
         <Box>
             <Box>
                 <Box>
-                    <div className="bg-[#003080] relative flex flex-col items-center justify-center py-[30px] overflow-hidden">
+                    <div className="bg-primary-color relative flex flex-col items-center justify-center py-[30px] overflow-hidden">
                         <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.05] z-0" />
                         <Avatar size={120} src={data.anhDaiDien || images.avatarDefault} style={{ background: '#f0f0f0' }} className="relative z-20 border-[4px] border-white" />
                         <div className="relative z-20 uppercase text-[18px] leading-[24px] font-semibold mt-3 text-white">{thongTinDanCu.hoTen}</div>

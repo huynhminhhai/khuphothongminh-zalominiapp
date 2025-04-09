@@ -26,7 +26,7 @@ const SurveyItem: React.FC<SurveyItemProps> = ({data}) => {
                         <div className="flex flex-col">
                             <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-1">{data.tieuDe}</h3>
                             <div className="flex items-center justify-between w-[100%]">
-                                <h4 className="text-[14px] font-medium text-[#666666]">{formatDate(data.tuNgay)} - {formatDate(data.denNgay)}</h4>
+                                <h4 className="text-[14px] font-medium text-gray-color">{formatDate(data.tuNgay)} - {formatDate(data.denNgay)}</h4>
                                 {
                                     isExpired(formatDate(data.denNgay)) &&
                                     <div className="text-[12px] text-white font-medium leading-[1] bg-yellow-500 px-2 py-[6px] rounded-xl">Hết hạn</div>

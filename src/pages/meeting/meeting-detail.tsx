@@ -123,7 +123,7 @@ const MeetingDetailPage: React.FC = () => {
                                             {
                                                 thuKy &&
 
-                                                <div className="flex items-center gap-3 text-[#666666]">
+                                                <div className="flex items-center gap-3 text-gray-color">
                                                     <Avatar size={30} src={thuKy?.anhDaiDien || images.avatar} />
                                                     <Box>
                                                         thư ký cuộc họp: <span className="text-[#000]">{thuKy?.hoTenNguoiThamDu}</span>
@@ -198,7 +198,7 @@ const MeetingDetailPage: React.FC = () => {
                                                                     size={30}
                                                                     src={member?.anhDaiDien || images.avatar}
                                                                 />
-                                                                <div className="font-medium text-[#666666]">{member?.hoTenNguoiThamDu}</div>
+                                                                <div className="font-medium text-gray-color">{member?.hoTenNguoiThamDu}</div>
                                                             </Box>
                                                         ))
                                                     }

@@ -140,7 +140,7 @@ const TaskDetailPage: React.FC = () => {
                                     <hr />
                                     <Box p={4}>
                                         <div className="text-[18px] font-medium mb-2">Nội dung nhiệm vụ</div>
-                                        <div className="text-[16px] leading-[22px] font-medium text-[#666666]">
+                                        <div className="text-[16px] leading-[22px] font-medium text-gray-color">
                                             {detailData.noiDung}
                                         </div>
                                     </Box>
@@ -165,9 +165,9 @@ const TaskDetailPage: React.FC = () => {
                                                         >
                                                             <div className="flex items-center gap-1">
                                                                 {isImage(item.tapTin) ? (
-                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} className="text-[#222222]" />
+                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
                                                                 ) : (
-                                                                    <Icon icon="codex:file" fontSize={22} className="text-[#222222]" />
+                                                                    <Icon icon="codex:file" fontSize={22} />
                                                                 )}
                                                                 <div className="text-[14px] font-medium">{`Tập tin ${index + 1}`}</div>
                                                             </div>

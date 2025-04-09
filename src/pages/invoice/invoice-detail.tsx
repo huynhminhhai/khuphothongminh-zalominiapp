@@ -20,7 +20,7 @@ const InvoiceDetailPage: React.FC = () => {
     const { data: transactionType } = useGetTransactionType();
 
     const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === detailData?.loaiGiaoDichTaiChinhId);
-    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "#666666";
+    const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "var(--gray-color)";
 
     return (
         <Page className="relative flex-1 flex flex-col !bg-[#f4f5f6]">
@@ -34,20 +34,20 @@ const InvoiceDetailPage: React.FC = () => {
                             <div className="grid grid-cols-12 gap-3">
                                 <div className="col-span-12">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Họ tên</div>
-                                        <div className="text-[16px] font-semibold text-[#222222]">Huỳnh Minh Hải</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Họ tên</div>
+                                        <div className="text-[16px] font-semibold">Huỳnh Minh Hải</div>
                                     </div>
                                 </div>
                                 <div className="col-span-12">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Số điện thoại</div>
-                                        <div className="text-[16px] font-semibold text-[#222222]">0848551112</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Số điện thoại</div>
+                                        <div className="text-[16px] font-semibold">0848551112</div>
                                     </div>
                                 </div>
                                 <div className="col-span-12">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Địa chỉ</div>
-                                        <div className="text-[16px] font-semibold text-[#222222]">123, KP9, Thị trấn Bến Lức, Long An</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Địa chỉ</div>
+                                        <div className="text-[16px] font-semibold">123, KP9, Thị trấn Bến Lức, Long An</div>
                                     </div>
                                 </div>
                                 <div className="col-span-12">
@@ -55,37 +55,37 @@ const InvoiceDetailPage: React.FC = () => {
                                 </div>
                                 <div className="col-span-6">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Ngày lập hóa đơn</div>
-                                        <div className="text-[16px] font-semibold text-[#222222]">01/04/2025</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Ngày lập hóa đơn</div>
+                                        <div className="text-[16px] font-semibold">01/04/2025</div>
                                     </div>
                                 </div>
                                 <div className="col-span-6">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Hạn thanh toán</div>
-                                        <div className="text-[16px] font-semibold text-[#222222]">28/04/2025</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Hạn thanh toán</div>
+                                        <div className="text-[16px] font-semibold">28/04/2025</div>
                                     </div>
                                 </div>
                                 <div className="col-span-6">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Loại thanh toán</div>
-                                        <div className="text-[16px] font-semibold text-[#222222]">Rác sinh hoạt</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Loại thanh toán</div>
+                                        <div className="text-[16px] font-semibold">Rác sinh hoạt</div>
                                     </div>
                                 </div>
                                 <div className="col-span-6">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Mã hóa đơn</div>
-                                        <div className="text-[16px] font-semibold text-[#222222]">RSH123456789</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Mã hóa đơn</div>
+                                        <div className="text-[16px] font-semibold">RSH123456789</div>
                                     </div>
                                 </div>
                                 <div className="col-span-6">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Số tiền</div>
-                                        <div className="text-[20px] font-semibold text-[#003080]">340.000đ</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Số tiền</div>
+                                        <div className="text-[20px] font-semibold text-primary-color">340.000đ</div>
                                     </div>
                                 </div>
                                 <div className="col-span-6">
                                     <div className="flex flex-col gap-1">
-                                        <div className="text-[12px] font-medium text-[#666666]">Trạng thái</div>
+                                        <div className="text-[12px] font-medium text-gray-color">Trạng thái</div>
                                         <div className={`bg-[#f5f1ee] text-[#c7373e] text-[12px] font-semibold leading-[1] text-center px-3 py-[6px] rounded-xl w-fit`}>
                                             Chưa thanh toán
                                         </div>
@@ -95,7 +95,7 @@ const InvoiceDetailPage: React.FC = () => {
                         </Box>
                         <Box>
                             <div className="flex flex-col gap-1">
-                                <div className="text-[12px] font-medium text-[#666666]">QR code</div>
+                                <div className="text-[12px] font-medium text-gray-color">QR code</div>
                                 <div>
                                     <img className="w-full h-auto" src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg" alt="qrcode" />
                                 </div>
@@ -103,7 +103,7 @@ const InvoiceDetailPage: React.FC = () => {
                         </Box>
                     </Box>
                     <Box mt={4}>
-                        <Button className="!bg-white !text-[#222222]" size="large" fullWidth>
+                        <Button className="!bg-white " size="large" fullWidth>
                             <div className="flex items-center gap-2 justify-center">
                                 <Icon className="mt-1" fontSize={16} icon='line-md:download' />
                                 <span className="font-semibold">Lưu mã QR Code</span>

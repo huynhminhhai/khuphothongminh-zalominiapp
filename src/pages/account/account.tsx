@@ -24,18 +24,6 @@ const AccountPage: React.FC = () => {
                     {
                         accessToken && account ?
                             <>
-                                {/* <Box m={4}>
-                                    <div className="bg-[#003080] rounded-lg px-4 py-6 relative overflow-hidden">
-                                        <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.05] z-0" />
-                                        <div className="flex items-center gap-3">
-                                            <Avatar size={60} src={account.anhDaiDien || images.avatarDefault}/>
-                                            <div className="text-white">
-                                                <h3 className="text-[18px] font-semibold mb-1 uppercase">{account.thongTinDanCu?.hoTen}</h3>
-                                                <h4 className="text-[16px] tracking-wider font-medium">{account.thongTinDanCu?.dienThoai || ''}</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </Box> */}
                                 <Box m={4}>
                                     <List className="bg-white rounded-lg">
                                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tài khoản</div>

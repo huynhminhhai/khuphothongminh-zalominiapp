@@ -22,7 +22,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
     const { data: feedbackStatus } = useGetFeedbackStatus();
 
     const status = feedbackStatus?.find(item => item.tinhTrangId === data.tinhTrangId);
-    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "#666666";
+    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "var(--gray-color)";
 
     useEffect(() => {
         if (data) {
@@ -52,7 +52,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
             </Box>
             <Box mt={2}>
                 <h3 className="text-[16px] leading-[20px] font-medium line-clamp-2 mb-1">{data.noiDung}</h3>
-                <div className="text-[#666666] font-medium flex items-center gap-1">
+                <div className="text-gray-color font-medium flex items-center gap-1">
                     <Icon fontSize={24} icon='qlementine-icons:location-16' />
                     <div className="line-clamp-1">
                         {`${data?.diaChi || ""} 

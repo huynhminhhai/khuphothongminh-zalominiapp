@@ -70,7 +70,7 @@ const ChangePasswordForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12 relative">
-                        <Icon icon='mdi:password' fontSize={20} color="#003080" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
+                        <Icon icon='mdi:password' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
                             name="oldPassword"
                             type={isHideOPw ? 'password' : 'text'}
@@ -82,12 +82,12 @@ const ChangePasswordForm: React.FC = () => {
                         <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHideOPw(!isHideOPw)}>
 
                             {
-                                isHideOPw ? <Icon fontSize={20} color="#003080" icon='mdi:eye-off' /> : <Icon fontSize={20} color="#003080" icon='mdi:eye' />
+                                isHideOPw ? <Icon fontSize={20} color="var(--primary-color)" icon='mdi:eye-off' /> : <Icon fontSize={20} color="var(--primary-color)" icon='mdi:eye' />
                             }
                         </div>
                     </div>
                     <div className="col-span-12 relative">
-                        <Icon icon='mdi:password' fontSize={20} color="#003080" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
+                        <Icon icon='mdi:password' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
                             name="password"
                             type={isHidePw ? 'password' : 'text'}
@@ -99,12 +99,12 @@ const ChangePasswordForm: React.FC = () => {
                         <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHidePw(!isHidePw)}>
 
                             {
-                                isHidePw ? <Icon fontSize={20} color="#003080" icon='mdi:eye-off' /> : <Icon fontSize={20} color="#003080" icon='mdi:eye' />
+                                isHidePw ? <Icon fontSize={20} color="var(--primary-color)" icon='mdi:eye-off' /> : <Icon fontSize={20} color="var(--primary-color)" icon='mdi:eye' />
                             }
                         </div>
                     </div>
                     <div className="col-span-12 relative">
-                        <Icon icon='mdi:password' fontSize={20} color="#003080" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
+                        <Icon icon='mdi:password' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
                             name="confirmPassword"
                             type={isHideCPw ? 'password' : 'text'}
@@ -116,7 +116,7 @@ const ChangePasswordForm: React.FC = () => {
                         <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHideCPw(!isHideCPw)}>
 
                             {
-                                isHideCPw ? <Icon fontSize={20} color="#003080" icon='mdi:eye-off' /> : <Icon fontSize={20} color="#003080" icon='mdi:eye' />
+                                isHideCPw ? <Icon fontSize={20} color="var(--primary-color)" icon='mdi:eye-off' /> : <Icon fontSize={20} color="var(--primary-color)" icon='mdi:eye' />
                             }
                         </div>
                     </div>

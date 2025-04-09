@@ -195,7 +195,7 @@ const SurveyDetailPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Khảo sát" />
                 <Box>
-                    <Box p={4} className="text-center text-[#666666] font-medium border-t border-b">
+                    <Box p={4} className="text-center text-gray-color font-medium border-t border-b">
                         <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-2">{detailData?.tieuDe}</h3>
                         <p className="text-[14px] leading-1 mb-1">
                             Thời hạn: <span className="text-black font-semibold">{formatDate(detailData?.denNgay as string)}</span>
@@ -239,7 +239,7 @@ const SurveyDetailPage: React.FC = () => {
                                                         handleAnswerChange(q.cauHoiKhaoSatId, newOptions);
                                                     }}
                                                 />
-                                                <span className="font-medium text-[#666666]">{opt.noiDungChiTiet}</span>
+                                                <span className="font-medium text-gray-color">{opt.noiDungChiTiet}</span>
                                             </div>
                                         ))}
                                     </div>
@@ -258,7 +258,7 @@ const SurveyDetailPage: React.FC = () => {
                                                     }
                                                     onChange={() => handleAnswerChange(q.cauHoiKhaoSatId, opt.noiDungChiTiet)}
                                                 />
-                                                <span className="font-medium text-[#666666]">{opt.noiDungChiTiet}</span>
+                                                <span className="font-medium text-gray-color">{opt.noiDungChiTiet}</span>
                                             </div>
                                         ))}
                                     </div>

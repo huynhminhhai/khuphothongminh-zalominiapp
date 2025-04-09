@@ -27,7 +27,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
         <Box className="meeting-item" onClick={() => navigate(`/meeting-detail?id=${data.cuocHopId}`)}>
             <Box>
                 <div className="flex items-start gap-4">
-                    <Box px={4} py={6} width={108} height={152} className="bg-[#e9ca9433] text-[#003080] rounded-tl-2xl rounded-br-2xl relative overflow-hidden">
+                    <Box px={4} py={6} width={108} height={152} className="bg-[#e9ca9433] text-primary-color rounded-tl-2xl rounded-br-2xl relative overflow-hidden">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
                             <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(formatDate(data.thoiGianBatDau))}</div>
@@ -38,7 +38,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                         <h3 className="text-[16px] leading-[22px] font-semibold line-clamp-2 mb-2">{data.tieuDe}</h3>
                         <div className="flex flex-col">
                             <Box>
-                                <ul className="flex flex-col gap-[6px] text-[14px] leading-4 font-normal text-[#666666] mb-1">
+                                <ul className="flex flex-col gap-[6px] text-[14px] leading-4 font-normal text-gray-color mb-1">
                                     <li className="flex items-start gap-1">
                                         <Icon fontSize={18} icon='qlementine-icons:location-16'/> <span className="flex-1 font-medium line-clamp-2 whitespace-normal">{data.diaDiem}</span>
                                     </li>

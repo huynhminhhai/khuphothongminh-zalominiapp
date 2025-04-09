@@ -210,7 +210,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
   return (
     <Box>
       <Box p={4}>
-        <div className="bg-white box-shadow-4 rounded-xl px-3 py-4 text-center text-[#666666]">
+        <div className="bg-white box-shadow-4 rounded-xl px-3 py-4 text-center text-gray-color">
           <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-1">{surveyDetail.tieuDe}</h3>
           <div className='font-medium mt-2'>{formatDate(surveyDetail.tuNgay)} - {formatDate(surveyDetail.denNgay)}</div>
             <div className='mt-2'>

@@ -25,8 +25,8 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
                     }
                     <div className="flex-1">
                         <div className="flex items-center justify-between gap-3">
-                            <h3 className="text-[18px] font-semibold text-[#003080]">{detailNoti.title}</h3>
-                            <div className="text-[14px] font-medium text-[#003080]">{timeAgo(detailNoti.created_at)}</div>
+                            <h3 className="text-[18px] font-semibold text-primary-color">{detailNoti.title}</h3>
+                            <div className="text-[14px] font-medium text-primary-color">{timeAgo(detailNoti.created_at)}</div>
                         </div>
                         <p className="text-[14px] leading-[22px] mt-2">{detailNoti.content}</p>
                         <div className="flex items-center gap-1 font-medium mt-2 text-[#776a96]">
