@@ -21,12 +21,14 @@ const MeetingDetailPage: React.FC = () => {
     const [thuKy, setThuKy] = useState<any>(null)
     const [detailData, setDetailData] = useState<any>(null);
     const [popupVisible, setPopupVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const newsId = searchParams.get("id");
 
     const { data: fetchedDetailData, isLoading } = useGetMeetingDetail(Number(newsId));
 
     const fetchUserInfos = async () => {
+        setLoading(true);
         try {
             const memberIds = fetchedDetailData.thanhVienCuocHops.map((member) => member.nguoiThamDuId);
 
@@ -49,6 +51,8 @@ const MeetingDetailPage: React.FC = () => {
                 text: 'Có lỗi khi lấy thông tin thành viên!',
                 type: 'error',
             });
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -103,7 +107,7 @@ const MeetingDetailPage: React.FC = () => {
                 <HeaderSub title="Chi tiết cuộc họp" />
                 <Box>
                     {
-                        isLoading ?
+                        isLoading || loading ?
                             <NewsDetailSkeleton count={1} /> :
                             detailData ?
                                 <Box>
