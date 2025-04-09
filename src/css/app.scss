@@ -585,3 +585,14 @@ div.ql-editor {
 .leaflet-popup-content-wrapper {
   background-color: #ffffffe8;
 }
+
+/**
+* INVOICE
+**/
+
+.dashed-border-bottom {
+  background-image: linear-gradient(to right, #666666 60%, rgba(255, 255, 255, 0) 0%);
+  background-position: bottom;
+  background-size: 12px 0.5px;
+  background-repeat: repeat-x;
+}

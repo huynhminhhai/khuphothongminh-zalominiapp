@@ -24,6 +24,7 @@ import { ResidentMapPage } from "pages/maps";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDataFromStorage } from "services/zalo";
 import ForbiddenPage from "pages/403";
+import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
 
 
 const AuthWrapper = ({ children }) => {
@@ -153,6 +154,10 @@ const MyApp = () => {
                         {/* REPORT FINANCE */}
                         <Route path="/report-finance-detail" element={<ReportFinanceDetailPage></ReportFinanceDetailPage>}></Route>
                         <Route path="/report-finance-chart" element={<ReportFinanceChartPage></ReportFinanceChartPage>}></Route>
+
+                        {/* INVOICE */}
+                        <Route path="/invoice" element={<InvoicePage></InvoicePage>}></Route>
+                        <Route path="/invoice-detail" element={<InvoiceDetailPage></InvoiceDetailPage>}></Route>
 
                         {/* ACCOUNT */}
                         <Route path="/account" element={<AccountPage></AccountPage>}></Route>

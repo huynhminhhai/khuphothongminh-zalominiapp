@@ -64,6 +64,11 @@ const SERVICES: ServicesType[] = [
         icon: images.todo,
         // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của khảo sát", quyen: "XEM" },
     },
+    {
+        label: 'Hóa đơn',
+        url: '/invoice',
+        icon: images.invoice
+    }
 ]
 
 const ServiceList: React.FC<any> = () => {

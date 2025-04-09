@@ -66,12 +66,12 @@ const ManagementPage: React.FC = () => {
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/task-management')}
                         />
-                        <Item
+                        {/* <Item
                             title="Nhiệm vụ của tôi"
                             prefix={<img src={images.todo2} alt='feedback' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/task')}
-                        />
+                        /> */}
                         <Item
                             title="Quản lý cuộc họp"
                             prefix={<img src={images.meeting} alt='feedback' className="w-[30px] h-auto" />}

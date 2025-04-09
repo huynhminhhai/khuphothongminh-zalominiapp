@@ -29,6 +29,7 @@ import research from './research.png'
 import statistics from './statistics.png'
 import map from './map.png'
 import avatarDefault from './private-account.png'
+import invoice from './bill.png'
 
 const images = {
     logo,
@@ -61,7 +62,8 @@ const images = {
     statistics,
     map,
     avatarDefault,
-    shape4
+    shape4,
+    invoice
 }
 
 export default images
