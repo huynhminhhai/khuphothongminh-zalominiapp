@@ -102,11 +102,11 @@ const InvoiceList: React.FC = () => {
                                 <div className="grid grid-cols-2 pt-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[14px] font-medium text-[#666666]">Chi phí</span>
-                                        <span className="text-[16px] font-semibold text-[#731611]">340.000 đ</span>
+                                        <span className="text-[16px] font-semibold text-[#003080]">340.000 đ</span>
                                     </div>
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[14px] font-medium text-[#666666]">Thời hạn</span>
-                                        <span className="text-[16px] font-semibold text-[#731611]">28/04/2025</span>
+                                        <span className="text-[16px] font-semibold text-[#003080]">28/04/2025</span>
                                     </div>
                                 </div>
                             </Box>
@@ -130,11 +130,11 @@ const InvoiceList: React.FC = () => {
                                 <div className="grid grid-cols-2 pt-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[14px] font-medium text-[#666666]">Chi phí</span>
-                                        <span className="text-[16px] font-semibold text-[#731611]">1.280.000 đ</span>
+                                        <span className="text-[16px] font-semibold text-[#003080]">1.280.000 đ</span>
                                     </div>
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[14px] font-medium text-[#666666]">Thời hạn</span>
-                                        <span className="text-[16px] font-semibold text-[#731611]">28/04/2025</span>
+                                        <span className="text-[16px] font-semibold text-[#003080]">28/04/2025</span>
                                     </div>
                                 </div>
                             </Box>
@@ -158,11 +158,11 @@ const InvoiceList: React.FC = () => {
                                 <div className="grid grid-cols-2 pt-4">
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[14px] font-medium text-[#666666]">Chi phí</span>
-                                        <span className="text-[16px] font-semibold text-[#731611]">340.000 đ</span>
+                                        <span className="text-[16px] font-semibold text-[#003080]">340.000 đ</span>
                                     </div>
                                     <div className="flex flex-col gap-1">
                                         <span className="text-[14px] font-medium text-[#666666]">Thời hạn</span>
-                                        <span className="text-[16px] font-semibold text-[#731611]">28/03/2025</span>
+                                        <span className="text-[16px] font-semibold text-[#003080]">28/03/2025</span>
                                     </div>
                                 </div>
                             </Box>

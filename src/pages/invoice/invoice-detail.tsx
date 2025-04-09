@@ -80,7 +80,7 @@ const InvoiceDetailPage: React.FC = () => {
                                 <div className="col-span-6">
                                     <div className="flex flex-col gap-1">
                                         <div className="text-[12px] font-medium text-[#666666]">Số tiền</div>
-                                        <div className="text-[20px] font-semibold text-[#731611]">340.000đ</div>
+                                        <div className="text-[20px] font-semibold text-[#003080]">340.000đ</div>
                                     </div>
                                 </div>
                                 <div className="col-span-6">

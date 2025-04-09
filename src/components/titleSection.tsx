@@ -16,7 +16,7 @@ const TitleSection: React.FC<TitleSectionType> = ({ title, mB = 4, handleClick }
                 {
                     handleClick &&
                     <div
-                        className="text-[#731611] text-[16px] leading-[1] font-semibold flex items-center gap-1"
+                        className="text-[#003080] text-[16px] leading-[1] font-semibold flex items-center gap-1"
                         onClick={handleClick}
                     ><span>Xem tất cả</span> <Icon fontSize={16} icon='mingcute:right-line' /></div>
                 }

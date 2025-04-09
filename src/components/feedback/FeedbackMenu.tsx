@@ -9,7 +9,7 @@ const FeedbackMenu: React.FC = () => {
 
     return (
         <Box>
-            <Box pb={4}>
+            <Box pb={4} pt={2}>
                 <div className="flex items-center justify-center gap-3">
                     <Button variant="primary" size="small" fullWidth onClick={() => navigate('/feedback-add')}>
                         <div className="flex items-center justify-center gap-1">

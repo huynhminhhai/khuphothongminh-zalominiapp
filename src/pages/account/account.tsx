@@ -25,7 +25,7 @@ const AccountPage: React.FC = () => {
                         accessToken && account ?
                             <>
                                 {/* <Box m={4}>
-                                    <div className="bg-[#731611] rounded-lg px-4 py-6 relative overflow-hidden">
+                                    <div className="bg-[#003080] rounded-lg px-4 py-6 relative overflow-hidden">
                                         <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.05] z-0" />
                                         <div className="flex items-center gap-3">
                                             <Avatar size={60} src={account.anhDaiDien || images.avatarDefault}/>

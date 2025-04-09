@@ -58,7 +58,7 @@ const LoginPage: React.FC = () => {
                 </Box>
                 <Box p={4} mt={6}>
                     <Box>
-                        <h3 className="text-[24px] font-bold text-[#731611] text-center">Chào Mừng Trở Lại</h3>
+                        <h3 className="text-[24px] font-bold text-[#003080] text-center">Chào Mừng Trở Lại</h3>
                         <h4 className="text-[16px] font-normal text-[#8f8f8f] text-center mt-3">Đăng nhập với tài khoản của bạn</h4>
                     </Box>
                     <Box py={4}>

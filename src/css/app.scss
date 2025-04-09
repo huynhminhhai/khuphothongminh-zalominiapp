@@ -63,7 +63,7 @@ body {
 }
 
 .zaui-page.home {
-  background-color: #731611;
+  background-color: #003080;
   margin-top: 0;
 }
 
@@ -91,7 +91,7 @@ body {
 
   // & .zaui-icon,
   // & .zaui-header-title {
-  //   // color: #731611;
+  //   // color: #003080;
   //   // font-weight: 600;
   // }
 }
@@ -122,11 +122,11 @@ select {
 
 input[type='checkbox'],
 input[type='radio'] {
-  accent-color: #731611;
+  accent-color: #003080;
 }
 
 .zaui-checkbox-checked .zaui-checkbox-inner {
-  background-color: #731611;
+  background-color: #003080;
 }
 
 .zaui-modal-content {
@@ -177,7 +177,7 @@ tbody tr td:not(:first-child) {
 }
 
 .swiper-pagination-bullet-active {
-  background-color: #731611 !important;
+  background-color: #003080 !important;
 }
 
 /**
@@ -256,7 +256,7 @@ tbody tr td:not(:first-child) {
 }
 
 .zaui-bottom-navigation-item-active {
-  color: #731611;
+  color: #003080;
 }
 
 /**
@@ -294,7 +294,7 @@ tbody tr td:not(:first-child) {
 
 .tab-resident .zaui-tabs-tabbar-item.zaui-tabs-tabbar-item-active {
   background-color: #e9ca9433;
-  color: #731611;
+  color: #003080;
 }
 
 .select-member input {
@@ -333,11 +333,11 @@ tbody tr td:not(:first-child) {
 }
 
 .zaui-btn-primary {
-  background-color: #731611;
+  background-color: #003080;
 }
 
 .zaui-btn-primary:active {
-  background-color: #731611;
+  background-color: #003080;
 }
 
 /**
@@ -364,7 +364,7 @@ textarea[name="address"] {
 }
 
 .zaui-radio-checked .zaui-radio-checkmark {
-  background-color: #731611;
+  background-color: #003080;
 }
 
 .flexCol .radio-group {
@@ -501,7 +501,7 @@ div.ql-editor {
   height: 48px;
   border-radius: 50%;
   display: inline-block;
-  border-top: 4px solid #731611;
+  border-top: 4px solid #003080;
   border-right: 4px solid transparent;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
@@ -516,7 +516,7 @@ div.ql-editor {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  border-left: 4px solid #731611;
+  border-left: 4px solid #003080;
   border-bottom: 4px solid transparent;
   animation: rotation 0.5s linear infinite reverse;
 }
@@ -542,7 +542,7 @@ div.ql-editor {
 
 .login-page .login-form input {
   height: 46px;
-  background-color: #73161118;
+  background-color: #00308018;
   padding-left: 38px;
   padding-right: 28px;
 }
@@ -550,7 +550,7 @@ div.ql-editor {
 .login-page .login-form input,
 .login-page .login-form input::placeholder {
   font-size: 16px;
-  color: #731611;
+  color: #003080;
   font-weight: 600;
 }
 

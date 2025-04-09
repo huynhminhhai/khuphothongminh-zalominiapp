@@ -128,11 +128,11 @@ const TeamDetailPage: React.FC = () => {
                                         termData.map((term, index) => (
                                             <div key={index} className="bg-white p-4 ml-6 relative border-b-[1px] border-dashed">
                                                 <div className="absolute left-[-38px] top-[50%] translate-y-[-50%]">
-                                                    <Icon color={term.isCurrent ? '#731611' : '#808080'} icon='stash:circle-dot' fontSize={27} />
+                                                    <Icon color={term.isCurrent ? '#003080' : '#808080'} icon='stash:circle-dot' fontSize={27} />
                                                 </div>
                                                 <div className="flex">
                                                     <Box className="flex-1">
-                                                        <h3 className="text-[18px] font-semibold mb-1" style={{ color: term.isCurrent ? '#731611' : '' }}>{term.position}</h3>
+                                                        <h3 className="text-[18px] font-semibold mb-1" style={{ color: term.isCurrent ? '#003080' : '' }}>{term.position}</h3>
                                                         <h4 className="text-[14px] font-medium text-[#808080]">{term.start_date} - {term.end_date}</h4>
                                                     </Box>
                                                 </div>

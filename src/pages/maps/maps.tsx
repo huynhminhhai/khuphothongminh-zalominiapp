@@ -130,7 +130,7 @@ const ResidentMapPage = () => {
                             <div className="grid grid-cols-2 gap-3">
                                 <label className="cursor-pointer" onClick={() => handleSetFilter("poor")}>
                                     <input type="radio" className="peer sr-only" name="pricing" defaultChecked />
-                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#003080] peer-checked:ring-[#003080] peer-checked:ring-offset-2">
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-end justify-center">
                                                 <p className="text-[14px] text-center font-bold">Xem hộ nghèo & cận nghèo</p>
@@ -140,7 +140,7 @@ const ResidentMapPage = () => {
                                 </label>
                                 <label className="cursor-pointer" onClick={() => handleSetFilter("culture")}>
                                     <input type="radio" className="peer sr-only" name="pricing" />
-                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#003080] peer-checked:ring-[#003080] peer-checked:ring-offset-2">
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-end justify-center">
                                                 <p className="text-[14px] text-center font-bold">Xem gia đình văn hóa</p>
@@ -150,7 +150,7 @@ const ResidentMapPage = () => {
                                 </label>
                                 <label className="cursor-pointer" onClick={() => handleSetFilter("heatmap")}>
                                     <input type="radio" className="peer sr-only" name="pricing" />
-                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#003080] peer-checked:ring-[#003080] peer-checked:ring-offset-2">
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-end justify-center">
                                                 <p className="text-[14px] text-center font-bold">Mật độ dân cư</p>
@@ -160,7 +160,7 @@ const ResidentMapPage = () => {
                                 </label>
                                 <label className="cursor-pointer" onClick={() => handleSetFilter("heatmap2")}>
                                     <input type="radio" className="peer sr-only" name="pricing" />
-                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#731611] peer-checked:ring-[#731611] peer-checked:ring-offset-2">
+                                    <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-[#003080] peer-checked:ring-[#003080] peer-checked:ring-offset-2">
                                         <div className="flex flex-col gap-1">
                                             <div className="flex items-end justify-center">
                                                 <p className="text-[14px] text-center font-bold">Mật độ hộ gia đình</p>

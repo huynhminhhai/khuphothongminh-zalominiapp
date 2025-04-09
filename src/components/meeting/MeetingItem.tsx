@@ -27,7 +27,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
         <Box className="meeting-item" onClick={() => navigate(`/meeting-detail?id=${data.cuocHopId}`)}>
             <Box>
                 <div className="flex items-start gap-4">
-                    <Box px={4} py={6} width={108} height={152} className="bg-[#e9ca9433] text-[#731611] rounded-tl-2xl rounded-br-2xl relative overflow-hidden">
+                    <Box px={4} py={6} width={108} height={152} className="bg-[#e9ca9433] text-[#003080] rounded-tl-2xl rounded-br-2xl relative overflow-hidden">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
                             <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(formatDate(data.thoiGianBatDau))}</div>
