@@ -16,7 +16,7 @@ export const HeaderHome: FC = () => {
       title={
         (
           <Box flex alignItems="center" className="space-x-3" onClick={() => navigate(`/account`)}>
-            <div className="w-[54px] h-[54px] rounded-full border-[2px] border-[#e9ca9433] overflow-hidden bg-[#f0f0f0]">
+            <div className="w-[54px] h-[54px] rounded-full border-[2px] border-[#e3ecf9] overflow-hidden bg-[#f0f0f0]">
               <img
                 className="h-[100%] w-[100%] object-cover"
                 src={account?.anhDaiDien || images.avatarDefault}

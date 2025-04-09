@@ -66,7 +66,7 @@ const NewsSection: React.FC = () => {
                                                     src={ getFullImageUrl(item.anhDaiDien) }
                                                     alt={item.tieuDe}
                                                 />
-                                                <h3 className="text-[16px] font-medium whitespace-normal mt-2 line-clamp-2">{item.tieuDe || item.moTa}</h3>
+                                                <h3 className="text-[16px] font-semibold whitespace-normal mt-2 line-clamp-2">{item.tieuDe || item.moTa}</h3>
                                             </div>
                                         </SwiperSlide>
                                     ))

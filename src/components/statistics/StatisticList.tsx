@@ -33,7 +33,7 @@ const StatisticList: React.FC<StatisticListProps> = () => {
                 </Box>
 
                 <Box>
-                    <div className={'bg-[#234ead] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'}>
+                    <div className={'bg-[#a1802c] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'}>
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[13px] leading-[1] font-medium mb-[6px] opacity-80">Nhân khẩu</h5>

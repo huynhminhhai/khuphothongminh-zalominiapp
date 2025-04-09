@@ -103,7 +103,7 @@ const InvoiceDetailPage: React.FC = () => {
                         </Box>
                     </Box>
                     <Box mt={4}>
-                        <Button className="!bg-white " size="large" fullWidth>
+                        <Button className="!bg-white !text-gray-color" size="large" fullWidth>
                             <div className="flex items-center gap-2 justify-center">
                                 <Icon className="mt-1" fontSize={16} icon='line-md:download' />
                                 <span className="font-semibold">Lưu mã QR Code</span>

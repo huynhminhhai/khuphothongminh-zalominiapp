@@ -1,6 +1,5 @@
 import http from 'services/http';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { removeDataFromStorage } from 'services/zalo';
 import { useStoreApp } from 'store/store';
 import { useNavigate, useSnackbar } from 'zmp-ui';
 import envConfig from 'envConfig';
@@ -51,8 +50,6 @@ export const useLogin = () => {
                 action: { text: "Đóng", close: true },
                 duration: 3000,
             });
-
-            console.log(res.data)
 
             setToken({ accessToken: res?.data?.accessToken, refreshToken: res?.data?.refreshToken, hanSuDungToken: res?.data?.hanSuDung });
             

@@ -30,7 +30,7 @@ const NewsDetailPage: React.FC = () => {
                             <Box px={4} pb={4}>
                                 <Box pb={4} className="border-b-[2px] border-primary-color">
                                     <div className="flex items-center gap-2 mb-3">
-                                        <div className="h-[24px] w-[5px] bg-primary-cborder-primary-color block"></div>
+                                        <div className="h-[24px] w-[5px] bg-primary-color border-primary-color block"></div>
                                         <h3 className="text-[16px] leading-[1] font-medium">Tin tức</h3>
                                     </div>
                                     <h2 className="text-[22px] leading-[30px] font-semibold mb-3 text-primary-cborder-primary-color">

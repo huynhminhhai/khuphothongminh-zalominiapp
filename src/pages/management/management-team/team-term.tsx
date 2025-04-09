@@ -77,7 +77,7 @@ const TeamTermPage: React.FC = () => {
                             staffData &&
                             <Box>
                                 <div className="bg-primary-color relative flex flex-col items-center justify-center py-[30px] overflow-hidden">
-                                    {/* <img src={images.shape3} alt="shape3" className="bg-[#e9ca9433] absolute z-10 top-0 left-0 w-full h-full object-none" /> */}
+                                    {/* <img src={images.shape3} alt="shape3" className="bg-[#e3ecf9] absolute z-10 top-0 left-0 w-full h-full object-none" /> */}
                                     <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.1] z-0" />
                                     <Avatar size={120} src={staffData.avatar ||
                                         'https://www.pphfoundation.ca/wp-content/uploads/2018/05/default-avatar.png'
