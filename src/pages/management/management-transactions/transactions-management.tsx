@@ -4,7 +4,7 @@ import { useDeleteTransaction, useGetTransactionListNormal, useGetTransactionTyp
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { NewsSkeleton } from "components/skeleton"
+import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { TransactionColor, TransactionsType } from "constants/utinities"
 import { debounce } from "lodash"
@@ -179,7 +179,7 @@ const TransactionsManagementPage: React.FC = () => {
         if (isLoading) {
             return (
                 <Box px={4}>
-                    <NewsSkeleton count={5} />
+                    <ManagementItemSkeleton count={2} />
                 </Box>
             );
         }

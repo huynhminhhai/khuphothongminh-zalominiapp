@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const StatisticMain: React.FC<any> = () => {
     return (
         <Box mt={3}>
-            <div className="bg-[#52459f] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
+            <div className="bg-[#3f328a] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
                 <div className="absolute top-[50%] left-0 transform translate-y-[-50%] w-[100%]">
                     <motion.img
                         className="invert brightness-0 w-[100%]"

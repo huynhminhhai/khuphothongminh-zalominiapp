@@ -5,10 +5,10 @@ import { EmptyData } from "components/data"
 import { CanToggle } from "components/form/FormSwitchField"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { NewsSkeleton } from "components/skeleton"
+import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { debounce } from "lodash"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
 import { formatAddress } from "utils/useAddress"
@@ -208,7 +208,7 @@ const ResidentManagementPage: React.FC = () => {
         if (isLoading) {
             return (
                 <Box px={4}>
-                    <NewsSkeleton count={5} />
+                    <ManagementItemSkeleton count={2} />
                 </Box>
             );
         }

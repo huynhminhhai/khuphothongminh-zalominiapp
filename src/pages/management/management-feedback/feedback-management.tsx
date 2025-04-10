@@ -5,7 +5,7 @@ import { useDeleteFeedback, useGetFeedbackListNormal, useGetFeedbackStatus, useU
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { FeedbackSkeleton } from "components/skeleton"
+import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
@@ -286,7 +286,7 @@ const FeedbackManagementPage: React.FC = () => {
         if (isLoading) {
             return (
                 <Box px={4}>
-                    <FeedbackSkeleton count={5} />
+                    <ManagementItemSkeleton count={2} />
                 </Box>
             );
         }

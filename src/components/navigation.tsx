@@ -15,7 +15,7 @@ const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: 
     label: "Thông báo",
     icon: (
       <div className="relative">
-        <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#ff4045" />
+        <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#c46574" />
         <Icon icon="line-md:bell-filled-loop" />
       </div>
     ),

@@ -31,7 +31,7 @@ const TaskSection: React.FC<any> = () => {
     return (
         <Box>
             <Box px={4} pt={4} pb={0}>
-                <TitleSection title="Nhiệm vụ mới nhất" handleClick={() => navigate('/task')} />
+                <TitleSection title="Nhiệm vụ mới nhất" handleClick={() => navigate('/task')} mB={0} />
                 <Box>
                     {
                         data.data && data.data.length > 0 ?

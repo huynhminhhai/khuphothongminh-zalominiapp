@@ -6,7 +6,7 @@ import { formatDate, parseDate } from "components/form/DatePicker"
 import { HeaderSub } from "components/header-sub"
 import { MeetingStatus } from "components/meeting/MeetingItem"
 import { ConfirmModal } from "components/modal"
-import { NewsSkeleton } from "components/skeleton"
+import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { debounce } from "lodash"
 import React, { useEffect, useState } from "react"
@@ -218,7 +218,7 @@ const MeetingManagementPage: React.FC = () => {
         if (isLoading) {
             return (
                 <Box px={4}>
-                    <NewsSkeleton count={5} />
+                    <ManagementItemSkeleton count={2} />
                 </Box>
             );
         }

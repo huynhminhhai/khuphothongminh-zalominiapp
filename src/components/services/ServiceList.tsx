@@ -38,7 +38,7 @@ const SERVICES: ServicesType[] = [
         requiredPermission: { moTaChucNang: "Lấy danh sách cuộc họp có phân trang", quyen: "XEM" },
     },
     {
-        label: 'Khảo sát ý kiến',
+        label: 'Khảo sát',
         url: '/survey',
         icon: images.survey,
         requiredPermission: { moTaChucNang: "Lấy danh sách khảo sát có phân trang", quyen: "XEM" },

@@ -31,7 +31,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
                             <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(formatDate(data.thoiGianBatDau))}</div>
-                            <div className="text-[14px] leading-[1] font-medium text-center">{formatDate(data.thoiGianBatDau)}</div>
+                            <div className="text-[14px] leading-[1] font-semibold text-center">{formatDate(data.thoiGianBatDau)}</div>
                         </div>
                     </Box>
                     <Box py={2} className="flex-1">

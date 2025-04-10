@@ -4,7 +4,7 @@ import { useDeleteTask, useGetTaskListNormal, useGetTaskStatus, useUpdateTaskSta
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { NewsSkeleton } from "components/skeleton"
+import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
@@ -116,7 +116,7 @@ const TaskManagementPage: React.FC = () => {
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending || hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')}
+                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')}
                         >
                             {taskStatus && taskStatus.map((item) => (
                                 <Option
@@ -188,7 +188,7 @@ const TaskManagementPage: React.FC = () => {
         if (isLoading) {
             return (
                 <Box px={4}>
-                    <NewsSkeleton count={5} />
+                    <ManagementItemSkeleton count={2} />
                 </Box>
             );
         }

@@ -5,7 +5,7 @@ import images from "assets/images"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
-import { NewsSkeleton } from "components/skeleton"
+import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
@@ -160,7 +160,7 @@ const SurveyManagementPage: React.FC = () => {
         if (isLoading) {
             return (
                 <Box px={4}>
-                    <NewsSkeleton count={5} />
+                    <ManagementItemSkeleton count={2} />
                 </Box>
             );
         }

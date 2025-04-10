@@ -15,12 +15,12 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
     const navigate = useNavigate()
 
     return (
-        <Box style={{backgroundColor: detailNoti.status === 1 ? '#f7f4fb' : '#fff'}} className="border-b-[1px]">
+        <Box style={{backgroundColor: detailNoti.status === 1 ? '#e3ecf9' : '#fff'}} className="border-b-[1px]">
             <Box p={4}>
                 <div className="flex gap-2">
                     {
                         detailNoti.status === 1 ?
-                        <Icon fontSize={18} color="#ff4045" icon='icon-park-outline:dot' /> :
+                        <Icon fontSize={18} color="#c46574" icon='icon-park-outline:dot' /> :
                         <div className="w-[18px] h-[18px]"></div>
                     }
                     <div className="flex-1">
@@ -28,8 +28,8 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
                             <h3 className="text-[18px] font-semibold text-primary-color">{detailNoti.title}</h3>
                             <div className="text-[14px] font-medium text-primary-color">{timeAgo(detailNoti.created_at)}</div>
                         </div>
-                        <p className="text-[14px] leading-[22px] mt-2">{detailNoti.content}</p>
-                        <div className="flex items-center gap-1 font-medium mt-2 text-[#776a96]">
+                        <p className="text-[14px] text-gray-color leading-[22px] mt-2 font-medium">{detailNoti.content}</p>
+                        <div className="flex items-center gap-1 font-medium mt-2 text-primary-color">
                             {
                                 detailNoti.status === 1 &&
                                 <>

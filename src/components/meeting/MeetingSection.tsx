@@ -30,7 +30,7 @@ const MeetingSection: React.FC<any> = () => {
     return (
         <Box>
             <Box px={4} pt={4} pb={0}>
-                <TitleSection title="Cuộc họp hôm nay" handleClick={() => navigate('/meeting')} />
+                <TitleSection title="Cuộc họp hôm nay" handleClick={() => navigate('/meeting')} mB={0} />
                 <Box>
 
                     {

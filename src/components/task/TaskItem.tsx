@@ -32,7 +32,11 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                         <div className="flex flex-col">
                             <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-2">{data.tieuDe}</h3>
 
-                            <div className="flex items-center justify-between w-[100%]  mb-2">
+                            <div className="flex items-center justify-between w-[100%] mb-2">
+                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-gray-color"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.thoiHanXuLy)}</h4>
+                            </div>
+
+                            <div className="flex items-center justify-between w-[100%]">
                                 <div className="flex items-center gap-2">
                                     {/* <div className="text-[12px] text-white font-medium leading-[1] bg-red-600 px-2 py-[6px] rounded-xl"
                                         style={{
@@ -49,10 +53,6 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                                         }
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="flex items-center justify-between w-[100%]">
-                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-gray-color"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.thoiHanXuLy)}</h4>
                             </div>
                             
                         </div>

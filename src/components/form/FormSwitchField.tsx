@@ -29,7 +29,7 @@ export const CanToggle = ({
                     return (
                         <div
                             key={text}
-                            className={`transition-all duration-300 w-full h-full flex items-center justify-center rounded-full text-center text-[14px] leading-[1] font-medium ${isActive ? "text-white bg-[#222222]" : "text-[#222222]"
+                            className={`transition-all duration-300 w-full h-full flex items-center justify-center rounded-full text-center text-[14px] leading-[1] font-medium ${isActive ? "text-white bg-[#666666]" : "text-[#666666]"
                                 }`}
                         >
                             {text}
