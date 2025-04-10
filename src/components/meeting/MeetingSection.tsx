@@ -3,7 +3,7 @@ import React, { useState } from "react"
 import { Box, useNavigate } from "zmp-ui"
 import MeetingItem from "./MeetingItem"
 import { useStoreApp } from "store/store"
-import { NewsSectionSkeleton } from "components/skeleton"
+import { MeetingSectionSkeleton } from "components/skeleton"
 import { useGetMeetingTodayList } from "apiRequest/meeting"
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -24,7 +24,7 @@ const MeetingSection: React.FC<any> = () => {
     const { data, isLoading } = useGetMeetingTodayList();
 
     if (isLoading) {
-        return <NewsSectionSkeleton count={1} />
+        return <MeetingSectionSkeleton count={1} />
     }
 
     return (

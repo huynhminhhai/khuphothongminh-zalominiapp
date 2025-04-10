@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, Input, Select } from "zmp-ui"
 import TransactionsItem from "./TransactionsItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
 import { EmptyData } from "components/data"
-import { NewsSkeleton } from "components/skeleton"
+import { TaskItemSkeleton } from "components/skeleton"
 import { useStoreApp } from "store/store"
 import { useGetTransactionList, useGetTransactionType } from "apiRequest/transaction"
 import { FilterBar2 } from "components/table"
@@ -63,7 +63,7 @@ const TransactionsList: React.FC = () => {
         if (isLoading) {
             return (
                 <Box px={4}>
-                    <NewsSkeleton count={5} />
+                    <TaskItemSkeleton count={5} />
                 </Box>
             );
         }
@@ -85,7 +85,7 @@ const TransactionsList: React.FC = () => {
                 </div>
             </Box>
             <div ref={loaderRef} className="px-4">
-                {isFetchingNextPage && <NewsSkeleton count={1} />}
+                {isFetchingNextPage && <TaskItemSkeleton count={1} />}
                 {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả thu/chi</p>}
             </div>
 

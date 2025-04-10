@@ -4,7 +4,7 @@ import { Box, useNavigate } from "zmp-ui"
 import TaskItem from "./TaskItem"
 import { useStoreApp } from "store/store"
 import { useGetMyTaskListNormal } from "apiRequest/task"
-import { NewsSectionSkeleton } from "components/skeleton"
+import { TaskSectionSkeleton } from "components/skeleton"
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from "swiper/react"
 import 'swiper/css';
@@ -25,7 +25,7 @@ const TaskSection: React.FC<any> = () => {
     const { data, isLoading } = useGetMyTaskListNormal(param);
 
     if (isLoading) {
-        return <NewsSectionSkeleton count={1} />
+        return <TaskSectionSkeleton count={1} />
     }
 
     return (

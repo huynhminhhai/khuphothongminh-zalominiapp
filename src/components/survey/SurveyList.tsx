@@ -3,7 +3,7 @@ import { Box, Input } from "zmp-ui"
 import SurveyItem from "./SurveyItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
 import { EmptyData } from "components/data"
-import { NewsSkeleton } from "components/skeleton"
+import { NewsSkeleton, TaskItemSkeleton } from "components/skeleton"
 import { useStoreApp } from "store/store"
 import { debounce } from "lodash"
 import { useGetSurveyList } from "apiRequest/survey"
@@ -45,7 +45,7 @@ const SurveyList: React.FC = () => {
 
     const renderContent = () => {
         if (isLoading) {
-            return <Box px={4}><NewsSkeleton count={5} /></Box>
+            return <Box px={4}><TaskItemSkeleton count={5} /></Box>
         }
 
         return <Box>
@@ -65,7 +65,7 @@ const SurveyList: React.FC = () => {
                 )}
             </Box>
             <div ref={loaderRef} className="px-4 pb-4">
-                {isFetchingNextPage && <NewsSkeleton count={1} />}
+                {isFetchingNextPage && <TaskItemSkeleton count={1} />}
                 {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả khảo</p>}
             </div>
         </Box>

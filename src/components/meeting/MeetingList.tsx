@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Box, DatePicker, Input } from "zmp-ui"
 import MeetingItem from "./MeetingItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll";
-import { NewsSkeleton } from "components/skeleton";
+import { MeetingItemSkeleton } from "components/skeleton";
 import { EmptyData } from "components/data";
 import { useStoreApp } from "store/store";
 import { useGetMeetingList } from "apiRequest/meeting";
@@ -62,7 +62,7 @@ const MeetingList: React.FC = () => {
 
     const renderContent = () => {
         if (isLoading) {
-            return <Box px={4}><NewsSkeleton count={5} /></Box>
+            return <Box px={4}><MeetingItemSkeleton count={5} /></Box>
         }
 
         return <Box>
@@ -83,7 +83,7 @@ const MeetingList: React.FC = () => {
 
             </Box>
             <div ref={loaderRef} className="px-4 pb-4">
-                {isFetchingNextPage && <NewsSkeleton count={1} />}
+                {isFetchingNextPage && <MeetingItemSkeleton count={1} />}
                 {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả cuộc họp</p>}
             </div>
 

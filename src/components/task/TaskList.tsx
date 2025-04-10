@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { Box, Input } from "zmp-ui"
 import TaskItem from "./TaskItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
-import { NewsSkeleton } from "components/skeleton"
+import { TaskItemSkeleton } from "components/skeleton"
 import { EmptyData } from "components/data"
 import { useStoreApp } from "store/store"
 import { debounce } from "lodash"
@@ -46,7 +46,7 @@ const TaskList: React.FC = () => {
 
     const renderContent = () => {
         if (isLoading) {
-            return <Box px={4}><NewsSkeleton count={5} /></Box>
+            return <Box px={4}><TaskItemSkeleton count={5} /></Box>
         }
 
         return <Box>
@@ -66,7 +66,7 @@ const TaskList: React.FC = () => {
                 )}
             </Box>
             <div ref={loaderRef} className="px-4 pb-4">
-                {isFetchingNextPage && <NewsSkeleton count={1} />}
+                {isFetchingNextPage && <TaskItemSkeleton count={1} />}
                 {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả nhiệm vụ</p>}
             </div>
         </Box>
