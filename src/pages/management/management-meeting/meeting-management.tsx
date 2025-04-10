@@ -19,7 +19,7 @@ const MeetingManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar()
-    const { account } = useStoreApp()
+    const { account, hasPermission } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -182,24 +182,33 @@ const MeetingManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/meeting-detail?id=${row.original.cuocHopId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/meeting-update?id=${row.original.cuocHopId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeMeeting(row.original.cuocHopId)}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    {
+                        hasPermission('Lấy thông tin chi tiết 1 cuộc họp', 'XEM') &&
+                        <button
+                            onClick={() => navigate(`/meeting-detail?id=${row.original.cuocHopId}`)}
+                            className="px-3 py-1 bg-gray-700 text-white rounded"
+                        >
+                            <Icon icon='mdi:eye' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Sửa thông tin 1 cuộc họp', 'SUA') &&
+                        <button
+                            onClick={() => navigate(`/meeting-update?id=${row.original.cuocHopId}`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Xóa 1 cuộc họp', 'XOA') &&
+                        <button
+                            onClick={() => removeMeeting(row.original.cuocHopId)}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
                 </div>
             ),
         },
@@ -252,7 +261,7 @@ const MeetingManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý cuộc họp" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton
+                        showAddButton={hasPermission('Thêm mới 1 cuộc họp', 'SUA')}
                         onAddButtonClick={() => navigate("/meeting-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}

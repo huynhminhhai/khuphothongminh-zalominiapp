@@ -12,7 +12,7 @@ import { Box, Page } from "zmp-ui";
 
 const HomePage: React.FunctionComponent = () => {
 
-  const {account} = useStoreApp()
+  const { account, hasPermission } = useStoreApp()
 
   return (
     <Page className="relative flex-1 flex flex-col bg-white pb-[66px] home">
@@ -26,12 +26,21 @@ const HomePage: React.FunctionComponent = () => {
             account &&
             <>
               <Divider />
-              <TaskSection />
+              {
+                hasPermission('Lấy danh sách nhiệm vụ của 1 người có phân trang', 'XEM') &&
+                <TaskSection />
+              }
               <Divider />
-              <MeetingSection />
+              {
+                hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
+                <MeetingSection />
+              }
             </>
           }
-          <NewsSection />
+          {
+            hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
+            <NewsSection />
+          }
         </div>
       </Box>
     </Page>

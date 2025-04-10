@@ -17,7 +17,7 @@ import { Box, Input, Page, Select, Swiper, useNavigate } from "zmp-ui"
 const FeedbackManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { account } = useStoreApp()
+    const { account, hasPermission } = useStoreApp()
 
     const { Option } = Select;
 
@@ -172,7 +172,7 @@ const FeedbackManagementPage: React.FC = () => {
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending}
+                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 phản ánh', 'SUA')}
                         >
                             {feedbackStatus && feedbackStatus.map((item) => (
                                 <Option
@@ -250,24 +250,33 @@ const FeedbackManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/feedback-detail?id=${row.original.phanAnhId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/feedback-update?id=${row.original.phanAnhId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeFeedback(row.original.phanAnhId)}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    {
+                        hasPermission('Lấy thông tin chi tiết 1 phản ánh', 'XEM') &&
+                        <button
+                            onClick={() => navigate(`/feedback-detail?id=${row.original.phanAnhId}`)}
+                            className="px-3 py-1 bg-gray-700 text-white rounded"
+                        >
+                            <Icon icon='mdi:eye' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Sửa thông tin 1 phản ánh', 'SUA') &&
+                        <button
+                            onClick={() => navigate(`/feedback-update?id=${row.original.phanAnhId}`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Xóa 1 phản ánh', 'XOA') &&
+                        <button
+                            onClick={() => removeFeedback(row.original.phanAnhId)}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
                 </div>
             ),
         },

@@ -17,31 +17,31 @@ const SERVICES: ServicesType[] = [
         label: 'Thông tin hộ dân',
         url: '/resident',
         icon: images.home,
-        // requiredPermission: { moTaChucNang: "Lấy thông tin chi tiết 1 dân cư", quyen: "XEM" },
+        requiredPermission: { moTaChucNang: "Lấy thông tin người dùng hiện tại", quyen: "XEM" },
     },
     {
         label: 'Tin tức',
         url: '/news',
         icon: images.news,
-        // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của tin tức", quyen: "XEM" },
+        requiredPermission: { moTaChucNang: "Lấy danh sách bài viết có phân trang", quyen: "XEM" },
     },
     {
         label: 'Góp ý kiến',
         url: '/feedback',
         icon: images.idea,
-        // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của phản ánh", quyen: "XEM" },
+        requiredPermission: { moTaChucNang: "Lấy danh sách phản ánh có phân trang", quyen: "XEM" },
     },
     {
         label: 'Thông tin cuộc họp',
         url: '/meeting',
         icon: images.meeting,
-        // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của cuộc họp", quyen: "XEM" },
+        requiredPermission: { moTaChucNang: "Lấy danh sách cuộc họp có phân trang", quyen: "XEM" },
     },
     {
         label: 'Khảo sát ý kiến',
         url: '/survey',
         icon: images.survey,
-        // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của khảo sát", quyen: "XEM" },
+        requiredPermission: { moTaChucNang: "Lấy danh sách khảo sát có phân trang", quyen: "XEM" },
     },
     // {
     //     label: 'Thông tin tổ chức',
@@ -54,20 +54,22 @@ const SERVICES: ServicesType[] = [
     //     icon: images.map,
     // },
     {
-        label: 'Tình hình tài chính',
+        label: 'Tình hình thu chi',
         url: '/transactions',
         icon: images.money,
+        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
     },
     {
         label: 'Nhiệm vụ',
         url: '/task',
         icon: images.todo,
-        // requiredPermission: { moTaChucNang: "Lấy danh mục cần thiết của khảo sát", quyen: "XEM" },
+        requiredPermission: { moTaChucNang: "Lấy danh sách nhiệm vụ của 1 người có phân trang", quyen: "XEM" },
     },
     {
         label: 'Hóa đơn',
         url: '/invoice',
-        icon: images.invoice
+        icon: images.invoice,
+        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
     }
 ]
 

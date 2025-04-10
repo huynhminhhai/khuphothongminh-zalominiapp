@@ -13,16 +13,10 @@ import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
 import { Box, Input, Page, useNavigate } from "zmp-ui"
 
-const initParam = {
-    pageIndex: 1,
-    pageSize: 10,
-    keyword: '',
-}
-
 const SurveyManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { account } = useStoreApp()
+    const { account, hasPermission } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -119,6 +113,7 @@ const SurveyManagementPage: React.FC = () => {
             id: 'chart',
             header: 'Kết quả',
             cell: ({ row }) => (
+                hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
                 <div className="flex items-center justify-start" onClick={() => navigate(`/survey-charts?id=${row.original.khaoSatId}`)}>
                     <img width={30} src={images.pieChart} alt={row.original.title} />
                 </div>
@@ -129,24 +124,33 @@ const SurveyManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/survey-detail?id=${row.original.khaoSatId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/survey-update?id=${row.original.khaoSatId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeSurvey(Number(row.original.khaoSatId))}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    {
+                        hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
+                        <button
+                            onClick={() => navigate(`/survey-detail?id=${row.original.khaoSatId}`)}
+                            className="px-3 py-1 bg-gray-700 text-white rounded"
+                        >
+                            <Icon icon='mdi:eye' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Sửa thông tin 1 khảo sát', 'SUA') &&
+                        <button
+                            onClick={() => navigate(`/survey-update?id=${row.original.khaoSatId}`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Xóa 1 khảo sát', 'XOA') &&
+                        <button
+                            onClick={() => removeSurvey(Number(row.original.khaoSatId))}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
                 </div>
             ),
         },
@@ -200,7 +204,7 @@ const SurveyManagementPage: React.FC = () => {
                 <Box>
                     <Box pb={4}>
                         <FilterBar
-                            showAddButton
+                            showAddButton={hasPermission('Thêm mới 1 khảo sát', 'SUA')}
                             onAddButtonClick={() => navigate("/survey-add")}
                             setViewCard={setViewCard}
                             viewCard={viewCard}

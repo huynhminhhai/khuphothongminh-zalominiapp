@@ -14,7 +14,7 @@ import { Box, Button, Input, Page, Select, useNavigate } from "zmp-ui"
 const TaskManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { account } = useStoreApp()
+    const { account, hasPermission } = useStoreApp()
 
     const { Option } = Select;
 
@@ -116,7 +116,7 @@ const TaskManagementPage: React.FC = () => {
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending}
+                            disabled={isPending || hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')}
                         >
                             {taskStatus && taskStatus.map((item) => (
                                 <Option
@@ -152,24 +152,33 @@ const TaskManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/task-detail?id=${row.original.nhiemVuId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/task-update?id=${row.original.nhiemVuId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeFeedback(row.original.nhiemVuId)}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    {
+                        hasPermission('Lấy thông tin chi tiết 1 nhiệm vụ', 'XEM') &&
+                        <button
+                            onClick={() => navigate(`/task-detail?id=${row.original.nhiemVuId}`)}
+                            className="px-3 py-1 bg-gray-700 text-white rounded"
+                        >
+                            <Icon icon='mdi:eye' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Sửa thông tin 1 nhiệm vụ', 'SUA') &&
+                        <button
+                            onClick={() => navigate(`/task-update?id=${row.original.nhiemVuId}`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Xóa 1 tập tin nhiệm vụ', 'XOA') &&
+                        <button
+                            onClick={() => removeFeedback(row.original.nhiemVuId)}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
                 </div>
             ),
         },
@@ -223,7 +232,7 @@ const TaskManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý nhiệm vụ" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton
+                        showAddButton={hasPermission('Thêm mới 1 nhiệm vụ', 'SUA')}
                         onAddButtonClick={() => navigate("/task-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}

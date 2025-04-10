@@ -41,7 +41,7 @@ const TransactionsItem: React.FC<TransactionsItemProps> = ({ data }) => {
 
                             <div className="flex items-center justify-between w-[100%]">
                                 <h4 className="flex items-center gap-2 text-[14px] font-medium text-gray-color"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.ngayGiaoDich)}</h4>
-                                <div className="text-[18px] font-medium" style={{ color: typeColor }}>{type?.tenLoaiGiaoDichTaiChinh === "Thu" ? '+' : '-'}{data.soTien.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</div>
+                                <div className="text-[16px] font-medium" style={{ color: typeColor }}>{type?.tenLoaiGiaoDichTaiChinh === "Thu" ? '+' : '-'}{data.soTien.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</div>
                             </div>
 
                         </div>

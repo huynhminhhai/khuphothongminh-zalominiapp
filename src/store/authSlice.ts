@@ -69,9 +69,15 @@ export const createAuthSlice = (set: any, get: any): AuthSliceType => ({
     hasPermission: (moTaChucNang, quyen) => {
         const account = get().account;
         if (!account) return false;
-        return account.quyenXuLyChucNangs.some(
-            (p) => p.moTaChucNang === moTaChucNang && p.quyenXuLy === quyen
-        );
+
+        return account.quyenXuLyChucNangs.some((p) => {
+            // Kiểm tra chức năng và quyền xử lý
+            const hasFunctionAndAction = p.moTaChucNang === moTaChucNang && p.quyenXuLy === quyen;
+            if (!hasFunctionAndAction) return false;
+
+            // Kiểm tra vai trò tương ứng với chức năng
+            return account.vaiTros.some((role) => role.tenVaiTro === p.tenVaiTroNguoiDung);
+        });
     },
 
     hasRole: (vaiTro) => {

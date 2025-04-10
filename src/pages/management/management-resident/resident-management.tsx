@@ -17,7 +17,7 @@ import { Box, Input, Page, useNavigate } from "zmp-ui"
 const ResidentManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { account } = useStoreApp()
+    const { account, hasPermission } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [viewCard, setViewCard] = useState<boolean>(true)
@@ -172,24 +172,33 @@ const ResidentManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/profile-resident?id=${row.original.danCuId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/resident-profile-update?id=${row.original.danCuId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeResident(row.original.danCuId)}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    {
+                        hasPermission('Lấy thông tin chi tiết 1 dân cư', 'XEM') &&
+                        <button
+                            onClick={() => navigate(`/profile-resident?id=${row.original.danCuId}`)}
+                            className="px-3 py-1 bg-gray-700 text-white rounded"
+                        >
+                            <Icon icon='mdi:eye' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Sửa thông tin 1 dân cư', 'SUA') &&
+                        <button
+                            onClick={() => navigate(`/resident-profile-update?id=${row.original.danCuId}`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Xóa 1 dân cư', 'XOA') &&
+                        <button
+                            onClick={() => removeResident(row.original.danCuId)}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
                 </div>
             ),
         },
@@ -243,7 +252,7 @@ const ResidentManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý thông tin hộ dân" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton
+                        showAddButton={hasPermission('Thêm mới 1 dân cư', 'SUA')}
                         onAddButtonClick={() => navigate("/resident-profile-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}

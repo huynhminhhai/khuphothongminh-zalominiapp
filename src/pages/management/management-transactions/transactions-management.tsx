@@ -17,7 +17,7 @@ import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 const TransactionsManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { account } = useStoreApp()
+    const { account, hasPermission } = useStoreApp()
 
     const { Option } = Select;
 
@@ -143,24 +143,33 @@ const TransactionsManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/transactions-detail?id=${row.original.thuChiId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/transactions-update?id=${row.original.thuChiId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeTransaction(row.original.thuChiId)}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    {
+                        hasPermission('Lấy thông tin chi tiết 1 giao dịch thu chi', 'XEM') &&
+                        <button
+                            onClick={() => navigate(`/transactions-detail?id=${row.original.thuChiId}`)}
+                            className="px-3 py-1 bg-gray-700 text-white rounded"
+                        >
+                            <Icon icon='mdi:eye' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Sửa thông tin 1 giao dịch thu chi', 'SUA') &&
+                        <button
+                            onClick={() => navigate(`/transactions-update?id=${row.original.thuChiId}`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission('Xóa 1 giao dịch thu chi', 'XOA') &&
+                        <button
+                            onClick={() => removeTransaction(row.original.thuChiId)}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
                 </div>
             ),
         },
