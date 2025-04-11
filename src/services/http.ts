@@ -36,7 +36,7 @@ const request = async <T>(
             if (response.status === 401) {
 
                 removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
-                window.location.href = '/login';
+                // window.location.href = '/login';
                 throw new Error('accessToken hết hạn (request)');
             }
 
@@ -44,7 +44,7 @@ const request = async <T>(
                 throw new Error((data as any)?.message || 'Lỗi hệ thống, vui lòng thử lại sau! (request)');
             }
 
-            window.location.href = '/';
+            // window.location.href = '/';
             throw new Error((data as any)?.message || 'Lỗi không xác định (request)');
         }
 

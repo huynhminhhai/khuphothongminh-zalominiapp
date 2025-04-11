@@ -7,6 +7,7 @@ import { FormInputField } from "components/form"
 import { Icon } from "@iconify/react"
 import { useLoginWithZalo } from "services/loginWithZalo"
 import { useLogin } from "apiRequest/auth"
+import images from "assets/images"
 
 const defaultValues: FormDataLogin = {
     username: 'demo',
@@ -79,11 +80,21 @@ const LoginForm: React.FC = () => {
                             />
                         </div>
                     </div>
-                    <div className="col-span-12 relative mt-[60px]">
+                    <div className="col-span-12 relative mt-[32px]">
                         <Button disabled={loading} fullWidth onClick={handleSubmit(onSubmit)}>
                             {loading ? "Đang xử lý..." : "Đăng nhập"}
                         </Button>
-                        <div className="mt-3 font-medium">Bạn không có tài khoản? <span onClick={() => loginWithZalo()} className="font-semibold text-[var(--primary-color)]">Đăng nhập với zalo</span></div>
+                        {/* <div className="mt-3 font-medium">Bạn không có tài khoản? <span onClick={() => loginWithZalo()} className="font-semibold text-[var(--primary-color)]">Đăng nhập với zalo</span></div> */}
+                    </div>
+                    <div className="col-span-12 mt-4">
+                        {/* <div className="or">hoặc</div> */}
+                        <Button variant="secondary" disabled={loading} fullWidth onClick={() => loginWithZalo()}>
+                            {
+                                loading
+                                    ? "Đang xử lý..."
+                                    :  "Đăng nhập với Zalo"
+                            }
+                        </Button>
                     </div>
                 </div>
             </Box>

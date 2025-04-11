@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const StatisticMain: React.FC<any> = () => {
     return (
         <Box mt={3}>
-            <div className="bg-[#3f328a] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
+            <div className="bg-[#493a9f] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
                 <div className="absolute top-[50%] left-0 transform translate-y-[-50%] w-[100%]">
                     <motion.img
                         className="invert brightness-0 w-[100%]"
@@ -24,16 +24,16 @@ const StatisticMain: React.FC<any> = () => {
                     <div className="relative z-2">
                         <div className="grid grid-cols-2 gap-2 gap-y-3">
                             <h5 className="text-[13px] leading-[1] font-medium">
-                                Hộ nghèo: <span className="text-[16px] font-bold">5%</span>
+                                <span className="opacity-90">Hộ nghèo:</span> <span className="text-[16px] font-bold opacity-100">5%</span>
                             </h5>
                             <h5 className="text-[13px] leading-[1] font-medium">
-                                Hộ cận nghèo: <span className="text-[16px] font-bold">15%</span>
+                                <span className="opacity-90">Hộ cận nghèo:</span> <span className="text-[16px] font-bold opacity-100">15%</span>
                             </h5>
                             <h5 className="text-[13px] leading-[1] font-medium">
-                                Gia đình văn hóa: <span className="text-[16px] font-bold">5%</span>
+                                <span className="opacity-90">Gia đình văn hóa:</span> <span className="text-[16px] font-bold opacity-100">5%</span>
                             </h5>
                             <h5 className="text-[13px] leading-[1] font-medium">
-                                Phản ánh đã xử lý: <span className="text-[16px] font-bold">25%</span>
+                                <span className="opacity-90">Phản ánh đã xử lý:</span> <span className="text-[16px] font-bold opacity-100">25%</span>
                             </h5>
                         </div>
                     </div>

@@ -1,4 +1,4 @@
-import { openWebview, openMediaPicker, openChat, getUserInfo, getPhoneNumber, getAccessToken, openPermissionSetting, getStorage, setStorage, removeStorage } from "zmp-sdk/apis";
+import { openWebview, openMediaPicker, openChat, getUserInfo, getPhoneNumber, getAccessToken, openPermissionSetting, getStorage, setStorage, removeStorage, createShortcut } from "zmp-sdk/apis";
 
 export const openUrlInWebview = async (link: string, style?: 'normal' | 'bottomSheet'): Promise<void> => {
     try {
@@ -103,6 +103,19 @@ export const openPermissionSettingApp = async () => {
     } catch (error) {
         console.log(error);
         throw error
+    }
+};
+
+export const createMiniAppShortcut = async () => {
+    try {
+        await createShortcut({
+            params: {
+                utm_source: "shortcut",
+            },
+        });
+    } catch (error) {
+        // xử lý khi gọi api thất bại
+        console.log(error);
     }
 };
 

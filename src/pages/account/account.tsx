@@ -3,7 +3,7 @@ import { useLogout } from "apiRequest/auth";
 import images from "assets/images";
 import { HeaderSub } from "components/header-sub"
 import React from "react"
-import { openPermissionSettingApp } from "services/zalo";
+import { createMiniAppShortcut, openPermissionSettingApp } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { Avatar, Box, List, Page, useNavigate } from "zmp-ui"
 
@@ -74,6 +74,12 @@ const AccountPage: React.FC = () => {
                                 onClick={() => openPermissionSettingApp()}
                                 title="Quản lý quyền"
                                 prefix={<img src={images.setting} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                            <Item
+                                onClick={() => createMiniAppShortcut()}
+                                title="Thêm vào màn hình chính"
+                                prefix={<img src={images.shortcut} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
                         </List>

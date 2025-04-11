@@ -15,9 +15,9 @@ type SelectFieldProps = {
     placeholder?: string;
     required?: boolean;
     options: OptionSelect[],
-    selectedValue: string | "",
-    setSelectedValue: React.Dispatch<React.SetStateAction<string | "">>,
-    onChange: (value: string) => void;
+    selectedValue: string | "" | 0 | null,
+    setSelectedValue: React.Dispatch<React.SetStateAction<string | "" | 0 | null>>,
+    onChange: (value: string | number | null) => void;
     errors: string,
     disabled?: boolean;
 }
@@ -39,6 +39,19 @@ export const SelectField: React.FC<SelectFieldProps> = ({
     const filteredOptions = options.filter((option) =>
         option.label.toLowerCase().includes(search.toLowerCase())
     );
+
+    const toggleSelection = (optionValue: string) => {
+
+        if (selectedValue === optionValue) {
+            setSelectedValue(null);
+            onChange(null);
+        } else {
+            setSelectedValue(optionValue);
+            onChange(optionValue);
+        }
+        setIsSheetOpen(false);
+        setSearch("");
+    };
 
     return (
         <Box pb={4} className="relative">
@@ -78,9 +91,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
                                 <div
                                     key={option.value}
                                     onClick={() => {
-                                        setSelectedValue(option.value); // Save value, not label
-                                        onChange(option.value);
-                                        setIsSheetOpen(false);
+                                        // setSelectedValue(option.value);
+                                        // onChange(option.value);
+                                        // setIsSheetOpen(false);
+                                        toggleSelection(option.value);
                                     }}
                                     className="flex justify-between items-center py-3 border-b-[1px] cursor-pointer"
                                 >

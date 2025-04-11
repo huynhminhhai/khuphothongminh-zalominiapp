@@ -30,6 +30,7 @@ import statistics from './statistics.png'
 import map from './map.png'
 import avatarDefault from './private-account.png'
 import invoice from './bill.png'
+import shortcut from './shortcut.png'
 
 const images = {
     logo,
@@ -63,7 +64,8 @@ const images = {
     map,
     avatarDefault,
     shape4,
-    invoice
+    invoice,
+    shortcut
 }
 
 export default images

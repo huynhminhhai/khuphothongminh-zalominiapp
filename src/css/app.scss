@@ -183,7 +183,7 @@ tbody tr td:not(:first-child) {
 }
 
 .swiper-pagination-bullet-active {
-  background-color: var(--primary-color) !important;
+  background-color: #003080b3 !important;
 }
 
 /**
@@ -269,7 +269,8 @@ tbody tr td:not(:first-child) {
 * MEETING
 **/
 
-.home .meeting-item {
+.home .meeting-item,
+.home .task-item {
   border-bottom: 0;
 }
 
@@ -606,4 +607,25 @@ div.ql-editor {
 div.flex-1.font-medium.line-clamp-2 button.rounded {
   height: 26px;
   width: 42px;
+}
+
+.or {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  gap: 6px;
+  color: var(--gray-color);
+  font-weight: 500;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.or::before,
+.or::after {
+  content: '';
+  display: block;
+  height: 1px;
+  width: 100%;
+  background-color: var(--gray-color);
 }
