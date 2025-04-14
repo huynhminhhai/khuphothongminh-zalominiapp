@@ -1,17 +1,20 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useDeleteTask, useGetTaskListNormal, useGetTaskStatus, useUpdateTaskStatus } from "apiRequest/task"
+import { useDeleteTransaction, useGetTransactionListNormal, useGetTransactionType } from "apiRequest/transaction"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
+import { TransactionColor, TransactionsType } from "constants/utinities"
 import { debounce } from "lodash"
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
-import { Box, Button, Input, Page, Select, useNavigate } from "zmp-ui"
+import { formatDate } from "utils/date"
+import { convertNumberVND } from "utils/number"
+import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
-const TaskManagementPage: React.FC = () => {
+const InvoiceManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { account, hasPermission } = useStoreApp()
@@ -24,19 +27,46 @@ const TaskManagementPage: React.FC = () => {
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const [filters, setFilters] = useState({
         search: "",
-        tieuDe: "",
+        noiDung: "",
     });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
         ApId: account ? account.thongTinDanCu?.apId : 0,
         keyword: '',
-        TieuDe: '',
+        LoaiGiaoDichTaiChinhId: 0,
+        NoiDung: ''
     })
 
-    const { data, isLoading } = useGetTaskListNormal(param);
-    const { data: taskStatus } = useGetTaskStatus();
-    const { mutate: deleteTask } = useDeleteTask();
+    const { data: sssss, isLoading } = useGetTransactionListNormal(param);
+    const { mutate: deleteTransaction } = useDeleteTransaction();
+    const { data: transactionType } = useGetTransactionType();
+
+    const data = {
+        data: [
+            {
+                tieuDe: "Nước sinh hoạt",
+                donVi: "m³",
+                donGia: 7000,
+                chuKy: "Hàng tháng",
+            },
+            {
+                tieuDe: "Rác sinh hoạt",
+                donVi: "kg",
+                donGia: 25000,
+                chuKy: "Hàng tháng",
+            },
+            {
+                tieuDe: "Thuế sử dụng đất phi nông nghiệp",
+                donVi: "m²",
+                donGia: 150000,
+                chuKy: "Hàng năm",
+            }
+        ],
+        page: {
+            total: 1
+        }
+    }
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -55,7 +85,7 @@ const TaskManagementPage: React.FC = () => {
     }
 
     useDebouncedParam(filters.search, 'keyword');
-    useDebouncedParam(filters.tieuDe, 'TieuDe');
+    useDebouncedParam(filters.noiDung, 'NoiDung');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -68,7 +98,7 @@ const TaskManagementPage: React.FC = () => {
         setParam((prevParam) => ({
             ...prevParam,
             pageSize: newPageSize,
-            page: 1,
+            page: 10,
         }));
     };
 
@@ -91,101 +121,72 @@ const TaskManagementPage: React.FC = () => {
         setConfirmAction(null);
     };
 
-    const removeFeedback = (id: number) => {
+    const removeTransaction = (id: number) => {
         openConfirmModal(() => {
-            deleteTask(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa nhiệm vụ này?');
+            deleteTransaction(id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa thu/chi này?');
     }
 
     const columns: ColumnDef<any>[] = [
         {
             accessorKey: 'tieuDe',
-            header: 'Tiêu đề',
-            size: 300
+            header: 'Tên phí'
         },
         {
-            accessorKey: 'noiDung',
-            header: 'Nội dung',
-            size: 300
-        },
-        {
-            id: 'status',
-            header: 'Trạng thái',
+            id: 'donVi',
+            header: 'Đơn vị',
             cell: ({ row }) => {
-                const { mutate, isPending } = useUpdateTaskStatus();
-
                 return (
-                    <Box width={180}>
-                        <Select
-                            closeOnSelect
-                            defaultValue={row.original.tinhTrangId}
-                            onChange={(value) => {
-                                openConfirmModal(() => {
-                                    mutate({
-                                        nhiemVuId: row.original.nhiemVuId,
-                                        tinhTrangId: Number(value),
-                                    });
-                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
-                            }}
-                            className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')}
-                        >
-                            {taskStatus && taskStatus.map((item) => (
-                                <Option
-                                    value={item.tinhTrangId}
-                                    key={item.tinhTrangId}
-                                    title={item.tenTinhTrang}
-                                />
-                            ))}
-                        </Select>
-                    </Box>
-                );
-            },
+                    <div>
+                        {
+                            row.original.donVi
+                        }
+                    </div>
+                )
+            }
         },
-        // {
-        //     id: 'priority',
-        //     header: 'Ưu tiên',
-        //     cell: ({ row }) => (
-        //         <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
-        //             <div className="text-[14px] text-white font-medium leading-[1] bg-red-600 px-2 py-[6px] rounded-xl"
-        //                 style={{
-        //                     backgroundColor: row.original.priority === 1 ? '#16a34a' : row.original.priority === 2 ? '#eab308' : '#dc2626'
-        //                 }}
-        //             >
-        //                 {
-        //                     getLabelOptions(row.original.priority, taskPriority)
-        //                 }
-        //             </div>
-        //         </div>
-        //     ),
-        // },
         {
-            id: 'actions', // Custom column for actions
+            id: 'donGia',
+            header: 'Đơn giá',
+            cell: ({ row }) => {
+                return (
+                    <div>
+                        {
+                            convertNumberVND(row.original.donGia)
+                        }
+                    </div>
+                )
+            }
+        },
+        {
+            id: 'chuKy',
+            header: 'Ngày thu/chi',
+            cell: ({ row }) => {
+                return (
+                    <div>
+                        {row.original.chuKy}
+                    </div>
+                )
+            }
+        },
+        {
+            id: 'actions',
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 nhiệm vụ', 'XEM') &&
+                        hasPermission('Sửa thông tin 1 giao dịch thu chi', 'SUA') &&
                         <button
-                            onClick={() => navigate(`/task-detail?id=${row.original.nhiemVuId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        hasPermission('Sửa thông tin 1 nhiệm vụ', 'SUA') &&
-                        <button
-                            onClick={() => navigate(`/task-update?id=${row.original.nhiemVuId}`)}
+                            onClick={() => navigate(`/transactions-update?id=${row.original.thuChiId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
                         >
                             <Icon icon='ri:edit-line' fontSize={18} />
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 tập tin nhiệm vụ', 'XOA') &&
+                        hasPermission('Xóa 1 giao dịch thu chi', 'XOA') &&
                         <button
-                            onClick={() => removeFeedback(row.original.nhiemVuId)}
+                            onClick={() => removeTransaction(row.original.thuChiId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
                         >
                             <Icon icon='material-symbols:delete' fontSize={18} />
@@ -209,7 +210,7 @@ const TaskManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có nhiệm vụ nào!"
+                        title="Hiện chưa có thu/chi nào!"
                     />
                 </Box>
             );
@@ -237,15 +238,14 @@ const TaskManagementPage: React.FC = () => {
         </Box>
     };
 
-
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý nhiệm vụ" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý thu phí" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton={hasPermission('Thêm mới 1 nhiệm vụ', 'SUA')}
-                        onAddButtonClick={() => navigate("/task-add")}
+                        showAddButton
+                        onAddButtonClick={() => navigate('/transactions-add')}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
                     >
@@ -256,26 +256,30 @@ const TaskManagementPage: React.FC = () => {
                                 onChange={(e) => updateFilter('search', e.target.value)}
                             />
                         </div>
-                        <div className="col-span-12">
+                        <div className="col-span-6">
                             <Input
-                                placeholder="Tiêu đề..."
-                                value={filters.tieuDe}
-                                onChange={(e) => updateFilter('tieuDe', e.target.value)}
+                                placeholder="Nội dung..."
+                                value={filters.noiDung}
+                                onChange={(e) => updateFilter('noiDung', e.target.value)}
                             />
                         </div>
+                        <div className="col-span-6">
+                            <Select
+                                placeholder="Loại giao dich"
+                                value={param.LoaiGiaoDichTaiChinhId}
+                                closeOnSelect
+                                onChange={(e) => setParam(prev => ({ ...prev, LoaiGiaoDichTaiChinhId: Number(e) }))}
+                            >
+                                <Option title="Tất cả" value={0} />
+                                {
+                                    transactionType?.map((item) => (
+                                        <Option key={item.loaiGiaoDichTaiChinhId} value={item.loaiGiaoDichTaiChinhId} title={item.tenLoaiGiaoDichTaiChinh} />
+                                    ))
+                                }
+
+                            </Select>
+                        </div>
                     </FilterBar>
-                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
-                        <Button
-                            size="small"
-                            variant="tertiary"
-                            onClick={() => navigate('/task')}
-                        >
-                            <div className="flex items-center gap-1">
-                                Nhiệm vụ của tôi
-                                <Icon fontSize={18} icon='iconamoon:enter' />
-                            </div>
-                        </Button>
-                    </Box>
                     <Box>
                         {renderContent()}
                     </Box>
@@ -283,8 +287,8 @@ const TaskManagementPage: React.FC = () => {
             </Box>
             <ConfirmModal
                 visible={isConfirmVisible}
-                title={modalContent.title}
-                message={modalContent.message}
+                title="Xác nhận"
+                message="Bạn có chắc chắn muốn xóa khoản thu/chi này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
@@ -292,4 +296,4 @@ const TaskManagementPage: React.FC = () => {
     )
 }
 
-export default TaskManagementPage
+export default InvoiceManagementPage

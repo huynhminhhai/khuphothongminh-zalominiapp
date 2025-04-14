@@ -60,6 +60,13 @@ export { default as TransactionsAddPage } from "./management-transactions/transa
 export { default as TransactionsUpdatePage } from "./management-transactions/transactions-update";
 
 /**
+* INVOICE
+**/
+export { default as InvoiceManagementPage } from "./management-invoice/invoice-management";
+export { default as InvoiceAddPage } from "./management-invoice/invoice-create";
+export { default as InvoiceUpdatePage } from "./management-invoice/invoice-update";
+
+/**
 * REPORT FINANCE
 **/ 
 export { default as ReportFinanceManagementPage } from "./management-report-finance/report-finance-management";

@@ -14,25 +14,37 @@ import { Divider } from "components/divider"
 const TaskList: React.FC = () => {
 
     const { account } = useStoreApp()
-    const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({
+        search: "",
+        tieuDe: "",
+    });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
         ApId: account ? account.thongTinDanCu?.apId : 0,
         keyword: '',
-        nguoiThucHienId: account ? account?.nguoiDungId : 0
+        nguoiThucHienId: account ? account?.nguoiDungId : 0,
+        TieuDe: '',
     });
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.tieuDe, 'TieuDe');
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyTaskList(param);
 
@@ -77,12 +89,19 @@ const TaskList: React.FC = () => {
             <FilterBar2
                 searchComponent={
                     <Input.Search
-                        placeholder='Tìm kiếm...'
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        placeholder='Tìm kiếm nhanh...'
+                        value={filters.search}
+                        onChange={(e) => updateFilter('search', e.target.value)}
                     />
                 }
             >
+                <div className="col-span-12">
+                    <Input
+                        placeholder="Tiêu đề..."
+                        value={filters.tieuDe}
+                        onChange={(e) => updateFilter('tieuDe', e.target.value)}
+                    />
+                </div>
             </FilterBar2>
             <Divider />
             {renderContent()}

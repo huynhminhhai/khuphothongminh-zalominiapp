@@ -4,11 +4,11 @@ import http from "services/http";
 import { useNavigate, useSnackbar } from "zmp-ui";
 
 const taskApiRequest = {
-    getTaskList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/nhiemvu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getTaskList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; }) => {
+        return await http.get<any>(`/nhiemvu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&TieuDe=${param.TieuDe}`);
     },
-    getMyTaskList: async (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/nhiemvu/cuatoi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&NguoiThucHienId=${param.nguoiThucHienId}&TextSearch=${param.keyword}`);
+    getMyTaskList: async (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string; TieuDe?: string; }) => {
+        return await http.get<any>(`/nhiemvu/cuatoi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&NguoiThucHienId=${param.nguoiThucHienId}&TextSearch=${param.keyword}&TieuDe=${param.TieuDe}`);
     },
     getTaskDetail: async (id: number) => {
         return await http.get<any>(`/nhiemvu/chitiet/${id}`);
@@ -42,9 +42,9 @@ const taskApiRequest = {
 /**
 * GET TASK LIST
 **/
-export const useGetTaskListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
+export const useGetTaskListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; }) => {
     return useQuery({
-        queryKey: ['taskList', param.page, param.pageSize, param.ApId, param.keyword],
+        queryKey: ['taskList', param.page, param.pageSize, param.ApId, param.keyword, param.TieuDe],
         queryFn: async () => {
             const res = await taskApiRequest.getTaskList(param);
             return res
@@ -57,9 +57,9 @@ export const useGetTaskListNormal = (param: { page: number; pageSize: number; Ap
 /**
 * GET MY TASK LIST
 **/
-export const useGetMyTaskListNormal = (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string }) => {
+export const useGetMyTaskListNormal = (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string, TieuDe?: string; }) => {
     return useQuery({
-        queryKey: ['myTaskList', param.page, param.pageSize, param.ApId, param.keyword, param.nguoiThucHienId],
+        queryKey: ['myTaskList', param.page, param.pageSize, param.ApId, param.keyword, param.nguoiThucHienId, param.TieuDe],
         queryFn: async () => {
             const res = await taskApiRequest.getMyTaskList(param);
             return res
@@ -72,10 +72,10 @@ export const useGetMyTaskListNormal = (param: { page: number; pageSize: number; 
 /**
 * GET MY TASK LIST (INFINITE)
 **/
-export const useGetMyTaskList = (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string }) => {
+export const useGetMyTaskList = (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string; TieuDe?: string; }) => {
 
     return useInfiniteQuery({
-        queryKey: ['myTaskList', param.pageSize, param.nguoiThucHienId, param.ApId, param.keyword],
+        queryKey: ['myTaskList', param.pageSize, param.nguoiThucHienId, param.ApId, param.keyword, param.TieuDe],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 

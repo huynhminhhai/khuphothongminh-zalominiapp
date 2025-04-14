@@ -175,7 +175,7 @@ const FeedbackAddForm: React.FC = () => {
                             name="congKhaiThongTinCaNhan"
                             label="Thông tin cá nhân"
                             control={control}
-                            size="medium"
+                            // size="medium"
                         />
                     </div>
                     <div className="col-span-6">
@@ -183,7 +183,7 @@ const FeedbackAddForm: React.FC = () => {
                             name="congKhaiPhanAnh"
                             label="Phản ánh"
                             control={control}
-                            size="medium"
+                            // size="medium"
                         />
                     </div>
 

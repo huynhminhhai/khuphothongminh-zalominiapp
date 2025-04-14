@@ -19,7 +19,8 @@ const TaskSection: React.FC<any> = () => {
         pageSize: 4,
         ApId: account ? account.thongTinDanCu?.apId : 0,
         keyword: '',
-        nguoiThucHienId: account ? account?.nguoiDungId : 0
+        nguoiThucHienId: account ? account?.nguoiDungId : 0,
+        TieuDe: ''
     });
 
     const { data, isLoading } = useGetMyTaskListNormal(param);

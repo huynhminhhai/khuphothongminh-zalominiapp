@@ -14,7 +14,7 @@ const ManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col pb-[66px]" style={{ backgroundColor: '#f0f0f0' }}>
             <Box>
-                <HeaderSub title="Quản trị ứng dụng" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Quản lý" onBackClick={() => navigate('/')} />
 
                 <Box m={4}>
                     <List className="bg-white rounded-lg">
@@ -22,7 +22,7 @@ const ManagementPage: React.FC = () => {
                         {
                             hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
                             <Item
-                                title="Quản lý tin tức"
+                                title="Tin tức"
                                 prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
                                 suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                                 onClick={() => navigate('/news-management')}
@@ -31,7 +31,7 @@ const ManagementPage: React.FC = () => {
                         {
                             hasPermission('Lấy danh sách khảo sát có phân trang', 'XEM') &&
                             <Item
-                                title="Quản lý khảo sát"
+                                title="Khảo sát"
                                 prefix={<img src={images.survey} alt='survey' className="w-[30px] h-auto" />}
                                 suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                                 onClick={() => navigate('/survey-management')}
@@ -40,7 +40,7 @@ const ManagementPage: React.FC = () => {
                         {
                             hasPermission('Lấy danh sách phản ánh có phân trang', 'XEM') &&
                             <Item
-                                title="Quản lý phản ánh"
+                                title="Phản ánh"
                                 prefix={<img src={images.idea} alt='feedback' className="w-[30px] h-auto" />}
                                 suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                                 onClick={() => navigate('/feedback-management')}
@@ -61,10 +61,28 @@ const ManagementPage: React.FC = () => {
                         {
                             hasPermission('Lấy danh sách dân cư có phân trang', 'XEM') &&
                             <Item
-                                title="Quản lý dân cư"
+                                title="Dân cư"
                                 prefix={<img src={images.home} alt='feedback' className="w-[30px] h-auto" />}
                                 suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                                 onClick={() => navigate('/resident-management')}
+                            />
+                        }
+                        {
+                            hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
+                            <Item
+                                title="Thu phí"
+                                prefix={<img src={images.invoice} alt='feedback' className="w-[30px] h-auto" />}
+                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                onClick={() => navigate('/invoice-management')}
+                            />
+                        }
+                        {
+                            hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
+                            <Item
+                                title="Thu/chi"
+                                prefix={<img src={images.money} alt='feedback' className="w-[30px] h-auto" />}
+                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                onClick={() => navigate('/transactions-management')}
                             />
                         }
                     </List>
@@ -76,7 +94,7 @@ const ManagementPage: React.FC = () => {
                         {
                             hasPermission('Lấy danh sách nhiệm vụ có phân trang', 'XEM') &&
                             <Item
-                                title="Quản lý nhiệm vụ"
+                                title="Nhiệm vụ"
                                 prefix={<img src={images.todo} alt='feedback' className="w-[30px] h-auto" />}
                                 suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                                 onClick={() => navigate('/task-management')}
@@ -91,21 +109,13 @@ const ManagementPage: React.FC = () => {
                         {
                             hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
                             <Item
-                                title="Quản lý cuộc họp"
+                                title="Cuộc họp"
                                 prefix={<img src={images.meeting} alt='feedback' className="w-[30px] h-auto" />}
                                 suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                                 onClick={() => navigate('/meeting-management')}
                             />
                         }
-                        {
-                            hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
-                            <Item
-                                title="Quản lý thu/chi"
-                                prefix={<img src={images.money} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                                onClick={() => navigate('/transactions-management')}
-                            />
-                        }
+                        
                         {/* <Item
                             title="Báo cáo tài chính"
                             prefix={<img src={images.report} alt='feedback' className="w-[30px] h-auto" />}
