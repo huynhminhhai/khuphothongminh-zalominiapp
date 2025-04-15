@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
-import { useNavigate, useSnackbar } from "zmp-ui";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { useNavigate } from "zmp-ui";
 
 const surveyApiRequest = {
     getSurveyList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
@@ -73,7 +74,7 @@ export const useGetSurveyList = (param: { page: number; pageSize: number, ApId: 
 * POST SURVEY
 **/ 
 export const useCreateSurvey = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate()
 
@@ -82,26 +83,15 @@ export const useCreateSurvey = () => {
             return await surveyApiRequest.createSurvey(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Tạo khảo sát thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Tạo khảo sát thành công');
 
             queryClient.invalidateQueries({ queryKey: ["surveyList"] });
 
             navigator('/survey-management')
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -132,31 +122,20 @@ export const useGetSurveyStatus = () => {
 **/ 
 export const useDeleteSurvey = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await surveyApiRequest.deleteSurvey(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa khảo sát thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa khảo sát thành công');
 
             queryClient.invalidateQueries({ queryKey: ["surveyList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -189,7 +168,7 @@ export const useGetSurveyDetail = (id: number) => {
 * PUT SURVEY
 **/
 export const useUpdateSurvey = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -197,25 +176,14 @@ export const useUpdateSurvey = () => {
             return await surveyApiRequest.updateSurvey(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật khảo sát thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật thông tin khảo sát thành công');
 
             queryClient.invalidateQueries({ queryKey: ["surveyDetail"] });
             queryClient.invalidateQueries({ queryKey: ["surveyList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -224,7 +192,7 @@ export const useUpdateSurvey = () => {
 * POST RESULT SURVEY
 **/ 
 export const useCreateResultSurvey = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate()
 
@@ -233,26 +201,15 @@ export const useCreateResultSurvey = () => {
             return await surveyApiRequest.createResultSurvey(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Thực hiện khảo sát thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Thực hiện khảo sát thành công')
 
             queryClient.invalidateQueries({ queryKey: ["surveyResultList"] });
 
             // navigator('/survey')
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };

@@ -3,24 +3,19 @@ import { HeaderSub } from "components/header-sub"
 import React, { useEffect } from "react"
 import { getDataFromStorage } from "services/zalo"
 import { useStoreApp } from "store/store"
-import { Box, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { useCustomSnackbar } from "utils/useCustomSnackbar"
+import { Box, Page, useNavigate } from "zmp-ui"
 
 const LoginPage: React.FC = () => {
 
     const navigate = useNavigate();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const { account, setAccount, setToken } = useStoreApp();
 
     useEffect(() => {
         const checkLogin = async () => {
             if (account) {
-                openSnackbar({
-                    icon: true,
-                    text: "Bạn đã đăng nhập thành công",
-                    type: 'success',
-                    action: { text: "Đóng", close: true },
-                    duration: 3000,
-                });
+                showSuccess('Đăng nhập thành công')
                 navigate("/");
                 return;
             }

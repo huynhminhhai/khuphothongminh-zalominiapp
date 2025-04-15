@@ -1,14 +1,13 @@
 import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "zmp-ui";
 import { getAccessTokenAccount, getPhoneNumberAccount } from "./zalo";
 import { useStoreApp } from "store/store";
 import { useLoginZalo } from "apiRequest/auth";
-import envConfig from "envConfig";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
 
 export const useLoginWithZalo = () => {
 
     const navigate = useNavigate();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError, showWarning } = useCustomSnackbar();
     const { setIsLoadingFullScreen, account } = useStoreApp();
     const { mutateAsync } = useLoginZalo();
 
@@ -29,37 +28,19 @@ export const useLoginWithZalo = () => {
                 const accessToken = await getAccessTokenAccount();
 
                 if (!accessToken) {
-                    openSnackbar({
-                        icon: true,
-                        text: "Có lỗi xảy ra, vui lòng thử lagi.",
-                        type: "error",
-                        action: { text: "Đóng", close: true },
-                        duration: 5000,
-                    });
+                    showError('Có lỗi xảy ra, vui lòng thử lại sau')
                     return;
                 }
 
                 await mutateAsync({ token: phoneNumber, userAccessToken: accessToken });
             }
             
-        } catch (error) {
-            console.error("Error:", error);
-            if ((error as any).code === -201) {
-                openSnackbar({
-                    icon: true,
-                    text: "Bạn đã từ chối đăng nhập bằng số điện thoại",
-                    type: "error",
-                    action: { text: "Đóng", close: true },
-                    duration: 5000,
-                });
+        } catch (error: any) {
+            if (error.code === -201) {
+                showWarning('Bạn đã từ chối đăng nhập bằng Zalo')
             } else {
-                openSnackbar({
-                    icon: true,
-                    text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                    type: "error",
-                    action: { text: "Đóng", close: true },
-                    duration: 5000,
-                });
+                console.error(`Lỗi: ${error}`)
+                showError(error)
             }
         } finally {
             setIsLoadingFullScreen(false);

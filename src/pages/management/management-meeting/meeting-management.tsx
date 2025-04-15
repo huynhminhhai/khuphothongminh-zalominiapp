@@ -12,12 +12,13 @@ import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { copyToClipboard } from "utils/copyToClipboard"
 import { getHourFromDate, formatDate as formatDateMeeting } from "utils/date"
-import { Box, DatePicker, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
+import { useCustomSnackbar } from "utils/useCustomSnackbar"
+import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const MeetingManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { openSnackbar } = useSnackbar()
+    const { showSuccess, showError } = useCustomSnackbar();
     const { account, hasPermission } = useStoreApp()
 
     const { Option } = Select;
@@ -109,20 +110,8 @@ const MeetingManagementPage: React.FC = () => {
     const handleCopy = async (linkOnl: string) => {
         copyToClipboard(
             linkOnl,
-            () => openSnackbar({
-                icon: true,
-                text: "Sao chép thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            }),
-            () => openSnackbar({
-                icon: true,
-                text: "Sao chép không thành công",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            })
+            () => showSuccess('Sao chép thành công'),
+            () => showError('Sao chép thất bại')
         );
     };
 

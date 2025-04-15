@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import http from "services/http";
-import { useSnackbar } from "zmp-ui";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { useNavigate } from "zmp-ui";
 
 export const meetingApiRequest = {
     getMeeitngList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; }) => {
@@ -44,7 +44,7 @@ export const meetingApiRequest = {
 
 /**
 * GET MEETING LIST
-**/ 
+**/
 export const useGetMeetingListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; }) => {
     return useQuery({
         queryKey: ['meetingList', param.page, param.pageSize, param.ApId, param.keyword, param.TieuDe, param.ThoiGianBatDau, param.ThoiGianKetThuc, param.DiaDiem],
@@ -60,7 +60,7 @@ export const useGetMeetingListNormal = (param: { page: number; pageSize: number;
 
 /**
 * GET NEWS LIST (INFINITE)
-**/ 
+**/
 export const useGetMeetingList = (param: { page: number; pageSize: number, ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; }) => {
 
     return useInfiniteQuery({
@@ -87,7 +87,7 @@ export const useGetMeetingList = (param: { page: number; pageSize: number, ApId:
 
 /**
 * GET MEETING TODAY LIST
-**/ 
+**/
 export const useGetMeetingTodayList = () => {
     return useQuery({
         queryKey: ['meetingList'],
@@ -103,7 +103,7 @@ export const useGetMeetingTodayList = () => {
 
 /**
 * GET MEETING DETAIL
-**/ 
+**/
 export const useGetMeetingDetail = (id: number) => {
 
     return useQuery({
@@ -127,7 +127,7 @@ export const useGetMeetingDetail = (id: number) => {
 
 /**
 * GET MEETING STATUS
-**/ 
+**/
 export const useGetMeetingStatus = () => {
     return useQuery({
         queryKey: ["meetingStatus"],
@@ -140,16 +140,16 @@ export const useGetMeetingStatus = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 60 * 24, 
+        staleTime: 1000 * 60 * 60 * 24,
         retry: 1,
     });
 };
 
 /**
 * POST MEETING
-**/ 
+**/
 export const useCreateMeeting = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate()
 
@@ -158,60 +158,39 @@ export const useCreateMeeting = () => {
             return await meetingApiRequest.createMeeting(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Tạo cuộc họp thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+
+            showSuccess('Tạo cuộc họp thành công');
 
             queryClient.invalidateQueries({ queryKey: ["meetingList"] });
 
             navigator('/meeting-management')
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
 
 /**
 * DELETE MEETING
-**/ 
+**/
 export const useDeleteMeeting = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await meetingApiRequest.deleteMeeting(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa cuộc họp thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa cuộc họp thành công');
 
             queryClient.invalidateQueries({ queryKey: ["meetingList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -220,7 +199,7 @@ export const useDeleteMeeting = () => {
 * PUT MEETING
 **/
 export const useUpdateMeeting = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -228,34 +207,23 @@ export const useUpdateMeeting = () => {
             return await meetingApiRequest.updateMeeting(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật cuộc họp thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật thông tin cuộc họp thành công');
 
             queryClient.invalidateQueries({ queryKey: ["meetingDetail"] });
             queryClient.invalidateQueries({ queryKey: ["meetingList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
 
 /**
 * POST MEETING MEMBER
-**/ 
+**/
 export const useCreateMeetingMember = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate()
 
@@ -264,13 +232,6 @@ export const useCreateMeetingMember = () => {
             return await meetingApiRequest.createMeetingMember(formData);
         },
         onSuccess: () => {
-            // openSnackbar({
-            //     icon: true,
-            //     text: "Tạo  cuộc họp thành công",
-            //     type: "success",
-            //     action: { text: "Đóng", close: true },
-            //     duration: 3000,
-            // });
 
             queryClient.invalidateQueries({ queryKey: ["meetingList"] });
             queryClient.invalidateQueries({ queryKey: ["meetingDetail"] });
@@ -278,48 +239,31 @@ export const useCreateMeetingMember = () => {
             navigator('/meeting-management')
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
 
 /**
 * DELETE MEETING
-**/ 
+**/
 export const useDeleteMeetingMember = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await meetingApiRequest.deleteMeetingMember(id);
         },
         onSuccess: () => {
-            // openSnackbar({
-            //     icon: true,
-            //     text: "Xóa cuộc họp thành công",
-            //     type: "success",
-            //     action: { text: "Đóng", close: true },
-            //     duration: 3000,
-            // });
 
             queryClient.invalidateQueries({ queryKey: ["meetingList"] });
             queryClient.invalidateQueries({ queryKey: ["meetingDetail"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -329,7 +273,7 @@ export const useDeleteMeetingMember = () => {
 **/
 export const useUpdateMeetingStatus = () => {
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -337,27 +281,15 @@ export const useUpdateMeetingStatus = () => {
             return await meetingApiRequest.updateMeetingStatus(param);
         },
         onSuccess: () => {
-
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật trạng thái cuộc họp thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật trạng thái cuộc họp thành công');
 
             queryClient.invalidateQueries({ queryKey: ["meetingList"] });
             queryClient.invalidateQueries({ queryKey: ["meetingDetail"] });
 
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: error,
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };

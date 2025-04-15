@@ -5,7 +5,8 @@ import { ConfirmModal } from "components/modal"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
 import { RESIDENTIALGROUPDATA, TEAMDATA, TeamType } from "constants/utinities"
 import React, { useState } from "react"
-import { Box, Button, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
+import { useCustomSnackbar } from "utils/useCustomSnackbar"
+import { Box, Button, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const initParam = {
     pageIndex: 1,
@@ -17,7 +18,7 @@ const initParam = {
 const TeamManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const { Option } = Select
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
@@ -64,11 +65,7 @@ const TeamManagementPage: React.FC = () => {
         openConfirmModal(() => {
             console.log('Call api delete news with id: ', id)
 
-            openSnackbar({
-                text: 'Xóa nhân sự thành công',
-                type: 'success',
-                duration: 5000,
-            });
+            showSuccess('Xóa nhân sự thành công')
         })
     }
 

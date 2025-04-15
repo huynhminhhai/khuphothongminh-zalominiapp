@@ -1,11 +1,11 @@
 import React, { useState } from "react"
-import { Box, Button, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Button, useNavigate } from "zmp-ui"
 import { FormDataChangePassword, schemaChangePassword } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FormInputField } from "components/form"
 import { Icon } from "@iconify/react"
-import { useLoginWithZalo } from "services/loginWithZalo"
+import { useCustomSnackbar } from "utils/useCustomSnackbar"
 
 const defaultValues: FormDataChangePassword = {
     password: '',
@@ -15,7 +15,7 @@ const defaultValues: FormDataChangePassword = {
 
 const ChangePasswordForm: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(false);
@@ -42,24 +42,12 @@ const ChangePasswordForm: React.FC = () => {
         try {
             console.log('call api login with: ', { ...formData });
 
-            openSnackbar({
-                icon: true,
-                text: "Đổi mật khẩu thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+            showSuccess('Đổi mật khẩu thành công')
             reset(defaultValues);
             navigate('/profile');
         } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error as string)
         } finally {
             setLoading(false);
         }

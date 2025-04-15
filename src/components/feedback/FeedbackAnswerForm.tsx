@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, useNavigate } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
 import { FormImageUploader, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataFeedback, schemaFeedback } from "./type"
-import { FeedbackResponse } from "constants/utinities"
+import { useCustomSnackbar } from "utils/useCustomSnackbar"
 
 const defaultValues: FormDataFeedback = {
     content: '',
@@ -15,12 +15,12 @@ const defaultValues: FormDataFeedback = {
 
 type FeedbackAnswerFormProps = {
     feedbackId: number;
-    responseData: FeedbackResponse | undefined
+    responseData: any | undefined
 }
 
 const FeedbackAnswerForm: React.FC<FeedbackAnswerFormProps> = ({ feedbackId, responseData }) => {
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const navigate = useNavigate()
 
     const [loading, setLoading] = useState(false);
@@ -52,24 +52,12 @@ const FeedbackAnswerForm: React.FC<FeedbackAnswerFormProps> = ({ feedbackId, res
             // Gọi API thêm tin tức
             console.log('call api add with: ', { ...formData, feedbackId });
             // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Thêm phản hồi thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+            showSuccess('Thêm phản hồi thành công')
             reset(defaultValues);
             navigate('/feedback-management');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+        } catch (error: any) {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         } finally {
             setLoading(false);
         }
@@ -81,24 +69,12 @@ const FeedbackAnswerForm: React.FC<FeedbackAnswerFormProps> = ({ feedbackId, res
             // Gọi API thêm tin tức
             console.log('call api update with: ', { ...formData, feedbackId });
             // Thành công
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật phản hồi thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+            showSuccess('Cập nhật thông tin phản hồi thành công')
             reset(defaultValues);
             navigate('/feedback-management');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
+        } catch (error: any) {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         } finally {
             setLoading(false);
         }
