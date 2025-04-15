@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import http from 'services/http';
-import { useNavigate, useSnackbar } from 'zmp-ui';
+import { useCustomSnackbar } from 'utils/useCustomSnackbar';
+import { useNavigate } from 'zmp-ui';
 
 const newsApiRequest = {
     getNewsList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
@@ -31,7 +32,7 @@ const newsApiRequest = {
 
 /**
 * GET NEWS LIST
-**/ 
+**/
 export const useGetNewsListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
     return useQuery({
         queryKey: ['newsList', param.page, param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
@@ -46,7 +47,7 @@ export const useGetNewsListNormal = (param: { page: number; pageSize: number; Ap
 
 /**
 * GET NEWS LIST (INFINITE)
-**/ 
+**/
 export const useGetNewsList = (param: { page: number; pageSize: number, ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
 
     return useInfiniteQuery({
@@ -73,7 +74,7 @@ export const useGetNewsList = (param: { page: number; pageSize: number, ApId: nu
 
 /**
 * GET NEWS STATUS
-**/ 
+**/
 export const useGetNewsStatus = () => {
     return useQuery({
         queryKey: ["newsStatus"],
@@ -93,45 +94,33 @@ export const useGetNewsStatus = () => {
 
 /**
 * PUT NEWS STATUS
-**/ 
+**/
 export const useUpdateNewsStatus = () => {
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
-            mutationFn: async (param: { tinTucId: number; tinhTrangId: number; }) => {
-                return await newsApiRequest.updateNewsStatus(param);
-            },
-            onSuccess: () => {
-    
-                openSnackbar({
-                    icon: true,
-                    text: "Cập nhật trạng thái thành công",
-                    type: 'success',
-                    action: { text: "Đóng", close: true },
-                    duration: 3000,
-                });
+        mutationFn: async (param: { tinTucId: number; tinhTrangId: number; }) => {
+            return await newsApiRequest.updateNewsStatus(param);
+        },
+        onSuccess: () => {
+            showSuccess('Cập nhật trạng thái thành công');
 
-                queryClient.invalidateQueries({ queryKey: ["newsList"] });
-                queryClient.invalidateQueries({ queryKey: ["newsDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["newsList"] });
+            queryClient.invalidateQueries({ queryKey: ["newsDetail"] });
 
-            },
-            onError: (error: string) => {
-                openSnackbar({
-                    icon: true,
-                    text: error,
-                    type: 'error',
-                    action: { text: "Đóng", close: true },
-                    duration: 3000,
-                });
-            },
-        });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
 };
 
 /**
 * GET NEWS DETAIL
-**/ 
+**/
 export const useGetNewsDetail = (id: number) => {
 
     return useQuery({
@@ -155,9 +144,9 @@ export const useGetNewsDetail = (id: number) => {
 
 /**
 * POST NEWS
-**/ 
+**/
 export const useCreateNews = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate()
 
@@ -166,35 +155,24 @@ export const useCreateNews = () => {
             return await newsApiRequest.createNews(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Tạo tin tức thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Tạo tin tức thành công');
 
             queryClient.invalidateQueries({ queryKey: ["newsList"] });
 
             navigator('/news-management')
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
 
 /**
 * PUT NEWS
-**/ 
+**/
 export const useUpdateNews = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -202,59 +180,37 @@ export const useUpdateNews = () => {
             return await newsApiRequest.updateNews(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật tin tức thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật tin tức thành công');
 
             queryClient.invalidateQueries({ queryKey: ["newsDetail"] });
             queryClient.invalidateQueries({ queryKey: ["newsList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
 
 /**
 * DELETE NEWS
-**/ 
+**/
 export const useDeleteNews = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await newsApiRequest.deleteNews(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa tin tức thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa tin tức thành công');
 
             queryClient.invalidateQueries({ queryKey: ["newsList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };

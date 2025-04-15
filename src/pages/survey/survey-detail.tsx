@@ -5,7 +5,8 @@ import { ConfirmModal } from "components/modal";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { formatDate, isExpired } from "utils/date";
-import { Box, Button, Checkbox, Modal, Page, Radio, useSnackbar } from "zmp-ui";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { Box, Button, Checkbox, Modal, Page, Radio } from "zmp-ui";
 
 interface QuestionType {
     questionId: number;
@@ -69,7 +70,7 @@ const SurveyDetailPage: React.FC = () => {
     const [missingAnswersVisible, setMissingAnswersVisible] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess } = useCustomSnackbar();
     const [searchParams] = useSearchParams();
     const surveyId = searchParams.get("id");
 
@@ -78,7 +79,6 @@ const SurveyDetailPage: React.FC = () => {
 
     useEffect(() => {
         if (surveyDetail) {
-            console.log(surveyDetail)
             setDetailData(surveyDetail);
 
             // Khởi tạo responses ban đầu dựa trên câu hỏi từ API
@@ -163,11 +163,7 @@ const SurveyDetailPage: React.FC = () => {
 
             await createResultSurvey(payload);
 
-            openSnackbar({
-                text: "Gửi khảo sát thành công",
-                type: "success",
-                duration: 5000,
-            });
+            showSuccess('Gửi khảo sát thành công')
         } catch (error) {
             console.error("Failed to submit survey data:", error);
         }

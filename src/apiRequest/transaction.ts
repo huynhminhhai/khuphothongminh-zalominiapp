@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { TransactionsType } from "constants/utinities";
 import http from "services/http";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate, useSnackbar } from "zmp-ui";
 
 const transactionApiRequest = {
@@ -115,31 +116,20 @@ export const useGetTransactionDetail = (id: number) => {
 **/
 export const useDeleteTransaction = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await transactionApiRequest.deleteTransaction(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa thu/chi thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa thu/chi thành công')
 
             queryClient.invalidateQueries({ queryKey: ["transactionList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -148,7 +138,7 @@ export const useDeleteTransaction = () => {
 * POST TRANSACTION
 **/
 export const useCreateTransaction = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate()
 
@@ -157,26 +147,15 @@ export const useCreateTransaction = () => {
             return await transactionApiRequest.createTransaction(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Tạo thu/chi thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Tạo thu/chi thành công')
 
             queryClient.invalidateQueries({ queryKey: ["transactionList"] });
 
             navigator('/transactions-management')
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -185,7 +164,7 @@ export const useCreateTransaction = () => {
 * PUT TRANSACTION
 **/
 export const useUpdateTransaction = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -193,25 +172,14 @@ export const useUpdateTransaction = () => {
             return await transactionApiRequest.updateTransaction(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật thu/chi thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật thông tin thu/chi thành công')
 
             queryClient.invalidateQueries({ queryKey: ["transactionDetail"] });
             queryClient.invalidateQueries({ queryKey: ["transactionList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };

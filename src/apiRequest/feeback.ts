@@ -1,6 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
-import { useNavigate, useSnackbar } from "zmp-ui";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { useNavigate } from "zmp-ui";
 
 const feebackApiRequest = {
     getFeedbackList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
@@ -128,35 +129,25 @@ export const useGetFeedbackStatus = () => {
 * POST FEEDBACK
 **/
 export const useCreateFeeback = () => {
-    const { openSnackbar } = useSnackbar();
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (formData: any) => {
             return await feebackApiRequest.createFeedback(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Gửi phản ánh thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+
+            showSuccess('Gửi phản ánh thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
 
             navigate('/feedback');
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -190,31 +181,20 @@ export const useGetFeebackDetail = (id: number) => {
 **/
 export const useDeleteFeedback = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await feebackApiRequest.deleteFeedback(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa phản ánh thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa phản ánh thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(`Lỗi: ${error}`)
         },
     });
 };
@@ -224,7 +204,7 @@ export const useDeleteFeedback = () => {
 **/
 export const useUpdateFeedbackStatus = () => {
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -233,26 +213,15 @@ export const useUpdateFeedbackStatus = () => {
         },
         onSuccess: () => {
 
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật trạng thái phản ánh thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật trạng thái phản ánh thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
 
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: error,
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -261,7 +230,7 @@ export const useUpdateFeedbackStatus = () => {
 * PUT FEEDBACK
 **/
 export const useUpdateFeedback = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -269,25 +238,14 @@ export const useUpdateFeedback = () => {
             return await feebackApiRequest.updateFeedback(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật phản ánh thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật phản ánh thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -296,32 +254,18 @@ export const useUpdateFeedback = () => {
 * DELETE FILE FEEDBACK
 **/
 export const useDeleteFileFeedback = () => {
-    const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await feebackApiRequest.deleteFileFeedback(id);
         },
         onSuccess: () => {
-            // openSnackbar({
-            //     icon: true,
-            //     text: "Xóa phản ánh thành công",
-            //     type: "success",
-            //     action: { text: "Đóng", close: true },
-            //     duration: 3000,
-            // });
-
-            // queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+            
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };

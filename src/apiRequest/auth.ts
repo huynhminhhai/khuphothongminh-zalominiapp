@@ -1,8 +1,9 @@
 import http from 'services/http';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useStoreApp } from 'store/store';
-import { useNavigate, useSnackbar } from 'zmp-ui';
+import { useNavigate } from 'zmp-ui';
 import envConfig from 'envConfig';
+import { useCustomSnackbar } from 'utils/useCustomSnackbar';
 
 const authApiRequest = {
     login: async (username: string, password: string) => {
@@ -34,8 +35,8 @@ const authApiRequest = {
 export const useLogin = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { openSnackbar } = useSnackbar();
     const { setToken, setAccount } = useStoreApp();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (credentials: { username: string; password: string }) => {
@@ -43,13 +44,7 @@ export const useLogin = () => {
         },
         onSuccess: async (res: any) => {
 
-            openSnackbar({
-                icon: true,
-                text: "Đăng nhập thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Đăng nhập thành công');
 
             setToken({ accessToken: res?.data?.accessToken, refreshToken: res?.data?.refreshToken, hanSuDungToken: res?.data?.hanSuDung });
             
@@ -66,13 +61,8 @@ export const useLogin = () => {
             navigate('/');
         },
         onError: (error: any) => {
-            openSnackbar({
-                icon: true,
-                text: error?.message,
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error('Lỗi:', error);
+            showError(error?.message);
         },
     });
 };
@@ -80,7 +70,7 @@ export const useLogin = () => {
 export const useLoginZalo = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const { setToken, setAccount } = useStoreApp();
 
     return useMutation({
@@ -89,13 +79,7 @@ export const useLoginZalo = () => {
         },
         onSuccess: async (res: any) => {
 
-            openSnackbar({
-                icon: true,
-                text: "Đăng nhập bằng Zalo thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Đăng nhập bằng Zalo thành công');
 
             setToken({ accessToken: res?.data?.accessToken, refreshToken: res?.data?.refreshToken, hanSuDungToken: res?.data?.hanSuDung });
 
@@ -113,47 +97,29 @@ export const useLoginZalo = () => {
         },
         onError: (error: string) => {
             console.error('Lỗi:', error);
-            openSnackbar({
-                icon: true,
-                text: error,
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showError(error);
         },
     });
 };
 
 export const useLogout = () => {
-    const { openSnackbar } = useSnackbar();
     const { clearAuth } = useStoreApp();
     const navigate = useNavigate();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     const logout = async () => {
         try {
             await authApiRequest.logout();
             clearAuth();
 
-            openSnackbar({
-                icon: true,
-                text: "Đăng xuất thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Đăng xuất thành công')
 
             navigate('/login');
 
 
         } catch (error) {
             console.error("Lỗi khi đăng xuất:", error);
-            openSnackbar({
-                icon: true,
-                text: "Đăng xuất thất bại, vui lòng thử lại!",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showError('Đăng xuất thất bại, vui lòng thử lại!')
         }
     };
 

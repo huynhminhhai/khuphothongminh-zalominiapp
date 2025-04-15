@@ -1,6 +1,7 @@
 import http from "services/http";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useSnackbar } from "zmp-ui";
+import { useNavigate } from "zmp-ui";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
 
 const residentApiRequest = {
     getFamilyNumber: async () => {
@@ -178,7 +179,7 @@ export const useGetChuHosList = () => {
 * POST RESIDENT
 **/
 export const useCreateResident = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate();
 
@@ -187,13 +188,7 @@ export const useCreateResident = () => {
             return await residentApiRequest.createResident(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Tạo dân cư thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Tạo dân cư thành công');
 
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
             queryClient.invalidateQueries({ queryKey: ["chuhosList"] });
@@ -202,13 +197,8 @@ export const useCreateResident = () => {
             navigator('/resident-management');
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -218,31 +208,20 @@ export const useCreateResident = () => {
 **/
 export const useDeleteResident = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await residentApiRequest.deleteResident(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa dân cư thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa dân cư thành công');
 
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -251,7 +230,7 @@ export const useDeleteResident = () => {
 * PUT RESIDENT
 **/
 export const useUpdateResident = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -259,13 +238,7 @@ export const useUpdateResident = () => {
             return await residentApiRequest.updateResident(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật dân cư thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật thông tin dân cư thành công');
 
             queryClient.invalidateQueries({ queryKey: ["residentDetail"] });
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
@@ -273,13 +246,8 @@ export const useUpdateResident = () => {
             queryClient.invalidateQueries({ queryKey: ["familyMembers"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };

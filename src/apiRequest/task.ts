@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { TaskType } from "components/task/type";
 import http from "services/http";
-import { useNavigate, useSnackbar } from "zmp-ui";
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { useNavigate } from "zmp-ui";
 
 const taskApiRequest = {
     getTaskList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; }) => {
@@ -145,7 +145,7 @@ export const useGetTaskStatus = () => {
 **/
 export const useUpdateTaskStatus = () => {
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -153,27 +153,15 @@ export const useUpdateTaskStatus = () => {
             return await taskApiRequest.updateTaskStatus(param);
         },
         onSuccess: () => {
-
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật trạng thái thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật trạng thái thành công')
 
             queryClient.invalidateQueries({ queryKey: ["taskList"] });
             queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
 
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: error,
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -183,31 +171,20 @@ export const useUpdateTaskStatus = () => {
 **/ 
 export const useDeleteTask = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await taskApiRequest.deleteTask(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa nhiệm vụ thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa nhiệm vụ thành công')
 
             queryClient.invalidateQueries({ queryKey: ["taskList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -216,7 +193,7 @@ export const useDeleteTask = () => {
 * POST TASK
 **/ 
 export const useCreateTask = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
     const navigator = useNavigate()
 
@@ -225,26 +202,15 @@ export const useCreateTask = () => {
             return await taskApiRequest.createTask(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Tạo nhiệm vụ thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Tạo nhiệm vụ thành công')
 
             queryClient.invalidateQueries({ queryKey: ["taskList"] });
 
             navigator('/task-management')
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -253,7 +219,7 @@ export const useCreateTask = () => {
 * PUT TASK
 **/
 export const useUpdateTask = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -261,25 +227,14 @@ export const useUpdateTask = () => {
             return await taskApiRequest.updateTask(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật nhiệm vụ thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Cập nhật thông tin nhiệm vụ thành công')
 
             queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
             queryClient.invalidateQueries({ queryKey: ["taskList"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -288,7 +243,7 @@ export const useUpdateTask = () => {
 * POST FILE TASK
 **/ 
 export const useAddFileTask = () => {
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
 
     return useMutation({
@@ -296,24 +251,13 @@ export const useAddFileTask = () => {
             return await taskApiRequest.addFileTask(formData);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Thêm tập tin nhiệm vụ thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Thêm tập tin thành công')
 
             queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };
@@ -323,31 +267,20 @@ export const useAddFileTask = () => {
 **/ 
 export const useDeleteFileTask = () => {
     const queryClient = useQueryClient();
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
 
     return useMutation({
         mutationFn: async (id: number) => {
             return await taskApiRequest.deleteFileTask(id);
         },
         onSuccess: () => {
-            openSnackbar({
-                icon: true,
-                text: "Xóa tập tin thành công",
-                type: "success",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            showSuccess('Xóa tập tin thành công')
 
             queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
         },
         onError: (error: string) => {
-            openSnackbar({
-                icon: true,
-                text: `Lỗi: ${error}`,
-                type: "error",
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            });
+            console.error(`Lỗi: ${error}`)
+            showError(error)
         },
     });
 };

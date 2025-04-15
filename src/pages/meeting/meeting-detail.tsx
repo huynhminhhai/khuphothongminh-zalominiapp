@@ -10,11 +10,12 @@ import { useSearchParams } from "react-router-dom";
 import http from "services/http";
 import { copyToClipboard } from "utils/copyToClipboard";
 import { formatDate, getHourFromDate, renderDayOfWeek } from "utils/date";
-import { Avatar, Box, Modal, Page, useSnackbar } from "zmp-ui"
+import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { Avatar, Box, Modal, Page } from "zmp-ui"
 
 const MeetingDetailPage: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
+    const { showSuccess, showError } = useCustomSnackbar();
     const [searchParams] = useSearchParams();
     const [memberList, setMemberList] = useState<any>([])
     const [host, setHost] = useState<any>(null)
@@ -47,10 +48,7 @@ const MeetingDetailPage: React.FC = () => {
             }));
         } catch (error) {
             console.error('Lỗi khi lấy thông tin thành viên:', error);
-            openSnackbar({
-                text: 'Có lỗi khi lấy thông tin thành viên!',
-                type: 'error',
-            });
+            showError('Có lỗi khi lấy thông tin thành viên')
         } finally {
             setLoading(false);
         }
@@ -84,20 +82,8 @@ const MeetingDetailPage: React.FC = () => {
     const handleCopy = async (linkOnl: string) => {
         copyToClipboard(
             linkOnl,
-            () => openSnackbar({
-                icon: true,
-                text: "Sao chép thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            }),
-            () => openSnackbar({
-                icon: true,
-                text: "Sao chép không thành công",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 3000,
-            })
+            () => showSuccess('Sao chép thành công'),
+            () => showError('Sao chép thất bại')
         );
     };
 
