@@ -195,20 +195,20 @@ const FeedbackManagementPage: React.FC = () => {
                     <div className="flex items-center justify-start gap-2">
                         <div className="flex items-center gap-1">
                             {row.original.congKhaiThongTinCaNhan ? (
-                                <Icon className="text-green-700" fontSize={16} icon='line-md:confirm' />
+                                <Icon className="text-green-700" fontSize={16} icon='mdi:tick' />
                             ) : (
-                                <Icon className="text-red-700" fontSize={16} icon='line-md:confirm' />
+                                <Icon className="text-red-700" fontSize={16} icon='material-symbols:close' />
                             )}
-                            <span className="text-[12px] flex-1">Thông tin cá nhân</span>
+                            <span className="text-[13px] flex-1">Thông tin cá nhân</span>
                         </div>
 
                         <div className="flex items-center gap-1">
                             {row.original.congKhaiPhanAnh ? (
-                                <Icon className="text-green-700" fontSize={16} icon='line-md:confirm' />
+                                <Icon className="text-green-700" fontSize={16} icon='mdi:tick' />
                             ) : (
-                                <Icon className="text-red-700" fontSize={16} icon='line-md:confirm' />
+                                <Icon className="text-red-700" fontSize={16} icon='material-symbols:close' />
                             )}
-                            <span className="text-[12px] flex-1">Phản ánh</span>
+                            <span className="text-[13px] flex-1">Phản ánh</span>
                         </div>
                     </div>
                 )
@@ -234,7 +234,7 @@ const FeedbackManagementPage: React.FC = () => {
                 const { data: xas } = useGetXaList(maHuyen ?? "");
 
                 return (
-                    <div>
+                    <div className="h-[42px]">
                         {`${row.original?.diaChi || ""} 
                                 ${tinhs?.find(tinh => tinh.value === row.original?.maTinh)?.label || ""} 
                                 ${huyens?.find(huyen => huyen.maHuyen === row.original?.maHuyen)?.tenHuyen || ""} 

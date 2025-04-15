@@ -1,15 +1,15 @@
 import { Icon } from "@iconify/react"
 import { useGetHuyenList, useGetXaList } from "apiRequest/app"
 import { useGetFeedbackStatus } from "apiRequest/feeback"
-import { formatAddress } from "components/inforResident/ResidentInfoList"
-import { Feedback, feedbackStatusColor } from "constants/utinities"
 import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { getFullImageUrl } from "utils/file"
+import { getTinhTrangFeedbackColor } from "utils/renderColor"
 import { Box, useNavigate } from "zmp-ui"
+import { FeedbackType } from "./type"
 
 type FeedbackItemProps = {
-    data: Feedback
+    data: FeedbackType
 }
 
 const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
@@ -21,8 +21,8 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
     const [maHuyen, setMaHuyen] = useState<string | null>(null);
     const { data: feedbackStatus } = useGetFeedbackStatus();
 
-    const status = feedbackStatus?.find(item => item.tinhTrangId === data.tinhTrangId);
-    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "var(--gray-color)";
+    const status = feedbackStatus?.find((item: any) => item.tinhTrangId === data.tinhTrangId);
+    const { color, bg } = getTinhTrangFeedbackColor(status?.tenTinhTrang);
 
     useEffect(() => {
         if (data) {
@@ -43,8 +43,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
                 <img className="w-[100%] h-[200px] object-cover" src={getFullImageUrl(data.tapTinPhanAnhs[0]?.tapTin) || 'https://actiosoftware.com/wp-content/uploads/2024/02/resposta-do-smiley-do-cliente-do-feedback-da-avaliacao-1.jpg'} alt={data.noiDung} />
                 {status && (
                     <div
-                        style={{ backgroundColor: statusColor }}
-                        className="py-2 px-4 absolute bottom-0 right-0 text-white font-semibold uppercase"
+                        className={`${color} ${bg} py-2 px-4 absolute bottom-[2px] right-[2px] rounded-lg text-white font-semibold uppercase text-[12px] leading-[1]`}
                     >
                         {status.tenTinhTrang}
                     </div>

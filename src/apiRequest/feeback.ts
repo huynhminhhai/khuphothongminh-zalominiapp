@@ -1,5 +1,4 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Feedback } from "constants/utinities";
 import http from "services/http";
 import { useNavigate, useSnackbar } from "zmp-ui";
 
@@ -174,7 +173,7 @@ export const useGetFeebackDetail = (id: number) => {
 
                 const res = await feebackApiRequest.getFeedbackDetail(id);
 
-                return res.data as Feedback
+                return res.data
             } catch (error) {
                 console.error(error);
                 throw error;

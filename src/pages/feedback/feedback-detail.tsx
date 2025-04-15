@@ -1,15 +1,14 @@
 import { useGetHuyenList, useGetXaList } from "apiRequest/app";
 import { useGetFeebackDetail, useGetFeedbackStatus } from "apiRequest/feeback";
 import { EmptyData } from "components/data";
-import { Divider } from "components/divider";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
-import { feedbackStatusColor } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import { openUrlInWebview } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { getFullImageUrl } from "utils/file";
+import { getTinhTrangFeedbackColor } from "utils/renderColor";
 import { Box, Page, Swiper } from "zmp-ui"
 
 const FeedbackDetailPage: React.FC = () => {
@@ -26,7 +25,7 @@ const FeedbackDetailPage: React.FC = () => {
     const { data: feedbackStatus } = useGetFeedbackStatus();
 
     const status = feedbackStatus?.find(item => item.tinhTrangId === data?.tinhTrangId);
-    const statusColor = feedbackStatusColor[status?.tenTinhTrang] || "var(--gray-color)";
+    const { color, bg } = getTinhTrangFeedbackColor(status?.tenTinhTrang);
 
     useEffect(() => {
         if (data) {

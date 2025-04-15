@@ -96,32 +96,9 @@ export const MEETING: MeetingType[] = [
     }
 ]
 
-
-export interface TapTinPhanAnh {
-    tapTinPhanAnhId: number;
-    phanAnhId: number;
-    tapTin: string;
-}
-
-export interface Feedback {
-    phanAnhId: number;
-    apId: number;
-    noiDung: string;
-    diaChi: string;
-    maXa: string;
-    maHuyen: string;
-    maTinh: string;
-    latitude: number;
-    longitude: number;
-    congKhaiThongTinCaNhan: boolean;
-    congKhaiPhanAnh: boolean;
-    tinhTrangId: number;
-    tapTinPhanAnhs: TapTinPhanAnh[];
-}
-
 export const feedbackStatusColor = {
     "Đã xóa": "#f44336",
-    "Đã xử lý": "#28a745",
+    "Đã xử lý": "#2a7430",
     "Đang xử lý": "#FFC107",
     "Khởi tạo": "#006AF5",
 }

@@ -26,13 +26,7 @@ const SERVICES: ServicesType[] = [
         requiredPermission: { moTaChucNang: "Lấy danh sách bài viết có phân trang", quyen: "XEM" },
     },
     {
-        label: 'Góp ý kiến',
-        url: '/feedback',
-        icon: images.idea,
-        requiredPermission: { moTaChucNang: "Lấy danh sách phản ánh có phân trang", quyen: "XEM" },
-    },
-    {
-        label: 'Thông tin cuộc họp',
+        label: 'Cuộc họp',
         url: '/meeting',
         icon: images.meeting,
         requiredPermission: { moTaChucNang: "Lấy danh sách cuộc họp có phân trang", quyen: "XEM" },
@@ -43,6 +37,30 @@ const SERVICES: ServicesType[] = [
         icon: images.survey,
         requiredPermission: { moTaChucNang: "Lấy danh sách khảo sát có phân trang", quyen: "XEM" },
     },
+    {
+        label: 'Góp ý kiến',
+        url: '/feedback',
+        icon: images.idea,
+        requiredPermission: { moTaChucNang: "Lấy danh sách phản ánh có phân trang", quyen: "XEM" },
+    },
+    {
+        label: 'Nhiệm vụ',
+        url: '/task',
+        icon: images.todo,
+        requiredPermission: { moTaChucNang: "Lấy danh sách nhiệm vụ của 1 người có phân trang", quyen: "XEM" },
+    },
+    {
+        label: 'Tình hình thu chi',
+        url: '/transactions',
+        icon: images.money,
+        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
+    },
+    {
+        label: 'Hóa đơn',
+        url: '/invoice',
+        icon: images.invoice,
+        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
+    }
     // {
     //     label: 'Thông tin tổ chức',
     //     url: '/team',
@@ -53,24 +71,6 @@ const SERVICES: ServicesType[] = [
     //     url: '/maps',
     //     icon: images.map,
     // },
-    {
-        label: 'Tình hình thu chi',
-        url: '/transactions',
-        icon: images.money,
-        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
-    },
-    {
-        label: 'Nhiệm vụ',
-        url: '/task',
-        icon: images.todo,
-        requiredPermission: { moTaChucNang: "Lấy danh sách nhiệm vụ của 1 người có phân trang", quyen: "XEM" },
-    },
-    {
-        label: 'Hóa đơn',
-        url: '/invoice',
-        icon: images.invoice,
-        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
-    }
 ]
 
 const ServiceList: React.FC<any> = () => {
