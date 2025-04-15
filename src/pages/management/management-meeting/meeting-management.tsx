@@ -1,10 +1,9 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useDeleteMeeting, useGetMeetingListNormal, useGetMeetingStatus } from "apiRequest/meeting"
+import { useDeleteMeeting, useGetMeetingListNormal, useGetMeetingStatus, useUpdateMeetingStatus } from "apiRequest/meeting"
 import { EmptyData } from "components/data"
 import { formatDate, parseDate } from "components/form/DatePicker"
 import { HeaderSub } from "components/header-sub"
-import { MeetingStatus } from "components/meeting/MeetingItem"
 import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
@@ -13,13 +12,15 @@ import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { copyToClipboard } from "utils/copyToClipboard"
 import { getHourFromDate, formatDate as formatDateMeeting } from "utils/date"
-import { Box, DatePicker, Input, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, DatePicker, Input, Page, Select, useNavigate, useSnackbar } from "zmp-ui"
 
 const MeetingManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { openSnackbar } = useSnackbar()
     const { account, hasPermission } = useStoreApp()
+
+    const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -133,11 +134,11 @@ const MeetingManagementPage: React.FC = () => {
         },
         {
             id: 'time',
-            header: 'Thời gian họp',
+            header: 'Thời gian',
             cell: ({ row }) => (
-                <div className="flex flex-col justify-center">
-                    <div>{formatDateMeeting(row.original.thoiGianBatDau)}</div>
+                <div className="flex items-center gap-2">
                     <div>{getHourFromDate(row.original.thoiGianBatDau)} - {getHourFromDate(row.original.thoiGianKetThuc)}</div>
+                    <div>{formatDateMeeting(row.original.thoiGianBatDau)}</div>
                 </div>
             ),
             size: 160
@@ -170,11 +171,36 @@ const MeetingManagementPage: React.FC = () => {
         {
             id: 'status',
             header: 'Trạng thái',
-            cell: ({ row }) => (
-                <div className="flex justify-start items-center">
-                    <MeetingStatus meetingDate={formatDateMeeting(row.original.thoiGianBatDau)} startTime={getHourFromDate(row.original.thoiGianBatDau)} endTime={getHourFromDate(row.original.thoiGianKetThuc)} />
-                </div>
-            ),
+            cell: ({ row }) => {
+                const { mutate, isPending } = useUpdateMeetingStatus();
+
+                return (
+                    <Box width={180}>
+                        <Select
+                            closeOnSelect
+                            defaultValue={row.original.tinhTrangId}
+                            onChange={(value) => {
+                                openConfirmModal(() => {
+                                    mutate({
+                                        cuocHopId: row.original.cuocHopId,
+                                        tinhTrangId: Number(value),
+                                    });
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái cuộc họp này?')
+                            }}
+                            className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
+                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')}
+                        >
+                            {meetingStatus?.tinhTrangs && meetingStatus?.tinhTrangs.map((item) => (
+                                <Option
+                                    value={item.tinhTrangId}
+                                    key={item.tinhTrangId}
+                                    title={item.tenTinhTrang}
+                                />
+                            ))}
+                        </Select>
+                    </Box>
+                )
+            },
             size: 160
         },
         {

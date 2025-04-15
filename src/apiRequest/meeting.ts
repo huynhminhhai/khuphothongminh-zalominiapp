@@ -33,7 +33,13 @@ export const meetingApiRequest = {
     },
     updateMeetingMember: async (formData: any) => {
         return await http.put<any>("/thanhviencuochop", formData);
-    }
+    },
+    updateMeetingStatus: async (param: { cuocHopId: number; tinhTrangId: number; }) => {
+        return await http.put<any>(`/cuochop/tinhtrang`, {
+            cuocHopId: param.cuocHopId,
+            tinhTrangId: param.tinhTrangId
+        });
+    },
 }
 
 /**
@@ -311,6 +317,44 @@ export const useDeleteMeetingMember = () => {
                 icon: true,
                 text: `Lỗi: ${error}`,
                 type: "error",
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+        },
+    });
+};
+
+/**
+* PUT MEETING STATUS
+**/
+export const useUpdateMeetingStatus = () => {
+
+    const { openSnackbar } = useSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (param: { cuocHopId: number; tinhTrangId: number; }) => {
+            return await meetingApiRequest.updateMeetingStatus(param);
+        },
+        onSuccess: () => {
+
+            openSnackbar({
+                icon: true,
+                text: "Cập nhật trạng thái cuộc họp thành công",
+                type: 'success',
+                action: { text: "Đóng", close: true },
+                duration: 3000,
+            });
+
+            queryClient.invalidateQueries({ queryKey: ["meetingList"] });
+            queryClient.invalidateQueries({ queryKey: ["meetingDetail"] });
+
+        },
+        onError: (error: string) => {
+            openSnackbar({
+                icon: true,
+                text: error,
+                type: 'error',
                 action: { text: "Đóng", close: true },
                 duration: 3000,
             });
