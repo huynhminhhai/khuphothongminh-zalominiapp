@@ -1,15 +1,19 @@
 import React from "react";
-import { Box } from "zmp-ui";
+import { Box, useNavigate } from "zmp-ui";
 import { motion } from "framer-motion";
+import images from "assets/images";
 
 const StatisticMain: React.FC<any> = () => {
+
+    const navigate = useNavigate();
+
     return (
         <Box mt={3}>
-            <div className="bg-[#493a9f] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
+            <div className="bg-[#1d5488] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden" onClick={() => navigate('/maps')}>
                 <div className="absolute top-[50%] left-0 transform translate-y-[-50%] w-[100%]">
                     <motion.img
                         className="invert brightness-0 w-[100%]"
-                        src="https://images.vexels.com/media/users/3/145867/isolated/lists/015b2a1aac5e9d4d3c18376bbbae1819-sound-wave-line.png"
+                        src={images.shapeWave}
                         alt="shape"
                         style={{
                             WebkitMaskImage: "linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%)",

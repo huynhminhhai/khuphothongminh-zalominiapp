@@ -44,7 +44,7 @@
 }
 
 :root {
-  --primary-color: #003080;
+  --primary-color: #06245b;
   --gray-color: #666666;
   --black-color: #222222;
 }
@@ -547,9 +547,13 @@ div.ql-editor {
   height: 12px;
 }
 
+.login-form .zaui-input-affix-wrapper {
+  border-color: #06245b !important;
+}
+
 .login-page .login-form input {
   height: 46px;
-  background-color: var(--primary-color)18;
+  background-color: #ffffff;
   padding-left: 38px;
   padding-right: 28px;
 }
@@ -591,6 +595,11 @@ div.ql-editor {
 
 .leaflet-popup-content-wrapper {
   background-color: #ffffffe8;
+}
+
+.leaflet-div-icon {
+  border: 0 !important;
+  background: transparent !important;
 }
 
 /**

@@ -1,7 +1,7 @@
 {
   "app": {
     "title": "Khu phố thông minh",
-    "headerColor": "#003080",
+    "headerColor": "#062654",
     "textColor": "white",
     "leftButton": "back",
     "statusBar": "normal",

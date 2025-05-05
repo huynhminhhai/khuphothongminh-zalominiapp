@@ -43,7 +43,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
                 <img className="w-[100%] h-[200px] object-cover" src={getFullImageUrl(data.tapTinPhanAnhs[0]?.tapTin) || 'https://actiosoftware.com/wp-content/uploads/2024/02/resposta-do-smiley-do-cliente-do-feedback-da-avaliacao-1.jpg'} alt={data.noiDung} />
                 {status && (
                     <div
-                        className={`${color} ${bg} py-2 px-4 absolute bottom-[2px] right-[2px] rounded-lg text-white font-semibold uppercase text-[12px] leading-[1]`}
+                        className={`${color} ${bg} py-2 px-4 absolute bottom-[0px] right-[0px] font-bold uppercase text-[12px] leading-[1]`}
                     >
                         {status.tenTinhTrang}
                     </div>

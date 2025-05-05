@@ -53,7 +53,7 @@ const TaskSection: React.FC<any> = () => {
                                 }
                             </Swiper>
                             :
-                            <Box py={4} className="text-center">Chưa có nhiệm vụ nào</Box>
+                            <Box py={4} className="text-center">Chưa có nhiệm vụ</Box>
                     }
                 </Box>
             </Box>

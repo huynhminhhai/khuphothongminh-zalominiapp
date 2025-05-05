@@ -14,7 +14,7 @@ const EmptyData: React.FC<EmptyDataProps> = ({ title, desc, handleClick, textBtn
     return (
         <Box>
             <Box flex justifyContent="center">
-                <img src={images.empty} alt="Không có dữ liệu" />
+                <img className="w-[180px] h-auto" src={images.empty} alt="Không có dữ liệu" />
             </Box>
             <Box mt={4}>
                 {

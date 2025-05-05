@@ -55,7 +55,7 @@ const ResidentMapPage = () => {
     });
 
     const center: [number, number] = [10.633159564692495, 106.50086913625947];
-    const zoom = 14;
+    const zoom = 15;
 
     const getMarkerIcon = (status: string) => {
         const color = {
@@ -65,10 +65,24 @@ const ResidentMapPage = () => {
             "Gia đình chưa văn hóa": "blue",
         }[status] || "blue";
 
-        return L.icon({
-            iconUrl: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
-            iconSize: [32, 32],
-            iconAnchor: [16, 32],
+        // return L.icon({
+        //     iconUrl: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
+        //     iconSize: [32, 32],
+        //     iconAnchor: [16, 32],
+        // });
+
+        return L.divIcon({
+            html: `<div style="
+                box-sizing: border-box;
+                box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+                border: 2px solid #ffffff;
+                width: 16px;
+                height: 16px;
+                background-color: ${color};
+                border-radius: 50%;
+            "></div>`,
+            iconSize: [16, 16],
+            iconAnchor: [8, 8],
         });
     };
 
@@ -87,19 +101,20 @@ const ResidentMapPage = () => {
                         </Box>
                         <MapContainer style={{ height: "calc(100vh - 58px)", width: "100%" }} center={center} zoom={zoom}>
                             <LayersControl position="topright">
-                                <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
+                                <LayersControl.BaseLayer checked name="Bản đồ đường">
                                     <TileLayer
-                                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                                        attribution="Bản đồ dân cư | © VNPT Long An"
+                                        url="https://mt1.google.com/vt/lyrs=m&hl=vi&x={x}&y={y}&z={z}"
+                                        attribution="Bản đồ dân cư | © VNPT"
                                     />
                                 </LayersControl.BaseLayer>
 
-                                <LayersControl.BaseLayer name="Bản đồ đường">
+                                <LayersControl.BaseLayer name="Bản đồ vệ tinh">
                                     <TileLayer
-                                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                                        attribution="Bản đồ dân cư | © VNPT Long An"
+                                        url="https://mt0.google.com/vt/lyrs=s&hl=vi&x={x}&y={y}&z={z}"
+                                        attribution="Bản đồ dân cư | © VNPT"
                                     />
                                 </LayersControl.BaseLayer>
+
                             </LayersControl>
 
                             {filter === "heatmap" || filter === "heatmap2" ? <HeatmapLayer residents={residents} /> :

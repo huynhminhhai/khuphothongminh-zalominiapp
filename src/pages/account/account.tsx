@@ -22,50 +22,50 @@ const AccountPage: React.FC = () => {
                 <HeaderSub title="Tài khoản" onBackClick={() => navigate('/')} />
                 <Box>
                     {
-                        accessToken && account ?
-                            <>
-                                <Box m={4}>
-                                    <List className="bg-white rounded-lg">
-                                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tài khoản</div>
-                                        <Item
-                                            onClick={() => navigate('/profile-account')}
-                                            title="Thông tin"
-                                            prefix={<img src={images.resume} width={30} />}
-                                            suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                        />
-                                        {/* <Item
+                        accessToken &&
+                        <>
+                            <Box m={4}>
+                                <List className="bg-white rounded-lg">
+                                    <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tài khoản</div>
+                                    <Item
+                                        onClick={() => navigate('/profile-account')}
+                                        title="Thông tin"
+                                        prefix={<img src={images.resume} width={30} />}
+                                        suffix={<Icon fontSize={20} icon="formkit:right" />}
+                                    />
+                                    {/* <Item
                                             onClick={() => navigate('/change-password')}
                                             title="Đổi mật khẩu"
                                             prefix={<img src={images.changePw} width={30} />}
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
                                         /> */}
-                                        <Item
-                                            onClick={logout}
-                                            title="Đăng xuất"
-                                            prefix={<img src={images.logout} width={30} />}
-                                            suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                        />
-                                    </List>
-                                </Box>
-                            </>
-                            :
-                            <Box m={4}>
-                                <List className="bg-white rounded-lg">
-                                    <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Đăng nhập</div>
                                     <Item
-                                        onClick={() => navigate('/login')}
-                                        title="Với tài khoản"
-                                        prefix={<img src={images.login} width={30} />}
+                                        onClick={logout}
+                                        title="Đăng xuất"
+                                        prefix={<img src={images.logout} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     />
-                                    {/* <Item
-                                        onClick={() => loginWithZalo()}
-                                        title="Với zalo"
-                                        prefix={<img src={images.zalo} width={30} />}
-                                        suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                    /> */}
                                 </List>
                             </Box>
+                        </>
+                        // :
+                        // <Box m={4}>
+                        //     <List className="bg-white rounded-lg">
+                        //         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Đăng nhập</div>
+                        //         <Item
+                        //             onClick={() => navigate('/login')}
+                        //             title="Với tài khoản"
+                        //             prefix={<img src={images.login} width={30} />}
+                        //             suffix={<Icon fontSize={20} icon="formkit:right" />}
+                        //         />
+                        //         <Item
+                        //             onClick={() => loginWithZalo()}
+                        //             title="Với zalo"
+                        //             prefix={<img src={images.zalo} width={30} />}
+                        //             suffix={<Icon fontSize={20} icon="formkit:right" />}
+                        //         />
+                        //     </List>
+                        // </Box>
                     }
                     <Box m={4}>
                         <List className="bg-white rounded-lg">

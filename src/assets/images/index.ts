@@ -2,6 +2,7 @@ import logo from './skyscraper.png'
 import avatar from './avatar.jpg'
 import shape1 from './shape1.png'
 import shape2 from './shape2.png'
+import shapeWave from './shape-wave.webp'
 import home from './home.png'
 import news from './newspaper.png'
 import idea from './idea.png'
@@ -65,7 +66,8 @@ const images = {
     avatarDefault,
     shape4,
     invoice,
-    shortcut
+    shortcut,
+    shapeWave
 }
 
 export default images
