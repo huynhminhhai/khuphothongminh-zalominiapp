@@ -20,7 +20,7 @@ const HomePage: React.FunctionComponent = () => {
       <HeaderHome />
       <Box className="relative z-[1]">
         <StatisticSection />
-        <div className="bg-white rounded-t-2xl pt-3">
+        <div className="bg-white rounded-t-2xl pt-3 min-h-[60vh]">
           <ServiceSection />
           {
             account &&
@@ -38,7 +38,7 @@ const HomePage: React.FunctionComponent = () => {
             </>
           }
           {
-            hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
+            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
             <NewsSection />
           }
         </div>
