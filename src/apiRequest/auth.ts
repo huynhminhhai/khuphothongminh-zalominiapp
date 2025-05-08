@@ -35,7 +35,10 @@ const authApiRequest = {
     },
     registerAp: async (formData: any) => {
         return await http.put<any>('/nguoidung/dangkythongtinnguoidung', formData);
-    }
+    },
+    refeshToken: async ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }) => {
+        return await http.post<any>('/xacthuc/refreshtoken', { accessToken, refreshToken });
+    },
 }
 
 export const useLogin = () => {
@@ -170,21 +173,48 @@ export const useUpdateAccount = () => {
 export const useRegisterAp = () => {
     const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
-    const { setAccount } = useStoreApp();
+    const { setAccount, setToken, account, accessToken, refreshToken } = useStoreApp();
+    const navigator = useNavigate();
 
     return useMutation({
         mutationFn: async (formData: any) => {
             return await authApiRequest.registerAp(formData);
         },
         onSuccess: async () => {
-            showSuccess('Đăng ký thông tin ấp thành công');
 
             try {
-                const res = await authApiRequest.getUserInfo();
+                if (!accessToken || !refreshToken) {
+                    throw new Error("Thiếu accessToken hoặc refreshToken");
+                }
+            
+                const [resUserInfo, resToken] = await Promise.all([
+                    authApiRequest.getUserInfo(),
+                    authApiRequest.refeshToken({
+                        accessToken: accessToken,
+                        refreshToken: refreshToken
+                    }),
+                ]);
+            
+                const newToken = resToken?.data;
+                const userInfo = (resUserInfo as any)?.data;
+            
+                if (newToken) {
+                    setToken({
+                        accessToken: newToken.accessToken,
+                        refreshToken: newToken.refreshToken,
+                        hanSuDungToken: newToken.hanSuDung,
+                    });
+                }
+            
+                if (userInfo) {
+                    setAccount(userInfo);
+                }
 
-                setAccount((res as any).data);
+                showSuccess('Đăng ký thông tin ấp thành công');
+
+                navigator('/');
             } catch (error) {
-                console.error("Lỗi lấy thông tin người dùng:", error);
+                console.error("Lỗi khi lấy thông tin người dùng hoặc refresh token:", error);
             }
 
             queryClient.invalidateQueries({ queryKey: ['account'] });
