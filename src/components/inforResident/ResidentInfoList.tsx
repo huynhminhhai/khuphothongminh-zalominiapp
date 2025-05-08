@@ -29,9 +29,10 @@ export const InforItemMain = ({ label, value }: { label: string, value: string }
 
 interface ResidentInfoListProps {
     residentDetailData: any;
+    isShow?: boolean
 }
 
-const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData }) => {
+const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData, isShow=false }) => {
 
     const { ngheNghieps } = useStoreApp()
 
@@ -44,7 +45,6 @@ const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData 
         { label: "Email", value: residentDetailData.email },
         { label: "Thường trú", value: formatAddress(residentDetailData.noiThuongTru), condition: !!residentDetailData.noiThuongTru },
         { label: "Tạm trú", value: formatAddress(residentDetailData.noiTamTru), condition: !!residentDetailData.noiTamTru },
-        { label: "Địa chỉ hiện tại", value: formatAddress(residentDetailData), condition: !!residentDetailData },
         { label: "Nghề nghiệp", value: ngheNghieps.find((item: any) => item.value === Number(residentDetailData?.ngheNghiep))?.label },
         { label: "Nơi làm việc", value: residentDetailData.noiLamViec },
         { label: "Dân tộc", value: residentDetailData.tenDanToc },
@@ -56,11 +56,16 @@ const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData 
 
     return (
         <Box>
-            {infoItems.map((item, index) =>
-                item.value && (item.condition === undefined || item.condition) ? (
-                    <InforItemMain key={index} label={item.label} value={item.value} />
-                ) : null
-            )}
+            {infoItems.map((item, index) => {
+                const shouldShow = isShow || (item.value && (item.condition === undefined || item.condition));
+                return shouldShow ? (
+                    <InforItemMain
+                        key={index}
+                        label={item.label}
+                        value={item.value ?? ""}
+                    />
+                ) : null;
+            })}
         </Box>
     );
 };

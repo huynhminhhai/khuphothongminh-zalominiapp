@@ -475,7 +475,7 @@ const ResidentAddForm: React.FC = () => {
                             <PrimaryButton
                                 fullWidth
                                 disabled={isPending}
-                                label={isPending ? 'Đang xử lý...' : 'Thêm dân cư'}
+                                label={isPending ? 'Đang xử lý...' : 'Thêm thành viên'}
                                 handleClick={handleSubmit(onSubmit)}
                             />
                         </Box>

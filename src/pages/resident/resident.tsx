@@ -8,7 +8,7 @@ const ResidentPage: React.FC = () => {
     const navigate = useNavigate()
 
     return (
-        <Page className="relative flex-1 flex flex-col bg-white pb-[66px]">
+        <Page className="relative flex-1 flex flex-col bg-white pb-[0px]">
             <Box>
                 <HeaderSub title="Thông tin hộ dân" onBackClick={() => navigate('/')} />
                 <InforResidentSection />

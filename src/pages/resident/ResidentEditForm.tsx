@@ -392,7 +392,8 @@ const ResidentUpdateForm: React.FC = () => {
                             options={tinhs}
                             error={errors.noiThuongTru?.tinh?.message}
                             required
-                            disabled={!isHouseHold}
+                            // disabled={!isHouseHold}
+                            disabled
                         />
                     </div>
                     <div className="col-span-6">
@@ -403,7 +404,8 @@ const ResidentUpdateForm: React.FC = () => {
                             control={control}
                             options={thuongTruAddress.huyenOptions}
                             error={errors.noiThuongTru?.huyen?.message}
-                            disabled={!isHouseHold || !thuongTruAddress.watchedTinh}
+                            // disabled={!isHouseHold || !thuongTruAddress.watchedTinh}
+                            disabled
                         />
                     </div>
                     <div className="col-span-6">
@@ -414,7 +416,8 @@ const ResidentUpdateForm: React.FC = () => {
                             control={control}
                             options={thuongTruAddress.xaOptions}
                             error={errors.noiThuongTru?.xa?.message}
-                            disabled={!isHouseHold || !thuongTruAddress.watchedHuyen}
+                            // disabled={!isHouseHold || !thuongTruAddress.watchedHuyen}
+                            disabled
                         />
                     </div>
                     <div className="col-span-12">
@@ -576,7 +579,7 @@ const ResidentUpdateForm: React.FC = () => {
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
                             <PrimaryButton
                                 fullWidth
-                                label={isPending ? 'Đang xử lý...' : 'Cập nhật dân cư'}
+                                label={isPending ? 'Đang xử lý...' : 'Cập nhật thông tin'}
                                 handleClick={handleSubmit(onSubmit)}
                             />
                         </Box>

@@ -12,7 +12,7 @@ const ManagementPage: React.FC = () => {
     const navigate = useNavigate()
 
     return (
-        <Page className="relative flex-1 flex flex-col pb-[66px]" style={{ backgroundColor: '#f0f0f0' }}>
+        <Page className="relative flex-1 flex flex-col pb-[72px]" style={{ backgroundColor: '#f0f0f0' }}>
             <Box>
                 <HeaderSub title="Quản lý" onBackClick={() => navigate('/')} />
 

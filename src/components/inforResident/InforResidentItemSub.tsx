@@ -41,7 +41,7 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
                             <Box>
                                 <ResidentInfoList residentDetailData={data} />
                             </Box>
-                            {
+                            {/* {
                                 account?.thongTinDanCu?.laChuHo && (
                                     <Box mt={2}>
                                         <div className=" flex items-center justify-end gap-3">
@@ -49,7 +49,7 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
                                         </div>
                                     </Box>
                                 )
-                            }
+                            } */}
                         </Box>
                     )
                 }
