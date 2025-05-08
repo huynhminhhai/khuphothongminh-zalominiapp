@@ -279,7 +279,6 @@ const ResidentUpdateForm: React.FC = () => {
                             placeholder="Nhập email"
                             control={control}
                             error={errors.email?.message}
-                            required
                         />
                     </div>
                     <div className="col-span-6">
@@ -332,7 +331,6 @@ const ResidentUpdateForm: React.FC = () => {
                             placeholder="Nhập nơi làm việc"
                             control={control}
                             error={errors.noiLamViec?.message}
-                            required
                         />
                     </div>
                     <div className="col-span-6">

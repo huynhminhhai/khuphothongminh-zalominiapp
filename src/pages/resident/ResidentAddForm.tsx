@@ -152,11 +152,13 @@ const ResidentAddForm: React.FC = () => {
                 dataSubmit = omit(dataSubmit, ['noiTamTru']);
             }
 
-            await createResident(dataSubmit);
+            console.log(dataSubmit)
 
-            reset(defaultValues);
+            // await createResident(dataSubmit);
 
-            navigate("/resident");
+            // reset(defaultValues);
+
+            // navigate("/resident");
         } catch (error) {
             console.error("Error:", error);
         }
@@ -197,7 +199,6 @@ const ResidentAddForm: React.FC = () => {
                             placeholder="Nhập email"
                             control={control}
                             error={errors.email?.message}
-                            required
                         />
                     </div>
                     <div className="col-span-6">
@@ -250,7 +251,6 @@ const ResidentAddForm: React.FC = () => {
                             placeholder="Nhập nơi làm việc"
                             control={control}
                             error={errors.noiLamViec?.message}
-                            required
                         />
                     </div>
                     <div className="col-span-6">

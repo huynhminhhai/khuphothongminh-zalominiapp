@@ -35,9 +35,9 @@ const request = async <T>(
         if (!response.ok) {
             if (response.status === 401) {
 
-                removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
+                // removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
                 // window.location.href = '/login';
-                throw new Error('accessToken hết hạn (request)');
+                throw new Error('Bạn không có quyền truy cập (request)');
             }
 
             if (response.status === 500) {

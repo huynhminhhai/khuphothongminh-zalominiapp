@@ -25,13 +25,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDataFromStorage } from "services/zalo";
 import ForbiddenPage from "pages/403";
 import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
+import { useLogout } from "apiRequest/auth";
 
 
 const AuthWrapper = ({ children }) => {
   const { setToken, setAccount, accessToken, fetchResidentTypes } = useStoreApp();
   const navigate = useNavigate();
+  const logout = useLogout();
+
+
 
   const loadAuthData = async () => {
+
+    // logout();
     try {
       const storedData = await getDataFromStorage(["account", "accessToken", "refreshToken", "hanSuDungToken"]);
 

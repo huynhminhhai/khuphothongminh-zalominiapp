@@ -4,6 +4,7 @@ import http from "services/http";
 const appApiRequest = {
     getHuyen: (maTinh: string) => http.get<any>(`/huyen/tinh/${maTinh}`),
     getXa: (maHuyen: string) => http.get<any>(`/xa/huyen/${maHuyen}`),
+    getAp: (maXa: string) => http.get<any>(`/ap/xa/${maXa}`),
 }
 
 /**
@@ -49,6 +50,30 @@ export const useGetXaList = (maHuyen: string) => {
             }
         },
         enabled: !!maHuyen,
+        staleTime: 1000 * 60 * 60 * 24,
+        retry: 1,
+    });
+};
+
+/**
+* GET AP
+**/ 
+export const useGetApList = (maXa: string) => {
+
+    return useQuery({
+        queryKey: ['apList', maXa],
+        queryFn: async () => {
+            try {
+
+                const res = await appApiRequest.getAp(maXa);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        enabled: !!maXa,
         staleTime: 1000 * 60 * 60 * 24,
         retry: 1,
     });
