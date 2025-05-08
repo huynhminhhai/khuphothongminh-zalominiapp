@@ -26,6 +26,16 @@ const AccountPage: React.FC = () => {
                         <>
                             <Box m={4}>
                                 <List className="bg-white rounded-lg">
+                                    <Item
+                                        onClick={() => navigate('/register-ap')}
+                                        title="Đăng ký thông tin Ấp"
+                                        prefix={<img src={images.progress} width={30} />}
+                                        suffix={<Icon fontSize={20} icon="formkit:right" />}
+                                    />
+                                </List>
+                            </Box>
+                            <Box m={4}>
+                                <List className="bg-white rounded-lg">
                                     <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tài khoản</div>
                                     <Item
                                         onClick={() => navigate('/profile-account')}

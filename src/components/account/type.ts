@@ -18,9 +18,6 @@ export const schemaProfile = yup.object().shape({
 export type FormDataProfile = {
     tenDangNhap: string;
     hoTen: string;
-    email?: string;
-    dienThoai?: string;
-    soGiayTo?: string;
     fileAnhDaiDien?: File;
 }
 
@@ -37,4 +34,24 @@ export type FormDataChangePassword = {
     oldPassword: string;
     confirmPassword: string;
     password: string;
+}
+
+export const schemaRegisterAp = yup.object().shape({
+    maHuyen: yup.string().required('Không được để trống'),
+    maXa: yup.string().required('Không được để trống'),
+    apId: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
+    hoTen: yup.string().required('Không được để trống'),
+    dienThoai: yup.string().required('Không được để trống'),
+    soGiayTo: yup.string().required('Không được để trống'),
+})
+
+export type FormDataRegisterAp = {
+    nguoiDungId?: number;
+    maTinh?: string;
+    maHuyen: string;
+    maXa: string;
+    apId: number;
+    hoTen: string;
+    dienThoai: string;
+    soGiayTo: string;
 }

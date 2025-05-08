@@ -94,8 +94,10 @@ export const useAddressSelector = ({
 interface AddressSelectorWithoutPrefixReturn {
   huyenOptions: { value: string; label: string }[];
   xaOptions: { value: string; label: string }[];
+  apOptions: { value: number; label: string }[];
   watchedTinh: string;
   watchedHuyen: string;
+  watchedXa: string;
 }
 
 interface UseAddressSelectorWithoutPrefixProps {
@@ -111,9 +113,11 @@ export const useAddressSelectorWithoutPrefix = ({
 }: UseAddressSelectorWithoutPrefixProps): AddressSelectorWithoutPrefixReturn => {
   const [huyenOptions, setHuyenOptions] = useState<{ value: string; label: string }[]>([]);
   const [xaOptions, setXaOptions] = useState<{ value: string; label: string }[]>([]);
+  const [apOptions, setApOptions] = useState<{ value: number; label: string }[]>([]);
 
   const watchedTinh = watch("maTinh");
   const watchedHuyen = watch("maHuyen");
+  const watchedXa = watch("maXa");
 
   // Gọi API lấy danh sách huyện khi tỉnh thay đổi
   useEffect(() => {
@@ -157,11 +161,33 @@ export const useAddressSelectorWithoutPrefix = ({
     fetchWards();
   }, [watchedHuyen, setValue]);
 
+  // Gọi API lấy danh sách xã khi xã thay đổi
+  useEffect(() => {
+    const fetchAps = async () => {
+      if (watchedXa) {
+        try {
+          const response = await http.get<any>(`/ap/xa/${watchedXa}`);
+          const aps = response.data.map((item: any) => ({
+            value: item.apId,
+            label: item.tenAp,
+          }));
+          setApOptions(aps);
+          setValue("apId", ""); // reset ấp khi xã thay đổi
+        } catch (error) {
+          console.error("Lỗi khi lấy danh sách ấp:", error);
+        }
+      }
+    };
+    fetchAps();
+  }, [watchedXa, setValue]);
+
   return {
     huyenOptions,
     xaOptions,
+    apOptions,
     watchedTinh,
     watchedHuyen,
+    watchedXa
   };
 };
 

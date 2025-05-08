@@ -32,6 +32,7 @@ import map from './map.png'
 import avatarDefault from './private-account.png'
 import invoice from './bill.png'
 import shortcut from './shortcut.png'
+import progress from './progress.png'
 
 const images = {
     logo,
@@ -67,7 +68,8 @@ const images = {
     shape4,
     invoice,
     shortcut,
-    shapeWave
+    shapeWave,
+    progress
 }
 
 export default images

@@ -28,10 +28,9 @@ export const HeaderHome: FC = () => {
               <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">
                 {account && (
                   <>
-                    {maskPhoneNumber(account.thongTinDanCu?.dienThoai) ||
-                      maskPhoneNumber(formatPhoneNumber(account.tenDangNhap))}
+                    {account?.dienThoai && maskPhoneNumber(account?.dienThoai)}
                     {" ✦ "}
-                    {account.thongTinDanCu?.tenAp || 'Chưa đăng ký Ấp'}
+                    {account?.tenAp || 'Chưa đăng ký Ấp'}
                   </>
                 )}
               </h5>

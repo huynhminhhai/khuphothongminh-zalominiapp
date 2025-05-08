@@ -33,6 +33,9 @@ const authApiRequest = {
     updateAccount: async (formData: any) => {
         return await http.putFormData<any>('/nguoidung/thongtincanhan', formData);
     },
+    registerAp: async (formData: any) => {
+        return await http.put<any>('/nguoidung/dangkythongtinnguoidung', formData);
+    }
 }
 
 export const useLogin = () => {
@@ -143,6 +146,38 @@ export const useUpdateAccount = () => {
         },
         onSuccess: async () => {
             showSuccess('Cập nhật thông tin tài khoản thành công');
+
+            try {
+                const res = await authApiRequest.getUserInfo();
+
+                setAccount((res as any).data);
+            } catch (error) {
+                console.error("Lỗi lấy thông tin người dùng:", error);
+            }
+
+            queryClient.invalidateQueries({ queryKey: ['account'] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* PUT ACCOUNT AP
+**/
+export const useRegisterAp = () => {
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+    const { setAccount } = useStoreApp();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await authApiRequest.registerAp(formData);
+        },
+        onSuccess: async () => {
+            showSuccess('Đăng ký thông tin ấp thành công');
 
             try {
                 const res = await authApiRequest.getUserInfo();

@@ -16,7 +16,7 @@ import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
 import { TransactionDetailPage, TransactionsPage } from "pages/transactions";
 import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-finnace";
-import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage } from "pages/account";
+import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage, RegisterApPage } from "pages/account";
 import { LoadingFullScreen } from "./loading";
 import { useStoreApp } from "store/store";
 import { NotificationPage } from "pages/notification";
@@ -169,6 +169,7 @@ const MyApp = () => {
                         <Route path="/account" element={<AccountPage></AccountPage>}></Route>
                         <Route path="/profile-account" element={<ProfileAccountPage></ProfileAccountPage>}></Route>
                         <Route path="/change-password" element={<ChangePasswordPage></ChangePasswordPage>}></Route>
+                        <Route path="/register-ap" element={<RegisterApPage></RegisterApPage>}></Route>
 
                         {/* NOTIFICATION */}
                         <Route path="/notification" element={<NotificationPage></NotificationPage>}></Route>

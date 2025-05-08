@@ -26,6 +26,10 @@ type Account = {
     email?: string;
     soGiayTo?: string;
     thongTinDanCu: any;
+    maHuyen: string;
+    maXa: string;
+    maTinh: string;
+    [key: string]: any;
 };
 
 export interface AuthSliceType {

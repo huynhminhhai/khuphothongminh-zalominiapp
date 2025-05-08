@@ -4,7 +4,7 @@ import { FormDataProfile, schemaProfile } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormAvatarUploaderSingle, FormInputField, FormSelectField } from "components/form"
+import { FormAvatarUploaderSingle, FormInputField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { useStoreApp } from "store/store"
 import { useUpdateAccount } from "apiRequest/auth"
@@ -14,16 +14,11 @@ const defaultValues: FormDataProfile = {
     hoTen: '',
     fileAnhDaiDien: undefined,
     tenDangNhap: '',
-    dienThoai: '',
-    email: '',
-    soGiayTo: ''
 }
 
 const ProfileForm: React.FC = () => {
 
     const { account } = useStoreApp()
-
-    console.log(account)
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataProfile>(defaultValues);
@@ -45,9 +40,6 @@ const ProfileForm: React.FC = () => {
             reset({
                 hoTen: account.hoTen,
                 tenDangNhap: account.tenDangNhap,
-                dienThoai: account?.dienThoai || "",
-                email: account?.email || "",
-                soGiayTo: account?.soGiayTo || "",
                 fileAnhDaiDien: undefined
             })
 
@@ -123,37 +115,6 @@ const ProfileForm: React.FC = () => {
                             control={control}
                             error={errors.hoTen?.message}
                             required
-                        />
-                    </div>
-
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="dienThoai"
-                            label="Số điện thoại"
-                            placeholder="Nhập số điện thoại"
-                            control={control}
-                            error={errors.dienThoai?.message}
-                        />
-                    </div>
-
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="email"
-                            label="Email"
-                            placeholder="Nhập email"
-                            control={control}
-                            error={errors.email?.message}
-                        />
-                    </div>
-
-                    <div className="col-span-12">
-                        <FormInputField
-                            type="number"
-                            name="soGiayTo"
-                            label="Số định danh cá nhân"
-                            placeholder="Nhập số định danh cá nhân"
-                            control={control}
-                            error={errors.soGiayTo?.message}
                         />
                     </div>
 
