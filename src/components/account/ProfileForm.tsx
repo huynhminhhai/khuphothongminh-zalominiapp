@@ -4,15 +4,19 @@ import { FormDataProfile, schemaProfile } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormAvatarUploaderSingle, FormControllerDatePicker, FormInputField, FormSelectField } from "components/form"
+import { FormAvatarUploaderSingle, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import { gender } from "constants/mock"
 import { useStoreApp } from "store/store"
+import { useUpdateAccount } from "apiRequest/auth"
+import { convertToFormData, loadImage } from "utils/file"
 
 const defaultValues: FormDataProfile = {
     hoTen: '',
-    anhDaiDien: '',
-    tenDangNhap: ''
+    fileAnhDaiDien: undefined,
+    tenDangNhap: '',
+    dienThoai: '',
+    email: '',
+    soGiayTo: ''
 }
 
 const ProfileForm: React.FC = () => {
@@ -29,6 +33,8 @@ const ProfileForm: React.FC = () => {
         defaultValues
     });
 
+    const { mutateAsync: updateAccount, isPending } = useUpdateAccount();
+
     const onSubmit: SubmitHandler<FormDataProfile> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
@@ -38,20 +44,45 @@ const ProfileForm: React.FC = () => {
         if (account) {
             reset({
                 hoTen: account.hoTen,
-                anhDaiDien: account.anhDaiDien,
-                tenDangNhap: account.tenDangNhap
+                tenDangNhap: account.tenDangNhap,
+                dienThoai: account?.dienThoai || "",
+                email: account?.email || "",
+                soGiayTo: account?.soGiayTo || "",
+                fileAnhDaiDien: undefined
             })
+
+            const fetchAndSetImage = async () => {
+                if (account?.anhDaiDien) {
+                    const file = await loadImage(account.anhDaiDien);
+
+                    if (file) {
+                        reset((prevValues) => ({
+                            ...prevValues,
+                            fileAnhDaiDien: file,
+                        }));
+                    }
+                }
+            };
+
+            fetchAndSetImage();
         }
     }, [account])
 
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setConfirmVisible(false);
-        if (formData) {
-            try {
-                console.log('call api here')
-            } catch (error) {
+        try {
 
-            }
+            const dataSubmit = {
+                ...formData,
+                nguoiDungId: account?.nguoiDungId,
+            };
+
+            const formDataConverted = convertToFormData(dataSubmit);
+
+            await updateAccount(formDataConverted);
+
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
@@ -65,10 +96,10 @@ const ProfileForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormAvatarUploaderSingle
-                            name="anhDaiDien"
+                            name="fileAnhDaiDien"
                             label="Upload ảnh"
                             control={control}
-                            error={errors.anhDaiDien?.message}
+                            error={errors.fileAnhDaiDien?.message}
                         />
                     </div>
 
@@ -80,6 +111,7 @@ const ProfileForm: React.FC = () => {
                             control={control}
                             error={errors.tenDangNhap?.message}
                             required
+                            disabled
                         />
                     </div>
 
@@ -94,11 +126,42 @@ const ProfileForm: React.FC = () => {
                         />
                     </div>
 
-                    {/* <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="dienThoai"
+                            label="Số điện thoại"
+                            placeholder="Nhập số điện thoại"
+                            control={control}
+                            error={errors.dienThoai?.message}
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="email"
+                            label="Email"
+                            placeholder="Nhập email"
+                            control={control}
+                            error={errors.email?.message}
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormInputField
+                            type="number"
+                            name="soGiayTo"
+                            label="Số định danh cá nhân"
+                            placeholder="Nhập số định danh cá nhân"
+                            control={control}
+                            error={errors.soGiayTo?.message}
+                        />
+                    </div>
+
+                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={loading || !isSubmitEnabled} fullWidth label={loading ? "Đang xử lý..." : "Cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật thông tin"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
-                    </div> */}
+                    </div>
                 </div>
             </Box>
             <ConfirmModal

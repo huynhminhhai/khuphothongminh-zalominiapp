@@ -15,13 +15,16 @@ type Permission = {
 };
 
 type Account = {
-    anhDaiDien: string;
+    anhDaiDien?: string;
     nguoiDungId: number;
     apId: number;
     tenDangNhap: string;
     hoTen: string;
     vaiTros: Role[];
     quyenXuLyChucNangs: Permission[];
+    dienThoai?: string;
+    email?: string;
+    soGiayTo?: string;
     thongTinDanCu: any;
 };
 

@@ -24,8 +24,17 @@ export const HeaderHome: FC = () => {
               />
             </div>
             <Box>
-              <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{account?.thongTinDanCu?.hoTen ? account.thongTinDanCu?.hoTen : 'Khách'}</h4>
-              <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">{account ? `${maskPhoneNumber(account.thongTinDanCu?.dienThoai) || maskPhoneNumber(formatPhoneNumber(account.tenDangNhap))} ✦ ${account.thongTinDanCu?.tenAp || ''}` : ''}</h5>
+              <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{account?.hoTen ? account?.hoTen : 'Khách'}</h4>
+              <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">
+                {account && (
+                  <>
+                    {maskPhoneNumber(account.thongTinDanCu?.dienThoai) ||
+                      maskPhoneNumber(formatPhoneNumber(account.tenDangNhap))}
+                    {" ✦ "}
+                    {account.thongTinDanCu?.tenAp || 'Chưa đăng ký Ấp'}
+                  </>
+                )}
+              </h5>
             </Box>
           </Box>
         ) as unknown as string

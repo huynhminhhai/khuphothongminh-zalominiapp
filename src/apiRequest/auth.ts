@@ -29,7 +29,10 @@ const authApiRequest = {
         const response = await http.post('/xacthuc/dangxuat', {});
 
         return response;
-    }
+    },
+    updateAccount: async (formData: any) => {
+        return await http.putFormData<any>('/nguoidung/thongtincanhan', formData);
+    },
 }
 
 export const useLogin = () => {
@@ -124,4 +127,36 @@ export const useLogout = () => {
     };
 
     return logout;
+};
+
+/**
+* PUT ACCOUNT
+**/
+export const useUpdateAccount = () => {
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+    const { setAccount } = useStoreApp();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await authApiRequest.updateAccount(formData);
+        },
+        onSuccess: async () => {
+            showSuccess('Cập nhật thông tin tài khoản thành công');
+
+            try {
+                const res = await authApiRequest.getUserInfo();
+
+                setAccount((res as any).data);
+            } catch (error) {
+                console.error("Lỗi lấy thông tin người dùng:", error);
+            }
+
+            queryClient.invalidateQueries({ queryKey: ['account'] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
 };

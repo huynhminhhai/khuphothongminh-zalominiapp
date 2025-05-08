@@ -12,12 +12,16 @@ export type FormDataLogin = {
 
 export const schemaProfile = yup.object().shape({
     hoTen: yup.string().required('Không được để trống'),
+    tenDangNhap: yup.string().required('Không được sé trống'),
 });
 
 export type FormDataProfile = {
-    hoTen: string;      
-    tenDangNhap?: string;
-    anhDaiDien?: string;
+    tenDangNhap: string;
+    hoTen: string;
+    email?: string;
+    dienThoai?: string;
+    soGiayTo?: string;
+    fileAnhDaiDien?: File;
 }
 
 export const schemaChangePassword = yup.object().shape({

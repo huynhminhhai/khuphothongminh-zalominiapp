@@ -152,13 +152,11 @@ const ResidentAddForm: React.FC = () => {
                 dataSubmit = omit(dataSubmit, ['noiTamTru']);
             }
 
-            console.log(dataSubmit)
+            await createResident(dataSubmit);
 
-            // await createResident(dataSubmit);
+            reset(defaultValues);
 
-            // reset(defaultValues);
-
-            // navigate("/resident");
+            navigate("/resident");
         } catch (error) {
             console.error("Error:", error);
         }
