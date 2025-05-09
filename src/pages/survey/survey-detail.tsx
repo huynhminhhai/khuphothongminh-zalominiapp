@@ -158,9 +158,6 @@ const SurveyDetailPage: React.FC = () => {
         try {
             const payload = mapToSurveySubmitFormat();
 
-            // console.log(surveyDetail)
-            console.log(payload)
-
             await createResultSurvey(payload);
 
             showSuccess('Gửi khảo sát thành công')

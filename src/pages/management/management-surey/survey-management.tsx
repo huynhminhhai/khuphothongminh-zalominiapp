@@ -113,7 +113,7 @@ const SurveyManagementPage: React.FC = () => {
             id: 'chart',
             header: 'Kết quả',
             cell: ({ row }) => (
-                hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
+                // hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
                 <div className="flex items-center justify-start" onClick={() => navigate(`/survey-charts?id=${row.original.khaoSatId}`)}>
                     <img width={30} src={images.pieChart} alt={row.original.title} />
                 </div>
@@ -125,7 +125,7 @@ const SurveyManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
+                        // hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
                         <button
                             onClick={() => navigate(`/survey-detail?id=${row.original.khaoSatId}`)}
                             className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -134,7 +134,7 @@ const SurveyManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Sửa thông tin 1 khảo sát', 'SUA') &&
+                        // hasPermission('Sửa thông tin 1 khảo sát', 'SUA') &&
                         <button
                             onClick={() => navigate(`/survey-update?id=${row.original.khaoSatId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -143,7 +143,7 @@ const SurveyManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 khảo sát', 'XOA') &&
+                        // hasPermission('Xóa 1 khảo sát', 'XOA') &&
                         <button
                             onClick={() => removeSurvey(Number(row.original.khaoSatId))}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -204,7 +204,7 @@ const SurveyManagementPage: React.FC = () => {
                 <Box>
                     <Box pb={4}>
                         <FilterBar
-                            showAddButton={hasPermission('Thêm mới 1 khảo sát', 'SUA')}
+                            // showAddButton={hasPermission('Thêm mới 1 khảo sát', 'SUA')}
                             onAddButtonClick={() => navigate("/survey-add")}
                             setViewCard={setViewCard}
                             viewCard={viewCard}
