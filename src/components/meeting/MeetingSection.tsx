@@ -34,7 +34,7 @@ const MeetingSection: React.FC<any> = () => {
                 <Box>
 
                     {
-                        data.data && data.data.length > 0 ?
+                        data?.data && data?.data.length > 0 ?
                             <Swiper
                                 modules={[Pagination]}
                                 spaceBetween={12}

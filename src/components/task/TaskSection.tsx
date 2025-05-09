@@ -35,7 +35,7 @@ const TaskSection: React.FC<any> = () => {
                 <TitleSection title="Nhiệm vụ mới nhất" handleClick={() => navigate('/task')} mB={0} />
                 <Box>
                     {
-                        data.data && data.data.length > 0 ?
+                        data?.data && data?.data.length > 0 ?
                             <Swiper
                                 modules={[Pagination]}
                                 spaceBetween={12}

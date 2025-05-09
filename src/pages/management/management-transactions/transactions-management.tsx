@@ -144,7 +144,7 @@ const TransactionsManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 giao dịch thu chi', 'XEM') &&
+                        // hasPermission('Lấy thông tin chi tiết 1 giao dịch thu chi', 'XEM') &&
                         <button
                             onClick={() => navigate(`/transactions-detail?id=${row.original.thuChiId}`)}
                             className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -153,7 +153,7 @@ const TransactionsManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Sửa thông tin 1 giao dịch thu chi', 'SUA') &&
+                        // hasPermission('Sửa thông tin 1 giao dịch thu chi', 'SUA') &&
                         <button
                             onClick={() => navigate(`/transactions-update?id=${row.original.thuChiId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -162,7 +162,7 @@ const TransactionsManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 giao dịch thu chi', 'XOA') &&
+                        // hasPermission('Xóa 1 giao dịch thu chi', 'XOA') &&
                         <button
                             onClick={() => removeTransaction(row.original.thuChiId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"

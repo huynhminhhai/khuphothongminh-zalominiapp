@@ -27,12 +27,12 @@ const HomePage: React.FunctionComponent = () => {
             <>
               <Divider />
               {
-                hasPermission('Lấy danh sách nhiệm vụ của 1 người có phân trang', 'XEM') &&
+                // hasPermission('Lấy danh sách nhiệm vụ của 1 người có phân trang', 'XEM') &&
                 <TaskSection />
               }
               <Divider />
               {
-                hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
+                // hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
                 <MeetingSection />
               }
             </>
