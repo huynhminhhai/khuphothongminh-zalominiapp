@@ -8,7 +8,7 @@ const StatisticSection: React.FC<any> = () => {
         <Box>
             <Box px={4} pb={4}>
                 <StatisticList />
-                <StatisticMain/>
+                <StatisticMain />
             </Box>
         </Box>
     )

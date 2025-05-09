@@ -8,7 +8,7 @@ import { FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { useStoreApp } from "store/store"
 import { useRegisterAp } from "apiRequest/auth"
-import { useAddressSelectorWithoutPrefix } from "utils/useAddress"
+import { setAddressWithoutPrefixStepByStep, useAddressSelectorWithoutPrefix } from "utils/useAddress"
 
 const defaultValues: FormDataRegisterAp = {
     hoTen: '',
@@ -40,32 +40,6 @@ const RegisterApForm: React.FC = () => {
         setValue,
     });
 
-    useEffect(() => {
-        setValue("maTinh", "80");
-    }, [setValue]);
-
-    useEffect(() => {
-        if (account) {
-            if (account.maHuyen) {
-                setValue("maHuyen", account.maHuyen);
-            }
-        }
-    }, [registerApAddress.huyenOptions, account, setValue]);
-
-    useEffect(() => {
-        if (account) {
-            if (account.maXa) {
-                setValue("maXa", account.maXa);
-            }
-        }
-    }, [registerApAddress.xaOptions, account, setValue]);
-
-    useEffect(() => {
-        if (account?.apId) {
-          setValue("apId", account.apId);
-        }
-      }, [registerApAddress.apOptions, account, setValue]);
-
     const onSubmit: SubmitHandler<FormDataRegisterAp> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
@@ -73,14 +47,29 @@ const RegisterApForm: React.FC = () => {
 
     useEffect(() => {
         if (account) {
+
+            const {
+                hoTen = "",
+                tenDangNhap = "",
+                soGiayTo = "",
+                maXa = "",
+                maHuyen = "",
+                apId = 0
+            } = account || {};
+
             reset({
-                hoTen: account.hoTen,
-                dienThoai: account?.tenDangNhap || "",
-                soGiayTo: account?.soGiayTo || "",
-                maXa: account?.maXa || "",
-                maHuyen: account?.maHuyen || "",
-                apId: account?.apId || 0,
+                hoTen: hoTen,
+                dienThoai: tenDangNhap,
+                soGiayTo: soGiayTo,
+                maXa: maXa,
+                maHuyen: maHuyen,
+                apId: apId,
             })
+
+            setAddressWithoutPrefixStepByStep(
+                { maTinh: '80', maHuyen, maXa, apId },
+                setValue
+            );
         }
     }, [account])
 
@@ -150,7 +139,7 @@ const RegisterApForm: React.FC = () => {
                             options={registerApAddress.huyenOptions}
                             error={errors.maHuyen?.message}
                             required
-                            // disabled={!registerApAddress.watchedTinh}
+                        // disabled={!registerApAddress.watchedTinh}
                         />
                     </div>
                     <div className="col-span-12">

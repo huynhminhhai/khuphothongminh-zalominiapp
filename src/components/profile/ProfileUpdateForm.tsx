@@ -62,7 +62,6 @@ const ProfileUpdateForm: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
     const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
-    const [chuHosData, setChuHosData] = useState<any>()
 
     const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
         resolver: yupResolver(residentSchema(isHouseHold)),
@@ -187,8 +186,6 @@ const ProfileUpdateForm: React.FC = () => {
         try {
             const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
             const chuHoData = response.data;
-
-            setChuHosData(chuHoData)
 
             const {
                 diaChi = '',
