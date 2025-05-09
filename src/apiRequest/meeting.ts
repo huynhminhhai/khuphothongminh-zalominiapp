@@ -17,7 +17,7 @@ export const meetingApiRequest = {
         return await http.get<any>(`/cuochop/danhmuc`);
     },
     createMeeting: async (formData: any) => {
-        return await http.post<any>("/cuochop", formData);
+        return await http.postFormData<any>("/cuochop", formData);
     },
     deleteMeeting: async (id: number) => {
         return await http.delete<any>(`/cuochop/${id}`)

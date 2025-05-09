@@ -177,7 +177,10 @@ const MeetingManagementPage: React.FC = () => {
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái cuộc họp này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')}
+                            disabled={
+                                isPending
+                                // || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')
+                            }
                         >
                             {meetingStatus?.tinhTrangs && meetingStatus?.tinhTrangs.map((item) => (
                                 <Option
@@ -198,7 +201,7 @@ const MeetingManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 cuộc họp', 'XEM') &&
+                        // hasPermission('Lấy thông tin chi tiết 1 cuộc họp', 'XEM') &&
                         <button
                             onClick={() => navigate(`/meeting-detail?id=${row.original.cuocHopId}`)}
                             className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -207,7 +210,7 @@ const MeetingManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Sửa thông tin 1 cuộc họp', 'SUA') &&
+                        // hasPermission('Sửa thông tin 1 cuộc họp', 'SUA') &&
                         <button
                             onClick={() => navigate(`/meeting-update?id=${row.original.cuocHopId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -216,7 +219,7 @@ const MeetingManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 cuộc họp', 'XOA') &&
+                        // hasPermission('Xóa 1 cuộc họp', 'XOA') &&
                         <button
                             onClick={() => removeMeeting(row.original.cuocHopId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -276,7 +279,7 @@ const MeetingManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý cuộc họp" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton={hasPermission('Thêm mới 1 cuộc họp', 'SUA')}
+                        // showAddButton={hasPermission('Thêm mới 1 cuộc họp', 'SUA')}
                         onAddButtonClick={() => navigate("/meeting-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}

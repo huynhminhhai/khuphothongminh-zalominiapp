@@ -8,6 +8,7 @@ import { ConfirmModal } from "components/modal"
 import { convertMeetingTime, convertParticipants, FormDataMeeting, schemaMeeting } from "./type"
 import { useStoreApp } from "store/store"
 import { useCreateMeeting, useGetMeetingStatus } from "apiRequest/meeting"
+import { convertToFormData } from "utils/file"
 
 const defaultValues: FormDataMeeting = {
     tieuDe: '',
@@ -100,14 +101,15 @@ const MeetingAddForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData && account) {
             try {
-
-                const prepareDataSubmit = { ...formData, apId: account?.thongTinDanCu?.apId, tinhTrangId: tinhTrangs[0].value }
+                const prepareDataSubmit = { ...formData, apId: account?.apId }
 
                 const dataConvertDate = convertMeetingTime(prepareDataSubmit)
 
                 const dataConvertParticipants = convertParticipants(dataConvertDate)
 
-                await createMeeting(dataConvertParticipants);
+                const dataSubmit = convertToFormData(dataConvertParticipants)
+
+                await createMeeting(dataSubmit);
 
                 reset(defaultValues);
             } catch (error) {
