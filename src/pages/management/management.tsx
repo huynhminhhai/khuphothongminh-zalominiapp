@@ -20,7 +20,7 @@ const ManagementPage: React.FC = () => {
                     <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tuyên truyền, phản ánh</div>
                         {
-                            hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
                             <Item
                                 title="Tin tức"
                                 prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
@@ -29,7 +29,7 @@ const ManagementPage: React.FC = () => {
                             />
                         }
                         {
-                            hasPermission('Lấy danh sách khảo sát có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách khảo sát có phân trang', 'XEM') &&
                             <Item
                                 title="Khảo sát"
                                 prefix={<img src={images.survey} alt='survey' className="w-[30px] h-auto" />}
@@ -38,7 +38,7 @@ const ManagementPage: React.FC = () => {
                             />
                         }
                         {
-                            hasPermission('Lấy danh sách phản ánh có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách phản ánh có phân trang', 'XEM') &&
                             <Item
                                 title="Phản ánh"
                                 prefix={<img src={images.idea} alt='feedback' className="w-[30px] h-auto" />}
@@ -59,7 +59,7 @@ const ManagementPage: React.FC = () => {
                             onClick={() => navigate('/team-management')}
                         /> */}
                         {
-                            hasPermission('Lấy danh sách dân cư có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách dân cư có phân trang', 'XEM') &&
                             <Item
                                 title="Dân cư"
                                 prefix={<img src={images.home} alt='feedback' className="w-[30px] h-auto" />}
@@ -68,7 +68,7 @@ const ManagementPage: React.FC = () => {
                             />
                         }
                         {
-                            hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
                             <Item
                                 title="Thu phí"
                                 prefix={<img src={images.invoice} alt='feedback' className="w-[30px] h-auto" />}
@@ -77,7 +77,7 @@ const ManagementPage: React.FC = () => {
                             />
                         }
                         {
-                            hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
                             <Item
                                 title="Thu/chi"
                                 prefix={<img src={images.money} alt='feedback' className="w-[30px] h-auto" />}
@@ -92,7 +92,7 @@ const ManagementPage: React.FC = () => {
                     <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Công việc, nhiệm vụ</div>
                         {
-                            hasPermission('Lấy danh sách nhiệm vụ có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách nhiệm vụ có phân trang', 'XEM') &&
                             <Item
                                 title="Nhiệm vụ"
                                 prefix={<img src={images.todo} alt='feedback' className="w-[30px] h-auto" />}
@@ -107,7 +107,7 @@ const ManagementPage: React.FC = () => {
                             onClick={() => navigate('/task')}
                         /> */}
                         {
-                            hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
+                            // hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
                             <Item
                                 title="Cuộc họp"
                                 prefix={<img src={images.meeting} alt='feedback' className="w-[30px] h-auto" />}

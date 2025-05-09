@@ -25,6 +25,7 @@ const ResidentManagementPage: React.FC = () => {
     const [filters, setFilters] = useState({
         search: "",
         hoTen: "",
+        hoTenChuHo: "",
         soGiayTo: "",
     });
     const [param, setParam] = useState({
@@ -33,6 +34,7 @@ const ResidentManagementPage: React.FC = () => {
         ApId: account ? account.thongTinDanCu?.apId : 0,
         keyword: '',
         HoTen: '',
+        HoTenChuHo: '',
         SoGiayTo: '',
         LaChuHo: false
     })
@@ -58,6 +60,7 @@ const ResidentManagementPage: React.FC = () => {
 
     useDebouncedParam(filters.search, 'keyword');
     useDebouncedParam(filters.hoTen, 'HoTen');
+    useDebouncedParam(filters.hoTenChuHo, 'HoTenChuHo');
     useDebouncedParam(filters.soGiayTo, 'SoGiayTo');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
@@ -143,11 +146,6 @@ const ResidentManagementPage: React.FC = () => {
             header: 'SĐT',
         },
         {
-            accessorKey: 'email',
-            header: 'Email',
-        },
-
-        {
             id: 'thuongTru',
             header: 'Thường trú',
             cell: ({ row }) => (
@@ -173,7 +171,7 @@ const ResidentManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 dân cư', 'XEM') &&
+                        // hasPermission('Lấy thông tin chi tiết 1 dân cư', 'XEM') &&
                         <button
                             onClick={() => navigate(`/profile-resident?id=${row.original.danCuId}`)}
                             className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -182,7 +180,7 @@ const ResidentManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Sửa thông tin 1 dân cư', 'SUA') &&
+                        // hasPermission('Sửa thông tin 1 dân cư', 'SUA') &&
                         <button
                             onClick={() => navigate(`/resident-profile-update?id=${row.original.danCuId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -191,7 +189,7 @@ const ResidentManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 dân cư', 'XOA') &&
+                        // hasPermission('Xóa 1 dân cư', 'XOA') &&
                         <button
                             onClick={() => removeResident(row.original.danCuId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -252,28 +250,35 @@ const ResidentManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý thông tin hộ dân" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton={hasPermission('Thêm mới 1 dân cư', 'SUA')}
+                        // showAddButton={hasPermission('Thêm mới 1 dân cư', 'SUA')}
                         onAddButtonClick={() => navigate("/resident-profile-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
                     >
                         <div className="col-span-12">
                             <Input
-                                placeholder="Tìm kiếm nhanh..."
+                                placeholder="Tìm kiếm nhanh"
                                 value={filters.search}
                                 onChange={(e) => updateFilter('search', e.target.value)}
                             />
                         </div>
                         <div className="col-span-6">
                             <Input
-                                placeholder="Họ tên..."
+                                placeholder="Họ tên"
                                 value={filters.hoTen}
                                 onChange={(e) => updateFilter('hoTen', e.target.value)}
                             />
                         </div>
                         <div className="col-span-6">
                             <Input
-                                placeholder="Mã định danh..."
+                                placeholder="Họ tên chủ hộ"
+                                value={filters.hoTenChuHo}
+                                onChange={(e) => updateFilter('hoTenChuHo', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-12">
+                            <Input
+                                placeholder="Số định danh cá nhân"
                                 value={filters.soGiayTo}
                                 onChange={(e) => updateFilter('soGiayTo', e.target.value)}
                             />

@@ -21,7 +21,7 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
     };
 
     return (
-        <Box>
+        <Box className="border-b-[1px]">
             <Box p={4}>
                 <Box onClick={toggleDropdown}>
                     <div className="flex items-center justify-between mb-1">

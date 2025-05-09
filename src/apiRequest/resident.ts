@@ -19,8 +19,8 @@ const residentApiRequest = {
     getResidentCategory: async () => {
         return await http.get<any>(`/dancu/danhmuc`);
     },
-    getResidentList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; SoGiayTo?: string; LaChuHo?: boolean;}) => {
-        return await http.get<any>(`/dancu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&HoTen=${param.HoTen}&SoGiayTo=${param.SoGiayTo}&LaChuHo=${param.LaChuHo}`);
+    getResidentList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; HoTenChuHo?: string; SoGiayTo?: string; LaChuHo?: boolean;}) => {
+        return await http.get<any>(`/dancu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&HoTen=${param.HoTen}&HoTenChuHo=${param.HoTenChuHo}&SoGiayTo=${param.SoGiayTo}&LaChuHo=${param.LaChuHo}`);
     },
     getChuHosList: async () => {
         return await http.get<any>(`/dancu/chuhos`);
@@ -135,9 +135,9 @@ export const useGetResidentCategory = () => {
 /**
 * GET RESIDENT LIST
 **/
-export const useGetResidentListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; SoGiayTo?: string; LaChuHo?: boolean; }) => {
+export const useGetResidentListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; HoTenChuHo?: string; SoGiayTo?: string; LaChuHo?: boolean; }) => {
     return useQuery({
-        queryKey: ['residentList', param.page, param.pageSize, param.ApId, param.keyword, param.HoTen, param.SoGiayTo, param.LaChuHo],
+        queryKey: ['residentList', param.page, param.pageSize, param.ApId, param.keyword, param.HoTen, param.SoGiayTo, param.LaChuHo, param.HoTenChuHo],
         queryFn: async () => {
             try {
                 const res = await residentApiRequest.getResidentList(param);

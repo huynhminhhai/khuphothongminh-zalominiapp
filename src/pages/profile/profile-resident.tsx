@@ -27,7 +27,7 @@ const ProfileResidentPage: React.FC = () => {
                         !residentDetailData ? <EmptyData title="Không tìm thấy thông tin hộ dân" /> :
                         <Box px={4}>
                             <InforItemMain label="Họ tên" value={residentDetailData.hoTen}  />
-                            <ResidentInfoList residentDetailData={residentDetailData} />
+                            <ResidentInfoList residentDetailData={residentDetailData} isShow={true} />
                         </Box>
                     }
                 </Box>
