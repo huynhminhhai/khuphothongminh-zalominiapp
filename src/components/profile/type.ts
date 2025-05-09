@@ -77,8 +77,9 @@ export type FormDataProfile = {
 }
 
 const residenceSchema = yup.object().shape({
-    loaiCuTruId: yup.number().required('Loại cư trú là bắt buộc'),
+    // loaiCuTruId: yup.number().required('Loại cư trú là bắt buộc'),
     diaChi: yup.string().required('Địa chỉ là bắt buộc'),
+    apId: yup.number().required('Ấp là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
     xa: yup.string().required('Xã là bắt buộc'),
     huyen: yup.string().required('Huyện là bắt buộc'),
     tinh: yup.string().required('Tỉnh là bắt buộc'),
@@ -120,12 +121,12 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
     danToc: yup.string().required('Dân tộc là bắt buộc'),
     tonGiao: yup.string().required('Tôn giáo là bắt buộc'),
     // quocGia: yup.string().required('Quốc gia là bắt buộc'),
-    ngheNghiep: yup.string().required('Nghề nghiệp là bắt buộc'),
-    noiLamViec: yup.string().required('Nơi làm việc là bắt buộc'),
+    ngheNghiep: yup.number().required('Giới tính là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
+    // noiLamViec: yup.string().required('Nơi làm việc là bắt buộc'),
     email: yup
         .string()
-        .email('Email không hợp lệ')
-        .required('Email là bắt buộc'),
+        .email('Email không hợp lệ'),
+        // .required('Email là bắt buộc'),
     dienThoai: yup
         .string()
         .required('Số điện thoại không được để trống')
@@ -150,8 +151,9 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
 
 interface Residence {
     thongTinCuTruId?: any;
-    loaiCuTruId: number;
+    loaiCuTruId?: number;
     diaChi: string;
+    apId: number;
     xa: string;
     huyen: string;
     tinh: string;
@@ -171,9 +173,9 @@ export interface FormResidentDetail {
     danToc: string;
     tonGiao: string;
     quocGia?: string;
-    ngheNghiep: string;
-    noiLamViec: string;
-    email: string;
+    ngheNghiep: number;
+    noiLamViec?: string;
+    email?: string;
     dienThoai: string;
     website?: string;
     moiQuanHeVoiChuHo?: number;

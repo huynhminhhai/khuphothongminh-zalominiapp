@@ -25,8 +25,10 @@ interface UseAddressSelectorProps {
 interface AddressSelectorReturn {
   huyenOptions: { value: string; label: string }[];
   xaOptions: { value: string; label: string }[];
+  apOptions: { value: number; label: string }[];
   watchedTinh: string;
   watchedHuyen: string;
+  watchedXa: string;
 }
 
 export const useAddressSelector = ({
@@ -37,9 +39,11 @@ export const useAddressSelector = ({
 }: UseAddressSelectorProps): AddressSelectorReturn => {
   const [huyenOptions, setHuyenOptions] = useState<{ value: string; label: string }[]>([]);
   const [xaOptions, setXaOptions] = useState<{ value: string; label: string }[]>([]);
+  const [apOptions, setApOptions] = useState<{ value: number; label: string }[]>([]);
 
   const watchedTinh = watch(`${prefix}.tinh`);
   const watchedHuyen = watch(`${prefix}.huyen`);
+  const watchedXa = watch(`${prefix}.xa`);
 
   // Gọi API lấy danh sách huyện khi tỉnh thay đổi
   useEffect(() => {
@@ -83,11 +87,33 @@ export const useAddressSelector = ({
     fetchWards();
   }, [watchedHuyen, setValue, prefix]);
 
+  // Gọi API lấy danh sách ấp khi xã thay đổi
+  useEffect(() => {
+    const fetchAps = async () => {
+      if (watchedXa) {
+        try {
+          const response = await http.get<any>(`/ap/xa/${watchedXa}`);
+          const aps = response.data.map((item: any) => ({
+            value: item.apId,
+            label: item.tenAp,
+          }));
+          setApOptions(aps);
+          setValue(`${prefix}.apId`, "");
+        } catch (error) {
+          console.error(`Lỗi khi lấy danh sách ấp (${prefix}):`, error);
+        }
+      }
+    };
+    fetchAps();
+  }, [watchedXa, setValue]);
+
   return {
     huyenOptions,
     xaOptions,
+    apOptions,
     watchedTinh,
     watchedHuyen,
+    watchedXa
   };
 };
 
@@ -195,8 +221,10 @@ export const useResidentAddress = (prefix: string, tinhs: OptionsType[], watch: 
   const {
     huyenOptions,
     xaOptions,
+    apOptions,
     watchedTinh,
     watchedHuyen,
+    watchedXa
   } = useAddressSelector({
     prefix,
     tinhOptions: tinhs,
@@ -207,8 +235,10 @@ export const useResidentAddress = (prefix: string, tinhs: OptionsType[], watch: 
   return {
     huyenOptions,
     xaOptions,
+    apOptions,
     watchedTinh,
     watchedHuyen,
+    watchedXa
   };
 };
 

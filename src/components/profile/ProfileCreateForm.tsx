@@ -26,7 +26,7 @@ const ProfileAddForm: React.FC = () => {
     danToc: '',
     tonGiao: '',
     quocGia: 'VN',
-    ngheNghiep: '',
+    ngheNghiep: 0,
     noiLamViec: '',
     email: '',
     dienThoai: '',
@@ -35,8 +35,8 @@ const ProfileAddForm: React.FC = () => {
     tinhTrangHoGiaDinhId: 0,
     giaDinhVanHoa: false,
     noiThuongTru: {
-      loaiCuTruId: loaiCuTrus[0]?.value || 1,
       diaChi: '',
+      apId: 0,
       xa: '',
       huyen: '',
       tinh: '',
@@ -46,8 +46,8 @@ const ProfileAddForm: React.FC = () => {
       denNgay: null,
     },
     noiTamTru: {
-      loaiCuTruId: loaiCuTrus[1]?.value || 2,
       diaChi: '',
+      apId: 0,
       xa: '',
       huyen: '',
       tinh: '',
@@ -104,15 +104,31 @@ const ProfileAddForm: React.FC = () => {
 
       setChuHosData(residentData)
 
+      const {
+        diaChi = '',
+        apId = 0,
+        xa = '',
+        huyen = '',
+        tinh = '',
+        latitude = null,
+        longitute = null,
+        tuNgay = null,
+        denNgay = null,
+      } = residentData.noiThuongTru || {};
+
       reset({
         ...watch(),
         noiThuongTru: {
           ...watch().noiThuongTru,
-          ...residentData.noiThuongTru
-        },
-        noiTamTru: {
-          ...watch().noiTamTru,
-          ...residentData.noiTamTru
+          diaChi,
+          apId,
+          xa,
+          huyen,
+          tinh,
+          latitude,
+          longitute,
+          tuNgay,
+          denNgay,
         },
         tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
         giaDinhVanHoa: residentData.giaDinhVanHoa
@@ -145,6 +161,17 @@ const ProfileAddForm: React.FC = () => {
     }
   }, [chuHosData, thuongTruAddress.xaOptions, tamTruAddress.xaOptions, setValue])
 
+  useEffect(() => {
+    if (chuHosData) {
+      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.apId) {
+        setValue("noiThuongTru.apId", chuHosData.noiThuongTru.apId);
+      }
+      if (chuHosData.noiTamTru && chuHosData.noiTamTru.apId) {
+        setValue("noiTamTru.apId", chuHosData.noiTamTru.apId);
+      }
+    }
+  }, [chuHosData, thuongTruAddress.apOptions, tamTruAddress.apOptions, setValue])
+
   const handleConfirm = async () => {
     setConfirmVisible(false);
     try {
@@ -168,7 +195,7 @@ const ProfileAddForm: React.FC = () => {
           : {}),
       };
 
-      if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.xa === '') {
+      if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.apId === 0) {
         dataSubmit = omit(dataSubmit, ['noiTamTru']);
       }
 
@@ -215,7 +242,7 @@ const ProfileAddForm: React.FC = () => {
               placeholder="Nhập email"
               control={control}
               error={errors.email?.message}
-              required
+            // required
             />
           </div>
           <div className="col-span-6">
@@ -268,7 +295,7 @@ const ProfileAddForm: React.FC = () => {
               placeholder="Nhập nơi làm việc"
               control={control}
               error={errors.noiLamViec?.message}
-              required
+            // required
             />
           </div>
           <div className="col-span-6">
@@ -338,7 +365,7 @@ const ProfileAddForm: React.FC = () => {
               disabled={!isHouseHold}
             />
           </div>
-          <div className="col-span-6">
+          <div className="col-span-12">
             <FormSelectField
               name="noiThuongTru.huyen"
               label=""
@@ -358,6 +385,17 @@ const ProfileAddForm: React.FC = () => {
               options={thuongTruAddress.xaOptions}
               error={errors.noiThuongTru?.xa?.message}
               disabled={!isHouseHold || !thuongTruAddress.watchedHuyen}
+            />
+          </div>
+          <div className="col-span-6">
+            <FormSelectField
+              name="noiThuongTru.apId"
+              label=""
+              placeholder="Chọn ấp"
+              control={control}
+              options={thuongTruAddress.apOptions}
+              error={errors.noiThuongTru?.apId?.message}
+              disabled={!isHouseHold || !thuongTruAddress.watchedXa}
             />
           </div>
           <div className="col-span-12">
@@ -419,7 +457,7 @@ const ProfileAddForm: React.FC = () => {
                   error={errors.noiTamTru?.tinh?.message}
                 />
               </div>
-              <div className="col-span-6">
+              <div className="col-span-12">
                 <FormSelectField
                   name="noiTamTru.huyen"
                   label=""
@@ -439,6 +477,17 @@ const ProfileAddForm: React.FC = () => {
                   options={tamTruAddress.xaOptions}
                   error={errors.noiTamTru?.xa?.message}
                   disabled={!tamTruAddress.watchedHuyen}
+                />
+              </div>
+              <div className="col-span-6">
+                <FormSelectField
+                  name="noiTamTru.apId"
+                  label=""
+                  placeholder="Chọn ấp"
+                  control={control}
+                  options={tamTruAddress.apOptions}
+                  error={errors.noiTamTru?.apId?.message}
+                  disabled={!tamTruAddress.watchedXa}
                 />
               </div>
               <div className="col-span-12">

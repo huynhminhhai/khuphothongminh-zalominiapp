@@ -115,7 +115,7 @@ const ResidentManagementPage: React.FC = () => {
                         !row.original.laChuHo ?
                             <>{row.original.hoTenChuHo}</>
                             :
-                            <Icon className="text-green-700" fontSize={30} icon='line-md:confirm' />
+                            <>Là chủ hộ</>
                     }
                 </div>
             ),
@@ -125,22 +125,22 @@ const ResidentManagementPage: React.FC = () => {
             accessorKey: 'soGiayTo',
             header: 'CCCD',
         },
-        {
-            accessorKey: 'tenGioiTinh',
-            header: 'Giới tính',
-        },
-        {
-            id: 'ngaySinh',
-            header: 'Ngày sinh',
-            cell: ({ row }) => (
-                <div>
-                    {
-                        formatDate(row.original.ngaySinh)
-                    }
-                </div>
-            ),
-            size: 100
-        },
+        // {
+        //     accessorKey: 'tenGioiTinh',
+        //     header: 'Giới tính',
+        // },
+        // {
+        //     id: 'ngaySinh',
+        //     header: 'Ngày sinh',
+        //     cell: ({ row }) => (
+        //         <div>
+        //             {
+        //                 formatDate(row.original.ngaySinh)
+        //             }
+        //         </div>
+        //     ),
+        //     size: 100
+        // },
         {
             accessorKey: 'dienThoai',
             header: 'SĐT',
@@ -155,16 +155,16 @@ const ResidentManagementPage: React.FC = () => {
             ),
             size: 300
         },
-        {
-            id: 'tamTru',
-            header: 'Tạm trú',
-            cell: ({ row }) => (
-                <div className="line-clamp-2 text-[14px]">
-                    {formatAddress(row.original.noiTamTru)}
-                </div>
-            ),
-            size: 300
-        },
+        // {
+        //     id: 'tamTru',
+        //     header: 'Tạm trú',
+        //     cell: ({ row }) => (
+        //         <div className="line-clamp-2 text-[14px]">
+        //             {formatAddress(row.original.noiTamTru)}
+        //         </div>
+        //     ),
+        //     size: 300
+        // },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
