@@ -9,7 +9,7 @@ import { FormResidentDetail, residentSchema } from "./type"
 import { useStoreApp } from "store/store"
 import { useCreateResident, useGetChuHosList } from "apiRequest/resident"
 import http from "services/http"
-import { useResidentAddress } from "utils/useAddress"
+import { setAddressStepByStep, useResidentAddress } from "utils/useAddress"
 import { omit } from "lodash"
 
 const ProfileAddForm: React.FC = () => {
@@ -61,7 +61,6 @@ const ProfileAddForm: React.FC = () => {
   const [isConfirmVisible, setConfirmVisible] = useState(false);
   const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
   const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
-  const [chuHosData, setChuHosData] = useState<any>()
 
   const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
     resolver: yupResolver(residentSchema(isHouseHold)),
@@ -100,9 +99,7 @@ const ProfileAddForm: React.FC = () => {
   const fetchApiResident = async () => {
     try {
       const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
-      const residentData = response.data;
-
-      setChuHosData(residentData)
+      const chuHoData = response.data;
 
       const {
         diaChi = '',
@@ -114,7 +111,7 @@ const ProfileAddForm: React.FC = () => {
         longitute = null,
         tuNgay = null,
         denNgay = null,
-      } = residentData.noiThuongTru || {};
+      } = chuHoData.noiThuongTru || {};
 
       reset({
         ...watch(),
@@ -130,47 +127,16 @@ const ProfileAddForm: React.FC = () => {
           tuNgay,
           denNgay,
         },
-        tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
-        giaDinhVanHoa: residentData.giaDinhVanHoa
+        tinhTrangHoGiaDinhId: chuHoData.tinhTrangHoGiaDinhId,
+        giaDinhVanHoa: chuHoData.giaDinhVanHoa
       });
+
+      await setAddressStepByStep("noiThuongTru", { tinh, huyen, xa, apId }, setValue);
 
     } catch (error) {
       console.error('Lỗi khi gọi API resident detail:', error);
     }
   }
-
-  useEffect(() => {
-    if (chuHosData) {
-      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
-        setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
-      }
-      if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
-        setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
-      }
-    }
-  }, [chuHosData, thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, setValue])
-
-  useEffect(() => {
-    if (chuHosData) {
-      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
-        setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
-      }
-      if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
-        setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
-      }
-    }
-  }, [chuHosData, thuongTruAddress.xaOptions, tamTruAddress.xaOptions, setValue])
-
-  useEffect(() => {
-    if (chuHosData) {
-      if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.apId) {
-        setValue("noiThuongTru.apId", chuHosData.noiThuongTru.apId);
-      }
-      if (chuHosData.noiTamTru && chuHosData.noiTamTru.apId) {
-        setValue("noiTamTru.apId", chuHosData.noiTamTru.apId);
-      }
-    }
-  }, [chuHosData, thuongTruAddress.apOptions, tamTruAddress.apOptions, setValue])
 
   const handleConfirm = async () => {
     setConfirmVisible(false);

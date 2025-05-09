@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { UseFormSetValue, UseFormWatch } from "react-hook-form";
 import http from "services/http";
 import { OptionsType } from './options';
@@ -31,6 +31,128 @@ interface AddressSelectorReturn {
   watchedXa: string;
 }
 
+// export const useAddressSelector = ({
+//   prefix,
+//   tinhOptions,
+//   watch,
+//   setValue,
+// }: UseAddressSelectorProps): AddressSelectorReturn => {
+//   const [huyenOptions, setHuyenOptions] = useState<{ value: string; label: string }[]>([]);
+//   const [xaOptions, setXaOptions] = useState<{ value: string; label: string }[]>([]);
+//   const [apOptions, setApOptions] = useState<{ value: number; label: string }[]>([]);
+
+//   const watchedTinh = watch(`${prefix}.tinh`);
+//   const watchedHuyen = watch(`${prefix}.huyen`);
+//   const watchedXa = watch(`${prefix}.xa`);
+
+//   // Gọi API lấy danh sách huyện khi tỉnh thay đổi
+//   useEffect(() => {
+//     const fetchDistricts = async () => {
+//       if (watchedTinh) {
+//         try {
+//           const response = await http.get<any>(`/huyen/tinh/${watchedTinh}`);
+//           const districts = response.data.map((item: any) => ({
+//             value: item.maHuyen,
+//             label: item.tenHuyen,
+//           }));
+//           setHuyenOptions(districts);
+//           setValue(`${prefix}.huyen`, "");
+//           setValue(`${prefix}.xa`, "");
+//           setValue(`${prefix}.apId`, "");
+//           setXaOptions([]);
+//         } catch (error) {
+//           console.error(`Lỗi khi lấy danh sách huyện (${prefix}):`, error);
+//         }
+//       }
+//     };
+//     fetchDistricts();
+//   }, [watchedTinh, setValue, prefix]);
+
+//   // Gọi API lấy danh sách xã khi huyện thay đổi
+//   useEffect(() => {
+//     const fetchWards = async () => {
+//       if (watchedHuyen) {
+//         try {
+//           const response = await http.get<any>(`/xa/huyen/${watchedHuyen}`);
+//           const wards = response.data.map((item: any) => ({
+//             value: item.maXa,
+//             label: item.tenXa,
+//           }));
+//           setXaOptions(wards);
+//           setValue(`${prefix}.xa`, "");
+//           setValue(`${prefix}.apId`, "");
+//         } catch (error) {
+//           console.error(`Lỗi khi lấy danh sách xã (${prefix}):`, error);
+//         }
+//       }
+//     };
+//     fetchWards();
+//   }, [watchedHuyen, setValue, prefix]);
+
+//   // Gọi API lấy danh sách ấp khi xã thay đổi
+//   useEffect(() => {
+//     const fetchAps = async () => {
+//       if (watchedXa) {
+//         try {
+//           const response = await http.get<any>(`/ap/xa/${watchedXa}`);
+//           const aps = response.data.map((item: any) => ({
+//             value: item.apId,
+//             label: item.tenAp,
+//           }));
+//           setApOptions(aps);
+//           setValue(`${prefix}.apId`, "");
+//         } catch (error) {
+//           console.error(`Lỗi khi lấy danh sách ấp (${prefix}):`, error);
+//         }
+//       }
+//     };
+//     fetchAps();
+//   }, [watchedXa, setValue]);
+
+//   return {
+//     huyenOptions,
+//     xaOptions,
+//     apOptions,
+//     watchedTinh,
+//     watchedHuyen,
+//     watchedXa
+//   };
+// };
+
+export const setAddressStepByStep = async (
+  prefix: "noiThuongTru" | "noiTamTru",
+  data: {
+    tinh?: string;
+    huyen?: string;
+    xa?: string;
+    apId?: number;
+  },
+  setValue: UseFormSetValue<any>, // từ react-hook-form
+  delay = 100 // delay mặc định giữa các bước
+) => {
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  if (data.tinh) {
+    await sleep(delay);
+    setValue(`${prefix}.tinh`, data.tinh);
+  }
+
+  if (data.huyen) {
+    await sleep(delay);
+    setValue(`${prefix}.huyen`, data.huyen);
+  }
+
+  if (data.xa) {
+    await sleep(delay);
+    setValue(`${prefix}.xa`, data.xa);
+  }
+
+  if (data.apId) {
+    await sleep(delay);
+    setValue(`${prefix}.apId`, data.apId);
+  }
+};
+
 export const useAddressSelector = ({
   prefix,
   tinhOptions,
@@ -45,67 +167,97 @@ export const useAddressSelector = ({
   const watchedHuyen = watch(`${prefix}.huyen`);
   const watchedXa = watch(`${prefix}.xa`);
 
-  // Gọi API lấy danh sách huyện khi tỉnh thay đổi
+  const prevTinh = useRef<string | null>(null);
+  const prevHuyen = useRef<string | null>(null);
+  const prevXa = useRef<string | null>(null);
+
+  const isInitialMount = useRef(true);
+
+  // Fetch huyện
   useEffect(() => {
     const fetchDistricts = async () => {
-      if (watchedTinh) {
-        try {
-          const response = await http.get<any>(`/huyen/tinh/${watchedTinh}`);
-          const districts = response.data.map((item: any) => ({
-            value: item.maHuyen,
-            label: item.tenHuyen,
-          }));
-          setHuyenOptions(districts);
-          setValue(`${prefix}.huyen`, "");
-          setValue(`${prefix}.xa`, "");
-          setXaOptions([]);
-        } catch (error) {
-          console.error(`Lỗi khi lấy danh sách huyện (${prefix}):`, error);
-        }
+      try {
+        const response = await http.get<any>(`/huyen/tinh/${watchedTinh}`);
+        const districts = response.data.map((item: any) => ({
+          value: item.maHuyen,
+          label: item.tenHuyen,
+        }));
+        setHuyenOptions(districts);
+      } catch (error) {
+        console.error(`Lỗi khi lấy danh sách huyện (${prefix}):`, error);
       }
     };
+
+    if (!watchedTinh) return;
+
+    prevTinh.current = watchedTinh;
     fetchDistricts();
+
+    if (!isInitialMount.current) {
+      setValue(`${prefix}.huyen`, "");
+      setValue(`${prefix}.xa`, "");
+      setValue(`${prefix}.apId`, "");
+      setXaOptions([]);
+      setApOptions([]);
+    }
   }, [watchedTinh, setValue, prefix]);
 
-  // Gọi API lấy danh sách xã khi huyện thay đổi
+  // Fetch xã
   useEffect(() => {
     const fetchWards = async () => {
-      if (watchedHuyen) {
-        try {
-          const response = await http.get<any>(`/xa/huyen/${watchedHuyen}`);
-          const wards = response.data.map((item: any) => ({
-            value: item.maXa,
-            label: item.tenXa,
-          }));
-          setXaOptions(wards);
-          setValue(`${prefix}.xa`, "");
-        } catch (error) {
-          console.error(`Lỗi khi lấy danh sách xã (${prefix}):`, error);
-        }
+      try {
+        const response = await http.get<any>(`/xa/huyen/${watchedHuyen}`);
+        const wards = response.data.map((item: any) => ({
+          value: item.maXa,
+          label: item.tenXa,
+        }));
+        setXaOptions(wards);
+      } catch (error) {
+        console.error(`Lỗi khi lấy danh sách xã (${prefix}):`, error);
       }
     };
+
+    if (!watchedHuyen) return;
+
+    prevHuyen.current = watchedHuyen;
     fetchWards();
+
+    if (!isInitialMount.current) {
+      setValue(`${prefix}.xa`, "");
+      setValue(`${prefix}.apId`, "");
+      setApOptions([]);
+    }
   }, [watchedHuyen, setValue, prefix]);
 
-  // Gọi API lấy danh sách ấp khi xã thay đổi
+  // Fetch ấp
   useEffect(() => {
     const fetchAps = async () => {
-      if (watchedXa) {
-        try {
-          const response = await http.get<any>(`/ap/xa/${watchedXa}`);
-          const aps = response.data.map((item: any) => ({
-            value: item.apId,
-            label: item.tenAp,
-          }));
-          setApOptions(aps);
-          setValue(`${prefix}.apId`, "");
-        } catch (error) {
-          console.error(`Lỗi khi lấy danh sách ấp (${prefix}):`, error);
-        }
+      try {
+        const response = await http.get<any>(`/ap/xa/${watchedXa}`);
+        const aps = response.data.map((item: any) => ({
+          value: item.apId,
+          label: item.tenAp,
+        }));
+        setApOptions(aps);
+      } catch (error) {
+        console.error(`Lỗi khi lấy danh sách ấp (${prefix}):`, error);
       }
     };
+
+    if (!watchedXa) return;
+
+    prevXa.current = watchedXa;
     fetchAps();
-  }, [watchedXa, setValue]);
+
+    if (!isInitialMount.current) {
+      setValue(`${prefix}.apId`, "");
+    }
+  }, [watchedXa, setValue, prefix]);
+
+  // Chỉ chạy lần đầu để tránh reset dữ liệu khi load detail
+  useEffect(() => {
+    isInitialMount.current = false;
+  }, []);
 
   return {
     huyenOptions,
@@ -113,7 +265,7 @@ export const useAddressSelector = ({
     apOptions,
     watchedTinh,
     watchedHuyen,
-    watchedXa
+    watchedXa,
   };
 };
 

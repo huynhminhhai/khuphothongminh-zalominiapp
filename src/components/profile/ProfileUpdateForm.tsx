@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import { Box, Switch } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -10,7 +10,7 @@ import { useSearchParams } from "react-router-dom"
 import { useStoreApp } from "store/store"
 import { useGetChuHosList, useGetResidentDetail, useUpdateResident } from "apiRequest/resident"
 import http from "services/http"
-import { useResidentAddress } from "utils/useAddress"
+import { setAddressStepByStep, useResidentAddress } from "utils/useAddress"
 import { omit } from "lodash"
 
 const ProfileUpdateForm: React.FC = () => {
@@ -27,7 +27,7 @@ const ProfileUpdateForm: React.FC = () => {
         danToc: '',
         tonGiao: '',
         quocGia: '',
-        ngheNghiep: '',
+        ngheNghiep: 0,
         noiLamViec: '',
         email: '',
         dienThoai: '',
@@ -36,8 +36,8 @@ const ProfileUpdateForm: React.FC = () => {
         tinhTrangHoGiaDinhId: 0,
         giaDinhVanHoa: false,
         noiThuongTru: {
-            loaiCuTruId: loaiCuTrus[0]?.value || 1,
             diaChi: '',
+            apId: 0,
             xa: '',
             huyen: '',
             tinh: '',
@@ -47,8 +47,8 @@ const ProfileUpdateForm: React.FC = () => {
             denNgay: null,
         },
         noiTamTru: {
-            loaiCuTruId: loaiCuTrus[1]?.value || 2,
             diaChi: '',
+            apId: 0,
             xa: '',
             huyen: '',
             tinh: '',
@@ -86,63 +86,87 @@ const ProfileUpdateForm: React.FC = () => {
         })) || [];
     }, [chuHos]);
 
-    /**
-    * CALL DAN CU API
-    **/
+    const isFirstLoad = useRef(true);
 
     useEffect(() => {
+        const loadInitialAddress = async () => {
+            if (residentDetail && isFirstLoad.current) {
+                isFirstLoad.current = false;
 
-        if (residentDetail) {
+                const {
+                    thongTinCuTruId = 0,
+                    danCuId = 0,
+                    loaiCuTruId = 1,
+                    diaChi = '',
+                    apId = 0,
+                    xa = '',
+                    huyen = '',
+                    tinh = '',
+                    latitude = null,
+                    longitute = null,
+                    tuNgay = null,
+                    denNgay = null,
+                } = residentDetail.noiThuongTru || {};
 
-            reset({
-                ...residentDetail,
-                noiThuongTru: {
-                    ...residentDetail.noiThuongTru,
-                    loaiCuTruId: loaiCuTrus[0]?.value || 1,
-                },
-                noiTamTru: {
-                    ...residentDetail.noiTamTru,
-                    loaiCuTruId: loaiCuTrus[1]?.value || 2,
-                },
-                ngheNghiep: Number(residentDetail.ngheNghiep),
-            });
-            setIsHouseHold(residentDetail.laChuHo);
+                const {
+                    thongTinCuTruId: thongTinCuTruIdTam = 0,
+                    danCuId: danCuIdTam = 0,
+                    loaiCuTruId: loaiCuTruIdTam = 2,
+                    diaChi: diaChiTam = '',
+                    apId: apIdTam = 0,
+                    xa: xaTam = '',
+                    huyen: huyenTam = '',
+                    tinh: tinhTam = '',
+                    latitude: latTam = null,
+                    longitute: longTam = null,
+                    tuNgay: tuNgayTam = null,
+                    denNgay: denNgayTam = null,
+                } = residentDetail.noiTamTru || {};
 
-            if (residentDetail.noiThuongTru && residentDetail.noiThuongTru.tinh) {
-                setValue("noiThuongTru.tinh", residentDetail.noiThuongTru.tinh);
-            }
+                reset({
+                    ...residentDetail,
+                    noiThuongTru: {
+                        ...watch().noiThuongTru,
+                        thongTinCuTruId,
+                        danCuId,
+                        loaiCuTruId,
+                        diaChi,
+                        apId,
+                        xa,
+                        huyen,
+                        tinh,
+                        latitude,
+                        longitute,
+                        tuNgay,
+                        denNgay,
+                    },
+                    noiTamTru: {
+                        ...watch().noiTamTru,
+                        thongTinCuTruId: thongTinCuTruIdTam,
+                        danCuId: danCuIdTam,
+                        loaiCuTruId: loaiCuTruIdTam,
+                        diaChi: diaChiTam,
+                        apId: apIdTam,
+                        xa: xaTam,
+                        huyen: huyenTam,
+                        tinh: tinhTam,
+                        latitude: latTam,
+                        longitute: longTam,
+                        tuNgay: tuNgayTam,
+                        denNgay: denNgayTam,
+                    },
+                    ngheNghiep: Number(residentDetail.ngheNghiep),
+                });
 
-            if (residentDetail.noiTamTru && residentDetail.noiTamTru.tinh) {
-                setValue("noiTamTru.tinh", residentDetail.noiTamTru.tinh);
-            }
-        }
-    }, [
-        residentDetail,
-        reset,
-        setValue
-    ]);
+                await setAddressStepByStep("noiThuongTru", { tinh, huyen, xa, apId }, setValue);
+                await setAddressStepByStep("noiTamTru", { tinh: tinhTam, huyen: huyenTam, xa: xaTam, apId: apIdTam }, setValue);
 
-    useEffect(() => {
-        if (residentDetail) {
-            if (residentDetail.noiThuongTru && residentDetail.noiThuongTru.huyen) {
-                setValue("noiThuongTru.huyen", residentDetail.noiThuongTru.huyen);
+                setIsHouseHold(residentDetail.laChuHo);
             }
-            if (residentDetail.noiTamTru && residentDetail.noiTamTru.huyen) {
-                setValue("noiTamTru.huyen", residentDetail.noiTamTru.huyen);
-            }
-        }
-    }, [thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, residentDetail, setValue]);
+        };
 
-    useEffect(() => {
-        if (residentDetail) {
-            if (residentDetail.noiThuongTru && residentDetail.noiThuongTru.xa) {
-                setValue("noiThuongTru.xa", residentDetail.noiThuongTru.xa);
-            }
-            if (residentDetail.noiTamTru && residentDetail.noiTamTru.xa) {
-                setValue("noiTamTru.xa", residentDetail.noiTamTru.xa);
-            }
-        }
-    }, [thuongTruAddress.xaOptions, tamTruAddress.xaOptions, residentDetail, setValue]);
+        loadInitialAddress();
+    }, [residentDetail, reset, setValue, watch]);
 
     const onSubmit: SubmitHandler<FormResidentDetail> = (data) => {
         setConfirmVisible(true);
@@ -162,50 +186,46 @@ const ProfileUpdateForm: React.FC = () => {
     const fetchApiResident = async () => {
         try {
             const response = await http.get<any>(`/dancu/chitiet/${watch().chuHoId}`);
-            const residentData = response.data;
+            const chuHoData = response.data;
 
-            setChuHosData(residentData)
+            setChuHosData(chuHoData)
+
+            const {
+                diaChi = '',
+                apId = 0,
+                xa = '',
+                huyen = '',
+                tinh = '',
+                latitude = null,
+                longitute = null,
+                tuNgay = null,
+                denNgay = null,
+            } = chuHoData.noiThuongTru || {};
 
             reset({
                 ...watch(),
                 noiThuongTru: {
                     ...watch().noiThuongTru,
-                    ...residentData.noiThuongTru
+                    diaChi,
+                    apId,
+                    xa,
+                    huyen,
+                    tinh,
+                    latitude,
+                    longitute,
+                    tuNgay,
+                    denNgay,
                 },
-                noiTamTru: {
-                    ...watch().noiTamTru,
-                    ...residentData.noiTamTru
-                },
-                tinhTrangHoGiaDinhId: residentData.tinhTrangHoGiaDinhId,
-                giaDinhVanHoa: residentData.giaDinhVanHoa
+                tinhTrangHoGiaDinhId: chuHoData.tinhTrangHoGiaDinhId,
+                giaDinhVanHoa: chuHoData.giaDinhVanHoa
             });
+
+            await setAddressStepByStep("noiThuongTru", { tinh, huyen, xa, apId }, setValue);
 
         } catch (error) {
             console.error('Lỗi khi gọi API resident detail:', error);
         }
     }
-
-    useEffect(() => {
-        if (chuHosData) {
-            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.huyen) {
-                setValue("noiThuongTru.huyen", chuHosData.noiThuongTru.huyen);
-            }
-            if (chuHosData.noiTamTru && chuHosData.noiTamTru.huyen) {
-                setValue("noiTamTru.huyen", chuHosData.noiTamTru.huyen);
-            }
-        }
-    }, [chuHosData, thuongTruAddress.huyenOptions, tamTruAddress.huyenOptions, setValue])
-
-    useEffect(() => {
-        if (chuHosData) {
-            if (chuHosData.noiThuongTru && chuHosData.noiThuongTru.xa) {
-                setValue("noiThuongTru.xa", chuHosData.noiThuongTru.xa);
-            }
-            if (chuHosData.noiTamTru && chuHosData.noiTamTru.xa) {
-                setValue("noiTamTru.xa", chuHosData.noiTamTru.xa);
-            }
-        }
-    }, [chuHosData, thuongTruAddress.xaOptions, tamTruAddress.xaOptions, setValue])
 
     const handleConfirm = async () => {
         setConfirmVisible(false);
@@ -229,13 +249,11 @@ const ProfileUpdateForm: React.FC = () => {
                 ...(isHouseHold ? { moiQuanHeVoiChuHo: 1, chuHoId: null } : {}),
             };
 
-            if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.xa === '') {
+            if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.apId === 0) {
                 dataSubmit = omit(dataSubmit, ['noiTamTru']);
             }
 
             await updateResident(dataSubmit);
-
-            reset(defaultValues);
         } catch (error) {
             console.error("Error:", error);
         }
@@ -399,7 +417,7 @@ const ProfileUpdateForm: React.FC = () => {
                             disabled={!isHouseHold}
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormSelectField
                             name="noiThuongTru.huyen"
                             label=""
@@ -419,6 +437,17 @@ const ProfileUpdateForm: React.FC = () => {
                             options={thuongTruAddress.xaOptions}
                             error={errors.noiThuongTru?.xa?.message}
                             disabled={!isHouseHold || !thuongTruAddress.watchedHuyen}
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="noiThuongTru.apId"
+                            label=""
+                            placeholder="Chọn ấp"
+                            control={control}
+                            options={thuongTruAddress.apOptions}
+                            error={errors.noiThuongTru?.apId?.message}
+                            disabled={!isHouseHold || !thuongTruAddress.watchedXa}
                         />
                     </div>
                     <div className="col-span-12">
@@ -480,7 +509,7 @@ const ProfileUpdateForm: React.FC = () => {
                                     error={errors.noiTamTru?.tinh?.message}
                                 />
                             </div>
-                            <div className="col-span-6">
+                            <div className="col-span-12">
                                 <FormSelectField
                                     name="noiTamTru.huyen"
                                     label=""
@@ -500,6 +529,17 @@ const ProfileUpdateForm: React.FC = () => {
                                     options={tamTruAddress.xaOptions}
                                     error={errors.noiTamTru?.xa?.message}
                                     disabled={!tamTruAddress.watchedHuyen}
+                                />
+                            </div>
+                            <div className="col-span-6">
+                                <FormSelectField
+                                    name="noiTamTru.apId"
+                                    label=""
+                                    placeholder="Chọn ấp"
+                                    control={control}
+                                    options={tamTruAddress.apOptions}
+                                    error={errors.noiTamTru?.apId?.message}
+                                    disabled={!tamTruAddress.watchedXa}
                                 />
                             </div>
                             <div className="col-span-12">

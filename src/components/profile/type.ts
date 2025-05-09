@@ -151,6 +151,7 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
 
 interface Residence {
     thongTinCuTruId?: any;
+    danCuId?: number;
     loaiCuTruId?: number;
     diaChi: string;
     apId: number;
