@@ -11,11 +11,19 @@ export const useCustomSnackbar = () => {
     });
   };
 
-  const showError = (text: string) =>
+  const showError = (error: unknown) => {
+    const message =
+      typeof error === 'string'
+        ? error
+        : error instanceof Error
+          ? error.message
+          : 'Đã xảy ra lỗi không xác định';
+
     showSnackbar({
-      text,
+      text: message,
       type: 'error',
     });
+  };
 
   const showSuccess = (text: string) =>
     showSnackbar({

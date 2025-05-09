@@ -33,24 +33,26 @@ const request = async <T>(
         const data: T = await response.json();
 
         if (!response.ok) {
-            if (response.status === 401) {
+            const errorMessage = (data as any)?.message || 'Lỗi không xác định (request)';
 
+            if (response.status === 401) {
                 // removeDataFromStorage(['account', 'accessToken', 'refreshToken']);
                 // window.location.href = '/login';
                 throw new Error('Bạn không có quyền truy cập (request)');
             }
 
             if (response.status === 500) {
-                throw new Error((data as any)?.message || 'Lỗi hệ thống, vui lòng thử lại sau! (request)');
+                throw new Error(errorMessage);
             }
 
-            // window.location.href = '/';
-            throw new Error((data as any)?.message || 'Lỗi không xác định (request)');
+            throw new Error(errorMessage);
         }
 
         return data;
-    } catch (error) {
-        throw error;
+    } catch (error: any) {
+        // Nếu error là object có .message thì hiển thị, nếu không thì stringify
+        const message = error?.message || JSON.stringify(error);
+        throw new Error(message);
     }
 };
 

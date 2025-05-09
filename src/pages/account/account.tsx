@@ -82,7 +82,7 @@ const AccountPage: React.FC = () => {
                             <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Cài đặt</div>
                             <Item
                                 onClick={() => openPermissionSettingApp()}
-                                title="Quản lý quyền"
+                                title="Quản lý quyền Zalo"
                                 prefix={<img src={images.setting} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
