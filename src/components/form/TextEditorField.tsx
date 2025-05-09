@@ -26,6 +26,25 @@ const TextEditorField: React.FC<TextEditorFieldProps> = ({
     <div style={{ paddingBottom: '16px', position: 'relative' }}>
       <Label name={name} text={label} required={required} />
       <ReactQuill
+        // modules={{
+        //   toolbar: {
+        //     container: [
+        //       [{ header: "1" }, { header: "2" }, { font: [] }],
+        //       [{ size: [] }],
+        //       ["bold", "italic", "underline", "strike", "blockquote"],
+        //       [
+        //         { list: "ordered" },
+        //         { list: "bullet" },
+        //         { indent: "-1" },
+        //         { indent: "+1" },
+        //       ],
+        //       ["image", "video"],
+        //     ],
+        //   },
+        //   clipboard: {
+        //     matchVisual: false,
+        //   },
+        // }}
         value={field.value || ''}
         onChange={(value) => field.onChange(value)}
         placeholder={placeholder || "Nhập nội dung..."}

@@ -145,7 +145,11 @@ const NewsManagementPage: React.FC = () => {
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái tin tức này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 tin tức', 'SUA')}
+                            disabled=
+                                {
+                                    isPending
+                                    // || !hasPermission('Cập nhật tình trạng của 1 tin tức', 'SUA')
+                                }
                         >
                             {newsStatus && newsStatus.map((item) => (
                                 <Option
@@ -166,7 +170,7 @@ const NewsManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 bài viết', 'XEM') &&
+                        // hasPermission('Lấy thông tin chi tiết 1 bài viết', 'XEM') &&
                         <button
                             onClick={() => navigate(`/news-detail?id=${row.original.tinTucId}`)}
                             className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -175,7 +179,7 @@ const NewsManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Sửa thông tin 1 bài viết', 'SUA') &&
+                        // hasPermission('Sửa thông tin 1 bài viết', 'SUA') &&
                         <button
                             onClick={() => navigate(`/news-update?id=${row.original.tinTucId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -184,7 +188,7 @@ const NewsManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 bài viết', 'XOA') &&
+                        // hasPermission('Xóa 1 bài viết', 'XOA') &&
                         <button
                             onClick={() => removeNews(row.original.tinTucId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -245,7 +249,7 @@ const NewsManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý tin tức" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton={hasPermission('Thêm mới 1 bài viết', 'SUA')}
+                        // showAddButton={hasPermission('Thêm mới 1 bài viết', 'SUA')}
                         onAddButtonClick={() => navigate("/news-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
