@@ -15,6 +15,39 @@ export const getFullImageUrl = (anhDaiDien: string) => {
 };
 
 
+// export const convertToFormData = (data: Record<string, any>) => {
+//   const formData = new FormData();
+
+//   Object.keys(data).forEach((key) => {
+//     const value = data[key];
+
+//     if (value === undefined || value === null) return;
+
+//     if (value instanceof File) {
+//       // Trường hợp là File đơn lẻ
+//       formData.append(key, value);
+//     } else if (Array.isArray(value)) {
+//       // Trường hợp là mảng
+//       if (value.length > 0 && value.every((item) => item instanceof File)) {
+//         // Nếu là mảng File[], append từng file với key không có index
+//         value.forEach((file: File) => {
+//           formData.append(key, file);
+//         });
+//       } else {
+//         // Nếu là mảng các giá trị khác (string, number, ...)
+//         value.forEach((item) => {
+//           formData.append(key, item.toString());
+//         });
+//       }
+//     } else {
+//       // Trường hợp là giá trị đơn (string, number, ...)
+//       formData.append(key, value.toString());
+//     }
+//   });
+
+//   return formData;
+// };
+
 export const convertToFormData = (data: Record<string, any>) => {
   const formData = new FormData();
 
@@ -27,26 +60,27 @@ export const convertToFormData = (data: Record<string, any>) => {
       // Trường hợp là File đơn lẻ
       formData.append(key, value);
     } else if (Array.isArray(value)) {
-      // Trường hợp là mảng
-      if (value.length > 0 && value.every((item) => item instanceof File)) {
-        // Nếu là mảng File[], append từng file với key không có index
-        value.forEach((file: File) => {
-          formData.append(key, file);
-        });
-      } else {
-        // Nếu là mảng các giá trị khác (string, number, ...)
-        value.forEach((item) => {
+      value.forEach((item) => {
+        if (item instanceof File) {
+          formData.append(key, item);
+        } else if (typeof item === "object") {
+          // Nếu item là object → stringify
+          formData.append(key, JSON.stringify(item));
+        } else {
           formData.append(key, item.toString());
-        });
-      }
+        }
+      });
+    } else if (typeof value === "object") {
+      // Trường hợp là object đơn lẻ
+      formData.append(key, JSON.stringify(value));
     } else {
-      // Trường hợp là giá trị đơn (string, number, ...)
       formData.append(key, value.toString());
     }
   });
 
   return formData;
 };
+
 
 export const loadImage = async (url: string): Promise<File | null> => {
   try {

@@ -128,7 +128,10 @@ const TaskManagementPage: React.FC = () => {
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')}
+                            disabled={
+                                isPending 
+                                // || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')
+                            }
                         >
                             {taskStatus && taskStatus.map((item) => (
                                 <Option
@@ -165,7 +168,7 @@ const TaskManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 nhiệm vụ', 'XEM') &&
+                        // hasPermission('Lấy thông tin chi tiết 1 nhiệm vụ', 'XEM') &&
                         <button
                             onClick={() => navigate(`/task-detail?id=${row.original.nhiemVuId}`)}
                             className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -174,7 +177,7 @@ const TaskManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Sửa thông tin 1 nhiệm vụ', 'SUA') &&
+                        // hasPermission('Sửa thông tin 1 nhiệm vụ', 'SUA') &&
                         <button
                             onClick={() => navigate(`/task-update?id=${row.original.nhiemVuId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -183,7 +186,7 @@ const TaskManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 tập tin nhiệm vụ', 'XOA') &&
+                        // hasPermission('Xóa 1 tập tin nhiệm vụ', 'XOA') &&
                         <button
                             onClick={() => removeFeedback(row.original.nhiemVuId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -244,7 +247,7 @@ const TaskManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý nhiệm vụ" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton={hasPermission('Thêm mới 1 nhiệm vụ', 'SUA')}
+                        // showAddButton={hasPermission('Thêm mới 1 nhiệm vụ', 'SUA')}
                         onAddButtonClick={() => navigate("/task-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}

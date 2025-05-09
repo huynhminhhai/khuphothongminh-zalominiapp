@@ -169,7 +169,7 @@ const TaskDetailPage: React.FC = () => {
                                                                 ) : (
                                                                     <Icon icon="codex:file" fontSize={22} />
                                                                 )}
-                                                                <div className="text-[14px] font-medium">{`Tập tin ${index + 1}`}</div>
+                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
                                                             </div>
                                                         </div>
 
