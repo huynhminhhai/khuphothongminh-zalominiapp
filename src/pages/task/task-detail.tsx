@@ -148,7 +148,7 @@ const TaskDetailPage: React.FC = () => {
                                                 <input disabled={isPending} multiple type="file" id="hiddenFileInput" style={{ display: "none" }} onChange={handleFileChange} />
                                             </Box>
                                         </div>
-                                        <Box>
+                                        <Box className="text-blue-700">
                                             {detailData?.tapTinNhiemVus && detailData.tapTinNhiemVus.length > 0 ? (
                                                 detailData.tapTinNhiemVus.map((item, index) => (
                                                     <div key={index} className="flex items-center gap-2 justify-between mb-2">

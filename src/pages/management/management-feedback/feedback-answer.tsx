@@ -1,7 +1,8 @@
+import { Icon } from "@iconify/react";
 import { useGetFeebackDetail, useGetFeedbackStatus } from "apiRequest/feeback";
 import { EmptyData } from "components/data";
 import { Divider } from "components/divider";
-import { FeedbackAnswerAddForm } from "components/feedback";
+import { FeedbackAnswerAddForm, FeedbackAnswerUpdateForm } from "components/feedback";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
 import React from "react"
@@ -74,16 +75,24 @@ const FeedbackAnswerPage: React.FC = () => {
                                     {otherFiles.length > 0 && (
                                         <div className="mt-4 space-y-2">
                                             <h4 className="font-semibold">Tập tin đính kèm:</h4>
-                                            <ul className="list-disc pl-5 text-sm text-blue-600">
+                                            <ul className="list-disc text-blue-700">
                                                 {otherFiles.map((item, index) => (
-                                                    <li key={index}>
-                                                        <button
+                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
+                                                        <div
+                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
+
                                                             onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                            className="hover:underline"
                                                         >
-                                                            📄 {item.tenTapTin || `Tập tin ${index + 1}`}
-                                                        </button>
-                                                    </li>
+                                                            <div className="flex items-center gap-1">
+                                                                {isImage(item.tapTin) ? (
+                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
+                                                                ) : (
+                                                                    <Icon icon="codex:file" fontSize={22} />
+                                                                )}
+                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 ))}
                                             </ul>
                                         </div>
@@ -102,7 +111,7 @@ const FeedbackAnswerPage: React.FC = () => {
                                         !data?.ketQuaXuLyPhanAnh ?
                                             <FeedbackAnswerAddForm />
                                             :
-                                            <>Cập nhật</>
+                                            <FeedbackAnswerUpdateForm />
                                     }
                                 </Box>
                             </Box>

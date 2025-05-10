@@ -81,18 +81,35 @@ const FeedbackDetailPage: React.FC = () => {
                                     {otherFiles.length > 0 && (
                                         <div className="mt-4 space-y-2">
                                             <h4 className="font-semibold">Tập tin đính kèm:</h4>
-                                            <ul className="list-disc pl-5 text-sm text-blue-600">
+                                            <Box className="text-blue-700">
                                                 {otherFiles.map((item, index) => (
-                                                    <li key={index}>
-                                                        <button
+                                                    // <li key={index}>
+                                                    //     <button
+                                                    //         onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                    //         className="hover:underline"
+                                                    //     >
+                                                    //         📄 {item.tenTapTin || `Tập tin ${index + 1}`}
+                                                    //     </button>
+                                                    // </li>
+                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
+                                                        <div
+                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
+
                                                             onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                            className="hover:underline"
                                                         >
-                                                            📄 {item.tenTapTin || `Tập tin ${index + 1}`}
-                                                        </button>
-                                                    </li>
+                                                            <div className="flex items-center gap-1">
+                                                                {isImage(item.tapTin) ? (
+                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
+                                                                ) : (
+                                                                    <Icon icon="codex:file" fontSize={22} />
+                                                                )}
+                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 ))}
-                                            </ul>
+                                            </Box>
+
                                         </div>
                                     )}
                                 </Box>
@@ -115,26 +132,31 @@ const FeedbackDetailPage: React.FC = () => {
                                                 <div className="text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.ketQuaXuLyPhanAnh?.noiDung || '' }}>
                                                 </div>
                                             </Box>
-                                            {data?.ketQuaXuLyPhanAnh?.tapTinKetQuaXuLyPhanAnhs && data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.length > 0 && (
-                                                data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.map((item, index) => (
-                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
-                                                        <div
-                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
+                                            <Box className="space-y-2">
+                                                <h4 className="font-semibold">Tập tin đính kèm:</h4>
+                                                <Box className="text-blue-700">
+                                                    {data?.ketQuaXuLyPhanAnh?.tapTinKetQuaXuLyPhanAnhs && data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.length > 0 && (
+                                                        data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.map((item, index) => (
+                                                            <div key={index} className="flex items-center gap-2 justify-between mb-2">
+                                                                <div
+                                                                    className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
 
-                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                        >
-                                                            <div className="flex items-center gap-1">
-                                                                {isImage(item.tapTin) ? (
-                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
-                                                                ) : (
-                                                                    <Icon icon="codex:file" fontSize={22} />
-                                                                )}
-                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                                    onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                                >
+                                                                    <div className="flex items-center gap-1">
+                                                                        {isImage(item.tapTin) ? (
+                                                                            <Icon icon="mdi:file-image-outline" fontSize={22} />
+                                                                        ) : (
+                                                                            <Icon icon="codex:file" fontSize={22} />
+                                                                        )}
+                                                                        <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            )}
+                                                        ))
+                                                    )}
+                                                </Box>
+                                            </Box>
                                         </Box>
                                     </>
                                 }

@@ -37,6 +37,15 @@ const feebackApiRequest = {
     createFeedbackAnswer: async (formData: any) => {
         return await http.postFormData<any>(`/ketquaxulyphananh`, formData);
     },
+    updateFeedbackAnswer: async (formData: any) => {
+        return await http.putFormData<any>("/ketquaxulyphananh", formData);
+    },
+    deleteFileFeedbackAnswer: async (id: number) => {
+        return await http.delete<any>(`/taptinketquaxulyphananh/${id}`);
+    },
+    getFeedbackAnswerDetail: async (id: number) => {
+        return await http.get<any>(`/ketquaxulyphananh/chitiet/phananh/${id}`);
+    },
 }
 
 /**
@@ -292,6 +301,7 @@ export const useCreateFeebackAnswer = () => {
 
             queryClient.invalidateQueries({ queryKey: ["feedbackAnswerList"] });
             queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackAnswerDetail"] });
 
             // navigate('/feedback');
         },
@@ -299,5 +309,74 @@ export const useCreateFeebackAnswer = () => {
             console.error(`Lỗi: ${error}`)
             showError(error)
         },
+    });
+};
+
+/**
+* PUT FEEDBACK ANSWER
+**/
+export const useUpdateFeedbackAnswer = () => {
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await feebackApiRequest.updateFeedbackAnswer(formData);
+        },
+        onSuccess: () => {
+            showSuccess('Cập nhật phản hồi thành công');
+
+            queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackAnswerDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackAnswerList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* DELETE FILE FEEDBACK ANSWER
+**/
+export const useDeleteFileFeedbackAnswer = () => {
+    const { showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await feebackApiRequest.deleteFileFeedbackAnswer(id);
+        },
+        onSuccess: () => {
+            
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* GET FEEDBACK ANSER DETAIL
+**/
+export const useGetFeebackAnswerDetail = (id: number) => {
+
+    return useQuery({
+        queryKey: ['feedbackAnswerDetail', id],
+        queryFn: async () => {
+            try {
+
+                const res = await feebackApiRequest.getFeedbackAnswerDetail(id);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        enabled: !!id,
+        staleTime: 0,
+        retry: 1,
     });
 };

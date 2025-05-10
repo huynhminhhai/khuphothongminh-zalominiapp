@@ -1,18 +1,18 @@
 import * as yup from 'yup';
 
 export const schemaFeedbackAnswer = yup.object().shape({
-    content: yup.string().required('Không được để trống'),
-    tapTinPhanHoiFormFiles: yup
-        .array()
-        .of(yup.mixed<File>().required("Tệp không hợp lệ"))
-        .default([])
-        .ensure()
-        .min(1, "Vui lòng tải lên ít nhất một tệp"),
+    noiDung: yup.string().required('Không được để trống'),
+    // tapTinPhanHoiFormFiles: yup
+    //     .array()
+    //     .of(yup.mixed<File>().required("Tệp không hợp lệ"))
+    //     .default([])
+    //     .ensure()
+    //     .min(1, "Vui lòng tải lên ít nhất một tệp"),
 });
 
 export type FormDataFeedbackAnswer = {
     phanAnhId?: number;
-    content: string;
+    noiDung: string;
     tapTinPhanHoiFormFiles?: File[];
 }
 

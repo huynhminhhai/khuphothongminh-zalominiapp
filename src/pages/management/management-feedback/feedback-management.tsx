@@ -135,15 +135,15 @@ const FeedbackManagementPage: React.FC = () => {
             cell: ({ row }) => {
 
                 return (
-                    <div >Kiến nghị: </div>
+                    <div >Kiến nghị: {row.original.tenLinhVucPhanAnh}</div>
                 )
             }
         },
-        {
-            accessorKey: 'noiDung',
-            header: 'Nội dung',
-            size: 300
-        },
+        // {
+        //     accessorKey: 'noiDung',
+        //     header: 'Nội dung',
+        //     size: 300
+        // },
         // {
         //     id: 'isAnswer',
         //     header: 'Phản hồi',
@@ -221,20 +221,32 @@ const FeedbackManagementPage: React.FC = () => {
                 )
             }
         },
-        {
-            id: 'address',
-            header: 'Địa chỉ',
-            cell: ({ row }) => {
+        // {
+        //     id: 'address',
+        //     header: 'Địa chỉ',
+        //     cell: ({ row }) => {
 
-                const data = row.original
+        //         const data = row.original
 
-                return (
-                    <div className="h-[42px]">
-                        {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
-                    </div>
-                )
-            }
-        },
+        //         return (
+        //             <div className="h-[42px]">
+        //                 {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
+        //             </div>
+        //         )
+        //     }
+        // },
+        // {
+        //     id: 'isAnswer',
+        //     header: 'Phản hồi',
+        //     cell: ({ row }) => {
+
+        //         return (
+        //             <div>
+        //                 {row.original.isAnswer ? 'Đã phản hồi' : 'Chưa phản hồi'}
+        //             </div>
+        //         )
+        //     }
+        // },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
