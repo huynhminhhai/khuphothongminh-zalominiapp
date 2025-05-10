@@ -3,7 +3,7 @@ import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormControllerTimePicker, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
+import { FormControllerDatePicker, FormControllerTimePicker, FormFileInput, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { convertMeetingTime, convertParticipants, FormDataMeeting, schemaMeeting } from "./type"
 import { useStoreApp } from "store/store"
@@ -21,7 +21,8 @@ const defaultValues: FormDataMeeting = {
     tinhTrangId: 0,
     chuTri: 0,
     thuKy: null,
-    thanhVien: []
+    thanhVien: [],
+    fileDinhKems: []
 }
 
 const MeetingAddForm: React.FC = () => {
@@ -101,9 +102,8 @@ const MeetingAddForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData && account) {
             try {
-                const prepareDataSubmit = { ...formData, apId: account?.apId }
 
-                const dataConvertDate = convertMeetingTime(prepareDataSubmit)
+                const dataConvertDate = convertMeetingTime(formData)
 
                 const dataConvertParticipants = convertParticipants(dataConvertDate)
 
@@ -223,6 +223,15 @@ const MeetingAddForm: React.FC = () => {
                             control={control}
                             error={errors.noiDung?.message}
                             required
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormFileInput
+                            name="fileDinhKems"
+                            label="Tập tin đính kèm"
+                            control={control}
+                            error={errors.fileDinhKems?.message}
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">

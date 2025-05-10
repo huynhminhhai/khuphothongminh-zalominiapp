@@ -11,6 +11,12 @@ export const schemaMeeting = yup.object().shape({
     diaDiem: yup.string().required('Không được để trống'),
     // tinhTrangId: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
     chuTri: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
+    fileDinhKems: yup
+        .array()
+        .of(yup.mixed<File>().required("Tệp không hợp lệ"))
+        .default([])
+        .ensure()
+        .min(1, "Vui lòng tải lên ít nhất một tệp"),
 });
 
 interface TinhTrang {
@@ -32,6 +38,7 @@ export type FormDataMeeting = {
     chuTri: number;
     thuKy?: number | null;
     thanhVien?: number[];
+    fileDinhKems?: File[];
 }
 
 export type MeetingType = {
@@ -78,10 +85,10 @@ export function convertParticipants(meeting: any) {
     if (meeting.chuTri !== null && meeting.chuTri !== undefined) {
         const existing = findExisting(meeting.chuTri);
         participants.push({
-            thanhVienCuocHopId: existing.thanhVienCuocHopId || 0,
-            cuocHopId: meeting.cuocHopId || 0,
+            // thanhVienCuocHopId: existing.thanhVienCuocHopId || 0,
+            // cuocHopId: meeting.cuocHopId || 0,
             nguoiThamDuId: meeting.chuTri,
-            nguoiThamDuKhac: null,
+            // nguoiThamDuKhac: null,
             loaiNguoiThamDuId: 1 // Chủ trì
         });
     }
@@ -90,10 +97,10 @@ export function convertParticipants(meeting: any) {
     if (meeting.thuKy !== null && meeting.thuKy !== undefined) {
         const existing = findExisting(meeting.thuKy);
         participants.push({
-            thanhVienCuocHopId: existing.thanhVienCuocHopId || 0,
-            cuocHopId: meeting.cuocHopId || 0,
+            // thanhVienCuocHopId: existing.thanhVienCuocHopId || 0,
+            // cuocHopId: meeting.cuocHopId || 0,
             nguoiThamDuId: meeting.thuKy,
-            nguoiThamDuKhac: null,
+            // nguoiThamDuKhac: null,
             loaiNguoiThamDuId: 2 // Thư ký
         });
     }
@@ -103,10 +110,10 @@ export function convertParticipants(meeting: any) {
         meeting.thanhVien.forEach(member => {
             const existing = findExisting(member);
             participants.push({
-                thanhVienCuocHopId: existing.thanhVienCuocHopId || 0,
-                cuocHopId: meeting.cuocHopId || 0,
+                // thanhVienCuocHopId: existing.thanhVienCuocHopId || 0,
+                // cuocHopId: meeting.cuocHopId || 0,
                 nguoiThamDuId: member,
-                nguoiThamDuKhac: null,
+                // nguoiThamDuKhac: null,
                 loaiNguoiThamDuId: 3 // Thành viên
             });
         });
