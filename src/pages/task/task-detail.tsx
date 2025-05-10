@@ -123,7 +123,7 @@ const TaskDetailPage: React.FC = () => {
                                         </div>
                                         <div className="flex items-start justify-between w-full py-3">
                                             <div>Hỗ trợ</div>
-                                            <div className="flex flex-col text-[14px]">
+                                            <div className="flex flex-col text-[14px] text-end">
                                                 {
                                                     detailData.nguoiThucHienNhiemVus
                                                         ?.filter((item) => item.chuTri === false)

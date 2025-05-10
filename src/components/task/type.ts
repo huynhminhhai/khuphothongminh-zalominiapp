@@ -76,7 +76,7 @@ export function convertParticipants(task: any) {
     if (task.chuTri !== null && task.chuTri !== undefined) {
         const existing = findExisting(task.chuTri);
         participants.push({
-            nguoiThucHienNhiemVuId: existing.nguoiThucHienNhiemVuId || 0,
+            // nguoiThucHienNhiemVuId: existing.nguoiThucHienNhiemVuId || 0,
             nguoiThucHienId: task.chuTri,
             chuTri: true
         });
@@ -87,7 +87,7 @@ export function convertParticipants(task: any) {
         task.thanhVien.forEach(member => {
             const existing = findExisting(member);
             participants.push({
-                nguoiThucHienNhiemVuId: existing.nguoiThucHienNhiemVuId || 0,
+                // nguoiThucHienNhiemVuId: existing.nguoiThucHienNhiemVuId || 0,
                 nguoiThucHienId: member,
                 chuTri: false
             });
@@ -144,13 +144,13 @@ export function compareNguoiThucHienNhiemVus(detailData, formData) {
             // Nếu trùng nguoiThucHienId, lấy nguoiThucHienNhiemVuId từ detail
             return {
                 ...formMember,
-                nguoiThucHienNhiemVuId: matchingDetail.nguoiThucHienNhiemVuId
+                // nguoiThucHienNhiemVuId: matchingDetail.nguoiThucHienNhiemVuId
             };
         } else {
             // Nếu không trùng, đặt nguoiThucHienNhiemVuId = 0
             return {
                 ...formMember,
-                nguoiThucHienNhiemVuId: 0
+                // nguoiThucHienNhiemVuId: 0
             };
         }
     });

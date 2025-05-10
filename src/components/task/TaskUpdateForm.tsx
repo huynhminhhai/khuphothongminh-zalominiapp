@@ -1,15 +1,13 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
-import { compareNguoiThucHienNhiemVus, convertParticipants, convertTaskBack, FormDataTask, schemaTask } from "./type"
+import { Box} from "zmp-ui"
+import { convertParticipants, convertTaskBack, FormDataTask, schemaTask } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
+import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import { STAFFOPTION, TASKS } from "constants/utinities"
-import { taskPriority, taskStatus } from "constants/mock"
 import { useSearchParams } from "react-router-dom"
-import { useGetMeetingDetail, useGetMeetingStatus } from "apiRequest/meeting"
+import { useGetMeetingStatus } from "apiRequest/meeting"
 import { useGetTaskDetail, useGetTaskStatus, useUpdateTask } from "apiRequest/task"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -92,11 +90,7 @@ const TaskUpdateForm: React.FC = () => {
             try {
                 const prepareDataSubmit = { ...formData, nhiemVuId: taskDetail.nhiemVuId, apId: taskDetail.apId, tinhTrangId: taskDetail.tinhTrangId }
 
-                const dataConvertParticipants = convertParticipants(prepareDataSubmit)
-
-                const dataCompare = compareNguoiThucHienNhiemVus(taskDetail, dataConvertParticipants)
-
-                const dataSubmit = { ...dataConvertParticipants, nguoiThucHienNhiemVus: dataCompare }
+                const dataSubmit = convertParticipants(prepareDataSubmit)
 
                 await updateTask(dataSubmit);
 
