@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, Control } from 'react-hook-form';
 import Label from './Label';
 import ErrorMessage from './ErrorMessage';
@@ -23,20 +23,17 @@ const FormFileInput: React.FC<FormFileInputProps> = ({
     <Controller
       name={name}
       control={control}
-      defaultValue={[]} // đảm bảo có giá trị khởi tạo
+      defaultValue={[]}
       render={({ field: { onChange, value } }) => {
-        const [files, setFiles] = useState<File[]>(value || []);
+        const files: File[] = Array.isArray(value) ? value : [];
 
         const handleAddFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
           const newFiles = Array.from(e.target.files || []);
-          const updatedFiles = [...files, ...newFiles];
-          setFiles(updatedFiles);
-          onChange(updatedFiles);
+          onChange([...files, ...newFiles]);
         };
 
         const handleRemoveFile = (index: number) => {
           const updatedFiles = files.filter((_, i) => i !== index);
-          setFiles(updatedFiles);
           onChange(updatedFiles);
         };
 

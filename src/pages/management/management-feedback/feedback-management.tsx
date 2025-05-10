@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { useGetHuyenList, useGetXaList } from "apiRequest/app"
 import { useDeleteFeedback, useGetFeedbackListNormal, useGetFeedbackStatus, useUpdateFeedbackStatus } from "apiRequest/feeback"
+import images from "assets/images"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
@@ -11,7 +12,7 @@ import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { openUrlInWebview } from "services/zalo"
 import { useStoreApp } from "store/store"
-import { getFullImageUrl } from "utils/file"
+import { getFullImageUrl, isImage } from "utils/file"
 import { Box, Input, Page, Select, Swiper, useNavigate } from "zmp-ui"
 
 const FeedbackManagementPage: React.FC = () => {
@@ -95,30 +96,33 @@ const FeedbackManagementPage: React.FC = () => {
             size: 300,
             cell: ({ row }) => {
 
+                const imageFiles = row.original?.tapTinPhanAnhs?.filter(item =>
+                    isImage(item.tapTin)
+                ) || [];
+
                 return (
                     <Box>
                         <Swiper className="w-full h-[150px]" autoplay duration={8000} style={{ borderRadius: 0 }}>
-                            {
-                                row.original.tapTinPhanAnhs ?
-                                    row.original.tapTinPhanAnhs.map((item, index) => (
-                                        <Swiper.Slide key={index}>
-                                            <img
-                                                onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                className="slide-img object-cover w-full h-full"
-                                                src={getFullImageUrl(item.tapTin)}
-                                                alt={row.original?.noiDung}
-                                            />
-                                        </Swiper.Slide>
-                                    ))
-                                    :
-                                    <Swiper.Slide>
+                            {imageFiles && imageFiles.length > 0 ? (
+                                imageFiles.map((item, index) => (
+                                    <Swiper.Slide key={index}>
                                         <img
-                                            className="slide-img"
-                                            src="https://actiosoftware.com/wp-content/uploads/2024/02/resposta-do-smiley-do-cliente-do-feedback-da-avaliacao-1.jpg"
+                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                            className="slide-img object-cover w-full h-full"
+                                            src={getFullImageUrl(item.tapTin)}
                                             alt={row.original?.noiDung}
                                         />
                                     </Swiper.Slide>
-                            }
+                                ))
+                            ) : (
+                                <Swiper.Slide>
+                                    <img
+                                        className="slide-img object-cover w-full h-full"
+                                        src={images.feedback}
+                                        alt={row.original?.noiDung}
+                                    />
+                                </Swiper.Slide>
+                            )}
                         </Swiper>
                     </Box>
                 )
@@ -222,28 +226,11 @@ const FeedbackManagementPage: React.FC = () => {
             header: 'Địa chỉ',
             cell: ({ row }) => {
 
-                const { tinhs } = useStoreApp()
-                const [maTinh, setMaTinh] = useState<string | null>(null);
-                const [maHuyen, setMaHuyen] = useState<string | null>(null);
-
-                useEffect(() => {
-                    if (row.original) {
-                        setMaTinh(row.original.maTinh || null);
-                        setMaHuyen(row.original.maHuyen || null);
-                    }
-                }, [row.original]);
-
-                const { data: huyens } = useGetHuyenList(maTinh ?? "");
-                const { data: xas } = useGetXaList(maHuyen ?? "");
+                const data = row.original
 
                 return (
                     <div className="h-[42px]">
-                        {`${row.original?.diaChi || ""} 
-                                ${tinhs?.find(tinh => tinh.value === row.original?.maTinh)?.label || ""} 
-                                ${huyens?.find(huyen => huyen.maHuyen === row.original?.maHuyen)?.tenHuyen || ""} 
-                                ${xas?.find(xa => xa.maXa === row.original?.maXa)?.tenXa || ""}`
-                            .replace(/ ,/g, "")
-                            .trim()}
+                        {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
                     </div>
                 )
             }

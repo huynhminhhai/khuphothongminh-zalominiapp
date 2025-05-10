@@ -7,11 +7,11 @@ import { Box, useNavigate } from "zmp-ui"
 import { formatDate, getHourFromDate } from "utils/date"
 import images from "assets/images"
 
-type FeedbackItemProps = {
+type FeedbackItemHistoryProps = {
     data: any
 }
 
-const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
+const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
 
     const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
     return (
         <Box
             pb={4} mb={4} className="border-b-[1px]"
-            onClick={() => navigate(`/feedback-detail?id=${data.phanAnhId}`)}
+            onClick={() => navigate(`/feedback-update?id=${data.phanAnhId}`)}
         >
             <Box className="relative rounded-lg overflow-hidden">
                 <img className="w-[100%] h-[200px] object-cover" src={imageFiles[0]?.tapTin ? getFullImageUrl(imageFiles[0].tapTin) : images.feedback} alt={data.noiDung} />
@@ -64,4 +64,4 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
     )
 }
 
-export default FeedbackItem
+export default FeedbackItemHistory

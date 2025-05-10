@@ -157,7 +157,7 @@ const FeedbackAddForm: React.FC = () => {
                     <div className="col-span-12">
                         <FormSelectField
                             name="maTinh"
-                            label="Địa chỉ thường trú"
+                            label="Địa chỉ"
                             placeholder="Chọn tỉnh/thành phố"
                             control={control}
                             options={tinhs}

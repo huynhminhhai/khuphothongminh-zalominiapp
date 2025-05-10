@@ -5,15 +5,17 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmModal } from "components/modal";
 import { PrimaryButton } from "components/button";
-import { FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
+import { FormFileInput, FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
 import { useStoreApp } from "store/store";
-import { useAddressSelectorWithoutPrefix } from "utils/useAddress";
-import { useDeleteFileFeedback, useGetFeebackDetail, useUpdateFeedback } from "apiRequest/feeback";
-import { convertToFormData, loadImage } from "utils/file";
+import { setAddressWithoutPrefixStepByStep, useAddressSelectorWithoutPrefix } from "utils/useAddress";
+import { useDeleteFileFeedback, useGetFeebackDetail, useGetFeedbackStatus, useUpdateFeedback } from "apiRequest/feeback";
+import { convertToFormData, loadFile, loadImage } from "utils/file";
 import { useSearchParams } from "react-router-dom";
 import { omit } from "lodash";
 
 const defaultValues: FormDataPhanAnh = {
+    apId: 0,
+    linhVucPhanAnhId: 0,
     noiDung: "",
     diaChi: "",
     maXa: "",
@@ -29,7 +31,7 @@ const defaultValues: FormDataPhanAnh = {
 
 const FeedbackUpdateForm: React.FC = () => {
 
-    const { tinhs } = useStoreApp()
+    const { tinhs, account } = useStoreApp()
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataPhanAnh>(defaultValues)
     const [initialImages, setInitialImages] = useState<{ tapTinPhanAnhId: number; tapTin: string }[]>([]);
@@ -46,17 +48,31 @@ const FeedbackUpdateForm: React.FC = () => {
     const { data: feedbackDetail } = useGetFeebackDetail(Number(feedbackId));
     const { mutate: deleteFileFeedback } = useDeleteFileFeedback();
 
-    // const { data: feedbackStatus } = useGetFeedbackStatus();
+    const { data: feedbackStatus } = useGetFeedbackStatus();
 
-    // const feedbackStatusOptions = useMemo(() => {
-    //     return feedbackStatus?.map((item) => ({
-    //         value: item.tinhTrangId,
-    //         label: item.tenTinhTrang
-    //     })) || [];
-    // }, [feedbackStatus]);
+    const feedbackStatusOptions = useMemo(() => {
+        return feedbackStatus?.tinhTrangs?.map((item) => ({
+            value: item.tinhTrangId,
+            label: item.tenTinhTrang,
+        })) ?? [];
+    }, [feedbackStatus]);
+
+    const feedbackTinhOption = useMemo(() => {
+        return feedbackStatus?.tinhs?.map((item) => ({
+            value: item.tinhId,
+            label: item.tenTinh,
+        })) ?? [];
+    }, [feedbackStatus]);
+
+    const feedbackLinhVucOption = useMemo(() => {
+        return feedbackStatus?.linhVucPhanAnhs?.map((item) => ({
+            value: item.linhVucPhanAnhId,
+            label: item.tenLinhVucPhanAnh,
+        })) ?? [];
+    }, [feedbackStatus]);
 
     const phanAnhAddress = useAddressSelectorWithoutPrefix({
-        tinhOptions: tinhs,
+        tinhOptions: feedbackTinhOption || tinhs,
         watch,
         setValue,
     });
@@ -72,7 +88,7 @@ const FeedbackUpdateForm: React.FC = () => {
                         : [feedbackDetail.tapTinPhanAnhs];
 
                     const files = await Promise.all(
-                        imageItems.map(async (url) => await loadImage(url.tapTin))
+                        imageItems.map(async (url) => await loadFile({ tapTin: url.tapTin, tenTapTin: url.tenTapTin }))
                     );
 
                     const validFiles = files.filter((file): file is File => file !== null);
@@ -96,20 +112,29 @@ const FeedbackUpdateForm: React.FC = () => {
     }, [feedbackDetail, reset]);
 
     useEffect(() => {
-        if (feedbackDetail) {
-            if (feedbackDetail.maHuyen) {
-                setValue("maHuyen", feedbackDetail.maHuyen);
-            }
-        }
-    }, [phanAnhAddress.huyenOptions, feedbackDetail, setValue]);
+        if (account) {
 
-    useEffect(() => {
-        if (feedbackDetail) {
-            if (feedbackDetail.maXa) {
-                setValue("maXa", feedbackDetail.maXa);
-            }
+            const {
+                maTinh = "",
+                maXa = "",
+                maHuyen = "",
+                apId = 0
+            } = account || {};
+
+            reset({
+                ...watch(),
+                maTinh: maTinh,
+                maXa: maXa,
+                maHuyen: maHuyen,
+                apId: apId,
+            })
+
+            setAddressWithoutPrefixStepByStep(
+                { maTinh: '80', maHuyen, maXa, apId },
+                setValue
+            );
         }
-    }, [phanAnhAddress.xaOptions, feedbackDetail, setValue]);
+    }, [account])
 
 
     const onSubmit: SubmitHandler<FormDataPhanAnh> = (data) => {
@@ -156,6 +181,17 @@ const FeedbackUpdateForm: React.FC = () => {
                         />
                     </div> */}
                     <div className="col-span-12">
+                        <FormSelectField
+                            name="linhVucPhanAnhId"
+                            label="Lĩnh vức phản ánh"
+                            placeholder="Chọn loại lĩnh vực"
+                            control={control}
+                            options={feedbackLinhVucOption}
+                            error={errors.linhVucPhanAnhId?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
                         <FormInputAreaField
                             name="noiDung"
                             label="Nội dung phản ánh"
@@ -165,19 +201,19 @@ const FeedbackUpdateForm: React.FC = () => {
                             required
                         />
                     </div>
-
                     <div className="col-span-12">
                         <FormSelectField
                             name="maTinh"
-                            label="Địa chỉ thường trú"
+                            label="Địa chỉ"
                             placeholder="Chọn tỉnh/thành phố"
                             control={control}
                             options={tinhs}
                             error={errors.maTinh?.message}
                             required
+                            disabled
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormSelectField
                             name="maHuyen"
                             label=""
@@ -185,7 +221,8 @@ const FeedbackUpdateForm: React.FC = () => {
                             control={control}
                             options={phanAnhAddress.huyenOptions}
                             error={errors.maHuyen?.message}
-                            disabled={!phanAnhAddress.watchedTinh}
+                            // disabled={!phanAnhAddress.watchedTinh}
+                            disabled
                         />
                     </div>
                     <div className="col-span-6">
@@ -196,7 +233,20 @@ const FeedbackUpdateForm: React.FC = () => {
                             control={control}
                             options={phanAnhAddress.xaOptions}
                             error={errors.maXa?.message}
-                            disabled={!phanAnhAddress.watchedHuyen}
+                            // disabled={!phanAnhAddress.watchedHuyen}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="apId"
+                            label=""
+                            placeholder="Chọn ấp"
+                            control={control}
+                            options={phanAnhAddress.apOptions}
+                            error={errors.apId?.message}
+                            // disabled={!phanAnhAddress.watchedXa}
+                            disabled
                         />
                     </div>
                     <div className="col-span-12">
@@ -226,31 +276,43 @@ const FeedbackUpdateForm: React.FC = () => {
                             error={errors.longitude?.message}
                         />
                     </div>
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <div className="mb-1 font-medium text-[16px]">Công khai <span className="text-[#dc2626]">(*)</span></div>
-                    </div>
-                    <div className="col-span-6">
+                    </div> */}
+                    <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiThongTinCaNhan"
-                            label="Thông tin cá nhân"
+                            label="Công khai thông tin cá nhân"
                             control={control}
+                            required
+                        // size="medium"
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiPhanAnh"
-                            label="Phản ánh"
+                            label="Công khai phản ánh"
                             control={control}
+                            required
+                        // size="medium"
                         />
                     </div>
 
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <FormImageUploader
                             name="tapTinPhanAnhFormFiles"
                             label="Upload ảnh"
                             control={control}
                             error={errors.tapTinPhanAnhFormFiles?.message}
                             required
+                        />
+                    </div> */}
+                    <div className="col-span-12">
+                        <FormFileInput
+                            name="tapTinPhanAnhFormFiles"
+                            label="Tập tin đính kèm"
+                            control={control}
+                            error={errors.tapTinPhanAnhFormFiles?.message}
                         />
                     </div>
                     {/* <div className="col-span-12">
@@ -263,9 +325,18 @@ const FeedbackUpdateForm: React.FC = () => {
                             error={errors.tinhTrangId?.message}
                         />
                     </div> */}
+                    
+                    {
+                        feedbackDetail?.tinhTrangId !== feedbackStatusOptions[3]?.value &&
+                        <div className="col-span-12">
+                            <span className="text-[#dc2626] italic">
+                                Phản ánh đang được xử lý không thể cập nhật
+                            </span>
+                        </div>
+                    }
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật phản ánh"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending || feedbackDetail?.tinhTrangId !== feedbackStatusOptions[3]?.value} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật phản ánh"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

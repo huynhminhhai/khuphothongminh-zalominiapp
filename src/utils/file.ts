@@ -97,6 +97,28 @@ export const loadImage = async (url: string): Promise<File | null> => {
   }
 };
 
+type FileInput = {
+  tapTin: string;
+  tenTapTin: string;
+};
+
+export const loadFile = async ({ tapTin, tenTapTin }: FileInput): Promise<File | null> => {
+  try {
+    const cleanUrl = tapTin.startsWith("/uploads") ? tapTin.replace("/uploads", "") : tapTin;
+
+    const response = await fetch(`${envConfig.API_ENDPOINT}${cleanUrl}`);
+    if (!response.ok) throw new Error(`Failed to fetch file: ${tenTapTin}`);
+
+    const blob = await response.blob();
+    const contentType = blob.type || "application/octet-stream";
+
+    return new File([blob], tenTapTin, { type: contentType });
+  } catch (error) {
+    console.error("Error loading file:", tenTapTin, error);
+    return null;
+  }
+};
+
 export const isImage = (fileName: string) => {
   return /\.(jpe?g|png|gif|bmp|webp|svg)$/i.test(fileName);
 };

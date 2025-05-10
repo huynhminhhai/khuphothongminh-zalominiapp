@@ -1,6 +1,7 @@
 import { useGetMyFeedbackList } from "apiRequest/feeback";
 import { EmptyData } from "components/data";
 import { FeedbackItem } from "components/feedback"
+import FeedbackItemHistory from "components/feedback/FeedbackItemHistory";
 import { HeaderSub } from "components/header-sub"
 import { FeedbackSkeleton } from "components/skeleton";
 import React, { useEffect, useState } from "react"
@@ -46,7 +47,7 @@ const FeedbackHistoryPage: React.FC = () => {
                                 ) : (
                                     <>
                                         {listData.map((item, index) => (
-                                                <FeedbackItem key={index} data={item} />
+                                                <FeedbackItemHistory key={index} data={item} />
                                             ))}
                                     </>
                                 )}

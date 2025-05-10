@@ -1,23 +1,26 @@
-import { useGetHuyenList, useGetXaList } from "apiRequest/app";
+import { Icon } from "@iconify/react";
 import { useGetFeebackDetail, useGetFeedbackStatus } from "apiRequest/feeback";
+import { PrimaryButton } from "components/button";
+import SecondaryButton from "components/button/SecondaryButton";
 import { EmptyData } from "components/data";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { useSearchParams } from "react-router-dom";
 import { openUrlInWebview } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { formatDate, getHourFromDate } from "utils/date";
 import { getFullImageUrl, isImage } from "utils/file";
 import { getTinhTrangFeedbackColor } from "utils/renderColor";
-import { Box, Page, Swiper } from "zmp-ui"
+import { Box, Page, Swiper, useNavigate } from "zmp-ui"
 
 const FeedbackDetailPage: React.FC = () => {
 
     const [searchParams] = useSearchParams();
-
     const feedbackId = searchParams.get("id");
 
+    const navigate = useNavigate();
+    
     const { data, isLoading } = useGetFeebackDetail(Number(feedbackId));
     const { data: feedbackStatus } = useGetFeedbackStatus();
 
