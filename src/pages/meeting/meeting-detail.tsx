@@ -8,8 +8,10 @@ import { NewsDetailSkeleton } from "components/skeleton";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import http from "services/http";
+import { openUrlInWebview } from "services/zalo";
 import { copyToClipboard } from "utils/copyToClipboard";
 import { formatDate, getHourFromDate, renderDayOfWeek } from "utils/date";
+import { getFullImageUrl, isImage } from "utils/file";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { Avatar, Box, Modal, Page } from "zmp-ui"
 
@@ -100,7 +102,7 @@ const MeetingDetailPage: React.FC = () => {
                                     <Box px={4}>
                                         <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.tieuDe}</h3>
                                         <div className="mt-4 flex items-center gap-3">
-                                            <Avatar size={30} src={host?.anhDaiDien || images.avatar} />
+                                            <Avatar size={30} src={host?.anhDaiDien?.trim() ? getFullImageUrl(host.anhDaiDien) : images.avatar} />
                                             <div className="text-[16px] font-medium text-[#808080]">chủ trì: <span className="text-[#000]">{host?.hoTenNguoiThamDu}</span></div>
                                         </div>
                                     </Box>
@@ -110,7 +112,7 @@ const MeetingDetailPage: React.FC = () => {
                                                 thuKy &&
 
                                                 <div className="flex items-center gap-3 text-gray-color">
-                                                    <Avatar size={30} src={thuKy?.anhDaiDien || images.avatar} />
+                                                    <Avatar size={30} src={thuKy?.anhDaiDien?.trim() ? getFullImageUrl(thuKy.anhDaiDien) : images.avatar} />
                                                     <Box>
                                                         thư ký: <span className="text-[#000]">{thuKy?.hoTenNguoiThamDu}</span>
                                                     </Box>
@@ -154,7 +156,7 @@ const MeetingDetailPage: React.FC = () => {
                                                             <Avatar
                                                                 key={index}
                                                                 size={30}
-                                                                src={member?.anhDaiDien || images.avatar}
+                                                                src={member?.anhDaiDien?.trim() ? getFullImageUrl(member.anhDaiDien) : images.avatar}
                                                             />
                                                         ))}
                                                     </Box>
@@ -182,7 +184,7 @@ const MeetingDetailPage: React.FC = () => {
                                                                 <Avatar
                                                                     key={index}
                                                                     size={30}
-                                                                    src={member?.anhDaiDien || images.avatar}
+                                                                    src={member?.anhDaiDien?.trim() ? getFullImageUrl(member.anhDaiDien) : images.avatar}
                                                                 />
                                                                 <div className="font-medium text-gray-color">{member?.hoTenNguoiThamDu}</div>
                                                             </Box>
@@ -195,12 +197,39 @@ const MeetingDetailPage: React.FC = () => {
                                             </Modal>
                                         </div>
                                     </Box>
+                                    <Box px={4} pb={4}>
+                                        <Box>
+                                            {detailData?.tapTinCuocHops && detailData.tapTinCuocHops.length > 0 ? (
+                                                detailData.tapTinCuocHops.map((item, index) => (
+                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
+                                                        <div
+                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
+
+                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                        >
+                                                            <div className="flex items-center gap-1">
+                                                                {isImage(item.tapTin) ? (
+                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
+                                                                ) : (
+                                                                    <Icon icon="codex:file" fontSize={22} />
+                                                                )}
+                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div>Không có tập tin</div>
+                                            )}
+                                        </Box>
+                                    </Box>
                                     <Box className="text-[16px]">
                                         <div className="bg-[#f8f8f8] text-[#808080] text-[18px] font-semibold p-4">Nội dung cuộc họp</div>
                                         <Box p={4} className="leading-[22px]">
                                             {detailData.noiDung}
                                         </Box>
                                     </Box>
+
                                 </Box> :
                                 <EmptyData title="Không tìm thấy cuộc họp" />
                     }

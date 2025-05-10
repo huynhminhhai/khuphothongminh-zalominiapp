@@ -63,8 +63,6 @@ const TaskDetailPage: React.FC = () => {
         try {
             const dataSubmit = convertToFormData({ TapTinFormFiles: fileTasks, NhiemVuId: taskId })
 
-            console.log(dataSubmit)
-
             await addFileTask(dataSubmit);
 
         } catch (error) {
