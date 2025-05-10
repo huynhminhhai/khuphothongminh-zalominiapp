@@ -1,14 +1,16 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormControllerTimePicker, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
+import { FormControllerDatePicker, FormControllerTimePicker, FormFileInput, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import React, { useEffect, useMemo, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
 import { Box } from "zmp-ui"
-import { compareThanhVienCuocHops, convertMeetingBack, convertMeetingTime, convertParticipants, FormDataMeeting, schemaMeeting } from "./type"
-import { useGetMeetingDetail, useGetMeetingStatus, useUpdateMeeting } from "apiRequest/meeting"
+import { convertMeetingBack, convertMeetingTime, convertParticipants, FormDataMeeting, schemaMeeting } from "./type"
+import { useDeleteFileMeeting, useGetMeetingDetail, useGetMeetingStatus, useUpdateMeeting } from "apiRequest/meeting"
 import { useQueryClient } from "@tanstack/react-query"
+import { omit } from "lodash"
+import { convertToFormData, loadFile } from "utils/file"
 
 const defaultValues: FormDataMeeting = {
     tieuDe: '',
@@ -29,7 +31,8 @@ const MeetingUpdateForm = () => {
     const queryClient = useQueryClient();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
-    const [formData, setFormData] = useState<any>(defaultValues)
+    const [formData, setFormData] = useState<any>(defaultValues);
+    const [initialImages, setInitialImages] = useState<{ tapTinCuocHopId: number; tapTin: string }[]>([]);
 
     const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormDataMeeting>({
         resolver: yupResolver(schemaMeeting),
@@ -40,6 +43,7 @@ const MeetingUpdateForm = () => {
     const meetingId = searchParams.get("id");
 
     const { mutateAsync: updateMeeting, isPending } = useUpdateMeeting();
+    const { mutate: deleteFileMeeting } = useDeleteFileMeeting();
     const { data: meetingStatus } = useGetMeetingStatus();
     const { data: meetingkDetail } = useGetMeetingDetail(Number(meetingId));
 
@@ -85,9 +89,39 @@ const MeetingUpdateForm = () => {
     useEffect(() => {
         if (meetingkDetail) {
 
-            const dataConvertBack = convertMeetingBack(meetingkDetail);
+            const dataConvertBack = convertMeetingBack(
+                { ...omit(meetingkDetail, ['tapTinCuocHops']), fileDinhKems: [] }
+            );
 
             reset({ ...dataConvertBack })
+
+            const fetchAndSetImages = async () => {
+                if (meetingkDetail?.tapTinCuocHops) {
+                    const imageItems = Array.isArray(meetingkDetail.tapTinCuocHops)
+                        ? meetingkDetail.tapTinCuocHops
+                        : [meetingkDetail.tapTinCuocHops];
+
+                    const files = await Promise.all(
+                        imageItems.map(async (url) => await loadFile({ tapTin: url.tapTin, tenTapTin: url.tenTapTin }))
+                    );
+
+                    const validFiles = files.filter((file): file is File => file !== null);
+
+                    if (validFiles.length > 0) {
+                        reset((prevValues) => ({
+                            ...prevValues,
+                            fileDinhKems: validFiles,
+                        }));
+                    }
+
+                    setInitialImages(imageItems.map((item) => ({
+                        tapTinCuocHopId: item.tapTinCuocHopId,
+                        tapTin: item.tapTin,
+                    })));
+                }
+            };
+
+            fetchAndSetImages();
         }
     }, [meetingkDetail, reset])
 
@@ -100,16 +134,19 @@ const MeetingUpdateForm = () => {
         setConfirmVisible(false);
         if (formData) {
             try {
-
-                const prepareDataSubmit = { ...formData, cuocHopId: meetingkDetail.cuocHopId, apId: meetingkDetail.apId, tinhTrangId: meetingkDetail.tinhTrangId }
-
-                const dataConvertDate = convertMeetingTime(prepareDataSubmit)
+                const dataConvertDate = convertMeetingTime({ ...formData, cuocHopId: meetingkDetail.cuocHopId })
 
                 const dataConvertParticipants = convertParticipants(dataConvertDate)
 
-                await compareThanhVienCuocHops(dataConvertParticipants, meetingkDetail)
+                const dataSubmit = convertToFormData(dataConvertParticipants)
 
-                const dataSubmit = { ...dataConvertParticipants, thanhVienCuocHops: [] }
+                if (initialImages.length > 0) {
+                    await Promise.all(
+                        initialImages.map(async (image) => {
+                            deleteFileMeeting(image.tapTinCuocHopId);
+                        })
+                    );
+                }
 
                 await updateMeeting(dataSubmit);
 
@@ -227,6 +264,14 @@ const MeetingUpdateForm = () => {
                             control={control}
                             error={errors.noiDung?.message}
                             required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormFileInput
+                            name="fileDinhKems"
+                            label="Tập tin đính kèm"
+                            control={control}
+                            error={errors.fileDinhKems?.message}
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">

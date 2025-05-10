@@ -23,7 +23,7 @@ export const meetingApiRequest = {
         return await http.delete<any>(`/cuochop/${id}`)
     },
     updateMeeting: async (formData: any) => {
-        return await http.put<any>("/cuochop", formData);
+        return await http.putFormData<any>("/cuochop", formData);
     },
     createMeetingMember: async (formData: any) => {
         return await http.post<any>("/thanhviencuochop", formData);
@@ -39,6 +39,9 @@ export const meetingApiRequest = {
             cuocHopId: param.cuocHopId,
             tinhTrangId: param.tinhTrangId
         });
+    },
+    deleteFileMeeting: async (id: number) => {
+        return await http.delete<any>(`/taptincuochop/${id}`);
     },
 }
 
@@ -286,6 +289,26 @@ export const useUpdateMeetingStatus = () => {
             queryClient.invalidateQueries({ queryKey: ["meetingList"] });
             queryClient.invalidateQueries({ queryKey: ["meetingDetail"] });
 
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* DELETE FILE MEETING
+**/
+export const useDeleteFileMeeting = () => {
+    const { showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await meetingApiRequest.deleteFileMeeting(id);
+        },
+        onSuccess: () => {
+            
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)
