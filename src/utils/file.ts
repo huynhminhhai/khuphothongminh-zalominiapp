@@ -96,3 +96,7 @@ export const loadImage = async (url: string): Promise<File | null> => {
     return null;
   }
 };
+
+export const isImage = (fileName: string) => {
+  return /\.(jpe?g|png|gif|bmp|webp|svg)$/i.test(fileName);
+};

@@ -172,9 +172,12 @@ const FeedbackManagementPage: React.FC = () => {
                                 }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
-                            disabled={isPending || !hasPermission('Cập nhật tình trạng của 1 phản ánh', 'SUA')}
+                            disabled={
+                                isPending
+                                // || !hasPermission('Cập nhật tình trạng của 1 phản ánh', 'SUA')
+                            }
                         >
-                            {feedbackStatus && feedbackStatus.map((item) => (
+                            {feedbackStatus?.tinhTrangs?.map((item) => (
                                 <Option
                                     value={item.tinhTrangId}
                                     key={item.tinhTrangId}
@@ -251,7 +254,7 @@ const FeedbackManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     {
-                        hasPermission('Lấy thông tin chi tiết 1 phản ánh', 'XEM') &&
+                        // hasPermission('Lấy thông tin chi tiết 1 phản ánh', 'XEM') &&
                         <button
                             onClick={() => navigate(`/feedback-detail?id=${row.original.phanAnhId}`)}
                             className="px-3 py-1 bg-gray-700 text-white rounded"
@@ -260,7 +263,7 @@ const FeedbackManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Sửa thông tin 1 phản ánh', 'SUA') &&
+                        // hasPermission('Sửa thông tin 1 phản ánh', 'SUA') &&
                         <button
                             onClick={() => navigate(`/feedback-update?id=${row.original.phanAnhId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -269,7 +272,7 @@ const FeedbackManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        hasPermission('Xóa 1 phản ánh', 'XOA') &&
+                        // hasPermission('Xóa 1 phản ánh', 'XOA') &&
                         <button
                             onClick={() => removeFeedback(row.original.phanAnhId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"

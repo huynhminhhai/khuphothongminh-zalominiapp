@@ -33,7 +33,7 @@ const FeedbackPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Góp ý - Phản ánh" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Phản ánh" onBackClick={() => navigate('/')} />
                 <Box px={4} pb={4}>
                     <FeedbackMenu />
                     <Box>

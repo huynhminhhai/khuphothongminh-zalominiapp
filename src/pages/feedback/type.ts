@@ -18,6 +18,8 @@ export type FormDataFeedback = {
 
 export interface FormDataPhanAnh {
     phanAnhId?: number;
+    apId: number;
+    linhVucPhanAnhId: number; 
     noiDung: string;
     diaChi: string;
     maXa: string;
@@ -32,6 +34,8 @@ export interface FormDataPhanAnh {
 }
 
 export const phanAnhSchema = yup.object().shape({
+    apId: yup.number().typeError('Chưa chọn mục này').required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
+    linhVucPhanAnhId: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
     noiDung: yup.string().required("Chưa nhập nội dung"),
     diaChi: yup.string().required("Chưa nhập địa chỉ"),
     maXa: yup.string().required("Chưa chọn mục này"),

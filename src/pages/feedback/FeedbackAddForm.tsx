@@ -1,17 +1,19 @@
-import React, { useMemo, useState } from "react"
+import React, { useEffect, useMemo, useState } from "react"
 import { Box, useNavigate, useSnackbar } from "zmp-ui"
 import { FormDataPhanAnh, phanAnhSchema } from "./type";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmModal } from "components/modal";
 import { PrimaryButton } from "components/button";
-import { FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
+import { FormFileInput, FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
 import { useStoreApp } from "store/store";
-import { useAddressSelectorWithoutPrefix, useResidentAddress } from "utils/useAddress";
+import { setAddressWithoutPrefixStepByStep, useAddressSelectorWithoutPrefix } from "utils/useAddress";
 import { useCreateFeeback, useGetFeedbackStatus } from "apiRequest/feeback";
 import { convertToFormData } from "utils/file";
 
 const defaultValues: FormDataPhanAnh = {
+    apId: 0,
+    linhVucPhanAnhId: 0,
     noiDung: "",
     diaChi: "",
     maXa: "",
@@ -27,12 +29,8 @@ const defaultValues: FormDataPhanAnh = {
 
 const FeedbackAddForm: React.FC = () => {
 
-    const { tinhs } = useStoreApp()
+    const { tinhs, account } = useStoreApp()
 
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
-
-    const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataPhanAnh>(defaultValues)
 
@@ -43,20 +41,59 @@ const FeedbackAddForm: React.FC = () => {
 
     const { mutateAsync: createFeedback, isPending } = useCreateFeeback();
 
-    // const { data: feedbackStatus } = useGetFeedbackStatus();
+    const { data: feedbackStatus } = useGetFeedbackStatus();
 
-    // const feedbackStatusOptions = useMemo(() => {
-    //     return feedbackStatus?.map((item) => ({
-    //         value: item.tinhTrangId,
-    //         label: item.tenTinhTrang
-    //     })) || [];
-    // }, [feedbackStatus]);
+    const feedbackStatusOptions = useMemo(() => {
+        return feedbackStatus?.tinhTrangs?.map((item) => ({
+            value: item.tinhTrangId,
+            label: item.tenTinhTrang,
+        })) ?? [];
+    }, [feedbackStatus]);
+
+    const feedbackTinhOption = useMemo(() => {
+        return feedbackStatus?.tinhs?.map((item) => ({
+            value: item.tinhId,
+            label: item.tenTinh,
+        })) ?? [];
+    }, [feedbackStatus]);
+
+    const feedbackLinhVucOption = useMemo(() => {
+        return feedbackStatus?.linhVucPhanAnhs?.map((item) => ({
+            value: item.linhVucPhanAnhId,
+            label: item.tenLinhVucPhanAnh,
+        })) ?? [];
+    }, [feedbackStatus]);
 
     const phanAnhAddress = useAddressSelectorWithoutPrefix({
-        tinhOptions: tinhs,
+        tinhOptions: feedbackTinhOption || tinhs,
         watch,
         setValue,
     });
+
+    useEffect(() => {
+        if (account) {
+
+            const {
+                maTinh = "",
+                maXa = "",
+                maHuyen = "",
+                apId = 0
+            } = account || {};
+
+            reset({
+                ...watch(),
+                maTinh: maTinh,
+                maXa: maXa,
+                maHuyen: maHuyen,
+                apId: apId,
+            })
+
+            setAddressWithoutPrefixStepByStep(
+                { maTinh: '80', maHuyen, maXa, apId },
+                setValue
+            );
+        }
+    }, [account])
 
     const onSubmit: SubmitHandler<FormDataPhanAnh> = (data) => {
         setConfirmVisible(true);
@@ -67,8 +104,8 @@ const FeedbackAddForm: React.FC = () => {
         setConfirmVisible(false);
         try {
 
-            const dataSubmit = convertToFormData({...formData, tinhTrangId: 10});
-            
+            const dataSubmit = convertToFormData({ ...formData });
+
             await createFeedback(dataSubmit);
 
             reset(defaultValues);
@@ -97,6 +134,17 @@ const FeedbackAddForm: React.FC = () => {
                         />
                     </div> */}
                     <div className="col-span-12">
+                        <FormSelectField
+                            name="linhVucPhanAnhId"
+                            label="Lĩnh vức phản ánh"
+                            placeholder="Chọn loại lĩnh vực"
+                            control={control}
+                            options={feedbackLinhVucOption}
+                            error={errors.linhVucPhanAnhId?.message}
+                            required
+                        />
+                    </div>
+                    <div className="col-span-12">
                         <FormInputAreaField
                             name="noiDung"
                             label="Nội dung phản ánh"
@@ -106,7 +154,6 @@ const FeedbackAddForm: React.FC = () => {
                             required
                         />
                     </div>
-
                     <div className="col-span-12">
                         <FormSelectField
                             name="maTinh"
@@ -116,9 +163,10 @@ const FeedbackAddForm: React.FC = () => {
                             options={tinhs}
                             error={errors.maTinh?.message}
                             required
+                            disabled
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormSelectField
                             name="maHuyen"
                             label=""
@@ -126,7 +174,8 @@ const FeedbackAddForm: React.FC = () => {
                             control={control}
                             options={phanAnhAddress.huyenOptions}
                             error={errors.maHuyen?.message}
-                            disabled={!phanAnhAddress.watchedTinh}
+                            // disabled={!phanAnhAddress.watchedTinh}
+                            disabled
                         />
                     </div>
                     <div className="col-span-6">
@@ -137,7 +186,20 @@ const FeedbackAddForm: React.FC = () => {
                             control={control}
                             options={phanAnhAddress.xaOptions}
                             error={errors.maXa?.message}
-                            disabled={!phanAnhAddress.watchedHuyen}
+                            // disabled={!phanAnhAddress.watchedHuyen}
+                            disabled
+                        />
+                    </div>
+                    <div className="col-span-6">
+                        <FormSelectField
+                            name="apId"
+                            label=""
+                            placeholder="Chọn ấp"
+                            control={control}
+                            options={phanAnhAddress.apOptions}
+                            error={errors.apId?.message}
+                            // disabled={!phanAnhAddress.watchedXa}
+                            disabled
                         />
                     </div>
                     <div className="col-span-12">
@@ -167,33 +229,43 @@ const FeedbackAddForm: React.FC = () => {
                             error={errors.longitude?.message}
                         />
                     </div>
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <div className="mb-1 font-medium text-[16px]">Công khai <span className="text-[#dc2626]">(*)</span></div>
-                    </div>
-                    <div className="col-span-6">
+                    </div> */}
+                    <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiThongTinCaNhan"
-                            label="Thông tin cá nhân"
+                            label="Công khai thông tin cá nhân"
                             control={control}
-                            // size="medium"
+                            required
+                        // size="medium"
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiPhanAnh"
-                            label="Phản ánh"
+                            label="Công khai phản ánh"
                             control={control}
-                            // size="medium"
+                            required
+                        // size="medium"
                         />
                     </div>
 
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <FormImageUploader
                             name="tapTinPhanAnhFormFiles"
                             label="Upload ảnh"
                             control={control}
                             error={errors.tapTinPhanAnhFormFiles?.message}
                             required
+                        />
+                    </div> */}
+                    <div className="col-span-12">
+                        <FormFileInput
+                            name="tapTinPhanAnhFormFiles"
+                            label="Tập tin đính kèm"
+                            control={control}
+                            error={errors.tapTinPhanAnhFormFiles?.message}
                         />
                     </div>
                     {/* <div className="col-span-12">

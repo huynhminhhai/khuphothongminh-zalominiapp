@@ -11,7 +11,7 @@ import React, { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { openUrlInWebview } from "services/zalo"
 import { formatDate } from "utils/date"
-import { convertToFormData, getFullImageUrl } from "utils/file"
+import { convertToFormData, getFullImageUrl, isImage } from "utils/file"
 import { getTinhTrangTaskColor } from "utils/renderColor"
 import { Box, Page, Swiper, useNavigate } from "zmp-ui"
 
@@ -30,10 +30,6 @@ const TaskDetailPage: React.FC = () => {
     const { mutate: deleteFileTask } = useDeleteFileTask();
 
     const { color, bg } = getTinhTrangTaskColor(detailData?.tinhTrang?.tenTinhTrang);
-
-    const isImage = (fileName: string) => {
-        return /\.(jpg|jpeg|png|gif|webp)$/i.test(fileName);
-    };
 
     const openConfirmModal = (action: () => void, title: string, message: string) => {
         setConfirmAction(() => action);

@@ -114,13 +114,14 @@ export const useGetFeedbackStatus = () => {
         queryFn: async () => {
             try {
                 const res = await feebackApiRequest.getFeebackStatus();
-                return res.data.tinhTrangs
+                return res.data
             } catch (error) {
                 console.error("Lỗi khi lấy danh mục phản ánh:", error);
                 throw error;
             }
         },
         staleTime: 1000 * 60 * 60 * 24,
+        // staleTime: 0,
         retry: 1,
     });
 };
