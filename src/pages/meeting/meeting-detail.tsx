@@ -199,7 +199,7 @@ const MeetingDetailPage: React.FC = () => {
                                     </Box>
                                     <Box px={4} pb={4}>
                                         <Box>
-                                            {detailData?.tapTinCuocHops && detailData.tapTinCuocHops.length > 0 ? (
+                                            {detailData?.tapTinCuocHops && detailData.tapTinCuocHops.length > 0 && (
                                                 detailData.tapTinCuocHops.map((item, index) => (
                                                     <div key={index} className="flex items-center gap-2 justify-between mb-2">
                                                         <div
@@ -218,8 +218,6 @@ const MeetingDetailPage: React.FC = () => {
                                                         </div>
                                                     </div>
                                                 ))
-                                            ) : (
-                                                <div>Không có tập tin</div>
                                             )}
                                         </Box>
                                     </Box>

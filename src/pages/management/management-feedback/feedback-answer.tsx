@@ -1,134 +1,119 @@
+import { useGetFeebackDetail, useGetFeedbackStatus } from "apiRequest/feeback";
+import { EmptyData } from "components/data";
 import { Divider } from "components/divider";
-import { FeedbackAnswerForm } from "components/feedback";
+import { FeedbackAnswerAddForm } from "components/feedback";
 import { HeaderSub } from "components/header-sub"
-// import { Feedback, FEEDBACKDATA, FeedbackResponse, FEEDBACKRESPONSES } from "constants/utinities";
-import React, { useEffect, useState } from "react"
+import { NewsDetailSkeleton } from "components/skeleton";
+import React from "react"
 import { useSearchParams } from "react-router-dom";
-import { Box, Page, Swiper, useSnackbar } from "zmp-ui"
+import { openUrlInWebview } from "services/zalo";
+import { formatDate, getHourFromDate } from "utils/date";
+import { getFullImageUrl, isImage } from "utils/file";
+import { Box, Page, Swiper, useNavigate, useSnackbar } from "zmp-ui"
 
 const FeedbackAnswerPage: React.FC = () => {
 
-    const [loading, setLoading] = useState(false);
-    const [feedbackData, setFeedbackData] = useState<Feedback>()
-    const [responseData, setResponseData] = useState<FeedbackResponse>()
-
-    const { openSnackbar } = useSnackbar();
-
     const [searchParams] = useSearchParams();
-
     const feedbackId = searchParams.get("id");
 
-    useEffect(() => {
-        const fetchFeedbackData = async () => {
-            setLoading(true);
-            try {
-                // Giả sử API trả về thông tin thành viên
-                // const response = await fetch(`/api/residents/${feedbackId}`);
-                // const data = await response.json();
+    const navigate = useNavigate();
 
-                const data = FEEDBACKDATA.find(feedback => feedback.id === Number(feedbackId))
+    const { data, isLoading } = useGetFeebackDetail(Number(feedbackId));
+    const { data: feedbackStatus } = useGetFeedbackStatus();
 
-                setFeedbackData(data)
+    const imageFiles = data?.tapTinPhanAnhs?.filter(item =>
+        isImage(item.tapTin)
+    ) || [];
 
-            } catch (error) {
-                console.error("Failed to fetch feedback data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchFeedbackData();
-    }, [feedbackId]);
-
-    useEffect(() => {
-        const fetchResponseData = async () => {
-            setLoading(true);
-            try {
-                // Giả sử API trả về thông tin thành viên
-                // const response = await fetch(`/api/residents/${feedbackId}`);
-                // const data = await response.json();
-
-                const data = FEEDBACKRESPONSES.find(response => response.feedbackId === Number(feedbackId))
-
-                setResponseData(data)
-
-            } catch (error) {
-                console.error("Failed to fetch response data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin thành viên. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchResponseData();
-    }, [feedbackId]);
+    const otherFiles = data?.tapTinPhanAnhs?.filter(item =>
+        !isImage(item.tapTin)
+    ) || [];
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
                 <HeaderSub title="Phản hồi phản ánh" />
-                <Box>
-                    {
-                        feedbackData && !loading &&
-                        <Box>
+                {
+                    isLoading ?
+                        <NewsDetailSkeleton count={1} /> :
+                        data ?
                             <Box>
-                                <Swiper autoplay duration={8000} style={{ borderRadius: 0 }}>
-                                    {
-                                        feedbackData.imageUrl ?
-                                            feedbackData.imageUrl.map((item, index) => (
+                                <Box px={4} className="relative">
+                                    <Box pb={3} mb={3} className="border-b-[2px]">
+                                        <h3 className="text-[18px] leading-[26px] font-semibold mb-2">
+                                            Kiến nghị về: {data?.tenLinhVucPhanAnh}
+                                        </h3>
+                                        <Box className="text-gray-color font-medium">
+                                            <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
+                                            <div>- tại <span className="font-semibold">
+                                                {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
+                                            </span></div>
+                                        </Box>
+                                    </Box>
+                                    <Box pb={3}>
+                                        <div className="text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
+                                        </div>
+                                    </Box>
+                                </Box>
+                                <Box px={4} pb={4}>
+                                    {imageFiles.length > 0 && (
+                                        <Swiper autoplay duration={8000} style={{ borderRadius: 0 }}>
+                                            {imageFiles.map((item, index) => (
                                                 <Swiper.Slide key={index}>
                                                     <img
-                                                        className="slide-img"
-                                                        src={item}
-                                                        alt={feedbackData.title}
+                                                        onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                        className="slide-img object-cover w-full h-full"
+                                                        src={getFullImageUrl(item.tapTin)}
+                                                        alt={data?.noiDung || `Hình ảnh ${index + 1}`}
                                                     />
                                                 </Swiper.Slide>
-                                            ))
-                                            :
-                                            <Swiper.Slide>
-                                                <img
-                                                    className="slide-img"
-                                                    src="https://actiosoftware.com/wp-content/uploads/2024/02/resposta-do-smiley-do-cliente-do-feedback-da-avaliacao-1.jpg"
-                                                    alt={feedbackData.title}
-                                                />
-                                            </Swiper.Slide>
-                                    }
-                                </Swiper>
-                            </Box>
-                            <Box p={4}>
-                                <Box pb={3} mb={3} className="border-b-[1px]">
-                                    <h3 className="text-[18px] leading-[24px] font-medium line-clamp-2 mb-1">{feedbackData.title}</h3>
-                                    <div>{feedbackData.timestamp}</div>
-                                </Box>
-                                <Box py={3}>
-                                    <div dangerouslySetInnerHTML={{ __html: feedbackData?.content || '' }}>
-                                    </div>
-                                </Box>
-                            </Box>
-                            <Box p={4}>
-                                <Box pb={3} mb={3} className="border-b-[1px]">
-                                    <h3 className="text-[18px] leading-[24px] font-medium line-clamp-2 mb-1">Trung tâm điều hành trả lời</h3>
-                                </Box>
+                                            ))}
+                                        </Swiper>
+                                    )}
 
-                                <Box>
+                                    {otherFiles.length > 0 && (
+                                        <div className="mt-4 space-y-2">
+                                            <h4 className="font-semibold">Tập tin đính kèm:</h4>
+                                            <ul className="list-disc pl-5 text-sm text-blue-600">
+                                                {otherFiles.map((item, index) => (
+                                                    <li key={index}>
+                                                        <button
+                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                            className="hover:underline"
+                                                        >
+                                                            📄 {item.tenTapTin || `Tập tin ${index + 1}`}
+                                                        </button>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </Box>
+                                <Divider />
+                                <Divider />
+                                <Divider />
+                                <Box p={4}>
+                                    <Box pb={4}>
+                                        <h3 className="text-[18px] leading-[26px] font-semibold">
+                                            Ban quản trị ấp trả lời
+                                        </h3>
+                                    </Box>
                                     {
-                                        feedbackId &&
-                                        <FeedbackAnswerForm feedbackId={Number(feedbackId)} responseData={responseData} />
+                                        !data?.ketQuaXuLyPhanAnh ?
+                                            <FeedbackAnswerAddForm />
+                                            :
+                                            <>Cập nhật</>
                                     }
                                 </Box>
                             </Box>
-                        </Box>
-                    }
-                </Box>
+                            :
+                            <Box px={4} pb={10}>
+                                <EmptyData
+                                    title="Phản ánh không tồn tại!"
+                                    desc="Không thể tìm thấy phản ánh bạn yêu cầu"
+                                />
+                            </Box>
+                }
             </Box>
         </Page>
     )

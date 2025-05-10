@@ -3,6 +3,7 @@ import { useGetFeebackDetail, useGetFeedbackStatus } from "apiRequest/feeback";
 import { PrimaryButton } from "components/button";
 import SecondaryButton from "components/button/SecondaryButton";
 import { EmptyData } from "components/data";
+import { Divider } from "components/divider";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
 import React from "react"
@@ -20,7 +21,7 @@ const FeedbackDetailPage: React.FC = () => {
     const feedbackId = searchParams.get("id");
 
     const navigate = useNavigate();
-    
+
     const { data, isLoading } = useGetFeebackDetail(Number(feedbackId));
     const { data: feedbackStatus } = useGetFeedbackStatus();
 
@@ -45,7 +46,7 @@ const FeedbackDetailPage: React.FC = () => {
                         data ?
                             <Box>
                                 <Box px={4} className="relative">
-                                    <Box pb={3} mb={3} className="border-b-[2px]">
+                                    <Box pb={4} mb={4} className="border-b-[1px]">
                                         <h3 className="text-[18px] leading-[26px] font-semibold mb-2">
                                             Kiến nghị về: {data?.tenLinhVucPhanAnh}
                                         </h3>
@@ -56,22 +57,12 @@ const FeedbackDetailPage: React.FC = () => {
                                             </span></div>
                                         </Box>
                                     </Box>
-                                    <Box pb={3}>
+                                    <Box pb={4} mb={4} className="border-b-[1px]">
                                         <div className="text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
                                         </div>
                                     </Box>
                                 </Box>
-                                {/* <Box flex alignItems="center" justifyContent="flex-end">
-                                    {status && (
-                                        <div
-                                            style={{ backgroundColor: statusColor }}
-                                            className="py-2 px-4 w-fit text-white font-semibold uppercase"
-                                        >
-                                            {status.tenTinhTrang}
-                                        </div>
-                                    )}
-                                </Box> */}
-                                <Box px={4}>
+                                <Box px={4} pb={4}>
                                     {imageFiles.length > 0 && (
                                         <Swiper autoplay duration={8000} style={{ borderRadius: 0 }}>
                                             {imageFiles.map((item, index) => (
@@ -105,6 +96,48 @@ const FeedbackDetailPage: React.FC = () => {
                                         </div>
                                     )}
                                 </Box>
+                                {
+                                    data?.ketQuaXuLyPhanAnh &&
+                                    <>
+                                        <Divider />
+                                        <Divider />
+                                        <Divider />
+                                        <Box pt={4} px={4} className="relative">
+                                            <Box pb={4} mb={4} className="border-b-[1px]">
+                                                <h3 className="text-[18px] leading-[26px] font-semibold">
+                                                    Ban quản trị ấp trả lời
+                                                </h3>
+                                                {/* <Box className="text-gray-color font-medium">
+                                                    <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
+                                                </Box> */}
+                                            </Box>
+                                            <Box pb={4} className="border-b-[1px]" mb={4}>
+                                                <div className="text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.ketQuaXuLyPhanAnh?.noiDung || '' }}>
+                                                </div>
+                                            </Box>
+                                            {data?.ketQuaXuLyPhanAnh?.tapTinKetQuaXuLyPhanAnhs && data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.length > 0 && (
+                                                data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.map((item, index) => (
+                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
+                                                        <div
+                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
+
+                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
+                                                        >
+                                                            <div className="flex items-center gap-1">
+                                                                {isImage(item.tapTin) ? (
+                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
+                                                                ) : (
+                                                                    <Icon icon="codex:file" fontSize={22} />
+                                                                )}
+                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            )}
+                                        </Box>
+                                    </>
+                                }
                             </Box>
                             :
                             <Box px={4} pb={10}>

@@ -34,6 +34,9 @@ const feebackApiRequest = {
     getMyFeedbackList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NguoiThucHienId: number; }) => {
         return await http.get<any>(`/phananh/cuatoi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NguoiThucHienId=${param.NguoiThucHienId}`);
     },
+    createFeedbackAnswer: async (formData: any) => {
+        return await http.postFormData<any>(`/ketquaxulyphananh`, formData);
+    },
 }
 
 /**
@@ -263,6 +266,34 @@ export const useDeleteFileFeedback = () => {
         },
         onSuccess: () => {
             
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* POST FEEDBACK ANSWER
+**/
+export const useCreateFeebackAnswer = () => {
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+    const { showSuccess, showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await feebackApiRequest.createFeedbackAnswer(formData);
+        },
+        onSuccess: () => {
+
+            showSuccess('Gửi phản hồi thành công');
+
+            queryClient.invalidateQueries({ queryKey: ["feedbackAnswerList"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
+
+            // navigate('/feedback');
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

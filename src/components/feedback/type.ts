@@ -1,13 +1,19 @@
 import * as yup from 'yup';
 
-export const schemaFeedback = yup.object().shape({
+export const schemaFeedbackAnswer = yup.object().shape({
     content: yup.string().required('Không được để trống'),
-
+    tapTinPhanHoiFormFiles: yup
+        .array()
+        .of(yup.mixed<File>().required("Tệp không hợp lệ"))
+        .default([])
+        .ensure()
+        .min(1, "Vui lòng tải lên ít nhất một tệp"),
 });
 
-export type FormDataFeedback = {
+export type FormDataFeedbackAnswer = {
+    phanAnhId?: number;
     content: string;
-    files?: string[];
+    tapTinPhanHoiFormFiles?: File[];
 }
 
 export interface TapTinPhanAnh {
