@@ -39,10 +39,10 @@ const NewsDetailPage: React.FC = () => {
                                     <h4 className="text-[13px] leading-[1] font-medium">{formatDate(data.ngayXuatBan)}</h4>
                                 </Box>
                                 <Box mt={6} pb={4} mb={4} className="border-b-[2px] border-primary-color">
-                                    <div className="mb-3">
+                                    {/* <div className="mb-3">
                                         <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
-                                    </div>
-                                    <div className="detail-content" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
+                                    </div> */}
+                                    <div className="detail-content mb-3" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
                                     <Box className="text-end text-black font-semibold">{data.tacGia}</Box>
                                 </Box>
                             </Box>
