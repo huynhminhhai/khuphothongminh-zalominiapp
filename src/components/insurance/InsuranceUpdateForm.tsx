@@ -61,8 +61,6 @@ const InsuranceUpdateForm: React.FC = () => {
         if (formData) {
             try {
                 await updateInsurance({ ...formData });
-
-                navigator('/insurance')
             } catch (error) {
                 console.error("Error:", error);
             }

@@ -17,6 +17,9 @@ const insuranceApiRequest = {
     getInssuranceDetail: async (thongTinBaoHiemId: number ) => {
         return await http.get<any>(`/thongtinbaohiem/chitiet?thongTinBaoHiemId=${thongTinBaoHiemId}`);
     },
+    deleteInsurance: async (id: number) => {
+        return await http.delete<any>(`/thongtinbaohiem/${id}`)
+    },
 }
 
 /**
@@ -108,5 +111,28 @@ export const useGetInsuranceDetail = (thongTinBaoHiemId: number) => {
         },
         staleTime: 0,
         retry: 1,
+    });
+};
+
+/**
+* DELETE INSURANCE
+**/
+export const useDeleteInsurance = () => {
+    const queryClient = useQueryClient();
+    const { showSuccess, showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await insuranceApiRequest.deleteInsurance(id);
+        },
+        onSuccess: () => {
+            showSuccess('Xóa thẻ BHYT thành công')
+
+            queryClient.invalidateQueries({ queryKey: ["insuranceList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
     });
 };

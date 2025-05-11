@@ -12,7 +12,7 @@ import { useStoreApp } from "store/store"
 import { getFullImageUrl } from "utils/file"
 import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 import { debounce } from "lodash";
-import { useGetInsuranceListNormal } from "apiRequest/insurance"
+import { useDeleteInsurance, useGetInsuranceListNormal } from "apiRequest/insurance"
 import { formatDate } from "utils/date"
 import { useGetResidentListNormal } from "apiRequest/resident"
 
@@ -40,7 +40,7 @@ const InsuranceManagementPage: React.FC = () => {
     })
 
     const { data, isLoading } = useGetInsuranceListNormal(param);
-    const { mutate: deleteNews } = useDeleteNews();
+    const { mutate: deleteInsurance } = useDeleteInsurance();
 
 
     const { data: residentList } = useGetResidentListNormal(
@@ -119,9 +119,9 @@ const InsuranceManagementPage: React.FC = () => {
         setConfirmAction(null);
     };
 
-    const removeNews = (id: number) => {
+    const removeInsurance = (id: number) => {
         openConfirmModal(() => {
-            deleteNews(id);
+            deleteInsurance(id);
         }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa thẻ BHYT này?');
     }
 
@@ -164,41 +164,41 @@ const InsuranceManagementPage: React.FC = () => {
                 </div>
             )
         },
-        // {
-        //     id: 'actions', // Custom column for actions
-        //     header: 'Thao tác',
-        //     cell: ({ row }) => (
-        //         <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-        //             {
-        //                 // hasPermission('Lấy thông tin chi tiết 1 bài viết', 'XEM') &&
-        //                 <button
-        //                     onClick={() => navigate(`/news-detail?id=${row.original.tinTucId}`)}
-        //                     className="px-3 py-1 bg-gray-700 text-white rounded"
-        //                 >
-        //                     <Icon icon='mdi:eye' fontSize={18} />
-        //                 </button>
-        //             }
-        //             {
-        //                 // hasPermission('Sửa thông tin 1 bài viết', 'SUA') &&
-        //                 <button
-        //                     onClick={() => navigate(`/news-update?id=${row.original.tinTucId}`)}
-        //                     className="px-3 py-1 bg-blue-700 text-white rounded"
-        //                 >
-        //                     <Icon icon='ri:edit-line' fontSize={18} />
-        //                 </button>
-        //             }
-        //             {
-        //                 // hasPermission('Xóa 1 bài viết', 'XOA') &&
-        //                 <button
-        //                     onClick={() => removeNews(row.original.tinTucId)}
-        //                     className="px-3 py-1 bg-red-700 text-white rounded"
-        //                 >
-        //                     <Icon icon='material-symbols:delete' fontSize={18} />
-        //                 </button>
-        //             }
-        //         </div>
-        //     ),
-        // },
+        {
+            id: 'actions', // Custom column for actions
+            header: 'Thao tác',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    {/* {
+                        // hasPermission('Lấy thông tin chi tiết 1 bài viết', 'XEM') &&
+                        <button
+                            onClick={() => navigate(`/news-detail?id=${row.original.thongTinBaoHiemId }`)}
+                            className="px-3 py-1 bg-gray-700 text-white rounded"
+                        >
+                            <Icon icon='mdi:eye' fontSize={18} />
+                        </button>
+                    } */}
+                    {
+                        // hasPermission('Sửa thông tin 1 bài viết', 'SUA') &&
+                        <button
+                            onClick={() => navigate(`/insurance-update?id=${row.original.thongTinBaoHiemId }`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        // hasPermission('Xóa 1 bài viết', 'XOA') &&
+                        <button
+                            onClick={() => removeInsurance(row.original.thongTinBaoHiemId )}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
+                </div>
+            ),
+        },
     ];
 
     const renderContent = () => {
