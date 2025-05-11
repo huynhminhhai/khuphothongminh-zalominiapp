@@ -9,9 +9,10 @@ type Role = {
 };
 
 type Permission = {
-    moTaChucNang: string;
-    tenVaiTroNguoiDung: string;
-    quyenXuLy: "XEM" | "SUA" | "XOA";
+    maChucNang: string;
+    tenVaiTro: string;
+    quyenXuLy: "XEM" | "SUA" | "XOA" | "THEM" | "XUATBAN";
+    hoatDong: boolean;
 };
 
 type Account = {
@@ -40,7 +41,7 @@ export interface AuthSliceType {
     setAccount: (account: Account | null) => void;
     setToken: (tokens: { accessToken: string | null; refreshToken: string | null, hanSuDungToken: string | null }) => void;
     clearAuth: () => void;
-    hasPermission: (moTaChucNang: string, quyen: "XEM" | "SUA" | "XOA") => boolean;
+    hasPermission: (maChucNang: string, quyen: "XEM" | "SUA" | "XOA" | "THEM" | "XUATBAN") => boolean;
     hasRole: (vaiTro: string) => boolean;
 }
 
@@ -73,17 +74,21 @@ export const createAuthSlice = (set: any, get: any): AuthSliceType => ({
         removeDataFromStorage(["account", "accessToken", "refreshToken", "hanSuDungToken"]);
     },
 
-    hasPermission: (moTaChucNang, quyen) => {
+    hasPermission: (maChucNang, quyen) => {
         const account = get().account;
         if (!account) return false;
 
         return account.quyenXuLyChucNangs.some((p) => {
-            // Kiểm tra chức năng và quyền xử lý
-            const hasFunctionAndAction = p.moTaChucNang === moTaChucNang && p.quyenXuLy === quyen;
-            if (!hasFunctionAndAction) return false;
+            const matchedFunction =
+                p.maChucNang === maChucNang &&
+                p.quyenXuLy.toUpperCase() === quyen.toUpperCase() &&
+                p.hoatDong;
 
-            // Kiểm tra vai trò tương ứng với chức năng
-            return account.vaiTros.some((role) => role.tenVaiTro === p.tenVaiTroNguoiDung);
+            if (!matchedFunction) return false;
+
+            return account.vaiTros.some(
+                (role) => role.tenVaiTro === p.tenVaiTro
+            );
         });
     },
 

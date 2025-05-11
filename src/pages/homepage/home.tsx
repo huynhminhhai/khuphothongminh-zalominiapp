@@ -8,6 +8,7 @@ import { StatisticSection } from "components/statistics";
 import { TaskSection } from "components/task";
 import React from "react";
 import { useStoreApp } from "store/store";
+import { PermissionActions, permissionsList } from "utils/permission";
 import { Box, Page } from "zmp-ui";
 
 const HomePage: React.FunctionComponent = () => {
@@ -27,18 +28,18 @@ const HomePage: React.FunctionComponent = () => {
             <>
               <Divider />
               {
-                // hasPermission('Lấy danh sách nhiệm vụ của 1 người có phân trang', 'XEM') &&
+                hasPermission(permissionsList.khuPhoCongViec, PermissionActions.XEM) &&
                 <TaskSection />
               }
               <Divider />
               {
-                // hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
+                hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.XEM) &&
                 <MeetingSection />
               }
             </>
           }
           {
-            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
+            hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.XEM) &&
             <NewsSection />
           }
         </div>

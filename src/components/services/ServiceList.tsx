@@ -3,13 +3,14 @@ import { Box } from "zmp-ui"
 import ServiceItem from "./ServiceItem"
 import images from "assets/images"
 import { useStoreApp } from "store/store"
+import { PermissionActions, permissionsList } from "utils/permission"
 
 export type ServicesType = {
     label: string;
     url: string;
     icon?: string;
     isCheckLogin?: boolean,
-    requiredPermission?: { moTaChucNang: string; quyen: "XEM" | "SUA" | "XOA" };
+    requiredPermission?: { maChucNang: string; quyen: "XEM" | "SUA" | "XOA" | "THEM" | "XUATBAN" };
 }
 
 const SERVICES: ServicesType[] = [
@@ -17,55 +18,55 @@ const SERVICES: ServicesType[] = [
         label: 'Thông tin hộ dân',
         url: '/resident',
         icon: images.home,
-        requiredPermission: { moTaChucNang: "Lấy thông tin người dùng hiện tại", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
     {
         label: 'Thẻ BHYT',
         url: '/insurance',
         icon: images.safety,
-        requiredPermission: { moTaChucNang: "Lấy thông tin người dùng hiện tại", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
     {
         label: 'Tin tức',
         url: '/news',
         icon: images.news,
-        requiredPermission: { moTaChucNang: "Lấy danh sách bài viết có phân trang", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, quyen: PermissionActions.XEM },
     },
     {
         label: 'Cuộc họp',
         url: '/meeting',
         icon: images.meeting,
-        requiredPermission: { moTaChucNang: "Lấy danh sách cuộc họp có phân trang", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoCongViecCuocHop, quyen: PermissionActions.XEM },
     },
     {
         label: 'Khảo sát',
         url: '/survey',
         icon: images.survey,
-        requiredPermission: { moTaChucNang: "Lấy danh sách khảo sát có phân trang", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEM },
     },
     {
         label: 'Phản ánh',
         url: '/feedback',
         icon: images.idea,
-        requiredPermission: { moTaChucNang: "Lấy danh sách phản ánh có phân trang", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
         label: 'Nhiệm vụ',
         url: '/task',
         icon: images.todo,
-        requiredPermission: { moTaChucNang: "Lấy danh sách nhiệm vụ của 1 người có phân trang", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoCongViec, quyen: PermissionActions.XEM },
     },
     {
         label: 'Tình hình thu chi',
         url: '/transactions',
         icon: images.money,
-        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
+        requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
     },
     // {
     //     label: 'Hóa đơn',
     //     url: '/invoice',
     //     icon: images.invoice,
-    //     requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
+    //     requiredPermission: { maChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: PermissionActions.XEM },
     // }
     // {
     //     label: 'Thông tin tổ chức',
@@ -85,14 +86,14 @@ const ServiceList: React.FC<any> = () => {
 
     const filteredServices = SERVICES.filter((item) => {
         if (!item.requiredPermission) return true;
-        return hasPermission(item.requiredPermission.moTaChucNang, item.requiredPermission.quyen);
+        return hasPermission(item.requiredPermission.maChucNang, item.requiredPermission.quyen);
     });
 
     return (
         <Box>
             <div className="grid grid-cols-4 gap-x-3 gap-y-4 min-h-[224px]">
                 {
-                    SERVICES.map((item, index) => (
+                    filteredServices.map((item, index) => (
                         <ServiceItem key={index} data={item} />
                     ))
                 }
