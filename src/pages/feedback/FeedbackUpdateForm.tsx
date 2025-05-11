@@ -1,17 +1,19 @@
 import React, { useEffect, useMemo, useState } from "react"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import { Box } from "zmp-ui"
 import { FormDataPhanAnh, phanAnhSchema } from "./type";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmModal } from "components/modal";
 import { PrimaryButton } from "components/button";
-import { FormFileInput, FormImageUploader, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
+import { FormFileInput, FormInputAreaField, FormInputField, FormSelectField, FormSwitchField } from "components/form";
 import { useStoreApp } from "store/store";
 import { setAddressWithoutPrefixStepByStep, useAddressSelectorWithoutPrefix } from "utils/useAddress";
 import { useDeleteFileFeedback, useGetFeebackDetail, useGetFeedbackStatus, useUpdateFeedback } from "apiRequest/feeback";
-import { convertToFormData, loadFile, loadImage } from "utils/file";
+import { convertToFormData, loadFile } from "utils/file";
 import { useSearchParams } from "react-router-dom";
 import { omit } from "lodash";
+import { MapPicker } from "components/maps";
+import { Icon } from "@iconify/react";
 
 const defaultValues: FormDataPhanAnh = {
     apId: 0,
@@ -35,6 +37,7 @@ const FeedbackUpdateForm: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataPhanAnh>(defaultValues)
     const [initialImages, setInitialImages] = useState<{ tapTinPhanAnhId: number; tapTin: string }[]>([]);
+    const [showMap, setShowMap] = useState(false);
 
     const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataPhanAnh>({
         resolver: yupResolver(phanAnhSchema),
@@ -276,9 +279,25 @@ const FeedbackUpdateForm: React.FC = () => {
                             error={errors.longitude?.message}
                         />
                     </div>
-                    {/* <div className="col-span-12">
-                        <div className="mb-1 font-medium text-[16px]">Công khai <span className="text-[#dc2626]">(*)</span></div>
-                    </div> */}
+                    <div className="col-span-12">
+                        <div className="mb-3 flex items-center justify-center gap-x-2 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMap(!showMap)}>
+                            Chọn vị trí
+                            <Icon fontSize={20} icon={"famicons:location-outline"} />
+                        </div>
+                    </div>
+                    <div className="col-span-12">
+                        <Box mb={4}>
+                            {showMap && (
+                                <MapPicker
+                                    onClose={() => setShowMap(false)}
+                                    onPick={(lat, lng) => {
+                                        setValue("latitude", lat);
+                                        setValue("longitude", lng);
+                                    }}
+                                />
+                            )}
+                        </Box>
+                    </div>
                     <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiThongTinCaNhan"
@@ -325,7 +344,7 @@ const FeedbackUpdateForm: React.FC = () => {
                             error={errors.tinhTrangId?.message}
                         />
                     </div> */}
-                    
+
                     {
                         feedbackDetail?.tinhTrangId !== feedbackStatusOptions[3]?.value &&
                         <div className="col-span-12">
