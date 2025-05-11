@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React, { useMemo, useState } from "react"
 import { Box, useNavigate } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormInputField } from "components/form"
+import { FormControllerDatePicker, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataInsurance, schemaInsurance } from "./type"
-import { useGetInsuranceDetail, useUpdateInsurance } from "apiRequest/insurance"
-import { useSearchParams } from "react-router-dom"
+import { useStoreApp } from "store/store"
+import { useCreateInsurance } from "apiRequest/insurance"
+import { useGetResidentListNormal } from "apiRequest/resident"
 
 const defaultValues: FormDataInsurance = {
     loaiBaoHiemId: 1,
@@ -17,39 +18,40 @@ const defaultValues: FormDataInsurance = {
     maSo: '',
 }
 
-const InsuranceUpdateForm: React.FC = () => {
+const InsuranceManagementAddForm: React.FC = () => {
 
+    const { account } = useStoreApp()
     const navigator = useNavigate()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataInsurance>(defaultValues)
 
-    const { handleSubmit, control, reset, formState: { errors } } = useForm<FormDataInsurance>({
+    const { handleSubmit, control, formState: { errors } } = useForm<FormDataInsurance>({
         resolver: yupResolver(schemaInsurance),
         defaultValues
     });
 
-    const [searchParams] = useSearchParams();
-    const danCuId = searchParams.get("id");
-
-    const { mutateAsync: updateInsurance, isPending } = useUpdateInsurance();
-    const { data: insuranceDetail } = useGetInsuranceDetail(Number(danCuId), 1);
-
-    useEffect(() => {
-        if (insuranceDetail) {
-
-            reset({
-                thongTinBaoHiemId: insuranceDetail.thongTinBaoHiemId,
-                loaiBaoHiemId: insuranceDetail.loaiBaoHiemId,
-                danCuId: insuranceDetail.danCuId,
-                noiDangKy: insuranceDetail.noiDangKy,
-                maSo: insuranceDetail.maSo,
-                tuNgay: insuranceDetail.tuNgay,
-                denNgay: insuranceDetail.denNgay
-            })
-
+    const { mutateAsync: createInsurance, isPending } = useCreateInsurance();
+    const { data: residentList, isLoading } = useGetResidentListNormal(
+        {
+            page: 1,
+            pageSize: 9999999,
+            ApId: account ? account.thongTinDanCu?.apId : 0,
+            keyword: '',
+            HoTen: '',
+            HoTenChuHo: '',
+            SoGiayTo: '',
+            LaChuHo: false
         }
-    }, [insuranceDetail, reset])
+    );
+
+    const residentOptions = useMemo(() => {
+        return residentList?.data?.map((item) => ({
+            value: item.danCuId,
+            label: `${item.hoTen} - ${item.soGiayTo}`,
+        })) || [];
+    }, [residentList]);
+
 
     const onSubmit: SubmitHandler<FormDataInsurance> = (data) => {
         setConfirmVisible(true);
@@ -60,9 +62,9 @@ const InsuranceUpdateForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData) {
             try {
-                await updateInsurance({ ...formData });
+                await createInsurance({ ...formData });
 
-                navigator('/insurance')
+                navigator('/insurance-management')
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -77,6 +79,18 @@ const InsuranceUpdateForm: React.FC = () => {
         <Box p={4}>
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
+
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="danCuId"
+                            label="Danh sách dân cư"
+                            placeholder="Chọn dân cư"
+                            control={control}
+                            options={residentOptions}
+                            error={errors.danCuId?.message}
+                            required />
+                    </div>
+
                     <div className="col-span-12">
                         <FormInputField
                             name="maSo"
@@ -119,7 +133,7 @@ const InsuranceUpdateForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật thẻ BHYT"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Thêm thẻ BHYT"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -135,4 +149,4 @@ const InsuranceUpdateForm: React.FC = () => {
     )
 }
 
-export default InsuranceUpdateForm
+export default InsuranceManagementAddForm

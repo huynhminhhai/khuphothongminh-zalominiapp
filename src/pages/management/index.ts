@@ -37,6 +37,12 @@ export { default as ResidentProfileAddPage } from "./management-resident/residen
 export { default as ResidentProfileUpdatePage } from "./management-resident/resident-profile-update";
 
 /**
+ * INSURANCE
+**/ 
+export { default as InsuranceManagementPage } from "./management-insurance/insurance-management";
+export { default as InsuranceManagementAddPage } from "./management-insurance/insurance-management-create";
+
+/**
  * TEAM 
 **/
 export { default as TeamManagementPage } from "./management-team/team-management";

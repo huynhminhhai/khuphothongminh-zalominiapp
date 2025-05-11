@@ -5,7 +5,7 @@ import { useCustomSnackbar } from "utils/useCustomSnackbar";
 
 const insuranceApiRequest = {
     
-    getInsuranceList: async (param: { page: number; pageSize: number; DanCuId: number; keyword: string; LoaiBaoHiemId: number; MaSo: string; }) => {
+    getInsuranceList: async (param: { page: number; pageSize: number; DanCuId: number | null; keyword: string; LoaiBaoHiemId: number; MaSo: string; }) => {
         return await http.get<any>(`/thongtinbaohiem?current=${param.page}&size=${param.pageSize}&DanCuId=${param.DanCuId}&TextSearch=${param.keyword}&LoaiBaoHiemId=${param.LoaiBaoHiemId}&MaSo=${param.MaSo}`);
     },
     createInsurance: async (param: { danCuId: number; loaiBaoHiemId: number; noiDangKy: string; tuNgay: string; denNgay: string; maSo: string; }) => {
@@ -22,7 +22,7 @@ const insuranceApiRequest = {
 /**
 * GET INSURANCE LIST
 **/
-export const useGetInsuranceListNormal = (param: { page: number; pageSize: number; keyword: string; DanCuId: number; LoaiBaoHiemId: number; MaSo: string; }) => {
+export const useGetInsuranceListNormal = (param: { page: number; pageSize: number; keyword: string; DanCuId: number | null; LoaiBaoHiemId: number; MaSo: string; }) => {
     return useQuery({
         queryKey: ['insuranceList', param.page, param.pageSize, param.keyword, param.DanCuId, param.LoaiBaoHiemId, param.MaSo],
         queryFn: async () => {
@@ -34,7 +34,7 @@ export const useGetInsuranceListNormal = (param: { page: number; pageSize: numbe
                 throw error;
             }
         },
-        enabled: !!param.DanCuId,
+        // enabled: !!param.DanCuId,
         staleTime: 0,
         retry: 1,
     });
