@@ -63,8 +63,6 @@ const InsuranceManagementPage: React.FC = () => {
         })) || [];
     }, [residentList]);
 
-    console.log(residentOptions)
-
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));

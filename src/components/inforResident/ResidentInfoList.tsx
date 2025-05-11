@@ -50,7 +50,7 @@ const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData,
         { label: "Dân tộc", value: residentDetailData.tenDanToc },
         { label: "Tôn giáo", value: residentDetailData.tenTonGiao },
         { label: "Quốc gia", value: residentDetailData.tenQuocGia },
-        { label: "Bảo hiểm y tế", value: residentDetailData.baoHiemYTe ? residentDetailData.baoHiemYTe.maSo : "Chưa có" },
+        { label: "Bảo hiểm y tế", value: residentDetailData.baoHiemYTe ? residentDetailData.baoHiemYTe.maSo : "" },
         { label: "Website", value: residentDetailData.website },
     ];
 
