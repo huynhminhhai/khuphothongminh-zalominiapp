@@ -14,8 +14,8 @@ const insuranceApiRequest = {
     updateInsurance: async (formData: any) => {
         return await http.put<any>("/thongtinbaohiem", formData);
     },
-    getInssuranceDetail: async (danCuId: number, loaiBaoHiemId: number ) => {
-        return await http.get<any>(`/thongtinbaohiem/chitiet/${danCuId}/${loaiBaoHiemId}`);
+    getInssuranceDetail: async (thongTinBaoHiemId: number ) => {
+        return await http.get<any>(`/thongtinbaohiem/chitiet?thongTinBaoHiemId=${thongTinBaoHiemId}`);
     },
 }
 
@@ -91,14 +91,14 @@ export const useUpdateInsurance = () => {
 /**
 * GET INSURANCE DETAIL
 **/
-export const useGetInsuranceDetail = (danCuId: number, loaiBaoHiemId: number) => {
+export const useGetInsuranceDetail = (thongTinBaoHiemId: number) => {
 
     return useQuery({
-        queryKey: ['inssuranceDetail', danCuId, loaiBaoHiemId],
+        queryKey: ['inssuranceDetail', thongTinBaoHiemId],
         queryFn: async () => {
             try {
 
-                const res = await insuranceApiRequest.getInssuranceDetail(danCuId, loaiBaoHiemId);
+                const res = await insuranceApiRequest.getInssuranceDetail(thongTinBaoHiemId);
 
                 return res.data
             } catch (error) {
@@ -106,7 +106,6 @@ export const useGetInsuranceDetail = (danCuId: number, loaiBaoHiemId: number) =>
                 throw error;
             }
         },
-        enabled: !!danCuId,
         staleTime: 0,
         retry: 1,
     });

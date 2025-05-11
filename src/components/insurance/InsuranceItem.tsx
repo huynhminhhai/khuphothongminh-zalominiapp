@@ -5,11 +5,10 @@ import { Box, useNavigate } from "zmp-ui"
 import { InsuranceItemType } from "./type"
 
 type InsuranceItemProps = {
-    data: InsuranceItemType,
-    canEdit?: boolean
+    data: InsuranceItemType
 }
 
-const InsuranceItem: React.FC<InsuranceItemProps> = ({ data, canEdit }) => {
+const InsuranceItem: React.FC<InsuranceItemProps> = ({ data }) => {
 
     const navigator = useNavigate()
 
@@ -19,7 +18,7 @@ const InsuranceItem: React.FC<InsuranceItemProps> = ({ data, canEdit }) => {
         <Box>
             <Box
                 className="border-b-[1px] rounded-lg"
-                style={canEdit ? { backgroundColor: '#fff' } : {backgroundColor: '#ededed'}}
+                style={!isExpired ? { backgroundColor: '#fff' } : {backgroundColor: '#ededed'}}
                 p={4}
                 mb={3}
             >
@@ -28,18 +27,24 @@ const InsuranceItem: React.FC<InsuranceItemProps> = ({ data, canEdit }) => {
                         <span className="text-[18px] font-semibold">BHYT</span>
                     </Box>
                     {
-                        canEdit && !isExpired && (
+                        !isExpired && (
                             <div className="relative">
-                                <Icon fontSize={22} icon={'nimbus:edit'} className="cursor-pointer" onClick={() => navigator(`/insurance-update?id=${data?.danCuId}`)} />
+                                <Icon fontSize={22} icon={'nimbus:edit'} className="cursor-pointer" onClick={() => navigator(`/insurance-update?id=${data?.thongTinBaoHiemId}`)} />
                             </div>
                         )
                     }
                 </Box>
                 <div className="grid grid-cols-2 pt-2 gap-2">
-                    <div className="col-span-2">
+                    <div className="col-span-1">
                         <div className="flex flex-col gap-1">
                             <span className="text-[14px] font-medium text-gray-color">Mã số BHYT</span>
                             <span className="text-[16px] font-semibold text-primary-color">{data.maSo}</span>
+                        </div>
+                    </div>
+                    <div className="col-span-1">
+                        <div className="flex flex-col gap-1">
+                            <span className="text-[14px] font-medium text-gray-color">Nơi đăng ký</span>
+                            <span className="text-[16px] font-semibold text-primary-color">{data.noiDangKy}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-1">
@@ -48,7 +53,7 @@ const InsuranceItem: React.FC<InsuranceItemProps> = ({ data, canEdit }) => {
                     </div>
                     <div className="flex flex-col gap-1">
                         <span className="text-[14px] font-medium text-gray-color">Ngày hết hiệu lực</span>
-                        <span className="text-[16px] font-semibold text-primary-color">{formatDate(data.denNgay)}</span>
+                        <span className="text-[16px] font-semibold text-primary-color" style={isExpired ? { color: '#b7190d' } : {}}>{formatDate(data.denNgay)}</span>
                     </div>
                 </div>
             </Box>

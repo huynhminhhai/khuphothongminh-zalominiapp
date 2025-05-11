@@ -1,4 +1,4 @@
-import { useGetInsuranceDetail, useGetInsuranceListNormal } from "apiRequest/insurance"
+import { useGetInsuranceListNormal } from "apiRequest/insurance"
 import { PrimaryButton } from "components/button"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
@@ -32,9 +32,6 @@ const InsurancePage: React.FC = () => {
     }, [account?.thongTinDanCu?.danCuId]);
 
     const { data: insuranceList, isLoading: insuranceLoading } = useGetInsuranceListNormal(param);
-    const { data: insuranceDetail } = useGetInsuranceDetail(param.DanCuId, 1);
-
-    const currentInsuranceId = insuranceDetail?.thongTinBaoHiemId;
 
     if (insuranceLoading) return <UserInfoSkeleton />
     if (!account?.thongTinDanCu?.danCuId) return (
@@ -54,11 +51,10 @@ const InsurancePage: React.FC = () => {
                     {
                         insuranceList?.data?.length > 0 ? (
                             insuranceList.data.map((item: any, index: number) => {
-                                const canEdit = item.thongTinBaoHiemId === currentInsuranceId;
                                 
                                 return (
                                     <div key={index}>
-                                        <InsuranceItem data={item} canEdit={canEdit} />
+                                        <InsuranceItem data={item} />
                                     </div>
                                 )
                         })

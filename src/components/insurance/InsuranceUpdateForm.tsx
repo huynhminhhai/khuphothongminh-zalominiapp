@@ -30,10 +30,10 @@ const InsuranceUpdateForm: React.FC = () => {
     });
 
     const [searchParams] = useSearchParams();
-    const danCuId = searchParams.get("id");
+    const thongTinBaoHiemId = searchParams.get("id");
 
     const { mutateAsync: updateInsurance, isPending } = useUpdateInsurance();
-    const { data: insuranceDetail } = useGetInsuranceDetail(Number(danCuId), 1);
+    const { data: insuranceDetail } = useGetInsuranceDetail(Number(thongTinBaoHiemId));
 
     useEffect(() => {
         if (insuranceDetail) {
