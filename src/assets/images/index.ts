@@ -34,6 +34,7 @@ import invoice from './bill.png'
 import shortcut from './shortcut.png'
 import progress from './progress.png'
 import feedback from './feedback.jpg'
+import safety from './safety.png'
 
 const images = {
     logo,
@@ -71,7 +72,8 @@ const images = {
     shortcut,
     shapeWave,
     progress,
-    feedback
+    feedback,
+    safety
 }
 
 export default images

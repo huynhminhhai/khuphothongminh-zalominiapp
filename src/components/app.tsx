@@ -26,6 +26,7 @@ import { getDataFromStorage } from "services/zalo";
 import ForbiddenPage from "pages/403";
 import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
 import { useLogout } from "apiRequest/auth";
+import { InsuranceAddPage, InsuranceAUpdatePage, InsurancePage } from "pages/insurance";
 
 
 const AuthWrapper = ({ children }) => {
@@ -125,6 +126,11 @@ const MyApp = () => {
                         <Route path="/resident-member" element={<ResidentMemberPage></ResidentMemberPage>}></Route>
                         <Route path="/resident-add" element={<ResidentAddPage></ResidentAddPage>}></Route>
                         <Route path="/resident-edit" element={<ResidentEditPage></ResidentEditPage>}></Route>
+
+                        {/* INSURANCE */}
+                        <Route path="/insurance" element={<InsurancePage></InsurancePage>}></Route>
+                        <Route path="/insurance-add" element={<InsuranceAddPage></InsuranceAddPage>}></Route>
+                        <Route path="/insurance-update" element={<InsuranceAUpdatePage></InsuranceAUpdatePage>}></Route>
 
                         {/* NEWS */}
                         <Route path="/news" element={<NewsPage></NewsPage>}></Route>

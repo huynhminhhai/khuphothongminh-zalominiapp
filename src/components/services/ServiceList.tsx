@@ -20,6 +20,12 @@ const SERVICES: ServicesType[] = [
         requiredPermission: { moTaChucNang: "Lấy thông tin người dùng hiện tại", quyen: "XEM" },
     },
     {
+        label: 'Thẻ BHYT',
+        url: '/insurance',
+        icon: images.safety,
+        requiredPermission: { moTaChucNang: "Lấy thông tin người dùng hiện tại", quyen: "XEM" },
+    },
+    {
         label: 'Tin tức',
         url: '/news',
         icon: images.news,
@@ -55,12 +61,12 @@ const SERVICES: ServicesType[] = [
         icon: images.money,
         requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
     },
-    {
-        label: 'Hóa đơn',
-        url: '/invoice',
-        icon: images.invoice,
-        requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
-    }
+    // {
+    //     label: 'Hóa đơn',
+    //     url: '/invoice',
+    //     icon: images.invoice,
+    //     requiredPermission: { moTaChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: "XEM" },
+    // }
     // {
     //     label: 'Thông tin tổ chức',
     //     url: '/team',
