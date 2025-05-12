@@ -78,6 +78,9 @@ export const createAuthSlice = (set: any, get: any): AuthSliceType => ({
         const account = get().account;
         if (!account) return false;
 
+        const isAdmin = account.vaiTros.some(role => role.tenVaiTro === 'Administrators');
+        if (isAdmin) return true;
+
         return account.quyenXuLyChucNangs.some((p) => {
             const matchedFunction =
                 p.maChucNang === maChucNang &&

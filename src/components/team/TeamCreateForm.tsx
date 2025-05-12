@@ -87,9 +87,9 @@ const TeamAddForm: React.FC = () => {
         <Box p={4}>
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <h3 className="text-[18px] font-semibold mb-3">Thông tin cơ bản</h3>
-                    </div>
+                    </div> */}
                     <div className="col-span-12">
                         <FormInputField
                             name="fullname"
@@ -100,95 +100,9 @@ const TeamAddForm: React.FC = () => {
                             required
                         />
                     </div>
-                    <div className="col-span-12">
-                        <FormControllerDatePicker
-                            name="birthDate"
-                            label="Ngày sinh"
-                            control={control}
-                            placeholder="Chọn ngày sinh"
-                            required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.birthDate?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="phoneNumber"
-                            label="Số điện thoại"
-                            placeholder="Nhập số điện thoại"
-                            control={control}
-                            error={errors.phoneNumber?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="email"
-                            label="Email (nếu có)"
-                            placeholder="Nhập email"
-                            control={control}
-                            error={errors.email?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="officeAddress"
-                            label="Nơi công tác"
-                            placeholder="Nhập công tác"
-                            control={control}
-                            error={errors.officeAddress?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormSelectField
-                            name="residential_group_id"
-                            label="Thuộc tổ cư dân"
-                            placeholder="Chọn tổ cư dân"
-                            control={control}
-                            options={convertToValueLabel(RESIDENTIALGROUPDATA)}
-                            error={errors.residential_group_id?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <h3 className="text-[18px] font-semibold mb-3 mt-2">Thông tin nhiệm kỳ</h3>
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="term.position"
-                            label="Chức vụ"
-                            placeholder="Nhập tên chức vụ"
-                            control={control}
-                            error={errors.term?.position?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormControllerDatePicker
-                            name="term.start_date"
-                            label="Ngày bắt đầu"
-                            control={control}
-                            placeholder="Chọn ngày bắt đầu"
-                            required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.term?.start_date?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormControllerDatePicker
-                            name="term.end_date"
-                            label="Ngày kết thúc"
-                            control={control}
-                            placeholder="Chọn ngày kết thúc"
-                            required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.term?.end_date?.message}
-                        />
-                    </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Thêm nhân sự"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

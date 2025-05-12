@@ -33,35 +33,37 @@ const InsurancePage: React.FC = () => {
 
     const { data: insuranceList, isLoading: insuranceLoading } = useGetInsuranceListNormal(param);
 
-    if (insuranceLoading) return <UserInfoSkeleton />
-    if (!account?.thongTinDanCu?.danCuId) return (
-        <Box px={4}>
-            <EmptyData
-                title="Chưa có thông tin dân cư để cập nhật thẻ BHYT"
-                desc="Vui lòng liên hệ với ban quản trị khu phố/ấp để đăng ký thông tin cư dân"
-            />
-        </Box>
-    )
+    // if (insuranceLoading) return <UserInfoSkeleton />
+    // if (!account?.thongTinDanCu?.danCuId) return (
+    //     <Box px={4}>
+    //         <EmptyData
+    //             title="Chưa có thông tin dân cư để cập nhật thẻ BHYT"
+    //             desc="Vui lòng liên hệ với ban quản trị khu phố/ấp để đăng ký thông tin cư dân"
+    //         />
+    //     </Box>
+    // )
 
     return (
         <Page className="relative flex-1 flex flex-col !bg-[#f4f5f6] pb-[0px]">
             <Box>
                 <HeaderSub title="Bảo hiểm y tế" onBackClick={() => navigate('/')} />
                 <Box p={4}>
-                    {
-                        insuranceList?.data?.length > 0 ? (
-                            insuranceList.data.map((item: any, index: number) => {
-                                
-                                return (
-                                    <div key={index}>
-                                        <InsuranceItem data={item} />
-                                    </div>
-                                )
-                        })
-                        ) : (
-                            <EmptyData title="Chưa có thẻ BHYT" />
-                        )
-                    }
+                    {insuranceLoading ? (
+                        <UserInfoSkeleton />
+                    ) : !account?.thongTinDanCu?.danCuId ? (
+                        <EmptyData
+                            title="Chưa có thông tin dân cư để cập nhật thẻ BHYT"
+                            desc="Vui lòng liên hệ với ban quản trị khu phố/ấp để đăng ký thông tin cư dân"
+                        />
+                    ) : insuranceList?.data?.length > 0 ? (
+                        insuranceList.data.map((item: any, index: number) => (
+                            <div key={index}>
+                                <InsuranceItem data={item} />
+                            </div>
+                        ))
+                    ) : (
+                        <EmptyData title="Chưa có thẻ BHYT" />
+                    )}
                 </Box>
                 <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">
                     <Box py={3} flex alignItems="center" justifyContent="center" className="w-full">

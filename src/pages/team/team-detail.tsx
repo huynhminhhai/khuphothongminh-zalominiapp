@@ -45,9 +45,16 @@ const TeamDetailPage: React.FC = () => {
                                                         <Icon fontSize={20} className="text-[#808080]" icon='vaadin:office' />
                                                         <span className="text-[14px] font-medium">{[detailData?.tenAp, detailData?.tenXa, detailData?.tenHuyen, detailData?.tenTinh].filter(Boolean).join(', ')}</span>
                                                     </div>
+                                                    {
+                                                        detailData.dienThoai &&
+                                                        <div className="flex items-center gap-3">
+                                                            <Icon fontSize={20} className="text-[#808080]" icon='icon-park-solid:phone' />
+                                                            <span className="text-[14px] font-medium">{detailData.dienThoai}</span>
+                                                        </div>
+                                                    }
                                                     <div className="flex items-center gap-3">
-                                                        <Icon fontSize={20} className="text-[#808080]" icon='icon-park-solid:phone' />
-                                                        <span className="text-[14px] font-medium">{detailData.dienThoai}</span>
+                                                        <Icon fontSize={20} className="text-[#808080]" icon='material-symbols-light:date-range' />
+                                                        <span className="text-[14px] font-medium">{detailData.tuNgay} - {detailData.denNgay}</span>
                                                     </div>
                                                 </div>
                                             </Box>
@@ -71,25 +78,25 @@ const TeamDetailPage: React.FC = () => {
                                         </div>
                                     </div>
                                     {/* <Box ml={3} mt={8} pb={8}>
-                                <div className="flex flex-col border-l-[1px] border-[#808080]">
-                                    {
-                                        termData &&
-                                        termData.map((term, index) => (
-                                            <div key={index} className="bg-white p-4 ml-6 relative border-b-[1px] border-dashed">
-                                                <div className="absolute left-[-38px] top-[50%] translate-y-[-50%]">
-                                                    <Icon color={term.isCurrent ? 'var(--primary-color)' : '#808080'} icon='stash:circle-dot' fontSize={27} />
-                                                </div>
-                                                <div className="flex">
-                                                    <Box className="flex-1">
-                                                        <h3 className="text-[18px] font-semibold mb-1" style={{ color: term.isCurrent ? 'var(--primary-color)' : '' }}>{term.position}</h3>
-                                                        <h4 className="text-[14px] font-medium text-[#808080]">{term.start_date} - {term.end_date}</h4>
-                                                    </Box>
-                                                </div>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </Box> */}
+                                        <div className="flex flex-col border-l-[1px] border-[#808080]">
+                                            {
+                                                termData &&
+                                                termData.map((term, index) => (
+                                                    <div key={index} className="bg-white p-4 ml-6 relative border-b-[1px] border-dashed">
+                                                        <div className="absolute left-[-38px] top-[50%] translate-y-[-50%]">
+                                                            <Icon color={term.isCurrent ? 'var(--primary-color)' : '#808080'} icon='stash:circle-dot' fontSize={27} />
+                                                        </div>
+                                                        <div className="flex">
+                                                            <Box className="flex-1">
+                                                                <h3 className="text-[18px] font-semibold mb-1" style={{ color: term.isCurrent ? 'var(--primary-color)' : '' }}>{term.position}</h3>
+                                                                <h4 className="text-[14px] font-medium text-[#808080]">{term.start_date} - {term.end_date}</h4>
+                                                            </Box>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </Box> */}
                                 </Box>
                                 :
                                 <EmptyData title="Không tìm thấy thông tin thành viên" />

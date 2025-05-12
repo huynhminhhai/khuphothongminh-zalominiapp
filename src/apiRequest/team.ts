@@ -22,7 +22,7 @@ const teamApiRequest = {
         return await http.get<any>(`/bandieuhanh/chitiet/${id}`);
     },
     deleteTeam: async (id: number) => {
-        return await http.delete<any>(`/thuchi/${id}`)
+        return await http.delete<any>(`/bandieuhanh/${id}`)
     },
     createTeam: async (formData: any) => {
         return await http.post<any>("/thuchi", formData);
@@ -135,7 +135,7 @@ export const useGetTeamDetail = (id: number) => {
 };
 
 /**
-* DELETE TRANSACTION
+* DELETE TEAM
 **/
 export const useDeleteTeam = () => {
     const queryClient = useQueryClient();
@@ -146,9 +146,9 @@ export const useDeleteTeam = () => {
             return await teamApiRequest.deleteTeam(id);
         },
         onSuccess: () => {
-            showSuccess('Xóa thu/chi thành công')
+            showSuccess('Xóa thành viên thành công')
 
-            queryClient.invalidateQueries({ queryKey: ["transactionList"] });
+            queryClient.invalidateQueries({ queryKey: ["teamList"] });
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

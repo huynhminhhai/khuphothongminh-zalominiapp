@@ -31,7 +31,7 @@ const StatisticMain: React.FC<any> = () => {
                 <div className="flex flex-col gap-3">
                     <div className="relative z-2">
                         <div className="grid grid-cols-2 gap-2 gap-y-3">
-                            <h5 className="text-[13px] leading-[1] font-medium">
+                            <h5 className="text-[13px] leading-[1] font-medium flex items-center gap-1">
                                 <span className="opacity-90">Hộ nghèo:</span> <span className="text-[16px] font-bold opacity-100">
                                     {
                                         isLoading ? (
@@ -44,7 +44,7 @@ const StatisticMain: React.FC<any> = () => {
                                     }
                                 </span>
                             </h5>
-                            <h5 className="text-[13px] leading-[1] font-medium">
+                            <h5 className="text-[13px] leading-[1] font-medium flex items-center gap-1">
                                 <span className="opacity-90">Hộ cận nghèo:</span> <span className="text-[16px] font-bold opacity-100">
                                     {
                                         isLoading ? (
@@ -57,7 +57,7 @@ const StatisticMain: React.FC<any> = () => {
                                     }
                                 </span>
                             </h5>
-                            <h5 className="text-[13px] leading-[1] font-medium">
+                            <h5 className="text-[13px] leading-[1] font-medium flex items-center gap-1">
                                 <span className="opacity-90">Gia đình văn hóa:</span> <span className="text-[16px] font-bold opacity-100">
                                     {
                                         isLoading ? (
@@ -70,7 +70,7 @@ const StatisticMain: React.FC<any> = () => {
                                     }
                                 </span>
                             </h5>
-                            <h5 className="text-[13px] leading-[1] font-medium">
+                            <h5 className="text-[13px] leading-[1] font-medium flex items-center gap-1">
                                 <span className="opacity-90">Phản ánh đã xử lý:</span> <span className="text-[16px] font-bold opacity-100">
                                     {
                                         isLoading ? (

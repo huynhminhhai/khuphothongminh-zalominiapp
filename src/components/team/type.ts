@@ -73,4 +73,6 @@ export interface BanDieuHanh {
     tenChucVu: string;
     tenXa: string;
     anhDaiDien?: string;
+    tuNgay?: string;
+    denNgay?: string;
   }

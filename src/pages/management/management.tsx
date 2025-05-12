@@ -61,12 +61,12 @@ const ManagementPage: React.FC = () => {
                 <Box m={4}>
                     <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tổ chức, dân cư</div>
-                        {/* <Item
-                            title="Quản lý tổ chức"
+                        <Item
+                            title="Tổ chức"
                             prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
                             suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                             onClick={() => navigate('/team-management')}
-                        /> */}
+                        />
                         {
                             // hasPermission('Lấy danh sách dân cư có phân trang', 'XEM') &&
                             <Item

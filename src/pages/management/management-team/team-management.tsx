@@ -1,46 +1,79 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
+import { useDeleteTeam, useGetTeamListNormal } from "apiRequest/team"
+import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
+import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import { RESIDENTIALGROUPDATA, TEAMDATA, TeamType } from "constants/utinities"
-import React, { useState } from "react"
-import { useCustomSnackbar } from "utils/useCustomSnackbar"
-import { Box, Button, Input, Page, Select, useNavigate } from "zmp-ui"
-
-const initParam = {
-    pageIndex: 1,
-    pageSize: 10,
-    keyword: '',
-    residential_group_id: 0
-}
+import { BanDieuHanh } from "components/team/type"
+import { debounce } from "lodash"
+import React, { useEffect, useState } from "react"
+import { useStoreApp } from "store/store"
+import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const TeamManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
-    const { showSuccess, showError } = useCustomSnackbar();
+    const { account, hasPermission } = useStoreApp()
+
     const { Option } = Select
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [viewCard, setViewCard] = useState<boolean>(true)
-    const [param, setParam] = useState(initParam)
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+
+    const [filters, setFilters] = useState({
+        search: "",
+        tenChucVu: "",
+        hoTen: "",
+    });
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 5,
+        ApId: account ? account?.apId : 0,
+        keyword: '',
+        TinhTrang: '',
+        TenChucVu: '',
+        HoTen: ''
+    });
+
+    const { data, isLoading } = useGetTeamListNormal(param);
+    const { mutate: deleteTeam } = useDeleteTeam();
+
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
+
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.hoTen, 'HoTen');
+    useDebouncedParam(filters.tenChucVu, 'TenChucVu');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
             ...prevParam,
-            pageIndex: params.pageIndex, // Cập nhật pageIndex từ params
+            page: params.pageIndex,
         }));
-        console.log(`Navigated to page: ${params.pageIndex}, pageSize: ${params.pageSize}`);
     };
 
     const handleRowChange = (newPageSize: number) => {
         setParam((prevParam) => ({
             ...prevParam,
             pageSize: newPageSize,
-            pageIndex: 1, // Reset về trang đầu tiên khi thay đổi pageSize
+            page: 1,
         }));
-        console.log(`Changed pageSize: ${newPageSize}, reset to page: 1`);
     };
 
     const openConfirmModal = (action: () => void) => {
@@ -61,27 +94,29 @@ const TeamManagementPage: React.FC = () => {
         setConfirmAction(null);
     };
 
-    const removeStaff = (id: number) => {
-        openConfirmModal(() => {
-            console.log('Call api delete news with id: ', id)
-
-            showSuccess('Xóa nhân sự thành công')
-        })
+    const removeTeam = (id: number) => {
+        openConfirmModal(() => deleteTeam(id));
     }
 
-    const columns: ColumnDef<TeamType>[] = [
+    const columns: ColumnDef<BanDieuHanh>[] = [
         {
-            accessorKey: 'fullname',
+            accessorKey: 'hoTen',
             header: 'Họ tên',
         },
         {
-            accessorKey: 'phoneNumber',
-            header: 'SĐT',
-        },
-        {
-            accessorKey: 'position',
+            accessorKey: 'tenChucVu',
             header: 'Chức vụ',
         },
+        // {
+        //     id: 'address',
+        //     header: 'Đơn vị',
+        //     size: 250,
+        //     cell: ({ row }) => (
+        //         <div className="flex items-center gap-3">
+        //             {[row.original.tenAp, row.original.tenXa].filter(Boolean).join(', ')}
+        //         </div>
+        //     )
+        // },
         {
             id: 'termDate',
             header: 'Nhiệm kỳ',
@@ -89,10 +124,7 @@ const TeamManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex justify-center items-center gap-3">
                     <div>
-                        {row.original.start_date} - {row.original.end_date}
-                    </div>
-                    <div onClick={() => navigate(`/team-term?id=${row.original.id}`)}>
-                        <Icon icon='lucide:edit' fontSize={18} />
+                        {row.original.tuNgay} - {row.original.denNgay}
                     </div>
                 </div>
             )
@@ -101,21 +133,21 @@ const TeamManagementPage: React.FC = () => {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (
-                <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
+                <div className="flex items-center space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/team-detail?id=${row.original.id}`)}
+                        onClick={() => navigate(`/team-detail?id=${row.original.banDieuHanhId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => navigate(`/team-update?id=${row.original.id}`)}
+                        onClick={() => navigate(`/team-update?id=${row.original.banDieuHanhId}`)}
                         className="px-3 py-1 bg-blue-700 text-white rounded"
                     >
                         <Icon icon='ri:edit-line' fontSize={18} />
                     </button>
                     <button
-                        onClick={() => removeStaff(row.original.id)}
+                        onClick={() => removeTeam(row.original.banDieuHanhId)}
                         className="px-3 py-1 bg-red-700 text-white rounded"
                     >
                         <Icon icon='material-symbols:delete' fontSize={18} />
@@ -125,91 +157,91 @@ const TeamManagementPage: React.FC = () => {
         },
     ];
 
-    const filteredData = TEAMDATA.filter(item => {
-        const matchesSearch = item.fullname.toLowerCase().includes(param.keyword.toLowerCase())
-        const matchesStatus = param.residential_group_id === 0 || item.status === param.residential_group_id;
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <Box px={4}>
+                    <ManagementItemSkeleton count={2} />
+                </Box>
+            );
+        }
 
-        return matchesSearch && matchesStatus;
-    });
+        if (!data.data.length) {
+            return (
+                <Box px={4}>
+                    <EmptyData
+                        title="Hiện chưa có dân cư nào!"
+                        desc="Nhấn vào nút Thêm để bắt đầu!"
+                    />
+                </Box>
+            );
+        }
+
+        return <Box>
+            {
+                viewCard ? (
+                    <CardTanStack data={data.data} columns={columns} />
+                ) : (
+                    <Box px={4}>
+                        <TableTanStack data={data.data} columns={columns} />
+                    </Box>
+                )
+            }
+            <Box px={4}>
+                <TablePagination
+                    totalItems={data.page.total}
+                    pageSize={param.pageSize}
+                    pageIndex={param.page}
+                    onPageChange={handlePageChange}
+                    onRowChange={handleRowChange}
+                />
+            </Box>
+        </Box>
+    };
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý nhân sự" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Tổ chức" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton
+                        // showAddButton={hasPermission('Thêm mới 1 dân cư', 'SUA')}
+                        showAddButton={false}
                         onAddButtonClick={() => navigate("/team-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
                     >
                         <div className="col-span-12">
                             <Input
-                                placeholder="Tìm kiếm..."
-                                value={param.keyword}
-                                onChange={(e) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        keyword: e.target.value
-                                    }));
-                                }}
+                                placeholder="Tìm kiếm nhanh"
+                                value={filters.search}
+                                onChange={(e) => updateFilter('search', e.target.value)}
                             />
                         </div>
-                        <div className="col-span-12">
-                            <Select
-                                // defaultValue={3}
-                                placeholder="Chọn tổ dân cư"
-                                closeOnSelect
-                                onChange={(value) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        residential_group_id: value as number
-                                    }));
-                                }}
-                            >
-                                <Option title={'Tất cả'} value={0} />
-                                {
-                                    RESIDENTIALGROUPDATA.map((item) => (
-                                        <Option key={item.id} title={item.name} value={item.id} />
-                                    ))
-                                }
-                            </Select>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Họ tên"
+                                value={filters.hoTen}
+                                onChange={(e) => updateFilter('hoTen', e.target.value)}
+                            />
+                        </div>
+                        <div className="col-span-6">
+                            <Input
+                                placeholder="Tên chức vụ"
+                                value={filters.tenChucVu}
+                                onChange={(e) => updateFilter('tenChucVu', e.target.value)}
+                            />
                         </div>
                     </FilterBar>
-                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
-                        <Button
-                            size="small"
-                            variant="tertiary"
-                            onClick={() => navigate('/residential-management')}
-                        >
-                            <div className="flex items-center gap-1">
-                                Quản lý tổ dân cư
-                                <Icon fontSize={18} icon='iconamoon:enter' />
-                            </div>
-                        </Button>
-                    </Box>
                     <Box>
-                        {viewCard ?
-                            <CardTanStack data={filteredData} columns={columns} />
-                            :
-                            <Box px={4}>
-                                <TableTanStack data={filteredData} columns={columns} />
-                            </Box>
-                        }
-                        <TablePagination
-                            totalItems={50}
-                            pageSize={param.pageSize}
-                            pageIndex={param.pageIndex}
-                            onPageChange={handlePageChange}
-                            onRowChange={handleRowChange}
-                        />
+                        {renderContent()}
                     </Box>
                 </Box>
             </Box>
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa nhân sự này không?"
+                message="Bạn có chắc chắn muốn xóa thành viên này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
