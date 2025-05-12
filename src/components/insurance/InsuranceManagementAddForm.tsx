@@ -9,6 +9,7 @@ import { FormDataInsurance, schemaInsurance } from "./type"
 import { useStoreApp } from "store/store"
 import { useCreateInsurance } from "apiRequest/insurance"
 import { useGetResidentListNormal } from "apiRequest/resident"
+import { useSearchParams } from "react-router-dom"
 
 const defaultValues: FormDataInsurance = {
     loaiBaoHiemId: 1,
@@ -20,7 +21,6 @@ const defaultValues: FormDataInsurance = {
 
 const InsuranceManagementAddForm: React.FC = () => {
 
-    const { account } = useStoreApp()
     const navigator = useNavigate()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
@@ -31,26 +31,10 @@ const InsuranceManagementAddForm: React.FC = () => {
         defaultValues
     });
 
-    const { mutateAsync: createInsurance, isPending } = useCreateInsurance();
-    const { data: residentList, isLoading } = useGetResidentListNormal(
-        {
-            page: 1,
-            pageSize: 9999999,
-            ApId: account ? account.thongTinDanCu?.apId : 0,
-            keyword: '',
-            HoTen: '',
-            HoTenChuHo: '',
-            SoGiayTo: '',
-            LaChuHo: false
-        }
-    );
+    const [searchParams] = useSearchParams();
+    const danCuId = searchParams.get("danCuId");
 
-    const residentOptions = useMemo(() => {
-        return residentList?.data?.map((item) => ({
-            value: item.danCuId,
-            label: `${item.hoTen} - ${item.soGiayTo}`,
-        })) || [];
-    }, [residentList]);
+    const { mutateAsync: createInsurance, isPending } = useCreateInsurance();
 
 
     const onSubmit: SubmitHandler<FormDataInsurance> = (data) => {
@@ -62,7 +46,7 @@ const InsuranceManagementAddForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData) {
             try {
-                await createInsurance({ ...formData });
+                await createInsurance({ ...formData, danCuId: Number(danCuId) });
 
                 navigator('/insurance-management')
             } catch (error) {
@@ -79,18 +63,6 @@ const InsuranceManagementAddForm: React.FC = () => {
         <Box p={4}>
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
-
-                    <div className="col-span-12">
-                        <FormSelectField
-                            name="danCuId"
-                            label="Danh sách dân cư"
-                            placeholder="Chọn dân cư"
-                            control={control}
-                            options={residentOptions}
-                            error={errors.danCuId?.message}
-                            required />
-                    </div>
-
                     <div className="col-span-12">
                         <FormInputField
                             name="maSo"

@@ -5,31 +5,35 @@ import { HeaderSub } from "components/header-sub"
 import { InsuranceItem } from "components/insurance"
 import UserInfoSkeleton from "components/skeleton/info/UserInfoSkeleton"
 import React, { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { useStoreApp } from "store/store"
 import { Box, Page, useNavigate } from "zmp-ui"
 
 const InsurancePage: React.FC = () => {
-    
+
     const { account } = useStoreApp()
     const navigate = useNavigate()
+
+    const [searchParams] = useSearchParams();
+    const danCuId = searchParams.get("danCuId");
 
     const [param, setParam] = useState<any>({
         page: 1,
         pageSize: 10,
         keyword: '',
-        DanCuId: account?.thongTinDanCu?.danCuId || 0,
+        DanCuId: Number(danCuId) || account?.thongTinDanCu?.danCuId || 0,
         LoaiBaoHiemId: 1,
         MaSo: '',
     })
 
-    useEffect(() => {
-        if (account?.thongTinDanCu?.danCuId) {
-            setParam(prev => ({
-                ...prev,
-                DanCuId: account.thongTinDanCu.danCuId
-            }));
-        }
-    }, [account?.thongTinDanCu?.danCuId]);
+    // useEffect(() => {
+    //     if (account?.thongTinDanCu?.danCuId) {
+    //         setParam(prev => ({
+    //             ...prev,
+    //             DanCuId: account.thongTinDanCu.danCuId
+    //         }));
+    //     }
+    // }, [account?.thongTinDanCu?.danCuId]);
 
     const { data: insuranceList, isLoading: insuranceLoading } = useGetInsuranceListNormal(param);
 
@@ -46,7 +50,7 @@ const InsurancePage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col !bg-[#f4f5f6] pb-[0px]">
             <Box>
-                <HeaderSub title="Bảo hiểm y tế" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Bảo hiểm y tế" />
                 <Box p={4}>
                     {insuranceLoading ? (
                         <UserInfoSkeleton />
