@@ -11,17 +11,17 @@ const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: 
     icon: <div className="relative"><Icon icon="line-md:home-simple-filled"/></div>,
     activeIcon: <Icon icon="line-md:home-simple-filled" />,
   },
-  "/notification": {
-    label: "Thông báo",
-    icon: (
-      <div className="relative">
-        <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#c46574" />
-        <Icon icon="line-md:bell-filled-loop" />
-      </div>
-    ),
-    activeIcon: <Icon icon="line-md:bell-filled-loop" />,
-    requiresLogin: true, // Yêu cầu đăng nhập
-  },
+  // "/notification": {
+  //   label: "Thông báo",
+  //   icon: (
+  //     <div className="relative">
+  //       <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#c46574" />
+  //       <Icon icon="line-md:bell-filled-loop" />
+  //     </div>
+  //   ),
+  //   activeIcon: <Icon icon="line-md:bell-filled-loop" />,
+  //   requiresLogin: true, // Yêu cầu đăng nhập
+  // },
   "/management": {
     label: "Quản lý",
     icon: <div className="relative"><Icon icon="line-md:folder-zip-filled" /></div>,
