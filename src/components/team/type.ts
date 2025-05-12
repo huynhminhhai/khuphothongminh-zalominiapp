@@ -60,3 +60,17 @@ export type FormDataResidential = {
 export const schemaResidential = yup.object().shape({
     name: yup.string().required('Tên tổ dân cư không được để trống'),
 });
+
+export interface BanDieuHanh {
+    apId: number;
+    banDieuHanhId: number;
+    chucVuId: number;
+    hoTen: string;
+    hoatDong: boolean;
+    maXa: string;
+    nguoiDungId: number;
+    tenAp: string;
+    tenChucVu: string;
+    tenXa: string;
+    anhDaiDien?: string;
+  }

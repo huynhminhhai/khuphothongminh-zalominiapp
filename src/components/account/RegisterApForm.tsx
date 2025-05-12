@@ -22,7 +22,7 @@ const defaultValues: FormDataRegisterAp = {
 
 const RegisterApForm: React.FC = () => {
 
-    const { account, tinhs } = useStoreApp()
+    const { account, tinhs, hasRole } = useStoreApp()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataRegisterAp>(defaultValues);
@@ -59,7 +59,7 @@ const RegisterApForm: React.FC = () => {
 
             reset({
                 hoTen: hoTen,
-                dienThoai: tenDangNhap,
+                dienThoai: hasRole('TRUONG_AP') ? '' : tenDangNhap,
                 soGiayTo: soGiayTo,
                 maXa: maXa,
                 maHuyen: maHuyen,
@@ -115,7 +115,7 @@ const RegisterApForm: React.FC = () => {
                             control={control}
                             error={errors.dienThoai?.message}
                             required
-                            disabled
+                            disabled={!hasRole('TRUONG_AP')}
                         />
                     </div>
                     <div className="col-span-12">

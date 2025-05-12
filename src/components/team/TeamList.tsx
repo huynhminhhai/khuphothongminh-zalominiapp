@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react"
-import { Box, Button, Input } from "zmp-ui"
+import { Box, Button, Input, Select } from "zmp-ui"
 import TeamItem from "./TeamItem"
 import { TEAMDATA, TeamType } from "constants/utinities"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
 import { EmptyData } from "components/data"
 import { TeamSkeleton } from "components/skeleton"
+import { useStoreApp } from "store/store"
+import { useGetTeamList, useGetTeamType } from "apiRequest/team"
+import { debounce } from "lodash"
+import { FilterBar2 } from "components/table"
+import { Divider } from "components/divider"
 
 const initParam = {
     pageIndex: 1,
@@ -14,77 +19,133 @@ const initParam = {
 
 const ServiceList: React.FC<any> = () => {
 
-    const [param, setParam] = useState(initParam);
-    const [listData, setListData] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+    const { account } = useStoreApp()
+    const { Option } = Select;
 
-    const loadMore = () => {
-        setParam((prev) => ({
-            ...prev,
-            pageSize: prev.pageSize + 6,
-        }));
-    };
-
-    const loaderRef = useInfiniteScroll({
-        hasMore: hasMore && listData.length > 0,
-        loading,
-        onLoadMore: loadMore,
+    const [filters, setFilters] = useState({
+        search: "",
+        tenChucVu: "",
+        hoTen: "",
+    });
+    const [param, setParam] = useState({
+        page: 1,
+        pageSize: 5,
+        ApId: account ? account?.apId : 0,
+        keyword: '',
+        TinhTrang: '',
+        TenChucVu: '',
+        HoTen: ''
     });
 
-    const fetchTeam = async () => {
+    const { data: teamType } = useGetTeamType();
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetTeamList(param);
 
-        if (loading && !hasMore) return;
+    const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
 
-        setLoading(true);
+    const loaderRef = useInfiniteScroll({
+        hasMore: hasNextPage,
+        loading: isFetchingNextPage,
+        onLoadMore: fetchNextPage,
+    });
 
-        try {
-            const data = TEAMDATA.slice(listData.length, listData.length + param.pageSize);
 
-            await new Promise((resolve) => setTimeout(resolve, 1500));
-
-            setListData(prevList => [...prevList, ...data]);
-
-            setHasMore(data.length > 0 && data.length === param.pageSize);
-
-        } catch (error) {
-            console.error("Error fetching news:", error);
-        } finally {
-            setLoading(false);
-        }
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
     };
 
-    useEffect(() => {
-        if (hasMore) {
-            fetchTeam();
-        }
-    }, [param]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
 
-    return (
-        <Box px={4}>
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
+    useDebouncedParam(filters.tenChucVu, 'TenChucVu');
+    useDebouncedParam(filters.hoTen, 'HoTen');
+
+    const renderContent = () => {
+        if (isLoading) {
+            return (
+                <Box px={4}>
+                    <TeamSkeleton count={5} />
+                </Box>
+            );
+        }
+
+        return <Box>
             <Box>
-                <Input.Search size="small" className="rounded-3xl" placeholder="Tìm kiếm nhân sự/ cán bộ" value={param.keyword} onChange={(e) => {
-                    setParam((prevParam) => ({
-                        ...prevParam,
-                        keyword: e.target.value
-                    }));
-                }} />
-            </Box>
-            <Box mt={6} mb={4}>
-                <div className="grid grid-cols-2 gap-x-4 gap-y-4">
-                    {listData.length === 0 && !loading ? (
-                        <EmptyData title="Hiện chưa có nhân viên/cán bộ nào!" desc="Khi có nhân viên/cán bộ, bạn có thể thao tác ngay tại đây. Vui lòng quay lại sau!" />
+                <div className="grid grid-cols-2">
+                    {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
+                        <Box px={4}>
+                            <EmptyData title="Hiện chưa có thông tin thành viên nào!" desc="Khi có thông tin thành viên, bạn có thể thao tác ngay tại đây. Vui lòng quay lại sau!" />
+                        </Box>
                     ) : (
-                        listData.map((item, index) => (
-                            <TeamItem key={index} data={item} />
-                        ))
+                        <Box px={4} pt={4}>
+                            {listData.map((item, index) => (
+                                <TeamItem key={index} data={item} />
+                            ))}
+                        </Box>
                     )}
                 </div>
             </Box>
-            <div ref={loaderRef}>
-                {loading && <TeamSkeleton count={listData.length === 0 ? 6 : 2} />}
-                {listData.length > 0 && !hasMore && <p className="text-center pt-4">Đã hiển thị tất cả nhân viên/cán bộ</p>}
+            <div ref={loaderRef} className="px-4">
+                {isFetchingNextPage && <TeamSkeleton count={1} />}
+                {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả thành viên</p>}
             </div>
+
+        </Box>
+    };
+
+    return (
+        <Box>
+            <FilterBar2
+                searchComponent={
+                    <Input.Search
+                        placeholder='Tìm kiếm nhanh'
+                        value={filters.search}
+                        onChange={(e) => updateFilter('search', e.target.value)}
+                    />
+                }
+            >
+                <div className="col-span-6">
+                    <Input
+                        placeholder="Tên chức vụ"
+                        value={filters.tenChucVu}
+                        onChange={(e) => updateFilter('tenChucVu', e.target.value)}
+                    />
+                </div>
+                <div className="col-span-6">
+                    <Input
+                        placeholder="Họ tên"
+                        value={filters.hoTen}
+                        onChange={(e) => updateFilter('hoTen', e.target.value)}
+                    />
+                </div>
+                {/* <div className="col-span-6">
+                    <Select
+                        placeholder="Loại giao dich"
+                        value={param.LoaiGiaoDichTaiChinhId}
+                        closeOnSelect
+                        onChange={(e) => setParam(prev => ({ ...prev, LoaiGiaoDichTaiChinhId: Number(e) }))}
+                    >
+                        <Option title="Tất cả" value={0} />
+                        {
+                            transactionType?.map((item) => (
+                                <Option key={item.loaiGiaoDichTaiChinhId} value={item.loaiGiaoDichTaiChinhId} title={item.tenLoaiGiaoDichTaiChinh} />
+                            ))
+                        }
+
+                    </Select>
+                </div> */}
+            </FilterBar2>
+            <Divider />
+            {renderContent()}
         </Box>
     )
 }

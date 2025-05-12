@@ -68,11 +68,12 @@ const SERVICES: ServicesType[] = [
     //     icon: images.invoice,
     //     requiredPermission: { maChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: PermissionActions.XEM },
     // }
-    // {
-    //     label: 'Thông tin tổ chức',
-    //     url: '/team',
-    //     icon: images.team,
-    // },
+    {
+        label: 'Thông tin tổ chức',
+        url: '/team',
+        icon: images.team,
+        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCuBanDieuHanh, quyen: PermissionActions.XEM },
+    },
     // {
     //     label: 'Bản đồ',
     //     url: '/maps',
