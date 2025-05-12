@@ -81,7 +81,7 @@ const ServiceList: React.FC<any> = () => {
         return <Box>
             <Box>
                 <div className="grid grid-cols-2">
-                    {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
+                    {(listData?.length === 0 && !isFetchingNextPage && !isLoading) ? (
                         <Box px={4}>
                             <EmptyData title="Hiện chưa có thông tin thành viên nào!" desc="Khi có thông tin thành viên, bạn có thể thao tác ngay tại đây. Vui lòng quay lại sau!" />
                         </Box>

@@ -122,39 +122,39 @@ const TeamManagementPage: React.FC = () => {
             header: 'Nhiệm kỳ',
             size: 250,
             cell: ({ row }) => (
-                <div className="flex justify-center items-center gap-3">
+                <div className="flex items-center gap-3">
                     <div>
                         {row.original.tuNgay} - {row.original.denNgay}
                     </div>
                 </div>
             )
         },
-        {
-            id: 'actions', // Custom column for actions
-            header: 'Thao tác',
-            cell: ({ row }) => (
-                <div className="flex items-center space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/team-detail?id=${row.original.banDieuHanhId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => navigate(`/team-update?id=${row.original.banDieuHanhId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeTeam(row.original.banDieuHanhId)}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
-                </div>
-            ),
-        },
+        // {
+        //     id: 'actions', // Custom column for actions
+        //     header: 'Thao tác',
+        //     cell: ({ row }) => (
+        //         <div className="flex items-center space-x-2 whitespace-nowrap">
+        //             <button
+        //                 onClick={() => navigate(`/team-detail?id=${row.original.banDieuHanhId}`)}
+        //                 className="px-3 py-1 bg-gray-700 text-white rounded"
+        //             >
+        //                 <Icon icon='mdi:eye' fontSize={18} />
+        //             </button>
+        //             <button
+        //                 onClick={() => navigate(`/team-update?id=${row.original.banDieuHanhId}`)}
+        //                 className="px-3 py-1 bg-blue-700 text-white rounded"
+        //             >
+        //                 <Icon icon='ri:edit-line' fontSize={18} />
+        //             </button>
+        //             <button
+        //                 onClick={() => removeTeam(row.original.banDieuHanhId)}
+        //                 className="px-3 py-1 bg-red-700 text-white rounded"
+        //             >
+        //                 <Icon icon='material-symbols:delete' fontSize={18} />
+        //             </button>
+        //         </div>
+        //     ),
+        // },
     ];
 
     const renderContent = () => {

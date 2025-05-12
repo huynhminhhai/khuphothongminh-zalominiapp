@@ -10,7 +10,7 @@ const TeamPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Nhân sự/ Cán bộ" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Ban điều hành" onBackClick={() => navigate('/')} />
                 <Box pb={4}>
                     <TeamList />
                 </Box>

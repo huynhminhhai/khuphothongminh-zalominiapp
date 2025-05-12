@@ -46,15 +46,6 @@ const ManagementPage: React.FC = () => {
                                 onClick={() => navigate('/feedback-management')}
                             />
                         }
-                        {
-                            // hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
-                            <Item
-                                title="Thu/chi"
-                                prefix={<img src={images.money} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                                onClick={() => navigate('/transactions-management')}
-                            />
-                        }
                     </List>
                 </Box>
 
@@ -125,7 +116,15 @@ const ManagementPage: React.FC = () => {
                                 onClick={() => navigate('/meeting-management')}
                             />
                         }
-                        
+                        {
+                            // hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
+                            <Item
+                                title="Thu/chi"
+                                prefix={<img src={images.money} alt='feedback' className="w-[30px] h-auto" />}
+                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                onClick={() => navigate('/transactions-management')}
+                            />
+                        },
                         {/* <Item
                             title="Báo cáo tài chính"
                             prefix={<img src={images.report} alt='feedback' className="w-[30px] h-auto" />}
