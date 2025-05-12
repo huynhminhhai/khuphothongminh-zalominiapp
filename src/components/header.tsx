@@ -20,7 +20,7 @@ export const HeaderHome: FC = () => {
             <div className="w-[54px] h-[54px] rounded-full border-[2px] border-[#e3ecf9] overflow-hidden bg-[#f0f0f0]">
               <img
                 className="h-[100%] w-[100%] object-cover"
-                src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.avatarDefault}
+                src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.avatar}
               />
             </div>
             <Box>

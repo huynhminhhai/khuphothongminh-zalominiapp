@@ -16,7 +16,7 @@ const HomePage: React.FunctionComponent = () => {
   const { account, hasPermission } = useStoreApp()
 
   return (
-    <Page className="relative flex-1 flex flex-col bg-white pb-[72px] home">
+    <Page className="relative flex-1 flex flex-col bg-white pb-[66px] home">
       <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-[460px] h-auto opacity-[0.04] z-0" />
       <HeaderHome />
       <Box className="relative z-[1]">

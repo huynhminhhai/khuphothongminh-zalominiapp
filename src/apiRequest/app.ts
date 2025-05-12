@@ -5,6 +5,7 @@ const appApiRequest = {
     getHuyen: (maTinh: string) => http.get<any>(`/huyen/tinh/${maTinh}`),
     getXa: (maHuyen: string) => http.get<any>(`/xa/huyen/${maHuyen}`),
     getAp: (maXa: string) => http.get<any>(`/ap/xa/${maXa}`),
+    getSoLieuHienThi: () => http.get<any>(`/thongkebaocao/solieuhienthitrangchumobileapp`),
 }
 
 /**
@@ -75,6 +76,29 @@ export const useGetApList = (maXa: string) => {
         },
         enabled: !!maXa,
         staleTime: 1000 * 60 * 60 * 24,
+        retry: 1,
+    });
+};
+
+/**
+* GET SO LIEU THONG KE
+**/ 
+export const useGetSoLieuHienThi = () => {
+
+    return useQuery({
+        queryKey: ['soLieuHienThi'],
+        queryFn: async () => {
+            try {
+
+                const res = await appApiRequest.getSoLieuHienThi();
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        staleTime: 0,
         retry: 1,
     });
 };

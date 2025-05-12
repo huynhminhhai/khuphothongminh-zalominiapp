@@ -9,8 +9,8 @@ import { useLoginWithZalo } from "services/loginWithZalo"
 import { useLogin } from "apiRequest/auth"
 
 const defaultValues: FormDataLogin = {
-    username: 'demo',
-    password: '123456'
+    username: 'binhlang.binhduc.truongap',
+    password: 'Vnpt@1234'
 }
 
 const LoginForm: React.FC = () => {
