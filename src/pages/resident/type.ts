@@ -8,7 +8,7 @@ const residenceSchema = yup.object().shape({
     tinh: yup.string().required('Tỉnh là bắt buộc'),
     latitude: yup
         .number().nullable(),
-    longitute: yup
+    longitude: yup
         .number().nullable(),
     tuNgay: yup.string().nullable(),
     denNgay: yup.string().nullable(),
@@ -74,7 +74,7 @@ interface Residence {
     huyen: string;
     tinh: string;
     latitude?: number | null;
-    longitute?: number | null;
+    longitude?: number | null;
     tuNgay?: string | null;
     denNgay?: string | null;
 }

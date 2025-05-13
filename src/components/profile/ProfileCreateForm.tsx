@@ -9,7 +9,7 @@ import { FormResidentDetail, residentSchema } from "./type"
 import { useStoreApp } from "store/store"
 import { useCreateResident, useGetChuHosList } from "apiRequest/resident"
 import http from "services/http"
-import { setAddressStepByStep, useResidentAddress } from "utils/useAddress"
+import { setAddressStepByStep, setAddressWithoutPrefixStepByStep, useResidentAddress } from "utils/useAddress"
 import { omit } from "lodash"
 import { Icon } from "@iconify/react"
 import { MapPicker } from "components/maps"
@@ -43,7 +43,7 @@ const ProfileAddForm: React.FC = () => {
       huyen: '',
       tinh: '',
       latitude: null,
-      longitute: null,
+      longitude: null,
       tuNgay: null,
       denNgay: null,
     },
@@ -54,7 +54,7 @@ const ProfileAddForm: React.FC = () => {
       huyen: '',
       tinh: '',
       latitude: null,
-      longitute: null,
+      longitude: null,
       tuNgay: null,
       denNgay: null,
     },
@@ -90,6 +90,33 @@ const ProfileAddForm: React.FC = () => {
     setFormData(data)
   };
 
+  useEffect(() => {
+    if (account) {
+
+      const {
+        maTinh = "",
+        maXa = "",
+        maHuyen = "",
+        apId = 0
+      } = account || {};
+
+      console.log(account)
+
+      reset({
+        ...watch(),
+        noiThuongTru: {
+          ...watch().noiThuongTru,
+          apId,
+          xa: maXa,
+          huyen: maHuyen,
+          tinh: maTinh,
+        }
+      });
+
+      setAddressStepByStep("noiThuongTru", { tinh: '80', huyen: maHuyen, xa: maXa, apId }, setValue);
+    }
+  }, [account])
+
   /**
   * CALL CHU HO API
   **/
@@ -112,7 +139,7 @@ const ProfileAddForm: React.FC = () => {
         huyen = '',
         tinh = '',
         latitude = null,
-        longitute = null,
+        longitude = null,
         tuNgay = null,
         denNgay = null,
       } = chuHoData.noiThuongTru || {};
@@ -127,7 +154,7 @@ const ProfileAddForm: React.FC = () => {
           huyen,
           tinh,
           latitude,
-          longitute,
+          longitude,
           tuNgay,
           denNgay,
         },
@@ -391,10 +418,10 @@ const ProfileAddForm: React.FC = () => {
           <div className="col-span-6">
             <FormInputField
               type="number"
-              name="noiThuongTru.longitute"
+              name="noiThuongTru.longitude"
               placeholder="Nhập Longitute"
               control={control}
-              error={errors.noiThuongTru?.longitute?.message}
+              error={errors.noiThuongTru?.longitude?.message}
               disabled={!isHouseHold}
             />
           </div>
@@ -402,9 +429,9 @@ const ProfileAddForm: React.FC = () => {
             isHouseHold &&
             <>
               <div className="col-span-12">
-                <div className="mb-3 flex items-center justify-center gap-x-2 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiThuongTru(!showMapNoiThuongTru)}>
+                <div className=" mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiThuongTru(!showMapNoiThuongTru)}>
                   Chọn vị trí
-                  <Icon fontSize={20} icon={"famicons:location-outline"} />
+                  <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
                 </div>
               </div>
               <div className="col-span-12">
@@ -414,7 +441,7 @@ const ProfileAddForm: React.FC = () => {
                       onClose={() => setShowMapNoiThuongTru(false)}
                       onPick={(lat, lng) => {
                         setValue("noiThuongTru.latitude", lat);
-                        setValue("noiThuongTru.longitute", lng);
+                        setValue("noiThuongTru.longitude", lng);
                       }}
                     />
                   )}
@@ -505,16 +532,16 @@ const ProfileAddForm: React.FC = () => {
               <div className="col-span-6">
                 <FormInputField
                   type="number"
-                  name="noiTamTru.longitute"
+                  name="noiTamTru.longitude"
                   placeholder="Nhập Longitute"
                   control={control}
-                  error={errors.noiTamTru?.longitute?.message}
+                  error={errors.noiTamTru?.longitude?.message}
                 />
               </div>
               <div className="col-span-12">
-                <div className="mb-3 flex items-center justify-center gap-x-2 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiTamTru(!showMapNoiTamTru)}>
+                <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiTamTru(!showMapNoiTamTru)}>
                   Chọn vị trí
-                  <Icon fontSize={20} icon={"famicons:location-outline"} />
+                  <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
                 </div>
               </div>
               <div className="col-span-12">
@@ -524,7 +551,7 @@ const ProfileAddForm: React.FC = () => {
                       onClose={() => setShowMapNoiTamTru(false)}
                       onPick={(lat, lng) => {
                         setValue("noiTamTru.latitude", lat);
-                        setValue("noiTamTru.longitute", lng);
+                        setValue("noiTamTru.longitude", lng);
                       }}
                     />
                   )}
@@ -557,6 +584,7 @@ const ProfileAddForm: React.FC = () => {
               options={tinhTrangHoGiaDinhs}
               error={errors.tinhTrangHoGiaDinhId?.message}
               disabled={!isHouseHold}
+              required
             />
           </div>
           <div className="col-span-12">

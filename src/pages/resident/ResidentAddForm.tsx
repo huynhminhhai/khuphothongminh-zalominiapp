@@ -42,7 +42,7 @@ const ResidentAddForm: React.FC = () => {
             huyen: '',
             tinh: '',
             latitude: null,
-            longitute: null,
+            longitude: null,
             tuNgay: null,
             denNgay: null,
         },
@@ -53,7 +53,7 @@ const ResidentAddForm: React.FC = () => {
             huyen: '',
             tinh: '',
             latitude: null,
-            longitute: null,
+            longitude: null,
             tuNgay: null,
             denNgay: null,
         },
@@ -342,10 +342,10 @@ const ResidentAddForm: React.FC = () => {
                     <div className="col-span-6">
                         <FormInputField
                             type="number"
-                            name="noiThuongTru.longitute"
+                            name="noiThuongTru.longitude"
                             placeholder="Nhập Longitute"
                             control={control}
-                            error={errors.noiThuongTru?.longitute?.message}
+                            error={errors.noiThuongTru?.longitude?.message}
                             disabled
                         />
                     </div>
@@ -419,10 +419,10 @@ const ResidentAddForm: React.FC = () => {
                     <div className="col-span-6">
                         <FormInputField
                             type="number"
-                            name="noiTamTru.longitute"
+                            name="noiTamTru.longitude"
                             placeholder="Nhập Longitute"
                             control={control}
-                            error={errors.noiTamTru?.longitute?.message}
+                            error={errors.noiTamTru?.longitude?.message}
                         />
                     </div>
                     <div className="col-span-6">

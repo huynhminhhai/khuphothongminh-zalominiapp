@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
 import { formatAddress } from "utils/useAddress"
-import { Box, Input, Page, useNavigate } from "zmp-ui"
+import { Box, Button, Input, Page, useNavigate } from "zmp-ui"
 
 const ResidentManagementPage: React.FC = () => {
 
@@ -286,12 +286,24 @@ const ResidentManagementPage: React.FC = () => {
                         <div className="col-span-12">
                             <CanToggle
                                 checked={param.LaChuHo}
-                                onChange={(value: boolean) => setParam((prev) => ({...prev, LaChuHo: value}))}
+                                onChange={(value: boolean) => setParam((prev) => ({ ...prev, LaChuHo: value }))}
                                 labelOff={'Tất cả'}
                                 labelOn={'Chủ hộ'}
                             />
                         </div>
                     </FilterBar>
+                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
+                        <Button
+                            size="small"
+                            variant="tertiary"
+                            onClick={() => navigate('/maps')}
+                        >
+                            <div className="flex items-center gap-1">
+                                Bản đồ dân cư
+                                <Icon fontSize={18} icon='tabler:map-2' />
+                            </div>
+                        </Button>
+                    </Box>
                     <Box>
                         {renderContent()}
                     </Box>

@@ -9,7 +9,7 @@ interface AddressField {
   xa: string;
   diaChi: string;
   latitude: number | null;
-  longitute: number | null;
+  longitude: number | null;
   loaiCuTruId?: number;
   tuNgay?: string | null;
   denNgay?: string | null;

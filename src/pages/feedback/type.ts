@@ -43,7 +43,7 @@ export const phanAnhSchema = yup.object().shape({
     maTinh: yup.string().required("Chưa chọn mục này"),
     latitude: yup
         .number().nullable(),
-    longitute: yup
+    longitude: yup
         .number().nullable(),
     congKhaiThongTinCaNhan: yup.boolean().required(),
     congKhaiPhanAnh: yup.boolean().required(),

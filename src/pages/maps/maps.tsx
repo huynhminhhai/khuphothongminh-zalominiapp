@@ -16,8 +16,8 @@ function FitBounds({ residents }) {
 
     useEffect(() => {
         const latlngs = residents
-            .filter(res => res.noiThuongTru?.latitude && res.noiThuongTru?.longitute)
-            .map(res => [res.noiThuongTru.latitude, res.noiThuongTru.longitute]);
+            .filter(res => res.noiThuongTru?.latitude && res.noiThuongTru?.longitude)
+            .map(res => [res.noiThuongTru.latitude, res.noiThuongTru.longitude]);
 
         if (latlngs.length > 0) {
             const bounds = L.latLngBounds(latlngs);
@@ -41,7 +41,7 @@ const ResidentMapPage = () => {
 
     const [param, setParam] = useState({
         page: 1,
-        pageSize: 10,
+        pageSize: 9999999,
         ApId: account ? account?.apId : 0,
         keyword: '',
         HoTen: '',
@@ -57,7 +57,7 @@ const ResidentMapPage = () => {
         const chuHos = data.filter(danCu => {
             const laChuHo = danCu.laChuHo === true;
             const thuongTru = danCu.noiThuongTru;
-            const coToaDo = thuongTru?.latitude != null && thuongTru?.longitute != null;
+            const coToaDo = thuongTru?.latitude != null && thuongTru?.longitude != null;
             return laChuHo && coToaDo;
         });
 
@@ -81,8 +81,8 @@ const ResidentMapPage = () => {
 
     const center: [number, number] = useMemo(() => {
         if (residents.length > 0) {
-            const { latitude, longitute } = residents[0].noiThuongTru;
-            return [latitude, longitute];
+            const { latitude, longitude } = residents[0].noiThuongTru;
+            return [latitude, longitude];
         }
         return [10.520740944310496, 106.47778872238479];
     }, [residents]);
@@ -160,7 +160,7 @@ const ResidentMapPage = () => {
                                         </LayersControl>
                                         {
                                             filteredResidents.map((res, index) => (
-                                                <Marker key={index} position={[res.noiThuongTru.latitude, res.noiThuongTru.longitute]} icon={filter === "poor" ? getMarkerIcon(res.tinhTrangHoGiaDinhId) : getMarkerIcon(res.giaDinhVanHoa)}>
+                                                <Marker key={index} position={[res.noiThuongTru.latitude, res.noiThuongTru.longitude]} icon={filter === "poor" ? getMarkerIcon(res.tinhTrangHoGiaDinhId) : getMarkerIcon(res.giaDinhVanHoa)}>
                                                     <Popup>
                                                         <div className="mt-2">
                                                             <ul className="flex flex-col gap-1 p-3 rounded-xl bg-gray-50 shadow-sm text-sm text-gray-700 w-full max-w-xs">

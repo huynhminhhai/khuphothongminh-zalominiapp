@@ -233,9 +233,9 @@ const FeedbackAddForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12">
-                        <div className="mb-3 flex items-center justify-center gap-x-2 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMap(!showMap)}>
+                        <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMap(!showMap)}>
                             Chọn vị trí 
-                            <Icon fontSize={20} icon={"famicons:location-outline"} />
+                            <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
                         </div>
                     </div>
                     <div className="col-span-12">

@@ -34,7 +34,8 @@ const FlyToLocation = ({ position }: { position: L.LatLng | null }) => {
     const map = useMap();
     useEffect(() => {
         if (position) {
-            map.flyTo(position, 17);
+            const currentZoom = map.getZoom(); // Lấy zoom hiện tại
+            map.flyTo(position, currentZoom);  // Dùng zoom hiện tại thay vì zoom 17
         }
     }, [position, map]);
     return null;
