@@ -102,7 +102,7 @@ const FeedbackManagementPage: React.FC = () => {
 
                 return (
                     <Box>
-                        <Swiper className="w-full h-[150px]" autoplay duration={8000} style={{ borderRadius: 0 }}>
+                        <Swiper className="w-full h-[150px]" style={{ borderRadius: 0 }}>
                             {imageFiles && imageFiles.length > 0 ? (
                                 imageFiles.map((item, index) => (
                                     <Swiper.Slide key={index}>
@@ -267,7 +267,7 @@ const FeedbackManagementPage: React.FC = () => {
                             onClick={() => navigate(`/feedback-answer?id=${row.original.phanAnhId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
                         >
-                            <Icon icon='ri:edit-line' fontSize={18} />
+                            <Icon icon='mynaui:send-solid' fontSize={18} />
                         </button>
                     }
                     {

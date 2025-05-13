@@ -31,7 +31,7 @@ const StatisticList: React.FC<any> = () => {
                 </Box>
 
                 <Box>
-                    <div className={'bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'}>
+                    <div className={'bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'} onClick={() => navigate('/maps')}>
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[13px] leading-[1] font-medium mb-[6px] opacity-90">Nhân khẩu</h5>

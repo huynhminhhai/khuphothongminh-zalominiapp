@@ -108,13 +108,13 @@ const ResidentMapPage = () => {
                 box-sizing: border-box;
                 box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
                 border: 2px solid #ffffff;
-                width: 16px;
-                height: 16px;
+                width: 10px;
+                height: 10px;
                 background-color: ${color};
                 border-radius: 50%;
             "></div>`,
-            iconSize: [16, 16],
-            iconAnchor: [8, 8],
+            iconSize: [10, 10],
+            iconAnchor: [5, 5],
         });
     }, [tinhTrangHoGiaDinhs]);
 
@@ -131,13 +131,12 @@ const ResidentMapPage = () => {
 
                         :
                         filteredResidents.length > 0 ?
-
                             <Box>
                                 <Box className="relative">
                                     <LegendNote tinhTrang={tinhTrangHoGiaDinhs} filter={filter} />
-                                    <Box className="absolute top-[66px] right-3 z-[9999]">
+                                    <Box className="absolute top-[72px] right-3 z-[9999] border-[2px] rounded-md border-[#00000033]">
                                         <button onClick={() => setSheetVisible(true)} className="p-2 bg-white text-[#a8a8a8] rounded-[5px] opacity-95">
-                                            <Icon fontSize={26} icon='mdi:filter' />
+                                            <Icon fontSize={26} icon='line-md:filter-twotone' />
                                         </button>
                                     </Box>
                                     <MapContainer style={{ height: "calc(100vh - 58px)", width: "100%" }} center={center} zoom={zoom}>
