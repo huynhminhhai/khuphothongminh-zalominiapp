@@ -134,7 +134,7 @@ const ResidentMapPage = () => {
 
                             <Box>
                                 <Box className="relative">
-                                    <LegendNote tinhTrang={tinhTrangHoGiaDinhs} />
+                                    <LegendNote tinhTrang={tinhTrangHoGiaDinhs} filter={filter} />
                                     <Box className="absolute top-[66px] right-3 z-[9999]">
                                         <button onClick={() => setSheetVisible(true)} className="p-2 bg-white text-[#a8a8a8] rounded-[5px] opacity-95">
                                             <Icon fontSize={26} icon='mdi:filter' />
@@ -213,7 +213,7 @@ const ResidentMapPage = () => {
                                                 <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
                                                     <div className="flex flex-col gap-1">
                                                         <div className="flex items-end justify-center">
-                                                            <p className="text-[14px] text-center font-bold">Hộ nghèo & cận nghèo</p>
+                                                            <p className="text-[13px] text-center font-bold">Hộ nghèo & cận nghèo</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -223,7 +223,7 @@ const ResidentMapPage = () => {
                                                 <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
                                                     <div className="flex flex-col gap-1">
                                                         <div className="flex items-end justify-center">
-                                                            <p className="text-[14px] text-center font-bold">Gia đình văn hóa</p>
+                                                            <p className="text-[13px] text-center font-bold">Gia đình văn hóa</p>
                                                         </div>
                                                     </div>
                                                 </div>
