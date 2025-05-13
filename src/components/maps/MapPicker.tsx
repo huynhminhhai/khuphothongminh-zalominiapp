@@ -112,7 +112,7 @@ const MapPicker = ({
     };
 
     return (
-        <div className="bg-gray-100 w-full h-[350px] relative z-0 flex flex-col gap-1 p-[6px] rounded-lg">
+        <div className="bg-gray-100 w-full h-[500px] relative z-0 flex flex-col gap-1 p-[6px] rounded-lg">
             {/* Thanh tìm kiếm */}
             <div className="flex flex-col gap-0 z-[1] mb-1">
                 <div className="flex gap-1">
