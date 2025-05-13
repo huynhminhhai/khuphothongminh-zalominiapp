@@ -1,13 +1,13 @@
 import { Icon } from "@iconify/react";
 import { ColumnDef } from "@tanstack/react-table";
-import { useDeleteInsurance, useGetInsuranceListNormal } from "apiRequest/insurance";
+import { useDeleteInsurance } from "apiRequest/insurance";
 import { useGetResidentListNormal } from "apiRequest/resident";
 import { EmptyData } from "components/data";
 import { HeaderSub } from "components/header-sub";
 import { ConfirmModal } from "components/modal";
 import { ManagementItemSkeleton } from "components/skeleton";
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useStoreApp } from "store/store";
 import { formatDate } from "utils/date";
 import { Box, Input, Page, useNavigate } from "zmp-ui";
@@ -15,7 +15,7 @@ import { debounce } from "lodash";
 
 const InsuranceManagementPage: React.FC = () => {
     const navigate = useNavigate();
-    const { account, hasPermission } = useStoreApp();
+    const { account } = useStoreApp();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -40,22 +40,6 @@ const InsuranceManagementPage: React.FC = () => {
 
     const { data: residentList, isLoading: isResidentLoading } = useGetResidentListNormal(param);
     const { mutate: deleteInsurance } = useDeleteInsurance();
-    const { data: insuranceList } = useGetInsuranceListNormal({
-        page: 1,
-        pageSize: 9999999,
-        keyword: "",
-        DanCuId: null,
-        LoaiBaoHiemId: 1,
-        MaSo: "",
-    });
-
-    const insuranceMap = useMemo(() => {
-        const map = {};
-        insuranceList?.data?.forEach((item) => {
-            map[item.danCuId] = item;
-        });
-        return map;
-    }, [insuranceList]);
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -138,7 +122,7 @@ const InsuranceManagementPage: React.FC = () => {
             header: "Mã số BHYT",
             cell: ({ row }) => (
                 <div>
-                    {insuranceMap[row.original.danCuId]?.maSo || "Không có"}
+                    {row.original.baoHiemYTe?.maSo || "Không có"}
                 </div>
             ),
             size: 250,
@@ -148,7 +132,7 @@ const InsuranceManagementPage: React.FC = () => {
             header: "Nơi đăng ký",
             cell: ({ row }) => (
                 <div>
-                    {insuranceMap[row.original.danCuId]?.noiDangKy || "Không có"}
+                    {row.original.baoHiemYTe?.noiDangKy || "Không có"}
                 </div>
             ),
             size: 250,
@@ -158,9 +142,9 @@ const InsuranceManagementPage: React.FC = () => {
             header: "Thời hạn",
             cell: ({ row }) => (
                 <div>
-                    {insuranceMap[row.original.danCuId]
-                        ? `${formatDate(insuranceMap[row.original.danCuId].tuNgay)} - ${formatDate(
-                            insuranceMap[row.original.danCuId].denNgay
+                    {row.original.baoHiemYTe
+                        ? `${formatDate(row.original.baoHiemYTe?.tuNgay)} - ${formatDate(
+                            row.original.baoHiemYTe?.denNgay
                         )}`
                         : "Không có"}
                 </div>
@@ -183,12 +167,12 @@ const InsuranceManagementPage: React.FC = () => {
                     >
                         <Icon icon="material-symbols:add" fontSize={18} />
                     </button>
-                    {insuranceMap[row.original.danCuId] && (
+                    {row.original.baoHiemYTe && (
                         <>
                             <button
                                 onClick={() =>
                                     navigate(
-                                        `/insurance-update?id=${insuranceMap[row.original.danCuId].thongTinBaoHiemId}`
+                                        `/insurance-update?id=${row.original.baoHiemYTe?.thongTinBaoHiemId}`
                                     )
                                 }
                                 className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -197,7 +181,7 @@ const InsuranceManagementPage: React.FC = () => {
                             </button>
                             <button
                                 onClick={() =>
-                                    removeInsurance(insuranceMap[row.original.danCuId].thongTinBaoHiemId)
+                                    removeInsurance(row.original.baoHiemYTe?.thongTinBaoHiemId)
                                 }
                                 className="px-3 py-1 bg-red-700 text-white rounded"
                             >

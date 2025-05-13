@@ -26,26 +26,7 @@ const InsurancePage: React.FC = () => {
         MaSo: '',
     })
 
-    // useEffect(() => {
-    //     if (account?.thongTinDanCu?.danCuId) {
-    //         setParam(prev => ({
-    //             ...prev,
-    //             DanCuId: account.thongTinDanCu.danCuId
-    //         }));
-    //     }
-    // }, [account?.thongTinDanCu?.danCuId]);
-
     const { data: insuranceList, isLoading: insuranceLoading } = useGetInsuranceListNormal(param);
-
-    // if (insuranceLoading) return <UserInfoSkeleton />
-    // if (!account?.thongTinDanCu?.danCuId) return (
-    //     <Box px={4}>
-    //         <EmptyData
-    //             title="Chưa có thông tin dân cư để cập nhật thẻ BHYT"
-    //             desc="Vui lòng liên hệ với ban quản trị khu phố/ấp để đăng ký thông tin cư dân"
-    //         />
-    //     </Box>
-    // )
 
     return (
         <Page className="relative flex-1 flex flex-col !bg-[#f4f5f6] pb-[0px]">
@@ -54,12 +35,8 @@ const InsurancePage: React.FC = () => {
                 <Box p={4}>
                     {insuranceLoading ? (
                         <UserInfoSkeleton />
-                    ) : !account?.thongTinDanCu?.danCuId ? (
-                        <EmptyData
-                            title="Chưa có thông tin dân cư để cập nhật thẻ BHYT"
-                            desc="Vui lòng liên hệ với ban quản trị khu phố/ấp để đăng ký thông tin cư dân"
-                        />
-                    ) : insuranceList?.data?.length > 0 ? (
+                    )
+                    : insuranceList?.data?.length > 0 ? (
                         insuranceList.data.map((item: any, index: number) => (
                             <div key={index}>
                                 <InsuranceItem data={item} />

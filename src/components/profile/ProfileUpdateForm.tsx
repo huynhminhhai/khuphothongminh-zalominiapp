@@ -291,7 +291,6 @@ const ProfileUpdateForm: React.FC = () => {
                             placeholder="Nhập email"
                             control={control}
                             error={errors.email?.message}
-                            required
                         />
                     </div>
                     <div className="col-span-6">
