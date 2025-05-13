@@ -11,6 +11,8 @@ import { useCreateResident, useGetChuHosList } from "apiRequest/resident"
 import http from "services/http"
 import { setAddressStepByStep, useResidentAddress } from "utils/useAddress"
 import { omit } from "lodash"
+import { Icon } from "@iconify/react"
+import { MapPicker } from "components/maps"
 
 const ProfileAddForm: React.FC = () => {
 
@@ -61,6 +63,8 @@ const ProfileAddForm: React.FC = () => {
   const [isConfirmVisible, setConfirmVisible] = useState(false);
   const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
   const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
+  const [showMapNoiThuongTru, setShowMapNoiThuongTru] = useState(false);
+  const [showMapNoiTamTru, setShowMapNoiTamTru] = useState(false);
 
   const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
     resolver: yupResolver(residentSchema(isHouseHold)),
@@ -394,6 +398,30 @@ const ProfileAddForm: React.FC = () => {
               disabled={!isHouseHold}
             />
           </div>
+          {
+            isHouseHold &&
+            <>
+              <div className="col-span-12">
+                <div className="mb-3 flex items-center justify-center gap-x-2 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiThuongTru(!showMapNoiThuongTru)}>
+                  Chọn vị trí
+                  <Icon fontSize={20} icon={"famicons:location-outline"} />
+                </div>
+              </div>
+              <div className="col-span-12">
+                <Box mb={4}>
+                  {showMapNoiThuongTru && (
+                    <MapPicker
+                      onClose={() => setShowMapNoiThuongTru(false)}
+                      onPick={(lat, lng) => {
+                        setValue("noiThuongTru.latitude", lat);
+                        setValue("noiThuongTru.longitute", lng);
+                      }}
+                    />
+                  )}
+                </Box>
+              </div>
+            </>
+          }
           <div className="col-span-6">
             <FormControllerDatePicker
               name="noiThuongTru.tuNgay"
@@ -482,6 +510,25 @@ const ProfileAddForm: React.FC = () => {
                   control={control}
                   error={errors.noiTamTru?.longitute?.message}
                 />
+              </div>
+              <div className="col-span-12">
+                <div className="mb-3 flex items-center justify-center gap-x-2 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiTamTru(!showMapNoiTamTru)}>
+                  Chọn vị trí
+                  <Icon fontSize={20} icon={"famicons:location-outline"} />
+                </div>
+              </div>
+              <div className="col-span-12">
+                <Box mb={4}>
+                  {showMapNoiTamTru && (
+                    <MapPicker
+                      onClose={() => setShowMapNoiTamTru(false)}
+                      onPick={(lat, lng) => {
+                        setValue("noiTamTru.latitude", lat);
+                        setValue("noiTamTru.longitute", lng);
+                      }}
+                    />
+                  )}
+                </Box>
               </div>
               <div className="col-span-6">
                 <FormControllerDatePicker

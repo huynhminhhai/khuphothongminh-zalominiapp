@@ -145,14 +145,16 @@ const ResidentMapPage = () => {
                                             <LayersControl.BaseLayer name="Bản đồ đường">
                                                 <TileLayer
                                                     url="https://mt1.google.com/vt/lyrs=m&hl=vi&x={x}&y={y}&z={z}"
-                                                    attribution="Bản đồ dân cư | © VNPT"
+                                                    attribution=""
+                                                    maxZoom={22}
                                                 />
                                             </LayersControl.BaseLayer>
 
                                             <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
                                                 <TileLayer
                                                     url="https://mt0.google.com/vt/lyrs=s&hl=vi&x={x}&y={y}&z={z}"
-                                                    attribution="Bản đồ dân cư | © VNPT"
+                                                    attribution=""
+                                                    maxZoom={22}
                                                 />
                                             </LayersControl.BaseLayer>
 
