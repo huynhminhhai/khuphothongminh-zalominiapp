@@ -78,6 +78,7 @@ const SERVICES: ServicesType[] = [
         label: 'Bản đồ dân cư',
         url: '/maps',
         icon: images.map,
+        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCuDanCu, quyen: PermissionActions.XEM },
     },
 ]
 

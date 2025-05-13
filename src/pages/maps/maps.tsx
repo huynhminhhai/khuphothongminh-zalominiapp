@@ -108,13 +108,13 @@ const ResidentMapPage = () => {
                 box-sizing: border-box;
                 box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
                 border: 2px solid #ffffff;
-                width: 10px;
-                height: 10px;
+                width: 12px;
+                height: 12px;
                 background-color: ${color};
                 border-radius: 50%;
             "></div>`,
-            iconSize: [10, 10],
-            iconAnchor: [5, 5],
+            iconSize: [12, 12],
+            iconAnchor: [6, 6],
         });
     }, [tinhTrangHoGiaDinhs]);
 

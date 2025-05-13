@@ -1,11 +1,10 @@
 import React from "react"
-import { Box, useNavigate } from "zmp-ui"
+import { Box } from "zmp-ui"
 import { useGetChuHosList, useGetResidentData } from "apiRequest/resident"
 import { Icon } from "@iconify/react"
 
 const StatisticList: React.FC<any> = () => {
 
-    const navigate = useNavigate();
     const { familyNumberQuery, residentNumberQuery } = useGetResidentData();
     const { data: chuHos, isLoading } = useGetChuHosList();
 
@@ -13,7 +12,7 @@ const StatisticList: React.FC<any> = () => {
         <Box>
             <div className="grid grid-cols-2 gap-3">
                 <Box>
-                    <div className={'bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'} onClick={() => navigate('/maps')}>
+                    <div className={'bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'}>
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[13px] leading-[1] font-medium mb-[6px] opacity-90">Hộ dân</h5>
@@ -31,7 +30,7 @@ const StatisticList: React.FC<any> = () => {
                 </Box>
 
                 <Box>
-                    <div className={'bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'} onClick={() => navigate('/maps')}>
+                    <div className={'bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'}>
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[13px] leading-[1] font-medium mb-[6px] opacity-90">Nhân khẩu</h5>

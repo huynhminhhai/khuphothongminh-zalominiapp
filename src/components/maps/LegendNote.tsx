@@ -5,9 +5,6 @@ import { useState } from "react";
 const LegendNote = (props?: any) => {
     const [isOpen, setIsOpen] = useState(true);
 
-
-    console.log(props?.filter)
-
     return (
         <div className="absolute bottom-5 left-3 z-[9999]">
             {/* Nút Toggle */}

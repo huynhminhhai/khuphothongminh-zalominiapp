@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, useNavigate } from "zmp-ui";
+import { Box } from "zmp-ui";
 import { motion } from "framer-motion";
 import images from "assets/images";
 import { useGetSoLieuHienThi } from "apiRequest/app";
@@ -7,13 +7,11 @@ import { Icon } from "@iconify/react";
 
 const StatisticMain: React.FC<any> = () => {
 
-    const navigate = useNavigate();
-
     const { data, isLoading } = useGetSoLieuHienThi();
 
     return (
         <Box mt={3}>
-            <div className="bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden" onClick={() => navigate('/maps')}>
+            <div className="bg-[#2265a2] text-white w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
                 <div className="absolute top-[50%] left-0 transform translate-y-[-50%] w-[100%]">
                     <motion.img
                         className="invert brightness-0 w-[100%]"

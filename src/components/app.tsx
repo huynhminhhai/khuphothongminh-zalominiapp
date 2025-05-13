@@ -34,8 +34,6 @@ const AuthWrapper = ({ children }) => {
   const navigate = useNavigate();
   const logout = useLogout();
 
-
-
   const loadAuthData = async () => {
 
     // logout();
@@ -48,7 +46,7 @@ const AuthWrapper = ({ children }) => {
         navigate("/login");
         return;
       }
-      
+
       const storedAccount = storedData.account ? JSON.parse(storedData.account) : null;
       const storedAccessToken = storedData.accessToken || null;
       const storedRefreshToken = storedData.refreshToken || null;
@@ -68,6 +66,10 @@ const AuthWrapper = ({ children }) => {
           navigate("/login");
           return;
         }
+      }
+
+      if (!storedAccount?.apId) {
+        navigate("/register-ap");
       }
 
       fetchResidentTypes();

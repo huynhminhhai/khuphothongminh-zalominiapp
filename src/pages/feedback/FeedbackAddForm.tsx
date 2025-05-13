@@ -166,7 +166,6 @@ const FeedbackAddForm: React.FC = () => {
                             options={tinhs}
                             error={errors.maTinh?.message}
                             required
-                            disabled
                         />
                     </div>
                     <div className="col-span-12">
@@ -177,8 +176,7 @@ const FeedbackAddForm: React.FC = () => {
                             control={control}
                             options={phanAnhAddress.huyenOptions}
                             error={errors.maHuyen?.message}
-                            // disabled={!phanAnhAddress.watchedTinh}
-                            disabled
+                            disabled={!phanAnhAddress.watchedTinh}
                         />
                     </div>
                     <div className="col-span-6">
@@ -189,8 +187,7 @@ const FeedbackAddForm: React.FC = () => {
                             control={control}
                             options={phanAnhAddress.xaOptions}
                             error={errors.maXa?.message}
-                            // disabled={!phanAnhAddress.watchedHuyen}
-                            disabled
+                            disabled={!phanAnhAddress.watchedHuyen}
                         />
                     </div>
                     <div className="col-span-6">
@@ -201,8 +198,7 @@ const FeedbackAddForm: React.FC = () => {
                             control={control}
                             options={phanAnhAddress.apOptions}
                             error={errors.apId?.message}
-                            // disabled={!phanAnhAddress.watchedXa}
-                            disabled
+                            disabled={!phanAnhAddress.watchedXa}
                         />
                     </div>
                     <div className="col-span-12">
