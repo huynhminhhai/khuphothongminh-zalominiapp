@@ -92,22 +92,18 @@ const SurveyManagementPage: React.FC = () => {
             size: 300
         },
         {
-            id: 'startDate',
-            header: 'Từ ngày',
-            cell: ({row}) => (
-                <div>{formatDate(row.original.tuNgay)}</div>
-            )
-        },
-        {
-            id: 'expiryDate',
+            id: 'Thời gian',
             header: 'Đến ngày',
             cell: ({row}) => (
-                <div>{formatDate(row.original.denNgay)}</div>
+                <div>{formatDate(row.original.tuNgay)} - {formatDate(row.original.denNgay)}</div>
             )
         },
         {
-            accessorKey: 'soLuongThamGiaKhaoSat',
-            header: 'Lượt khảo sát',
+            id: 'info',
+            header: 'Thông tin',
+            cell: ({row}) => (
+                <div>{row.original.soLuongCauHoiKhaoSat} câu hỏi - {row.original.soLuongThamGiaKhaoSat} người tham gia</div>
+            )
         },
         {
             id: 'chart',

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { formatDate, isExpired } from "utils/date";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
-import { Box, Button, Checkbox, Modal, Page, Radio } from "zmp-ui";
+import { Box, Button, Checkbox, Modal, Page, Radio, useNavigate } from "zmp-ui";
 
 interface QuestionType {
     questionId: number;
@@ -64,6 +64,8 @@ interface SurveySubmitAPI {
 }
 
 const SurveyDetailPage: React.FC = () => {
+
+    const navigator = useNavigate();
 
     const [detailData, setDetailData] = useState<SurveyDetailAPI | undefined>(undefined);
     const [responses, setResponses] = useState<SurveyResponseType['answers']>([]);
@@ -160,7 +162,9 @@ const SurveyDetailPage: React.FC = () => {
 
             await createResultSurvey(payload);
 
-            showSuccess('Gửi khảo sát thành công')
+            showSuccess('Gửi khảo sát thành công');
+
+            navigator('/survey');
         } catch (error) {
             console.error("Failed to submit survey data:", error);
         }

@@ -176,7 +176,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                         stepSize: 1, // Bước nhảy là 1
                         callback: (value) => Number(value).toFixed(0), // Chỉ hiển thị số nguyên
                       },
-                      border: { display: false },
+                      // border: { display: false },
                       grid: { display: false },
                     },
                   },
@@ -209,10 +209,10 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
 
   return (
     <Box>
-      <Box p={4}>
+      <Box px={4} py={2}>
         <div className="bg-white box-shadow-4 rounded-xl px-3 py-4 text-center text-gray-color">
           <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-1">{surveyDetail.tieuDe}</h3>
-          <div className='font-medium mt-2'>{formatDate(surveyDetail.tuNgay)} - {formatDate(surveyDetail.denNgay)}</div>
+          <div className='font-semibold mt-2 text-black'>{formatDate(surveyDetail.tuNgay)} - {formatDate(surveyDetail.denNgay)}</div>
             <div className='mt-2'>
               <p className='font-medium'>Số lượng câu hỏi: <span className='text-black font-semibold'>{surveyDetail.soLuongCauHoiKhaoSat}</span></p>
               <p className='font-medium'>Người tham gia khảo sát: <span className='text-black font-semibold'>{surveyDetail.soLuongThamGiaKhaoSat}</span></p>
@@ -220,9 +220,9 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
         </div>
       </Box>
       {chartsData.map((chart, index) => (
-        <Box p={4} key={index}>
+        <Box px={4} py={2} key={index}>
           <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">
-            <h3 className="text-[16px] leading-[22px] font-medium mb-1">{chart.question}</h3>
+            <h3 className="text-[16px] leading-[22px] font-semibold mb-3">{chart.question}</h3>
             {chart.chart}
           </div>
         </Box>

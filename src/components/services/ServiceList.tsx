@@ -74,12 +74,6 @@ const SERVICES: ServicesType[] = [
     //     icon: images.invoice,
     //     requiredPermission: { maChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: PermissionActions.XEM },
     // },
-    {
-        label: 'Bản đồ dân cư',
-        url: '/maps',
-        icon: images.map,
-        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCuDanCu, quyen: PermissionActions.XEM },
-    },
 ]
 
 const ServiceList: React.FC<any> = () => {

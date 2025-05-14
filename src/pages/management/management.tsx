@@ -18,6 +18,21 @@ const ManagementPage: React.FC = () => {
 
                 <Box m={4}>
                     <List className="bg-white rounded-lg">
+                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tổng quan</div>
+                        {
+                            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
+                            <Item
+                                title="Bản đồ dân cư"
+                                prefix={<img src={images.map} alt='news' className="w-[30px] h-auto" />}
+                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                onClick={() => navigate('/maps')}
+                            />
+                        }
+                    </List>
+                </Box>
+
+                <Box m={4}>
+                    <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tuyên truyền, phản ánh</div>
                         {
                             // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
@@ -85,7 +100,7 @@ const ManagementPage: React.FC = () => {
                                 onClick={() => navigate('/invoice-management')}
                             />
                         } */}
-                        
+
                     </List>
                 </Box>
 

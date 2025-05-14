@@ -429,7 +429,7 @@ const ProfileAddForm: React.FC = () => {
             isHouseHold &&
             <>
               <div className="col-span-12">
-                <div className=" mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiThuongTru(!showMapNoiThuongTru)}>
+                <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiThuongTru(!showMapNoiThuongTru)}>
                   Chọn vị trí
                   <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
                 </div>
