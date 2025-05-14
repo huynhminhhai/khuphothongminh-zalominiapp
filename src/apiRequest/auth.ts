@@ -39,6 +39,9 @@ const authApiRequest = {
     refeshToken: async ({ accessToken, refreshToken }: { accessToken: string, refreshToken: string }) => {
         return await http.post<any>('/xacthuc/refreshtoken', { accessToken, refreshToken });
     },
+    changePassword: async (formData: any) => {
+        return await http.putFormData<any>('/nguoidung/thongtincanhan', formData);
+    },
 }
 
 export const useLogin = () => {
@@ -149,6 +152,38 @@ export const useUpdateAccount = () => {
         },
         onSuccess: async () => {
             showSuccess('Cập nhật thông tin tài khoản thành công');
+
+            try {
+                const res = await authApiRequest.getUserInfo();
+
+                setAccount((res as any).data);
+            } catch (error) {
+                console.error("Lỗi lấy thông tin người dùng:", error);
+            }
+
+            queryClient.invalidateQueries({ queryKey: ['account'] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* PUT PASSWORD
+**/
+export const useChangePassword = () => {
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+    const { setAccount } = useStoreApp();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await authApiRequest.changePassword(formData);
+        },
+        onSuccess: async () => {
+            showSuccess('Cập nhật mật khẩu thành công');
 
             try {
                 const res = await authApiRequest.getUserInfo();

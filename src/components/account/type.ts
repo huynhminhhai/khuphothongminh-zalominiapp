@@ -22,18 +22,19 @@ export type FormDataProfile = {
 }
 
 export const schemaChangePassword = yup.object().shape({
-    oldPassword: yup.string().required('Không được để trống'),
-    password: yup.string().required('Không được để trống'),
-    confirmPassword: yup
+    matKhau: yup.string().required('Không được để trống'),
+    matKhauMoi: yup.string().required('Không được để trống'),
+    matKhauMoiLapLai: yup
         .string()
         .required('Không được để trống')
-        .oneOf([yup.ref('password')], 'Mật khẩu xác nhận không khớp'),
+        .oneOf([yup.ref('matKhauMoi')], 'Mật khẩu xác nhận không khớp'),
 });
 
 export type FormDataChangePassword = {
-    oldPassword: string;
-    confirmPassword: string;
-    password: string;
+    matKhau: string;
+    matKhauMoiLapLai: string;
+    matKhauMoi: string;
+    fileAnhDaiDien?: File;
 }
 
 export const schemaRegisterAp = yup.object().shape({

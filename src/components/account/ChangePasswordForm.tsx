@@ -1,57 +1,92 @@
-import React, { useState } from "react"
-import { Box, Button, useNavigate } from "zmp-ui"
+import React, { useEffect, useState } from "react"
+import { Box, Button } from "zmp-ui"
 import { FormDataChangePassword, schemaChangePassword } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FormInputField } from "components/form"
 import { Icon } from "@iconify/react"
-import { useCustomSnackbar } from "utils/useCustomSnackbar"
+import { useChangePassword } from "apiRequest/auth"
+import { useStoreApp } from "store/store"
+import { ConfirmModal } from "components/modal"
+import { convertToFormData, loadImage } from "utils/file"
 
 const defaultValues: FormDataChangePassword = {
-    password: '',
-    oldPassword: '',
-    confirmPassword: ''
+    matKhauMoi: '',
+    matKhau: '',
+    matKhauMoiLapLai: ''
 }
 
 const ChangePasswordForm: React.FC = () => {
 
-    const { showSuccess, showError } = useCustomSnackbar();
-    const navigate = useNavigate()
+    const { account } = useStoreApp();
 
-    const [loading, setLoading] = useState(false);
+    const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataChangePassword>(defaultValues)
     const [isHidePw, setIsHidePw] = useState<boolean>(true)
     const [isHideOPw, setIsHideOPw] = useState<boolean>(true)
     const [isHideCPw, setIsHideCPw] = useState<boolean>(true)
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataChangePassword>({
+    const { handleSubmit, control, reset, formState: { errors } } = useForm<FormDataChangePassword>({
         resolver: yupResolver(schemaChangePassword),
         defaultValues
     });
 
-    const onSubmit: SubmitHandler<FormDataChangePassword> = (data) => {
-        setFormData(data)
+    const { mutateAsync: changePassword, isPending } = useChangePassword();
 
-        if (data) {
-            fetchApi()
+    useEffect(() => {
+        if (account) {
+            reset({
+                fileAnhDaiDien: undefined
+            })
+
+            const fetchAndSetImage = async () => {
+                if (account?.anhDaiDien) {
+                    const file = await loadImage(account.anhDaiDien);
+
+                    if (file) {
+                        reset((prevValues) => ({
+                            ...prevValues,
+                            fileAnhDaiDien: file,
+                        }));
+                    }
+                }
+            };
+
+            fetchAndSetImage();
+        }
+    }, [account])
+
+    const onSubmit: SubmitHandler<FormDataChangePassword> = (data) => {
+        setConfirmVisible(true);
+        setFormData(data)
+    };
+
+
+    const handleConfirm = async () => {
+        setConfirmVisible(false);
+        try {
+
+            const dataSubmit = {
+                ...formData,
+                nguoiDungId: account?.nguoiDungId,
+                hoTen: account?.hoTen
+            };
+
+            const formDataConverted = convertToFormData(dataSubmit);
+
+            await changePassword(formDataConverted);
+
+            reset(defaultValues);
+
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            console.log('call api login with: ', { ...formData });
+    const handleCancel = () => {
+        setConfirmVisible(false);
+    };
 
-            showSuccess('Đổi mật khẩu thành công')
-            reset(defaultValues);
-            navigate('/profile');
-        } catch (error) {
-            console.error(`Lỗi: ${error}`)
-            showError(error as string)
-        } finally {
-            setLoading(false);
-        }
-    }
 
     return (
         <Box px={4} pb={4} className="login-form">
@@ -60,12 +95,12 @@ const ChangePasswordForm: React.FC = () => {
                     <div className="col-span-12 relative">
                         <Icon icon='mdi:password' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
-                            name="oldPassword"
+                            name="matKhau"
                             type={isHideOPw ? 'password' : 'text'}
                             label=""
                             placeholder="Mật khẩu cũ"
                             control={control}
-                            error={errors.oldPassword?.message}
+                            error={errors.matKhau?.message}
                         />
                         <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHideOPw(!isHideOPw)}>
 
@@ -77,12 +112,12 @@ const ChangePasswordForm: React.FC = () => {
                     <div className="col-span-12 relative">
                         <Icon icon='mdi:password' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
-                            name="password"
+                            name="matKhauMoi"
                             type={isHidePw ? 'password' : 'text'}
                             label=""
                             placeholder="Mật khẩu mới"
                             control={control}
-                            error={errors.password?.message}
+                            error={errors.matKhauMoi?.message}
                         />
                         <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHidePw(!isHidePw)}>
 
@@ -94,12 +129,12 @@ const ChangePasswordForm: React.FC = () => {
                     <div className="col-span-12 relative">
                         <Icon icon='mdi:password' fontSize={20} color="var(--primary-color)" className="absolute left-[10px] z-10 top-[47%] translate-y-[-50%]" />
                         <FormInputField
-                            name="confirmPassword"
+                            name="matKhauMoiLapLai"
                             type={isHideCPw ? 'password' : 'text'}
                             label=""
                             placeholder="Xác nhận mật khẩu mới"
                             control={control}
-                            error={errors.confirmPassword?.message}
+                            error={errors.matKhauMoiLapLai?.message}
                         />
                         <div className="absolute right-[10px] z-10 top-[47%] translate-y-[-50%]" onClick={() => setIsHideCPw(!isHideCPw)}>
 
@@ -109,12 +144,19 @@ const ChangePasswordForm: React.FC = () => {
                         </div>
                     </div>
                     <div className="col-span-12 relative mt-[40px]">
-                        <Button fullWidth onClick={handleSubmit(onSubmit)}>
-                            {loading ? "Đang xử lý..." : "Đổi mật khẩu"}
+                        <Button fullWidth onClick={handleSubmit(onSubmit)} disabled={isPending}>
+                            {isPending ? "Đang xử lý..." : "Đổi mật khẩu"}
                         </Button>
                     </div>
                 </div>
             </Box>
+            <ConfirmModal
+                visible={isConfirmVisible}
+                title="Xác nhận"
+                message="Bạn có chắc chắn muốn cập nhật mật khẩu không?"
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </Box>
     )
 }

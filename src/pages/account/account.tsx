@@ -13,7 +13,7 @@ const AccountPage: React.FC = () => {
 
     const navigate = useNavigate()
     // const { loginWithZalo } = useLoginWithZalo();
-    const { account, accessToken } = useStoreApp();
+    const { account, accessToken, hasRole } = useStoreApp();
     const logout = useLogout();
 
     return (
@@ -43,12 +43,15 @@ const AccountPage: React.FC = () => {
                                         prefix={<img src={images.resume} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     />
-                                    {/* <Item
+                                    {
+                                        hasRole('TRUONG_AP') &&
+                                        <Item
                                             onClick={() => navigate('/change-password')}
                                             title="Đổi mật khẩu"
                                             prefix={<img src={images.changePw} width={30} />}
                                             suffix={<Icon fontSize={20} icon="formkit:right" />}
-                                        /> */}
+                                        />
+                                    }
                                     <Item
                                         onClick={logout}
                                         title="Đăng xuất"
