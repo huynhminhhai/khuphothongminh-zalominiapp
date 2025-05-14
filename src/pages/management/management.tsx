@@ -33,39 +33,6 @@ const ManagementPage: React.FC = () => {
 
                 <Box m={4}>
                     <List className="bg-white rounded-lg">
-                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tuyên truyền, phản ánh</div>
-                        {
-                            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
-                            <Item
-                                title="Tin tức"
-                                prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                                onClick={() => navigate('/news-management')}
-                            />
-                        }
-                        {
-                            // hasPermission('Lấy danh sách khảo sát có phân trang', 'XEM') &&
-                            <Item
-                                title="Khảo sát"
-                                prefix={<img src={images.survey} alt='survey' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                                onClick={() => navigate('/survey-management')}
-                            />
-                        }
-                        {
-                            // hasPermission('Lấy danh sách phản ánh có phân trang', 'XEM') &&
-                            <Item
-                                title="Phản ánh"
-                                prefix={<img src={images.idea} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                                onClick={() => navigate('/feedback-management')}
-                            />
-                        }
-                    </List>
-                </Box>
-
-                <Box m={4}>
-                    <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tổ chức, dân cư</div>
                         <Item
                             title="Tổ chức"
@@ -101,6 +68,39 @@ const ManagementPage: React.FC = () => {
                             />
                         } */}
 
+                    </List>
+                </Box>
+
+                <Box m={4}>
+                    <List className="bg-white rounded-lg">
+                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tuyên truyền, phản ánh</div>
+                        {
+                            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
+                            <Item
+                                title="Tin tức"
+                                prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
+                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                onClick={() => navigate('/news-management')}
+                            />
+                        }
+                        {
+                            // hasPermission('Lấy danh sách khảo sát có phân trang', 'XEM') &&
+                            <Item
+                                title="Khảo sát"
+                                prefix={<img src={images.survey} alt='survey' className="w-[30px] h-auto" />}
+                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                onClick={() => navigate('/survey-management')}
+                            />
+                        }
+                        {
+                            // hasPermission('Lấy danh sách phản ánh có phân trang', 'XEM') &&
+                            <Item
+                                title="Phản ánh"
+                                prefix={<img src={images.idea} alt='feedback' className="w-[30px] h-auto" />}
+                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                onClick={() => navigate('/feedback-management')}
+                            />
+                        }
                     </List>
                 </Box>
 

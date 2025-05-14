@@ -26,12 +26,12 @@ const SERVICES: ServicesType[] = [
         icon: images.safety,
         requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
-    {
-        label: 'Thông tin tổ chức',
-        url: '/team',
-        icon: images.team,
-        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCuBanDieuHanh, quyen: PermissionActions.XEM },
-    },
+    // {
+    //     label: 'Thông tin tổ chức',
+    //     url: '/team',
+    //     icon: images.team,
+    //     requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCuBanDieuHanh, quyen: PermissionActions.XEM },
+    // },
     {
         label: 'Tin tức',
         url: '/news',
