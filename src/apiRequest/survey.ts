@@ -25,6 +25,9 @@ const surveyApiRequest = {
     createResultSurvey: async (formData: any) => {
         return await http.post<any>("/ketquakhaosat", formData);
     },
+    getSurveyMemberList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; khaoSatId: number; }) => {
+        return await http.get<any>(`/ketquakhaosat?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&khaoSatId=${param.khaoSatId}`);
+    },
 }
 
 /**
@@ -41,6 +44,22 @@ export const useGetSurveyListNormal = (param: { page: number; pageSize: number; 
         retry: 1,
     });
 };
+
+/**
+* GET TASK LIST
+**/ 
+export const useGetSurveyMemberListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; khaoSatId: number; }) => {
+    return useQuery({
+        queryKey: ['surveyMemberList', param.page, param.pageSize, param.ApId, param.keyword, param.khaoSatId],
+        queryFn: async () => {
+            const res = await surveyApiRequest.getSurveyMemberList(param);
+            return res
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
 
 /**
 * GET TASK LIST (INFINITE)

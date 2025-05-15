@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
@@ -193,6 +193,7 @@ const MyApp = () => {
                         <Route path="/survey-add" element={<SurveyAddPage></SurveyAddPage>}></Route>
                         <Route path="/survey-update" element={<SurveyUpdatePage></SurveyUpdatePage>}></Route>
                         <Route path="/survey-charts" element={<SurveyChartsPage></SurveyChartsPage>}></Route>
+                        <Route path="/survey-member" element={<SurveyMemberPage></SurveyMemberPage>}></Route>
 
                         {/* MANAGEMENT NEWS */}
                         <Route path="/news-management" element={<NewsManagementPage></NewsManagementPage>}></Route>

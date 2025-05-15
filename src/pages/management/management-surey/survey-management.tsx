@@ -23,10 +23,14 @@ const SurveyManagementPage: React.FC = () => {
     const [viewCard, setViewCard] = useState<boolean>(true)
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const [search, setSearch] = useState("");
+    const [filters, setFilters] = useState({
+        search: "",
+    });
+
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
-        ApId: account ? account.thongTinDanCu?.apId : 0,
+        ApId: account ? account?.apId : 0,
         keyword: ''
     })
 
@@ -34,16 +38,23 @@ const SurveyManagementPage: React.FC = () => {
     const { data: surveyStatus } = useGetSurveyStatus();
     const { mutate: deleteSurvey } = useDeleteSurvey();
 
-    const debouncedSearch = useCallback(
-        debounce((value) => {
-            setParam((prev) => ({ ...prev, keyword: value }));
-        }, 300),
-        []
-    );
+    const updateFilter = (key: keyof typeof filters, value: string) => {
+        setFilters((prev) => ({ ...prev, [key]: value }));
+    };
 
-    useEffect(() => {
-        debouncedSearch(search);
-    }, [search, debouncedSearch]);
+    const useDebouncedParam = (value: string, key: keyof typeof param) => {
+        useEffect(() => {
+            const handler = debounce((v: string) => {
+                setParam(prev => ({ ...prev, [key]: v }))
+            }, 300)
+
+            handler(value)
+
+            return () => handler.cancel()
+        }, [value, key])
+    }
+
+    useDebouncedParam(filters.search, 'keyword');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -94,15 +105,15 @@ const SurveyManagementPage: React.FC = () => {
         {
             id: 'Thời gian',
             header: 'Đến ngày',
-            cell: ({row}) => (
+            cell: ({ row }) => (
                 <div>{formatDate(row.original.tuNgay)} - {formatDate(row.original.denNgay)}</div>
             )
         },
         {
             id: 'info',
             header: 'Thông tin',
-            cell: ({row}) => (
-                <div>{row.original.soLuongCauHoiKhaoSat} câu hỏi - {row.original.soLuongThamGiaKhaoSat} người tham gia</div>
+            cell: ({ row }) => (
+                <div>{row.original.soLuongCauHoiKhaoSat} câu hỏi - <span className="text-blue-700" onClick={() => navigate(`/survey-member?id=${row.original.khaoSatId}`)} >{row.original.soLuongThamGiaKhaoSat} người tham gia</span></div>
             )
         },
         {
@@ -196,7 +207,7 @@ const SurveyManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý khảo sát" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý khảo sát" />
                 <Box>
                     <Box pb={4}>
                         <FilterBar
@@ -207,11 +218,9 @@ const SurveyManagementPage: React.FC = () => {
                         >
                             <div className="col-span-12">
                                 <Input
-                                    placeholder="Tìm kiếm..."
-                                    value={search}
-                                    onChange={(e) => {
-                                        setSearch(e.target.value)
-                                    }}
+                                    placeholder="Tìm kiếm nhanh"
+                                    value={filters.search}
+                                    onChange={(e) => updateFilter('search', e.target.value)}
                                 />
                             </div>
                         </FilterBar>

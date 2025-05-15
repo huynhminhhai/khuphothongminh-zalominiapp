@@ -7,6 +7,7 @@ export { default as SurveyManagementPage } from "./management-surey/survey-manag
 export { default as SurveyAddPage } from "./management-surey/survey-create";
 export { default as SurveyUpdatePage } from "./management-surey/survey-update";
 export { default as SurveyChartsPage } from "./management-surey/survey-charts";
+export { default as SurveyMemberPage } from "./management-surey/survey-member";
 
 /**
  * NEWS

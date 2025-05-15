@@ -1,6 +1,5 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useGetHuyenList, useGetXaList } from "apiRequest/app"
 import { useDeleteFeedback, useGetFeedbackListNormal, useGetFeedbackStatus, useUpdateFeedbackStatus } from "apiRequest/feeback"
 import images from "assets/images"
 import { EmptyData } from "components/data"
