@@ -11,6 +11,21 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from '@iconify/react';
 import { useStoreApp } from 'store/store';
+import { useGetLocationWithZalo } from 'services/getLocationWithZalo';
+import { Loading } from 'components/data';
+
+interface ZaloLocationResponse {
+    error: boolean;
+    statusCode: number;
+    message: string;
+    type: string;
+    data: {
+        provider: string;
+        latitude: string;
+        longitude: string;
+        timestamp: string;
+    };
+}
 
 // Component để xử lý click trên bản đồ
 const LocationMarker = ({
@@ -72,8 +87,28 @@ const MapPicker = ({
     const [search, setSearch] = useState('');
     const [error, setError] = useState('');
     const [position, setPosition] = useState<L.LatLng | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { getLocationWithZalo } = useGetLocationWithZalo();
 
     const DEFAULT_POSITION = L.latLng(10.535, 106.415);
+
+    const handleGetLocation = async () => {
+        setIsLoading(true);
+        const res = await getLocationWithZalo() as ZaloLocationResponse;
+
+        setIsLoading(false);
+
+        if (res && res?.data?.latitude && res?.data?.longitude) {
+            const lat = parseFloat(res.data.latitude);
+            const lng = parseFloat(res.data.longitude);
+            const newPos = L.latLng(lat, lng);
+
+            setPosition(newPos);
+            onPick(lat, lng);
+        }
+    };
+
 
     useEffect(() => {
         const initLocation = async () => {
@@ -113,9 +148,9 @@ const MapPicker = ({
     };
 
     return (
-        <div className="bg-gray-100 w-full h-[500px] relative z-0 flex flex-col gap-1 p-[6px] rounded-lg">
+        <div className="bg-gray-100 w-full h-[500px] relative z-0 flex flex-col gap-1 rounded-lg py-[6px]">
             {/* Thanh tìm kiếm */}
-            <div className="flex flex-col gap-0 z-[1] mb-1">
+            <div className="flex flex-col gap-0 z-[1] mb-1 px-[6px]">
                 <div className="flex gap-1">
                     <input
                         type="text"
@@ -134,8 +169,19 @@ const MapPicker = ({
                 {error && <p className="text-red-500 text-xs font-medium">{error}</p>}
             </div>
 
+            <div className="flex flex-col gap-0 z-[1] mb-1 px-[6px]">
+                <button onClick={() => handleGetLocation()} className="bg-blue-100 text-blue-700 font-medium px-3 py-1 rounded text-sm flex items-center justify-center gap-1">Lấy vị trí hiện tại <Icon fontSize={18} icon="mingcute:map-pin-line" /> </button>
+            </div>
+
             {/* Bản đồ */}
-            <div className="flex-1">
+
+            <div className="flex-1 relative">
+                {
+                    isLoading &&
+                    <div className='absolute top-0 left-0 w-full h-full bg-[#ffffff99] flex items-center justify-center z-[99999]'>
+                        <Loading />
+                    </div>
+                }
                 <MapContainer
                     center={position ?? DEFAULT_POSITION}
                     zoom={15}
