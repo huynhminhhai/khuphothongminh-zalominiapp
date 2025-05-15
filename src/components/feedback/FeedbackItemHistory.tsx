@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react"
-import { useGetFeedbackStatus } from "apiRequest/feeback"
+import { useDeleteFeedback, useGetFeedbackStatus } from "apiRequest/feeback"
 import React from "react"
 import { getFullImageUrl, isImage } from "utils/file"
 import { getTinhTrangFeedbackColor } from "utils/renderColor"
@@ -16,6 +16,7 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
     const navigate = useNavigate();
 
     const { data: feedbackStatus } = useGetFeedbackStatus();
+    const { mutate: deleteFeedback } = useDeleteFeedback();
 
     const status = feedbackStatus?.tinhTrangs?.find((item: any) => item.tinhTrangId === data.tinhTrangId);
     const { color, bg } = getTinhTrangFeedbackColor(status?.tenTinhTrang);
@@ -61,13 +62,18 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
                     </div>
                 </Box>
             </Box>
-            <Box mt={3}>
+            <div className="mt-3 grid grid-cols-2 gap-2">
                 <Button variant="secondary" size="small" fullWidth onClick={() => navigate(`/feedback-update?id=${data.phanAnhId}`)}>
-                    <div className="flex items-center justify-center gap-1">
-                        Cập nhật phản ánh
+                    <div className="flex items-center justify-center gap-1 font-semibold">
+                        Cập nhật
                     </div>
                 </Button>
-            </Box>
+                <Button className="!bg-red-100 !text-red-700" size="small" fullWidth onClick={() => deleteFeedback(data.phanAnhId)}>
+                    <div className="flex items-center justify-center gap-1 font-semibold">
+                        Xóa
+                    </div>
+                </Button>
+            </div>
         </Box>
     )
 }

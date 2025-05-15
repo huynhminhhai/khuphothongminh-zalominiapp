@@ -155,6 +155,7 @@ export const useCreateFeeback = () => {
             showSuccess('Gửi phản ánh thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+            queryClient.invalidateQueries({ queryKey: ["myFeedbackList"] });
 
             navigate('/feedback');
         },
@@ -204,6 +205,7 @@ export const useDeleteFeedback = () => {
             showSuccess('Xóa phản ánh thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+            queryClient.invalidateQueries({ queryKey: ["myFeedbackList"] });
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

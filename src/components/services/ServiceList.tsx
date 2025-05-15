@@ -60,7 +60,7 @@ const SERVICES: ServicesType[] = [
         label: 'Nhiệm vụ',
         url: '/task',
         icon: images.todo,
-        requiredPermission: { maChucNang: permissionsList.khuPhoCongViec, quyen: PermissionActions.XEM },
+        requiredPermission: { maChucNang: permissionsList.khuPhoCongViecNhiemVuCuaToi, quyen: PermissionActions.XEM },
     },
     {
         label: 'Tình hình thu chi',

@@ -62,7 +62,7 @@ const MeetingList: React.FC = () => {
 
     const renderContent = () => {
         if (isLoading) {
-            return <Box px={4}><MeetingItemSkeleton count={5} /></Box>
+            return <Box><MeetingItemSkeleton count={5} /></Box>
         }
 
         return <Box>
