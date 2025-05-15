@@ -172,36 +172,13 @@ const MeetingDetailPage: React.FC = () => {
                                                     <div className="text-[#808080]"><span className="text-[#000] font-semibold">{memberList.length}</span> thành viên tham gia</div>
                                                 </div>
                                             </div>
-                                            <Modal
-                                                visible={popupVisible}
-                                                title="Thành viên tham gia"
-                                                verticalActions
-                                            >
-                                                <div className="max-h-[400px] overflow-y-auto relative mt-6 mb-3">
-                                                    {
-                                                        memberList.map((member, index) => (
-                                                            <Box mb={3} flex alignItems="center" className="gap-2" key={index}>
-                                                                <Avatar
-                                                                    key={index}
-                                                                    size={30}
-                                                                    src={member?.anhDaiDien?.trim() ? getFullImageUrl(member.anhDaiDien) : images.avatar}
-                                                                />
-                                                                <div className="font-medium text-gray-color">{member?.hoTenNguoiThamDu}</div>
-                                                            </Box>
-                                                        ))
-                                                    }
-                                                </div>
-                                                <Box flex justifyContent="flex-end">
-                                                    <SecondaryButton size="medium" handleClick={() => setPopupVisible(false)} label="Đóng"></SecondaryButton>
-                                                </Box>
-                                            </Modal>
                                         </div>
                                     </Box>
                                     <Box px={4} pb={4}>
                                         <Box>
                                             {detailData?.tapTinCuocHops && detailData.tapTinCuocHops.length > 0 && (
                                                 detailData.tapTinCuocHops.map((item, index) => (
-                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
+                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2 text-blue-700">
                                                         <div
                                                             className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
 
@@ -233,6 +210,29 @@ const MeetingDetailPage: React.FC = () => {
                     }
                 </Box>
             </Box>
+            <Modal
+                visible={popupVisible}
+                title="Thành viên tham gia"
+                verticalActions
+            >
+                <div className="max-h-[400px] overflow-y-auto relative mt-6 mb-3">
+                    {
+                        memberList.map((member, index) => (
+                            <Box mb={3} flex alignItems="center" className="gap-2" key={index}>
+                                <Avatar
+                                    key={index}
+                                    size={30}
+                                    src={member?.anhDaiDien?.trim() ? getFullImageUrl(member.anhDaiDien) : images.avatar}
+                                />
+                                <div className="font-medium text-gray-color">{member?.hoTenNguoiThamDu}</div>
+                            </Box>
+                        ))
+                    }
+                </div>
+                <Box flex justifyContent="flex-end">
+                    <SecondaryButton size="medium" handleClick={() => setPopupVisible(false)} label="Đóng"></SecondaryButton>
+                </Box>
+            </Modal>
         </Page>
     )
 }

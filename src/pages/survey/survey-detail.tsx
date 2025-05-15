@@ -1,4 +1,5 @@
 import { useCreateResultSurvey, useGetSurveyDetail } from "apiRequest/survey";
+import images from "assets/images";
 import { PrimaryButton } from "components/button";
 import { HeaderSub } from "components/header-sub";
 import { ConfirmModal } from "components/modal";
@@ -198,6 +199,11 @@ const SurveyDetailPage: React.FC = () => {
                             Thời hạn: <span className="text-black font-semibold">{formatDate(detailData?.denNgay as string)}</span>
                         </p>
                         <p className="text-[14px] leading-1">{detailData?.noiDung}</p>
+                        {
+                            detailData?.khaoSatId &&
+                            <p className="text-black text-[14px] mt-2 leading-1 flex items-center justify-center gap-2" onClick={() => navigator(`/survey-charts?id=${detailData.khaoSatId}`)}>Xem kết quả khảo sát: <img width={30} src={images.pieChart} alt={detailData?.tieuDe} /></p>
+                        }
+
                     </Box>
                     <Box>
                         {detailData?.cauHoiKhaoSats.map((q, index) => (
