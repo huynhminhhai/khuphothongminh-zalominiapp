@@ -28,6 +28,12 @@ const surveyApiRequest = {
     getSurveyMemberList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; khaoSatId: number; }) => {
         return await http.get<any>(`/ketquakhaosat?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&khaoSatId=${param.khaoSatId}`);
     },
+    updateSurveyStatus: async (param: { khaoSatId: number; tinhTrangId: number; }) => {
+        return await http.put<any>(`/khaosat/tinhtrang`, {
+            khaoSatId: param.khaoSatId,
+            tinhTrangId: param.tinhTrangId
+        });
+    },
 }
 
 /**
@@ -225,6 +231,32 @@ export const useCreateResultSurvey = () => {
             queryClient.invalidateQueries({ queryKey: ["surveyResultList"] });
 
             // navigator('/survey')
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* PUT SURVEY STATUS
+**/
+export const useUpdateSurveyStatus = () => {
+
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (param: { khaoSatId: number; tinhTrangId: number; }) => {
+            return await surveyApiRequest.updateSurveyStatus(param);
+        },
+        onSuccess: () => {
+            showSuccess('Cập nhật trạng thái thành công');
+
+            queryClient.invalidateQueries({ queryKey: ["surveyList"] });
+            queryClient.invalidateQueries({ queryKey: ["surveyDetail"] });
+
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

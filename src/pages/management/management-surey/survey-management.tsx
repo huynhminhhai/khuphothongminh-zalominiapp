@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useDeleteSurvey, useGetSurveyListNormal, useGetSurveyStatus } from "apiRequest/survey"
+import { useDeleteSurvey, useGetSurveyListNormal, useGetSurveyStatus, useUpdateSurveyStatus } from "apiRequest/survey"
 import images from "assets/images"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
@@ -11,18 +11,18 @@ import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
-import { Box, Input, Page, useNavigate } from "zmp-ui"
+import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const SurveyManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { account, hasPermission } = useStoreApp()
+    const { Option } = Select;
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [viewCard, setViewCard] = useState<boolean>(true)
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
-    const [search, setSearch] = useState("");
     const [filters, setFilters] = useState({
         search: "",
     });
@@ -125,6 +125,45 @@ const SurveyManagementPage: React.FC = () => {
                     <img width={30} src={images.pieChart} alt={row.original.title} />
                 </div>
             )
+        },
+        {
+            id: "tinhTrangId",
+            header: "Trạng thái",
+            cell: ({ row }) => {
+                const { mutate, isPending } = useUpdateSurveyStatus();
+
+                return (
+                    <Box width={200}>
+                        <Select
+                            closeOnSelect
+                            defaultValue={row.original.tinhTrangId}
+                            onChange={(value) => {
+                                openConfirmModal(() => {
+                                    mutate({
+                                        khaoSatId: row.original.khaoSatId,
+                                        tinhTrangId: Number(value),
+                                    });
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái tin tức này?')
+                            }}
+                            className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
+                            disabled=
+                                {
+                                    isPending
+                                    // || !hasPermission('Cập nhật tình trạng của 1 tin tức', 'SUA')
+                                }
+                        >
+                            {surveyStatus?.tinhTrangs && surveyStatus.tinhTrangs.map((item) => (
+                                <Option
+                                    value={item.tinhTrangId}
+                                    key={item.tinhTrangId}
+                                    title={item.tenTinhTrang}
+                                />
+                            ))}
+                        </Select>
+                    </Box>
+                );
+            },
+            size: 160,
         },
         {
             id: 'actions', // Custom column for actions
