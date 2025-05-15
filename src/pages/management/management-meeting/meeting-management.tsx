@@ -122,39 +122,18 @@ const MeetingManagementPage: React.FC = () => {
             size: 250
         },
         {
-            id: 'time',
-            header: 'Thời gian',
-            cell: ({ row }) => (
-                <div className="flex items-center gap-2">
-                    <div>{getHourFromDate(row.original.thoiGianBatDau)} - {getHourFromDate(row.original.thoiGianKetThuc)}</div>
-                    <div>{formatDateMeeting(row.original.thoiGianBatDau)}</div>
-                </div>
-            ),
-            size: 160
-        },
-        {
             accessorKey: 'diaDiem',
             header: 'Địa điểm',
             size: 150
         },
         {
-            id: 'linkOnl',
-            header: 'Link online',
-            cell: ({ row }) => {
-                return (
-                    <>
-                        {
-                            row.original.linkHopOnLine &&
-                            <div className="flex justify-start items-center gap-1">
-                                <div className="truncate max-w-[220px]">{row.original.linkHopOnLine}</div>
-                                <div className="flex items-center justify-center text-[10px] text-[#fff] leading-[1] rounded-lg w-fit" onClick={() => handleCopy(row.original.linkHopOnLine as string)}>
-                                    <Icon fontSize={20} className="text-[#808080]" icon='solar:copy-bold' />
-                                </div>
-                            </div>
-                        }
-                    </>
-                )
-            },
+            id: 'time',
+            header: 'Thời gian',
+            cell: ({ row }) => (
+                <div className="flex items-center gap-2">
+                    <div>{formatDateMeeting(row.original.thoiGianBatDau)} | {getHourFromDate(row.original.thoiGianBatDau)} - {getHourFromDate(row.original.thoiGianKetThuc)}</div>
+                </div>
+            ),
             size: 160
         },
         {

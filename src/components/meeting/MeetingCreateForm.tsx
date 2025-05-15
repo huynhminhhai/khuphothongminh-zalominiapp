@@ -209,7 +209,7 @@ const MeetingAddForm: React.FC = () => {
                         <FormSelectMultipleField
                             name="thanhVien"
                             label="Thành viên"
-                            placeholder="Chọn cán bộ"
+                            placeholder="Chọn thành viên"
                             control={control}
                             options={danhSachThanhVien2}
                             error={errors.thanhVien?.message}

@@ -6,16 +6,16 @@ import Label from "./Label";
 import { Control, Controller } from "react-hook-form";
 
 type OptionSelect = {
-    value: any,
-    label: string
-}
+    value: any;
+    label: string;
+};
 
 type SelectFieldMultipeProps = {
     label: string;
     placeholder?: string;
     required?: boolean;
     options: OptionSelect[];
-    selectedValue: string[]; 
+    selectedValue: string[];
     setSelectedValue: React.Dispatch<React.SetStateAction<string[]>>;
     onChange: (value: string[]) => void;
     errors: string;
@@ -27,7 +27,7 @@ export const SelectFieldMultipe: React.FC<SelectFieldMultipeProps> = ({
     placeholder = "",
     required = false,
     options,
-    selectedValue, // Chuyển sang string[]
+    selectedValue,
     setSelectedValue,
     onChange,
     errors,
@@ -36,24 +36,50 @@ export const SelectFieldMultipe: React.FC<SelectFieldMultipeProps> = ({
     const [isSheetOpen, setIsSheetOpen] = useState(false);
     const [search, setSearch] = useState("");
 
-    // Hàm kiểm tra xem giá trị đã được chọn chưa
-    const isSelected = (value: string) => selectedValue.includes(value);
+    const realOptions = options.filter(opt => opt.value !== "all");
+    const isAllSelected = selectedValue.length === realOptions.length;
 
-    // Hàm chọn hoặc bỏ chọn giá trị
-    const toggleSelection = (value: string) => {
-        let newSelection;
-        if (isSelected(value)) {
-            newSelection = selectedValue.filter((v) => v !== value);
-        } else {
-            newSelection = [...selectedValue, value];
-        }
-        setSelectedValue(newSelection);
-        onChange(newSelection);
+    const isSelected = (value: string) => {
+        if (value === "all") return isAllSelected;
+        return selectedValue.includes(value);
     };
 
-    const filteredOptions = options.filter((option) =>
-        option.label.toLowerCase().includes(search.toLowerCase())
-    );
+    const toggleSelection = (value: string) => {
+        const allValues = realOptions.map(opt => opt.value);
+
+        if (value === "all") {
+            if (isAllSelected) {
+                setSelectedValue([]);
+                onChange([]);
+            } else {
+                setSelectedValue(allValues);
+                onChange(allValues);
+            }
+        } else {
+            let newSelection: string[];
+            if (isSelected(value)) {
+                newSelection = selectedValue.filter(v => v !== value);
+            } else {
+                newSelection = [...selectedValue, value];
+            }
+
+            setSelectedValue(newSelection);
+            onChange(newSelection);
+        }
+    };
+
+    const filteredOptions = [
+        { value: "all", label: "Tất cả" },
+        ...options.filter(option =>
+            option.label.toLowerCase().includes(search.toLowerCase())
+        ),
+    ];
+
+    const displayValue = isAllSelected
+        ? "Tất cả"
+        : selectedValue
+              .map(val => options.find(opt => opt.value === val)?.label || "")
+              .join(", ");
 
     return (
         <Box pb={4} className="relative">
@@ -62,7 +88,7 @@ export const SelectFieldMultipe: React.FC<SelectFieldMultipeProps> = ({
                 <Input
                     readOnly
                     onClick={() => setIsSheetOpen(true)}
-                    value={(selectedValue || []).map(val => options.find(opt => opt.value === val)?.label || '').join(", ")}
+                    value={displayValue}
                     style={{ borderColor: errors ? 'red' : '#b9bdc1' }}
                     placeholder={placeholder}
                     disabled={disabled}
@@ -73,7 +99,7 @@ export const SelectFieldMultipe: React.FC<SelectFieldMultipeProps> = ({
                     visible={isSheetOpen}
                     onClose={() => {
                         setIsSheetOpen(false);
-                        setSearch(""); // Reset search on close
+                        setSearch("");
                     }}
                     title="Chọn giá trị"
                     className="z-20"
@@ -101,7 +127,7 @@ export const SelectFieldMultipe: React.FC<SelectFieldMultipeProps> = ({
                                     )}
                                 </div>
                             ))}
-                            {filteredOptions.length === 0 && (
+                            {filteredOptions.length === 1 && !search && (
                                 <div style={{ padding: "8px", color: "#999" }}>
                                     Không tìm thấy kết quả phù hợp.
                                 </div>
@@ -119,7 +145,7 @@ type FormSelectMultipleFieldProps = {
     label: string;
     placeholder: string;
     control: Control<any>;
-    options: OptionSelect[]; // assuming your options have 'value' and 'label'
+    options: OptionSelect[];
     error?: string;
     required?: boolean;
     disabled?: boolean;
@@ -139,7 +165,7 @@ const FormSelectMultipleField: React.FC<FormSelectMultipleFieldProps> = ({
         <Controller
             name={name}
             control={control}
-            defaultValue={[]}  // Chuyển default thành mảng rỗng
+            defaultValue={[]}
             render={({ field }) => (
                 <SelectFieldMultipe
                     label={label}

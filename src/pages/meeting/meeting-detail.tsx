@@ -128,7 +128,7 @@ const MeetingDetailPage: React.FC = () => {
                                             </div>
                                             <div className="flex items-start gap-3">
                                                 <Box>
-                                                    <Icon className="text-[#808080] -mt-1" fontSize={26} icon='mdi:location' />
+                                                    <Icon className="text-[#808080] -mt-1" fontSize={26} icon='akar-icons:location' />
                                                 </Box>
                                                 <Box>
                                                     {detailData.diaDiem}
@@ -199,8 +199,8 @@ const MeetingDetailPage: React.FC = () => {
                                         </Box>
                                     </Box>
                                     <Box className="text-[16px]">
-                                        <div className="bg-[#f8f8f8] text-[#808080] text-[18px] font-semibold p-4">Nội dung cuộc họp</div>
-                                        <Box p={4} className="leading-[22px]">
+                                        <div className="bg-[#f8f8f8] text-[#808080] text-[16px] font-semibold px-4 py-3">Nội dung cuộc họp</div>
+                                        <Box p={4} className="leading-[24px]">
                                             {detailData.noiDung}
                                         </Box>
                                     </Box>
