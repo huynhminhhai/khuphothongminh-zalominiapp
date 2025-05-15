@@ -9,6 +9,7 @@ import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "compone
 import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
+import { formatDate } from "utils/date"
 import { Box, Button, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const TaskManagementPage: React.FC = () => {
@@ -104,9 +105,28 @@ const TaskManagementPage: React.FC = () => {
             size: 300
         },
         {
-            accessorKey: 'noiDung',
-            header: 'Nội dung',
-            size: 300
+            id: 'giaoCho',
+            header: 'Giao cho',
+            cell: ({ row }) => {
+                return (
+                    <div>
+                        {
+                            row.original.nguoiThucHienNhiemVus?.find((item) => item.chuTri === true)?.hoTenNguoiThucHien
+                        }
+                    </div>
+                )
+            }
+        },
+        {
+            id: 'thoiHan',
+            header: 'Thời hạn',
+            cell: ({ row }) => {
+                return (
+                    <div>
+                        {formatDate(row.original.ngayGiao)} - {formatDate(row.original.thoiHanXuLy)}
+                    </div>
+                )
+            }
         },
         {
             id: 'status',
@@ -129,7 +149,7 @@ const TaskManagementPage: React.FC = () => {
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={
-                                isPending 
+                                isPending
                                 // || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')
                             }
                         >

@@ -10,7 +10,7 @@ const TaskPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Nhiệm vụ" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Nhiệm vụ" />
                 <Box>
                     <TaskList />
                 </Box>
