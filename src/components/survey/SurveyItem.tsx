@@ -18,7 +18,7 @@ const SurveyItem: React.FC<SurveyItemProps> = ({data}) => {
             onClick={() => navigate(`/survey-detail?id=${data.khaoSatId}`)}
         >
             <Box py={4} className="border-b-[1px]" flex alignItems="center" justifyContent="space-between">
-                <Box flex alignItems="center" className="gap-3 w-[100%]">
+                <Box flex alignItems="center" className="gap-6 w-[100%]">
                     <Box>
                         <img className="w-[40px]" src={images.survey} alt={data.tieuDe} />
                     </Box>
@@ -29,7 +29,7 @@ const SurveyItem: React.FC<SurveyItemProps> = ({data}) => {
                                 <h4 className="text-[14px] font-medium text-gray-color">{formatDate(data.tuNgay)} - {formatDate(data.denNgay)}</h4>
                                 {
                                     isExpired(formatDate(data.denNgay)) &&
-                                    <div className="text-[12px] text-white font-medium leading-[1] bg-yellow-500 px-2 py-[6px] rounded-xl">Hết hạn</div>
+                                    <div className="text-[13px] text-red-700 font-semibold leading-[1] bg-red-50 px-4 py-[6px] rounded-xl">Hết hạn</div>
                                 }
                             </div>
                         </div>

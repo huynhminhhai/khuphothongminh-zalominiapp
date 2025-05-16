@@ -4,7 +4,6 @@ import { FormDataReportTask, schemaReportTask, TaskType } from './type';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { ConfirmModal } from 'components/modal';
-import { FormSelectField } from 'components/form';
 import { useGetTaskStatus, useUpdateTaskStatus } from 'apiRequest/task';
 
 type TaskUpdateFormModalProps = {

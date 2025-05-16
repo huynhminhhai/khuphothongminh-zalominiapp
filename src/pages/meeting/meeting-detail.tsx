@@ -200,9 +200,8 @@ const MeetingDetailPage: React.FC = () => {
                                     </Box>
                                     <Box className="text-[16px]">
                                         <div className="bg-[#f8f8f8] text-[#808080] text-[16px] font-semibold px-4 py-3">Nội dung cuộc họp</div>
-                                        <Box p={4} className="leading-[24px]">
-                                            {detailData.noiDung}
-                                        </Box>
+                                        <div className="p-4 font-medium detail-content" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
+                                        </div>
                                     </Box>
 
                                 </Box> :

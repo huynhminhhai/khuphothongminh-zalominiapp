@@ -26,18 +26,18 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
 
     return (
         <Box
-            pb={4} mb={4} className="border-b-[1px]"
+            pb={4} mb={4} className="border-b-[1px] relative"
             onClick={() => navigate(`/feedback-detail?id=${data.phanAnhId}`)}
         >
+            {status && (
+                <div
+                    className={`${color} ${bg} py-[6px] px-3 rounded-xl absolute bottom-[14px] right-[2px] font-bold text-[12px] leading-[1]`}
+                >
+                    {status.tenTinhTrang}
+                </div>
+            )}
             <Box className="relative rounded-lg overflow-hidden">
                 <img className="w-[100%] h-[200px] object-cover" src={imageFiles[0]?.tapTin ? getFullImageUrl(imageFiles[0].tapTin) : images.feedback} alt={data.noiDung} />
-                {status && (
-                    <div
-                        className={`${color} ${bg} py-2 px-4 rounded-lg absolute bottom-[2px] right-[2px] font-bold uppercase text-[14px] leading-[1]`}
-                    >
-                        {status.tenTinhTrang}
-                    </div>
-                )}
             </Box>
             <Box mt={2}>
                 <h3 className="text-[16px] leading-[20px] font-medium line-clamp-2 mb-2">{data.noiDung}</h3>
@@ -52,7 +52,7 @@ const FeedbackItem: React.FC<FeedbackItemProps> = ({ data }) => {
             </Box>
             <Box mt={2}>
                 <div className="text-gray-color font-medium flex items-center gap-1">
-                    <Icon fontSize={20} icon='material-symbols-light:date-range-outline' />
+                    <Icon fontSize={20} icon='lets-icons:date-range-duotone-line' />
                     <div className="flex-1">
                         <div className="line-clamp-1">
                             {formatDate(data?.ngayTao)} - {getHourFromDate(data?.ngayTao)}

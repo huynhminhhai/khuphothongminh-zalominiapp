@@ -139,7 +139,7 @@ const ManagementPage: React.FC = () => {
                                 suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
                                 onClick={() => navigate('/transactions-management')}
                             />
-                        },
+                        }
                         {/* <Item
                             title="Báo cáo tài chính"
                             prefix={<img src={images.report} alt='feedback' className="w-[30px] h-auto" />}

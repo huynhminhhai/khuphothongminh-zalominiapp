@@ -47,7 +47,7 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                                             getLabelOptions(data.priority, taskPriority)
                                         }
                                     </div> */}
-                                    <div className={`${color} ${bg} text-[12px] font-semibold leading-[1] px-3 py-[6px] rounded-xl`}>
+                                    <div className={`${color} ${bg} text-[12px] font-bold leading-[1] px-3 py-[6px] rounded-xl`}>
                                         {
                                             data.tinhTrang.tenTinhTrang
                                         }

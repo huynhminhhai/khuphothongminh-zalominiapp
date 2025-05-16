@@ -4,7 +4,7 @@ import { convertParticipants, FormDataTask, schemaTask } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
+import { FormControllerDatePicker, FormInputField, FormSelectField, FormSelectMultipleField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { useStoreApp } from "store/store"
 import { useCreateTask, useGetTaskStatus } from "apiRequest/task"
@@ -108,7 +108,7 @@ const TaskAddForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormInputAreaField
+                        <FormTextEditorField
                             name="noiDung"
                             label="Mô tả"
                             placeholder="Nhập mô tả"

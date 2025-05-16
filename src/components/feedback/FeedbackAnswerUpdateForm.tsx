@@ -3,7 +3,7 @@ import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormFileInput, FormInputAreaField } from "components/form"
+import { FormFileInput, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataFeedbackAnswer, schemaFeedbackAnswer } from "./type"
 import { useDeleteFileFeedbackAnswer, useGetFeebackAnswerDetail, useUpdateFeedbackAnswer } from "apiRequest/feeback"
@@ -105,7 +105,7 @@ const FeedbackAnswerAddForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
-                        <FormInputAreaField
+                        <FormTextEditorField
                             name="noiDung"
                             label="Nội dung phản hồi"
                             placeholder="Nhập nội dung phản hồi..."
@@ -124,7 +124,7 @@ const FeedbackAnswerAddForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth disabled={isPending} label={isPending ? "Đang xử lý..." : "Thêm phản hồi"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton fullWidth disabled={isPending} label={isPending ? "Đang xử lý..." : "Cập nhật phản hồi"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

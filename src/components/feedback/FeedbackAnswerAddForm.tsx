@@ -3,7 +3,7 @@ import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormFileInput, FormInputAreaField } from "components/form"
+import { FormFileInput, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataFeedbackAnswer, schemaFeedbackAnswer } from "./type"
 import { useCreateFeebackAnswer } from "apiRequest/feeback"
@@ -59,7 +59,7 @@ const FeedbackAnswerAddForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
-                        <FormInputAreaField
+                        <FormTextEditorField
                             name="noiDung"
                             label="Nội dung phản hồi"
                             placeholder="Nhập nội dung phản hồi..."

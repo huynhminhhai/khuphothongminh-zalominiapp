@@ -50,7 +50,7 @@ const FeedbackDetailPage: React.FC = () => {
                                         <h3 className="text-[18px] leading-[26px] font-semibold mb-2">
                                             Kiến nghị về: {data?.tenLinhVucPhanAnh}
                                         </h3>
-                                        <Box className="text-gray-color font-medium">
+                                        <Box className="font-medium">
                                             <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
                                             <div>- tại <span className="font-semibold">
                                                 {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
@@ -58,7 +58,7 @@ const FeedbackDetailPage: React.FC = () => {
                                         </Box>
                                     </Box>
                                     <Box pb={4} mb={4} className="border-b-[1px]">
-                                        <div className="text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
+                                        <div className="text-[14px] leading-[24px] font-medium detail-content" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
                                         </div>
                                     </Box>
                                 </Box>
@@ -120,20 +120,20 @@ const FeedbackDetailPage: React.FC = () => {
                                         <Divider />
                                         <Divider />
                                         <Box pt={4} px={4} className="relative">
-                                            <Box pb={4} mb={4} className="border-b-[1px]">
+                                            <Box pb={2} mb={3} className="border-b-[1px]">
                                                 <h3 className="text-[18px] leading-[26px] font-semibold">
-                                                    Ban quản trị ấp trả lời
+                                                    Ban quản lý ấp/khu phố trả lời
                                                 </h3>
                                                 {/* <Box className="text-gray-color font-medium">
                                                     <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
                                                 </Box> */}
                                             </Box>
                                             <Box pb={4} className="border-b-[1px]" mb={4}>
-                                                <div className="text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.ketQuaXuLyPhanAnh?.noiDung || '' }}>
+                                                <div className="detail-content text-[14px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.ketQuaXuLyPhanAnh?.noiDung || '' }}>
                                                 </div>
                                             </Box>
                                             <Box className="space-y-2">
-                                                <h4 className="font-semibold">Tập tin đính kèm:</h4>
+                                                <h4 className="font-medium">Tập tin đính kèm:</h4>
                                                 <Box className="text-blue-700">
                                                     {data?.ketQuaXuLyPhanAnh?.tapTinKetQuaXuLyPhanAnhs && data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.length > 0 && (
                                                         data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.map((item, index) => (

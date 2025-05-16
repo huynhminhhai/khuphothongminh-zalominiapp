@@ -44,7 +44,7 @@ const FeedbackAnswerPage: React.FC = () => {
                                         <h3 className="text-[18px] leading-[26px] font-semibold mb-2">
                                             Kiến nghị về: {data?.tenLinhVucPhanAnh}
                                         </h3>
-                                        <Box className="text-gray-color font-medium">
+                                        <Box className="font-medium">
                                             <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
                                             <div>- tại <span className="font-semibold">
                                                 {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
@@ -52,7 +52,7 @@ const FeedbackAnswerPage: React.FC = () => {
                                         </Box>
                                     </Box>
                                     <Box pb={3}>
-                                        <div className="text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
+                                        <div className="detail-content text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
                                         </div>
                                     </Box>
                                 </Box>
@@ -102,9 +102,9 @@ const FeedbackAnswerPage: React.FC = () => {
                                 <Divider />
                                 <Divider />
                                 <Box p={4}>
-                                    <Box pb={4}>
+                                    <Box pb={2}>
                                         <h3 className="text-[18px] leading-[26px] font-semibold">
-                                            Ban quản trị ấp trả lời
+                                            Ban quản lý ấp/khu phố trả lời
                                         </h3>
                                     </Box>
                                     {

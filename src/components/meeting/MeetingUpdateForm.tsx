@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormControllerTimePicker, FormFileInput, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
+import { FormControllerDatePicker, FormControllerTimePicker, FormFileInput, FormInputField, FormSelectField, FormSelectMultipleField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import React, { useEffect, useMemo, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
@@ -257,7 +257,7 @@ const MeetingUpdateForm = () => {
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormInputAreaField
+                        <FormTextEditorField
                             name="noiDung"
                             label="Nội dung"
                             placeholder="Nhập nội dung"

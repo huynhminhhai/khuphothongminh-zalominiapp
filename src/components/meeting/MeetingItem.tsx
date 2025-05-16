@@ -13,7 +13,7 @@ export const MeetingStatus: React.FC<{ meetingDate: string, startTime: string, e
     const { status, bgColor, color } = getMeetingStatus(meetingDate, startTime, endTime);
 
     return (
-        <div style={{ backgroundColor: bgColor, color  }} className="mt-2 py-[6px] px-3 text-white w-fit rounded-xl text-[12px] leading-[1] font-semibold">
+        <div style={{ backgroundColor: bgColor, color  }} className="mt-2 py-[6px] px-3 text-white w-fit rounded-xl text-[12px] leading-[1] font-bold">
             {status}
         </div>
     );
@@ -27,7 +27,7 @@ const MeetingItem: React.FC<MeetingItemProps> = ({ data }) => {
         <Box className="meeting-item" onClick={() => navigate(`/meeting-detail?id=${data.cuocHopId}`)}>
             <Box>
                 <div className="flex items-start gap-4">
-                    <Box px={4} py={6} width={108} height={152} className="bg-blue-50 text-primary-color rounded-tl-2xl rounded-br-2xl relative overflow-hidden">
+                    <Box px={4} py={6} width={108} height={152} className="bg-blue-100 text-primary-color rounded-tl-2xl rounded-br-2xl relative overflow-hidden">
                         <img className="w-[100%] h-[100%] absolute top-0 left-0 opacity-5 scale-[2.5]" src={images.shape4} alt="shape" />
                         <div className="flex-center flex-col h-[100%] relative z-[2]">
                             <div className="text-[18px] leading-[1] font-semibold text-center mb-2 whitespace-nowrap">{renderDayOfWeek(formatDate(data.thoiGianBatDau))}</div>

@@ -47,7 +47,7 @@ export const getMeetingStatus = (meetingDate: string, startTime: string, endTime
     const endDateTime = new Date(year, month - 1, day, endHour, endMinute);
     const now = new Date();
 
-    if (now < startDateTime) return { status: 'Sắp diễn ra', bgColor: '#f6f3e2', color: '#dfb83b' };
+    if (now < startDateTime) return { status: 'Sắp diễn ra', bgColor: '#fff2dd', color: '#c78407' };
     if (now >= startDateTime && now <= endDateTime) return { status: 'Đang diễn ra', bgColor: '#ebf0f4', color: '#0667e1' };
     return { status: 'Đã kết thúc', bgColor: '#f5f1ee', color: '#c7373e' };
 };

@@ -3,7 +3,7 @@ import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormControllerDatePicker, FormControllerTimePicker, FormFileInput, FormInputAreaField, FormInputField, FormSelectField, FormSelectMultipleField } from "components/form"
+import { FormControllerDatePicker, FormControllerTimePicker, FormFileInput, FormInputField, FormSelectField, FormSelectMultipleField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { convertMeetingTime, convertParticipants, FormDataMeeting, schemaMeeting } from "./type"
 import { useStoreApp } from "store/store"
@@ -216,7 +216,7 @@ const MeetingAddForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12">
-                        <FormInputAreaField
+                        <FormTextEditorField
                             name="noiDung"
                             label="Nội dung"
                             placeholder="Nhập nội dung"

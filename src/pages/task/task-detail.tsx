@@ -131,11 +131,9 @@ const TaskDetailPage: React.FC = () => {
                                             </div>
                                         </div>
                                     </Box>
-                                    <hr />
+                                    <div className="bg-[#f8f8f8] text-[#808080] text-[16px] font-semibold px-4 py-3">Nội dung nhiệm vụ</div>
                                     <Box p={4}>
-                                        <div className="text-[18px] font-medium mb-2">Nội dung nhiệm vụ</div>
-                                        <div className="text-[16px] leading-[22px] font-medium text-gray-color">
-                                            {detailData.noiDung}
+                                        <div className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
                                         </div>
                                     </Box>
 
@@ -154,7 +152,7 @@ const TaskDetailPage: React.FC = () => {
                                                     <div key={index} className="flex items-center gap-2 justify-between mb-2">
                                                         <div
                                                             className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
-                                                            
+
                                                             onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
                                                         >
                                                             <div className="flex items-center gap-1">
