@@ -87,7 +87,7 @@ const ServiceList: React.FC<any> = () => {
 
     return (
         <Box>
-            <div className="grid grid-cols-4 gap-x-3 gap-y-4 min-h-[224px]">
+            <div className="grid grid-cols-4 gap-3">
                 {
                     filteredServices.map((item, index) => (
                         <ServiceItem key={index} data={item} />

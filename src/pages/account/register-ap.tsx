@@ -7,7 +7,7 @@ const RegisterApPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
-                <HeaderSub title="Đăng ký thông tin Ấp" />
+                <HeaderSub title="Đăng ký thông tin ấp/khu phố" />
                 <Box>
                     <RegisterApForm />
                 </Box>

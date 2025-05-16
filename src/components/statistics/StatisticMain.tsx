@@ -16,7 +16,7 @@ const StatisticMain: React.FC<any> = () => {
                     <motion.img
                         src={images.shapeWave}
                         initial={{ WebkitMaskSize: "0% 100%", opacity: 0 }}
-                        animate={{ WebkitMaskSize: "100% 100%", opacity: 0.15 }}
+                        animate={{ WebkitMaskSize: "100% 100%", opacity: 0.1 }}
                         transition={{ duration: 1.5, ease: "easeInOut" }}
                     />
                 </div>

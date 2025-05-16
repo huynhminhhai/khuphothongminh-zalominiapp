@@ -24,7 +24,7 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
             className="task-item border-b-[1px]"
         >
             <Box py={4} flex alignItems="center" justifyContent="space-between">
-                <Box flex alignItems="center" className="gap-4 w-[100%]">
+                <Box flex alignItems="center" className="gap-6 w-[100%]">
                     <Box>
                         <img className="w-[60px]" src={images.todo} alt={data.tieuDe} />
                     </Box>

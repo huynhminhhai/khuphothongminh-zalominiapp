@@ -54,12 +54,13 @@ const RegisterApForm: React.FC = () => {
                 soGiayTo = "",
                 maXa = "",
                 maHuyen = "",
-                apId = 0
+                apId = 0,
+                dienThoai
             } = account || {};
 
             reset({
                 hoTen: hoTen,
-                dienThoai: hasRole('TRUONG_AP') ? '' : tenDangNhap,
+                dienThoai: hasRole('TRUONG_AP') ? dienThoai : tenDangNhap,
                 soGiayTo: soGiayTo,
                 maXa: maXa,
                 maHuyen: maHuyen,

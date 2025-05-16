@@ -28,7 +28,7 @@ const AccountPage: React.FC = () => {
                                 <List className="bg-white rounded-lg">
                                     <Item
                                         onClick={() => navigate('/register-ap')}
-                                        title="Đăng ký thông tin Ấp"
+                                        title="Đăng ký thông tin ấp/khu phố"
                                         prefix={<img src={images.progress} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     />
