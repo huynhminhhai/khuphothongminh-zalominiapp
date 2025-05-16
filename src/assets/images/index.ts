@@ -2,7 +2,9 @@ import logo from './skyscraper.png'
 import avatar from './avatar.jpg'
 import shape1 from './shape1.png'
 import shape2 from './shape2.png'
-import shapeWave from './png-transparent-blue-waves-graphic-wave-lines.png'
+import shapeWave from './wave-main.png'
+import shapeWave2 from './wave-2.webp'
+import shapeWave3 from './wave-3.png'
 import home from './home.png'
 import news from './newspaper.png'
 import idea from './idea.png'
@@ -71,6 +73,8 @@ const images = {
     invoice,
     shortcut,
     shapeWave,
+    shapeWave2,
+    shapeWave3,
     progress,
     feedback,
     safety
