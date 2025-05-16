@@ -35,7 +35,6 @@ const FeedbackAddForm: React.FC = () => {
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataPhanAnh>(defaultValues)
-    const [showMap, setShowMap] = useState(false);
 
     const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataPhanAnh>({
         resolver: yupResolver(phanAnhSchema),
@@ -229,23 +228,12 @@ const FeedbackAddForm: React.FC = () => {
                         />
                     </div>
                     <div className="col-span-12">
-                        <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMap(!showMap)}>
-                            Chọn vị trí 
-                            <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
-                        </div>
-                    </div>
-                    <div className="col-span-12">
-                        <Box mb={4}>
-                            {showMap && (
-                                <MapPicker
-                                    onClose={() => setShowMap(false)}
-                                    onPick={(lat, lng) => {
-                                        setValue("latitude", lat);
-                                        setValue("longitude", lng);
-                                    }}
-                                />
-                            )}
-                        </Box>
+                        <MapPicker
+                            onPick={(lat, lng) => {
+                                setValue("latitude", lat);
+                                setValue("longitude", lng);
+                            }}
+                        />
                     </div>
                     <div className="col-span-12">
                         <FormSwitchField

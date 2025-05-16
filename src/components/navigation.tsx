@@ -8,8 +8,8 @@ import { useStoreApp } from "store/store";
 const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: string }> = {
   "/": {
     label: "Trang chủ",
-    icon: <div className="relative"><Icon icon="line-md:home-simple-filled"/></div>,
-    activeIcon: <Icon icon="line-md:home-simple-filled" />,
+    icon: <div className="relative"><Icon icon="line-md:home-simple-twotone"/></div>,
+    activeIcon: <Icon icon="line-md:home-simple-twotone" />,
   },
   // "/notification": {
   //   label: "Thông báo",
@@ -24,15 +24,15 @@ const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: 
   // },
   "/management": {
     label: "Quản lý",
-    icon: <div className="relative"><Icon icon="line-md:folder-zip-filled" /></div>,
-    activeIcon: <Icon icon="line-md:folder-zip-filled" />,
+    icon: <div className="relative"><Icon icon="line-md:folder-zip-twotone" /></div>,
+    activeIcon: <Icon icon="line-md:folder-zip-twotone" />,
     requiresLogin: true, // Yêu cầu đăng nhập
     requiredRole: "TRUONG_AP", // Chỉ hiển thị nếu là TRUONG_AP
   },
   "/account": {
     label: "Tài khoản",
-    icon: <div className="relative"><Icon icon="line-md:person-filled" /></div>,
-    activeIcon: <Icon icon="line-md:person-filled" />,
+    icon: <div className="relative"><Icon icon="line-md:person-twotone" /></div>,
+    activeIcon: <Icon icon="line-md:person-twotone" />,
   },
 };
 

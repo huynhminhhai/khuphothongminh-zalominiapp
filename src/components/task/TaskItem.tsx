@@ -30,10 +30,10 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
                     </Box>
                     <Box className="flex-1 w-[100%]">
                         <div className="flex flex-col">
-                            <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-2">{data.tieuDe}</h3>
+                            <h3 className="text-[16px] leading-[22px] font-semibold line-clamp-2 mb-2">{data.tieuDe}</h3>
 
                             <div className="flex items-center justify-between w-[100%] mb-2">
-                                <h4 className="flex items-center gap-1 text-[14px] font-medium text-gray-color"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.thoiHanXuLy)}</h4>
+                                <h4 className="flex items-center gap-2 text-[14px] font-medium text-gray-color"><Icon fontSize={16} icon='uiw:date' /> {formatDate(data.thoiHanXuLy)}</h4>
                             </div>
 
                             <div className="flex items-center justify-between w-[100%]">

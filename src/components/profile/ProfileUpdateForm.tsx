@@ -481,27 +481,15 @@ const ProfileUpdateForm: React.FC = () => {
                     </div>
                     {
                         isHouseHold &&
-                        <>
-                            <div className="col-span-12">
-                                <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiThuongTru(!showMapNoiThuongTru)}>
-                                    Chọn vị trí
-                                    <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
-                                </div>
-                            </div>
-                            <div className="col-span-12">
-                                <Box mb={4}>
-                                    {showMapNoiThuongTru && (
-                                        <MapPicker
-                                            onClose={() => setShowMapNoiThuongTru(false)}
-                                            onPick={(lat, lng) => {
-                                                setValue("noiThuongTru.latitude", lat);
-                                                setValue("noiThuongTru.longitude", lng);
-                                            }}
-                                        />
-                                    )}
-                                </Box>
-                            </div>
-                        </>
+                        <div className="col-span-12">
+                            <MapPicker
+                                onClose={() => setShowMapNoiThuongTru(false)}
+                                onPick={(lat, lng) => {
+                                    setValue("noiThuongTru.latitude", lat);
+                                    setValue("noiThuongTru.longitude", lng);
+                                }}
+                            />
+                        </div>
                     }
                     <div className="col-span-6">
                         <FormControllerDatePicker
@@ -593,23 +581,13 @@ const ProfileUpdateForm: React.FC = () => {
                                 />
                             </div>
                             <div className="col-span-12">
-                                <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMapNoiTamTru(!showMapNoiTamTru)}>
-                                    Chọn vị trí
-                                    <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
-                                </div>
-                            </div>
-                            <div className="col-span-12">
-                                <Box mb={4}>
-                                    {showMapNoiTamTru && (
-                                        <MapPicker
-                                            onClose={() => setShowMapNoiTamTru(false)}
-                                            onPick={(lat, lng) => {
-                                                setValue("noiTamTru.latitude", lat);
-                                                setValue("noiTamTru.longitude", lng);
-                                            }}
-                                        />
-                                    )}
-                                </Box>
+                                <MapPicker
+                                    onClose={() => setShowMapNoiTamTru(false)}
+                                    onPick={(lat, lng) => {
+                                        setValue("noiTamTru.latitude", lat);
+                                        setValue("noiTamTru.longitude", lng);
+                                    }}
+                                />
                             </div>
                             <div className="col-span-6">
                                 <FormControllerDatePicker
