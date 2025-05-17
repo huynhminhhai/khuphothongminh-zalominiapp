@@ -2,6 +2,7 @@ import logo from './skyscraper.png'
 import avatar from './avatar.jpg'
 import shape1 from './shape1.png'
 import shape2 from './shape2.png'
+import shape5 from './shape5.png'
 import shapeWave from './wave-main.png'
 import shapeWave2 from './wave-2.webp'
 import shapeWave3 from './wave-3.png'
@@ -39,6 +40,7 @@ import feedback from './feedback.jpg'
 import safety from './safety.png'
 import bg1 from './bg-1.jpg'
 import bg2 from './bg-2.jpg'
+import resident from './resident.png'
 
 const images = {
     logo,
@@ -81,7 +83,9 @@ const images = {
     feedback,
     safety,
     bg1,
-    bg2
+    bg2,
+    resident,
+    shape5
 }
 
 export default images

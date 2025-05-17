@@ -2,12 +2,13 @@ import React from "react";
 import { useLoginWithZalo } from "services/loginWithZalo";
 import { Box, useNavigate } from "zmp-ui";
 import { ServicesType } from "./ServiceList";
+import { motion } from "framer-motion";
 
 type ServiceItemType = {
     data: ServicesType;
 }
 
-const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
+const ServiceItem: React.FC<ServiceItemType> = ({ data }) => {
 
     const navigate = useNavigate()
     const { loginWithZalo } = useLoginWithZalo();
@@ -21,7 +22,12 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
     }
 
     return (
-        <Box onClick={() => navigate(data.url)}>
+        <motion.div
+            onClick={() => navigate(data.url)}
+            initial={{ opacity: 0.5 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
+        >
             <div className="flex-center flex-col gap-2">
                 <Box>
                     <div className="rounded-full flex-center w-[44px] h-[44px] relative">
@@ -32,7 +38,7 @@ const ServiceItem: React.FC<ServiceItemType> = ({data}) => {
                     <h4 className="text-[14px] leading-[18px] text-center font-medium">{data.label}</h4>
                 </Box>
             </div>
-        </Box>
+        </motion.div>
     )
 }
 

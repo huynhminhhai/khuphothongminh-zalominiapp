@@ -1,11 +1,38 @@
-import { Icon } from "@iconify/react";
 import images from "assets/images";
 import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { useStoreApp } from "store/store";
-import { Box, List, Page, useNavigate } from "zmp-ui"
+import { Box, Page, useNavigate } from "zmp-ui"
+import { motion } from "framer-motion";
 
-const { Item } = List;
+const ManagementItem = ({ title, prefix, onClick }: any) => {
+    return (
+        <motion.div
+            className="flex flex-col items-center gap-2 bg-white rounded-lg px-2 py-3"
+            onClick={onClick}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+        >
+            <div className="w-[60px] h-[60px] rounded-full bg-blue-50 flex-center">
+                {prefix}
+            </div>
+            <div className="text-[14px] leading-[18px] font-medium text-center">
+                {title}
+            </div>
+        </motion.div>
+    )
+}
+
+const ManagementTitle = ({ title }: any) => {
+    return (
+        <div className="pt-1 text-primary-color text-[16px] leading-[1] font-semibold">
+            {title}
+        </div>
+    )
+}
+
 const ManagementPage: React.FC = () => {
 
     const { hasPermission } = useStoreApp()
@@ -16,140 +43,139 @@ const ManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Quản lý" onBackClick={() => navigate('/')} />
 
-                <Box m={4}>
-                    <List className="bg-white rounded-lg">
-                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tổng quan</div>
-                        {
-                            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
-                            <Item
-                                title="Bản đồ dân cư"
-                                prefix={<img src={images.map} alt='news' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                <Box mx={4} mb={2} mt={3}>
+                    <div className="grid grid-cols-12 gap-3">
+                        <div className="col-span-12">
+                            <ManagementTitle title="Tổng quan tình hình hộ dân" />
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
+                                title="Bản đồ"
+                                prefix={<img src={images.map}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/maps')}
                             />
-                        }
-                    </List>
+                        </div>
+                    </div>
                 </Box>
 
-                <Box m={4}>
-                    <List className="bg-white rounded-lg">
-                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tổ chức, dân cư</div>
-                        <Item
-                            title="Tổ chức"
-                            prefix={<img src={images.team} alt='staff' className="w-[30px] h-auto" />}
-                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            onClick={() => navigate('/team-management')}
-                        />
-                        {
-                            // hasPermission('Lấy danh sách dân cư có phân trang', 'XEM') &&
-                            <Item
+                <Box mx={4} mb={2} mt={3}>
+                    <div className="grid grid-cols-12 gap-3">
+                        <div className="col-span-12">
+                            <ManagementTitle title="Tổ chức, dân cư" />
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
+                                title="Tổ chức"
+                                prefix={<img src={images.team}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
+                                onClick={() => navigate('/team-management')}
+                            />
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Dân cư"
-                                prefix={<img src={images.home} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.resident}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/resident-management')}
                             />
-                        }
-                        {
-                            // hasPermission('Lấy danh sách dân cư có phân trang', 'XEM') &&
-                            <Item
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Thẻ BHYT"
-                                prefix={<img src={images.safety} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.safety}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/insurance-management')}
                             />
-                        }
-                        {/* {
-                            // hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
-                            <Item
-                                title="Thu phí"
-                                prefix={<img src={images.invoice} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                                onClick={() => navigate('/invoice-management')}
-                            />
-                        } */}
-
-                    </List>
+                        </div>
+                    </div>
                 </Box>
 
-                <Box m={4}>
-                    <List className="bg-white rounded-lg">
-                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tuyên truyền, phản ánh</div>
-                        {
-                            // hasPermission('Lấy danh sách bài viết có phân trang', 'XEM') &&
-                            <Item
+                <Box mx={4} mb={2} mt={3}>
+                    <div className="grid grid-cols-12 gap-3">
+                        <div className="col-span-12">
+                            <ManagementTitle title="Tuyên truyền, phản ánh" />
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Tin tức"
-                                prefix={<img src={images.news} alt='news' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.news}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/news-management')}
                             />
-                        }
-                        {
-                            // hasPermission('Lấy danh sách khảo sát có phân trang', 'XEM') &&
-                            <Item
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Khảo sát"
-                                prefix={<img src={images.survey} alt='survey' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.survey}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/survey-management')}
                             />
-                        }
-                        {
-                            // hasPermission('Lấy danh sách phản ánh có phân trang', 'XEM') &&
-                            <Item
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Phản ánh"
-                                prefix={<img src={images.idea} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.idea}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/feedback-management')}
                             />
-                        }
-                    </List>
+                        </div>
+                    </div>
                 </Box>
 
-                <Box m={4}>
-                    <List className="bg-white rounded-lg">
-                        <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Công việc, nhiệm vụ</div>
-                        {
-                            // hasPermission('Lấy danh sách nhiệm vụ có phân trang', 'XEM') &&
-                            <Item
+                <Box mx={4} mb={2} mt={3}>
+                    <div className="grid grid-cols-12 gap-3">
+                        <div className="col-span-12">
+                            <ManagementTitle title="Công việc, nhiệm vụ" />
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Nhiệm vụ"
-                                prefix={<img src={images.todo} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.todo}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/task-management')}
                             />
-                        }
-                        {/* <Item
-                            title="Nhiệm vụ của tôi"
-                            prefix={<img src={images.todo2} alt='feedback' className="w-[30px] h-auto" />}
-                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            onClick={() => navigate('/task')}
-                        /> */}
-                        {
-                            // hasPermission('Lấy danh sách cuộc họp có phân trang', 'XEM') &&
-                            <Item
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Cuộc họp"
-                                prefix={<img src={images.meeting} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.meeting}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/meeting-management')}
                             />
-                        }
-                        {
-                            // hasPermission('Lấy danh sách giao dịch thu chi có phân trang', 'XEM') &&
-                            <Item
+                        </div>
+                        <div className="col-span-4">
+                            <ManagementItem
                                 title="Thu/chi"
-                                prefix={<img src={images.money} alt='feedback' className="w-[30px] h-auto" />}
-                                suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
+                                prefix={<img src={images.money}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
                                 onClick={() => navigate('/transactions-management')}
                             />
-                        }
-                        {/* <Item
-                            title="Báo cáo tài chính"
-                            prefix={<img src={images.report} alt='feedback' className="w-[30px] h-auto" />}
-                            suffix={<Icon icon="mingcute:right-line" fontSize={22} />}
-                            onClick={() => navigate('/report-finance-management')}
-                        /> */}
-                    </List>
+                        </div>
+                    </div>
                 </Box>
 
-                {/* <Box m={4}>
+                {/* <Box mx={4} mb={2} mt={3}>
                     <List className="bg-white rounded-lg">
                         <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Thống kê báo cáo</div>
                         <Item

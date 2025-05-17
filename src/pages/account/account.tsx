@@ -5,7 +5,15 @@ import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { createMiniAppShortcut, openPermissionSettingApp } from "services/zalo";
 import { useStoreApp } from "store/store";
-import { Avatar, Box, List, Page, useNavigate } from "zmp-ui"
+import { Box, List, Page, useNavigate } from "zmp-ui"
+
+const ManagementTitle = ({ title }: any) => {
+    return (
+        <div className="px-4 pt-4 pb-1 text-primary-color text-[16px] leading-[1] font-semibold">
+            {title}
+        </div>
+    )
+}
 
 const AccountPage: React.FC = () => {
 
@@ -36,7 +44,7 @@ const AccountPage: React.FC = () => {
                             </Box>
                             <Box m={4}>
                                 <List className="bg-white rounded-lg">
-                                    <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Tài khoản</div>
+                                    <ManagementTitle title="Tài khoản" />
                                     <Item
                                         onClick={() => navigate('/profile-account')}
                                         title="Thông tin"
@@ -82,7 +90,7 @@ const AccountPage: React.FC = () => {
                     }
                     <Box m={4}>
                         <List className="bg-white rounded-lg">
-                            <div className="px-4 pt-4 pb-2 text-[18px] leading-[1] font-medium">Cài đặt</div>
+                            <ManagementTitle title="Cài đặt" />
                             <Item
                                 onClick={() => openPermissionSettingApp()}
                                 title="Quản lý quyền Zalo"
