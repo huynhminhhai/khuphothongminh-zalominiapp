@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Button, DatePicker, Modal } from 'zmp-ui';
 import { PrimaryButton } from 'components/button';
-import { Icon } from '@iconify/react';
 import SecondaryButton from 'components/button/SecondaryButton';
 import { useSearchParams } from 'react-router-dom';
 import SurveyPreviewModal from './SurveyPreviewModal';
@@ -45,7 +44,7 @@ const SurveyUpdateForm: React.FC = () => {
             const typeMap: { [key: string]: 'text' | 'multiple-choice' | 'one-choice' } = {
                 "Câu hỏi nhập nội dung trả lời": 'text',
                 "Câu hỏi chọn nhiều đáp án": 'multiple-choice',
-                "Câu hỏi chọn một đáp án": 'one-choice', 
+                "Câu hỏi chọn một đáp án": 'one-choice',
             };
 
             const mappedFormData: SurveyType = {
@@ -54,7 +53,7 @@ const SurveyUpdateForm: React.FC = () => {
                 title: surveyDetail.tieuDe,
                 description: surveyDetail.noiDung,
                 expiryDate: surveyDetail.denNgay,
-                
+
                 questions: surveyDetail.cauHoiKhaoSats.map((q) => ({
                     questionId: q.cauHoiKhaoSatId,
                     question: q.noiDung,
@@ -198,7 +197,7 @@ const SurveyUpdateForm: React.FC = () => {
                 khaoSatId: data.id || 0,
                 noiDung: q.question,
                 loaiCauHoiKhaoSatId: typeMap[q.type],
-                
+
                 chiTietCauHoiKhaoSats: q.options?.map((opt, optIndex) => {
                     const detailQuestion = detailData.cauHoiKhaoSats.find((dq) => dq.cauHoiKhaoSatId === q.questionId);
                     const detailOption = detailQuestion?.chiTietCauHoiKhaoSats[optIndex];

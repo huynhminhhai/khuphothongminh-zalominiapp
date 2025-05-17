@@ -178,7 +178,7 @@ const MeetingDetailPage: React.FC = () => {
                                         <Box>
                                             {detailData?.tapTinCuocHops && detailData.tapTinCuocHops.length > 0 && (
                                                 detailData.tapTinCuocHops.map((item, index) => (
-                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2 text-blue-700">
+                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2 text-secondary-color">
                                                         <div
                                                             className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
 
@@ -190,7 +190,7 @@ const MeetingDetailPage: React.FC = () => {
                                                                 ) : (
                                                                     <Icon icon="codex:file" fontSize={22} />
                                                                 )}
-                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                                <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
                                                             </div>
                                                         </div>
                                                     </div>

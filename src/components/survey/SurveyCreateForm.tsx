@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Box, Button, DatePicker, Modal, useNavigate, useSnackbar } from 'zmp-ui';
+import { Box, Button, DatePicker, Modal, useNavigate } from 'zmp-ui';
 import { PrimaryButton } from 'components/button';
 import { Icon } from '@iconify/react';
 import SecondaryButton from 'components/button/SecondaryButton';
@@ -209,6 +209,7 @@ const CreateSurveyForm: React.FC = () => {
                 <Box mt={6} p={6}>
                     <Button
                         variant="secondary"
+                        size='medium'
                         onClick={() => setPopupVisible(false)}
                         fullWidth
                     >
@@ -359,13 +360,14 @@ const CreateSurveyForm: React.FC = () => {
                         <div className="mt-4 mb-6">
                             <Button
                                 variant="secondary"
+                                size='medium'
                                 onClick={() => addQuestion('one-choice')}
                                 fullWidth
                                 className="flex"
                             >
                                 <div className="flex items-center justify-center gap-1">
                                     <Icon fontSize={18} icon="material-symbols:add-rounded" />
-                                    Thêm câu hỏi văn bản
+                                    <span className='text-[14px]'>Thêm câu hỏi</span>
                                 </div>
                             </Button>
                         </div>
