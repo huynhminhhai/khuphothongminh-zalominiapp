@@ -1,3 +1,4 @@
+import images from "assets/images"
 import { ChangePasswordForm, LoginForm } from "components/account"
 import { HeaderSub } from "components/header-sub"
 import React from "react"
@@ -14,7 +15,7 @@ const ChangePasswordPage: React.FC = () => {
                         style={{
                             clipPath: 'ellipse(120% 100% at 60% 0%)'
                         }}
-                        src={'https://www.thitruong.today/uploads/files/2019/06/03/thanh-pho-tan-an-tinh-long-an-co-thuc-su-la-vung-dat-mau-mo-de-dau-tu-1.jpg'}
+                        src={images.bg1}
                         alt="Đổi mật khẩu"
                     />
                 </Box>

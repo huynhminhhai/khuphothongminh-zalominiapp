@@ -289,7 +289,7 @@ const SurveyUpdateForm: React.FC = () => {
                             <textarea
                                 value={formData.description}
                                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                                className="p-2 h-[100px] w-full border border-gray-300 rounded-lg"
+                                className="p-2 h-[150px] w-full border border-gray-300 rounded-lg"
                             />
                         </div>
 

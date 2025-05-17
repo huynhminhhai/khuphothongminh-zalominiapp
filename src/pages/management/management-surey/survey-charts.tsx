@@ -2,11 +2,10 @@ import { useGetSurveyDetail } from "apiRequest/survey"
 import { SurveyChart } from "components/chart"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
-import { NewsSkeleton } from "components/skeleton"
-import React, { useState } from "react"
+import { ChartSkeleton } from "components/skeleton"
+import React from "react"
 import { useSearchParams } from "react-router-dom"
-import { processSurveyResults } from "utils/chart"
-import { Box, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Page, useNavigate } from "zmp-ui"
 
 const SurveyChartsPage: React.FC = () => {
 
@@ -23,7 +22,7 @@ const SurveyChartsPage: React.FC = () => {
                 <HeaderSub title="Tổng quan khảo sát" />
                 {
                     isLoading ?
-                    <NewsSkeleton count={5} /> :
+                    <ChartSkeleton count={3} /> :
                     surveyDetail?.ketQuaKhaoSats.length > 0 ?
                     <SurveyChart surveyDetail={surveyDetail} />
                     :

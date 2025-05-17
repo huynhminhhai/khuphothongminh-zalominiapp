@@ -1,3 +1,4 @@
+import images from "assets/images"
 import { LoginForm } from "components/account"
 import { HeaderSub } from "components/header-sub"
 import React, { useEffect } from "react"
@@ -47,7 +48,7 @@ const LoginPage: React.FC = () => {
                         style={{
                             clipPath: 'ellipse(120% 100% at 30% 0%)'
                         }}
-                        src={'https://bcp.cdnchinhphu.vn/Uploaded/nguyenminhdiem/2019_09_06/TP%20TA.jpg'}
+                        src={images.bg2}
                         alt="Đăng nhập"
                     />
                 </Box>

@@ -100,7 +100,7 @@ const MeetingDetailPage: React.FC = () => {
                             detailData ?
                                 <Box>
                                     <Box px={4}>
-                                        <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.tieuDe}</h3>
+                                        <h3 className="title-page">{detailData.tieuDe}</h3>
                                         <div className="mt-4 flex items-center gap-3">
                                             <Avatar size={30} src={host?.anhDaiDien?.trim() ? getFullImageUrl(host.anhDaiDien) : images.avatar} />
                                             <div className="text-[16px] font-medium text-[#808080]">chủ trì: <span className="text-[#000]">{host?.hoTenNguoiThamDu}</span></div>

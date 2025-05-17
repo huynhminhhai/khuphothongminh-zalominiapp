@@ -258,7 +258,7 @@ const CreateSurveyForm: React.FC = () => {
                                 value={formData.description}
                                 placeholder='Nhập mô tả'
                                 onChange={(e) => setFormData((prev) => ({ ...prev, description: e.target.value }))}
-                                className="p-2 h-[100px] w-full border border-gray-300 rounded-lg outline-0"
+                                className="p-2 h-[150px] w-full border border-gray-300 rounded-lg outline-0"
                             />
                         </div>
 

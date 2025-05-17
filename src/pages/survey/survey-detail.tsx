@@ -193,10 +193,10 @@ const SurveyDetailPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Khảo sát" />
                 <Box>
-                    <Box p={4} className="text-center text-gray-color font-medium border-t border-b">
-                        <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-2">{detailData?.tieuDe}</h3>
-                        <p className="text-[14px] leading-1 mb-1">
-                            Thời hạn: <span className="text-black font-semibold">{formatDate(detailData?.denNgay as string)}</span>
+                    <Box p={4} className="text-center font-medium border-t border-b">
+                        <h3 className="title-page mb-2">{detailData?.tieuDe}</h3>
+                        <p className="text-[16px] leading-1 mb-1">
+                            Thời hạn: <span className="font-semibold">{formatDate(detailData?.denNgay as string)}</span>
                         </p>
                         <p className="text-[14px] leading-1">{detailData?.noiDung}</p>
                         {

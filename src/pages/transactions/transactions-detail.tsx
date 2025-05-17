@@ -32,7 +32,7 @@ const TransactionDetailPage: React.FC = () => {
                             detailData ?
                                 <Box>
                                     <Box px={4} pb={4}>
-                                        <div className="text-[22px] font-semibold" style={{ color: typeColor }}>{type?.tenLoaiGiaoDichTaiChinh === "Thu" ? '+' : '-'}{detailData.soTien.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</div>
+                                        <div className="title-page" style={{ color: typeColor }}>{type?.tenLoaiGiaoDichTaiChinh === "Thu" ? '+' : '-'}{detailData.soTien.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</div>
                                     </Box>
                                     <hr />
                                     <Box px={4} pb={4} pt={2} className="text-[16px] font-medium">

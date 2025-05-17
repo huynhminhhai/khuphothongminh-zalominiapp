@@ -9,3 +9,4 @@ export { default as MeetingItemSkeleton } from "./meeting/MeetingItemSkeleton";
 export { default as MeetingSectionSkeleton } from "./meeting/MeetingSectionSkeleton";
 export { default as InvoiceItemSkeleton } from "./invoice/InvoiceItemSkeleton";
 export { default as ManagementItemSkeleton } from "./management/ManagementItemSkeleton";
+export { default as ChartSkeleton } from "./chart/ChartSkeleton";

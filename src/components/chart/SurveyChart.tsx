@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Bar, Doughnut } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement, BarElement, CategoryScale, LinearScale } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { generateColors } from 'utils/chart';
+import { generateUniqueBlueColors } from 'utils/chart';
 import { Box } from 'zmp-ui';
 import { formatDate } from 'utils/date';
 
@@ -60,8 +60,6 @@ interface SurveyDetail {
 const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }) => {
   const [chartsData, setChartsData] = useState<ChartData[]>([]);
 
-  console.log(surveyDetail)
-
   useEffect(() => {
     const surveyResults: SurveyResult[] = surveyDetail.cauHoiKhaoSats.map((question) => {
       const typeMap: { [key: string]: 'text' | 'multiple-choice' | 'one-choice' } = {
@@ -102,7 +100,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                   datasets: [
                     {
                       data: answers.map((a) => a.count),
-                      backgroundColor: generateColors(answers.length),
+                      backgroundColor: generateUniqueBlueColors(answers.length),
                       borderRadius: 8,
                       borderWidth: 4,
                     },
@@ -148,7 +146,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                     {
                       label: 'Số lượng người chọn',
                       data: answers.map((a) => a.count),
-                      backgroundColor: generateColors(answers.length),
+                      backgroundColor: generateUniqueBlueColors(answers.length),
                     },
                   ],
                 }}

@@ -37,6 +37,8 @@ import shortcut from './shortcut.png'
 import progress from './progress.png'
 import feedback from './feedback.jpg'
 import safety from './safety.png'
+import bg1 from './bg-1.jpg'
+import bg2 from './bg-2.jpg'
 
 const images = {
     logo,
@@ -77,7 +79,9 @@ const images = {
     shapeWave3,
     progress,
     feedback,
-    safety
+    safety,
+    bg1,
+    bg2
 }
 
 export default images

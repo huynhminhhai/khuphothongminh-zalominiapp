@@ -81,21 +81,21 @@ const TaskDetailPage: React.FC = () => {
                             detailData ?
                                 <Box>
                                     <Box px={4}>
-                                        <h3 className="text-[22px] leading-[28px] font-semibold">{detailData.tieuDe}</h3>
+                                        <h3 className="title-page">{detailData.tieuDe}</h3>
                                     </Box>
                                     <Box p={4}>
                                         <div className="grid grid-cols-2 gap-2">
                                             <div className="border-[1px] rounded-xl p-3">
                                                 <div className="text-[16px] font-medium mb-2">Ngày giao</div>
                                                 <div className="flex items-center gap-2">
-                                                    <Icon icon='fluent-mdl2:date-time' fontSize={22} className="text-[#c46574]" />
+                                                    <Icon icon='fluent-mdl2:date-time' fontSize={22} className="text-secondary-color" />
                                                     <div className="text-[14px] font-medium">{formatDate(detailData.ngayGiao)}</div>
                                                 </div>
                                             </div>
                                             <div className="border-[1px] rounded-xl p-3">
                                                 <div className="text-[16px] font-medium mb-2">Thời hạn</div>
                                                 <div className="flex items-center gap-2">
-                                                    <Icon icon='fluent-mdl2:date-time' fontSize={22} className="text-[#c46574]" />
+                                                    <Icon icon='fluent-mdl2:date-time' fontSize={22} className="text-secondary-color" />
                                                     <div className="text-[14px] font-medium">{formatDate(detailData.thoiHanXuLy)}</div>
                                                 </div>
                                             </div>
@@ -141,12 +141,12 @@ const TaskDetailPage: React.FC = () => {
                                     <Box px={4} pt={4} pb={8}>
                                         <div className="text-[18px] font-medium mb-4 flex items-center justify-between">
                                             Tập tin đính kèm
-                                            <Box p={2} className="bg-blue-500 rounded-full" onClick={() => document.getElementById("hiddenFileInput")?.click()}>
+                                            <Box p={2} className="bg-secondary-color rounded-full" onClick={() => document.getElementById("hiddenFileInput")?.click()}>
                                                 <Icon color="#ffffff" icon='hugeicons:file-add' />
                                                 <input disabled={isPending} multiple type="file" id="hiddenFileInput" style={{ display: "none" }} onChange={handleFileChange} />
                                             </Box>
                                         </div>
-                                        <Box className="text-blue-700">
+                                        <Box className="text-secondary-color">
                                             {detailData?.tapTinNhiemVus && detailData.tapTinNhiemVus.length > 0 ? (
                                                 detailData.tapTinNhiemVus.map((item, index) => (
                                                     <div key={index} className="flex items-center gap-2 justify-between mb-2">
@@ -161,7 +161,7 @@ const TaskDetailPage: React.FC = () => {
                                                                 ) : (
                                                                     <Icon icon="codex:file" fontSize={22} />
                                                                 )}
-                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                                <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
                                                             </div>
                                                         </div>
 

@@ -113,7 +113,7 @@ const SurveyManagementPage: React.FC = () => {
             id: 'info',
             header: 'Thông tin',
             cell: ({ row }) => (
-                <div>{row.original.soLuongCauHoiKhaoSat} câu hỏi - <span className="text-blue-700" onClick={() => navigate(`/survey-member?id=${row.original.khaoSatId}`)} >{row.original.soLuongThamGiaKhaoSat} người tham gia</span></div>
+                <div>{row.original.soLuongCauHoiKhaoSat} câu hỏi - <span className="text-[#7798ce] font-semibold" onClick={() => navigate(`/survey-member?id=${row.original.khaoSatId}`)} >{row.original.soLuongThamGiaKhaoSat} người tham gia</span></div>
             )
         },
         {
@@ -122,7 +122,7 @@ const SurveyManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 // hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
                 <div className="flex items-center justify-start" onClick={() => navigate(`/survey-charts?id=${row.original.khaoSatId}`)}>
-                    <img width={30} src={images.pieChart} alt={row.original.title} />
+                    <img width={38} src={images.pieChart} alt={row.original.title} />
                 </div>
             )
         },

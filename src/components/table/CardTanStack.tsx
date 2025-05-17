@@ -23,7 +23,7 @@ const CardTanStack = <T,>({ data, columns }: CardTanStackProps<T>) => {
                         table.getRowModel().rows.map(row => (
                             <div key={row.id} className="p-4 border-b-[2px] border-dashed">
                                 {row.getVisibleCells().map(cell => (
-                                    <div key={cell.id} className="flex items-center gap-3 mb-4">
+                                    <div key={cell.id} className="flex items-center gap-3 mb-3">
                                         {/* Hiển thị tiêu đề cột */}
                                         <div className="text-[14px] font-medium text-gray-500  w-[95px]">
                                             {flexRender(cell.column.columnDef.header, (cell as any).getContext())}

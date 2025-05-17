@@ -47,7 +47,7 @@ const FeedbackDetailPage: React.FC = () => {
                             <Box>
                                 <Box px={4} className="relative">
                                     <Box pb={4} mb={4} className="border-b-[1px]">
-                                        <h3 className="text-[18px] leading-[26px] font-semibold mb-2">
+                                        <h3 className="title-page mb-2">
                                             Kiến nghị về: {data?.tenLinhVucPhanAnh}
                                         </h3>
                                         <Box className="font-medium">
@@ -81,7 +81,7 @@ const FeedbackDetailPage: React.FC = () => {
                                     {otherFiles.length > 0 && (
                                         <div className="mt-4 space-y-2">
                                             <h4 className="font-semibold">Tập tin đính kèm:</h4>
-                                            <Box className="text-blue-700">
+                                            <Box className="text-secondary-color">
                                                 {otherFiles.map((item, index) => (
                                                     // <li key={index}>
                                                     //     <button
@@ -103,7 +103,7 @@ const FeedbackDetailPage: React.FC = () => {
                                                                 ) : (
                                                                     <Icon icon="codex:file" fontSize={22} />
                                                                 )}
-                                                                <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                                <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -134,7 +134,7 @@ const FeedbackDetailPage: React.FC = () => {
                                             </Box>
                                             <Box className="space-y-2">
                                                 <h4 className="font-medium">Tập tin đính kèm:</h4>
-                                                <Box className="text-blue-700">
+                                                <Box className="text-secondary-color">
                                                     {data?.ketQuaXuLyPhanAnh?.tapTinKetQuaXuLyPhanAnhs && data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.length > 0 && (
                                                         data?.ketQuaXuLyPhanAnh.tapTinKetQuaXuLyPhanAnhs.map((item, index) => (
                                                             <div key={index} className="flex items-center gap-2 justify-between mb-2">
@@ -149,7 +149,7 @@ const FeedbackDetailPage: React.FC = () => {
                                                                         ) : (
                                                                             <Icon icon="codex:file" fontSize={22} />
                                                                         )}
-                                                                        <div className="text-[14px] font-medium">{item.tenTapTin}</div>
+                                                                        <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
                                                                     </div>
                                                                 </div>
                                                             </div>

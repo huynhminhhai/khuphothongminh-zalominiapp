@@ -45,6 +45,7 @@
 
 :root {
   --primary-color: #06245b;
+  --secondary-color: #7090c9;
   --gray-color: #666666;
   --black-color: #222631;
 }
@@ -270,7 +271,7 @@ tbody tr td:not(:first-child) {
 }
 
 .zaui-bottom-navigation-item-active {
-  color: #7090c9;
+  color: var(--secondary-color);
 }
 
 /**
@@ -416,6 +417,12 @@ textarea[name="address"] {
 /**
 * NEWS
 **/
+
+.title-page {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
+}
 
 .detail-content {
   font-size: 15px;

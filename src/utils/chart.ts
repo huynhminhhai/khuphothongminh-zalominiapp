@@ -8,6 +8,23 @@ export const generateColors = (numColors: number): string[] => {
     return colors;
 };
 
+export const generateUniqueBlueColors = (numColors: number): string[] => {
+    const colors: string[] = [];
+    const baseHue = 210; // xanh lam
+    const saturation = 80; // độ bão hòa cao để màu rõ nét
+    const startLightness = 30; // bắt đầu từ màu đậm
+    const endLightness = 80;   // đến màu nhạt
+
+    const step = (endLightness - startLightness) / Math.max(numColors - 1, 1);
+
+    for (let i = 0; i < numColors; i++) {
+        const lightness = startLightness + i * step;
+        colors.push(`hsl(${baseHue}, ${saturation}%, ${lightness}%)`);
+    }
+
+    return colors;
+};
+
 export const processSurveyResults = (data: typeof SURVEYRESULT) => {
     const questionsMap: Record<
         number,
