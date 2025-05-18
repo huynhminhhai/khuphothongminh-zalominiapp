@@ -34,6 +34,7 @@ export interface SurveyType {
     id?: number;
     title: string;
     description: string;
+    startDate: string;
     expiryDate: string;
     questions: QuestionType[];
 }

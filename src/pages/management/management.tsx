@@ -58,6 +58,16 @@ const ManagementPage: React.FC = () => {
                                 onClick={() => navigate('/maps')}
                             />
                         </div>
+                        <div className="col-span-4">
+                            <ManagementItem
+                                title="Biểu đồ"
+                                prefix={<img src={images.map}
+                                    alt='news'
+                                    className="w-[30px] h-auto"
+                                />}
+                                onClick={() => navigate('/resident-household')}
+                            />
+                        </div>
                     </div>
                 </Box>
 

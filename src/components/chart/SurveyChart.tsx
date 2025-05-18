@@ -96,6 +96,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
             chart: (
               <Doughnut
                 data={{
+                  
                   labels: answers.map((a) => `${a.answer}: ${a.count}`),
                   datasets: [
                     {
@@ -110,7 +111,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                   plugins: {
                     datalabels: {
                       color: '#fff',
-                      font: { weight: 'bold', size: 12 },
+                      font: { weight: 'bold', size: 14 },
                       formatter: (value, context) => {
                         const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
                         const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
@@ -123,7 +124,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                           const total = (context.dataset.data as number[]).reduce((sum, val) => sum + val, 0);
                           const value = context.raw as number;
                           const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
-                          return value === 0 ? '' : `${percentage}%`; // Bỏ 0.0% trong tooltip
+                          return value === 0 ? '' : `${percentage}%`;
                         },
                       },
                     },
@@ -140,6 +141,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
             question,
             chart: (
               <Bar
+                height={300}
                 data={{
                   labels: answers.map((a) => a.answer),
                   datasets: [
@@ -155,7 +157,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                     legend: { display: false },
                     datalabels: {
                       color: '#000',
-                      font: { size: 14 },
+                      font: { size: 12 },
                       anchor: 'end',
                       align: 'top',
                       formatter: (value) => value,
@@ -163,7 +165,32 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                   },
                   scales: {
                     x: {
-                      ticks: { color: '#000', font: { size: 10 }, display: false },
+                      ticks: {
+                        callback: function(val) {
+                          const label = this.getLabelForValue(val as number);
+                          const maxLineLength = 14;
+                          const words = label.split(' ');
+                          let lines = [] as string[];
+                          let currentLine = '';
+                    
+                          words.forEach(word => {
+                            if ((currentLine + word).length <= maxLineLength) {
+                              currentLine += (currentLine ? ' ' : '') + word;
+                            } else {
+                              if (currentLine) lines.push(currentLine);
+                              currentLine = word;
+                            }
+                          });
+                          if (currentLine) lines.push(currentLine);
+                    
+                          return lines.length > 1 ? lines : label;
+                        },
+                        maxRotation: 50,
+                        minRotation: 50,
+                        color: '#000',
+                        font: { size: 8, weight: 'bold' },
+                        display: true,
+                      },
                       grid: { display: false },
                     },
                     y: {
@@ -171,11 +198,11 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                       ticks: {
                         color: '#000',
                         font: { size: 12 },
-                        stepSize: 1, // Bước nhảy là 1
-                        callback: (value) => Number(value).toFixed(0), // Chỉ hiển thị số nguyên
+                        stepSize: 1,
+                        callback: (value) => Number(value).toFixed(0),
                       },
                       // border: { display: false },
-                      grid: { display: false },
+                      // grid: { display: false },
                     },
                   },
                 }}
@@ -210,11 +237,11 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
       <Box px={4} py={2}>
         <div className="bg-white box-shadow-4 rounded-xl px-3 py-4 text-center text-gray-color">
           <h3 className="text-[18px] text-black leading-[24px] font-semibold mb-1">{surveyDetail.tieuDe}</h3>
-          <div className='font-semibold mt-2 text-black'>{formatDate(surveyDetail.tuNgay)} - {formatDate(surveyDetail.denNgay)}</div>
-            <div className='mt-2'>
-              <p className='font-medium'>Số lượng câu hỏi: <span className='text-black font-semibold'>{surveyDetail.soLuongCauHoiKhaoSat}</span></p>
-              <p className='font-medium'>Người tham gia khảo sát: <span className='text-black font-semibold'>{surveyDetail.soLuongThamGiaKhaoSat}</span></p>
-            </div>
+          <div className='font-semibold mt-2 text-primary-color'>{formatDate(surveyDetail.tuNgay)} - {formatDate(surveyDetail.denNgay)}</div>
+          <div className='mt-2'>
+            <p className='font-medium'>Số lượng câu hỏi: <span className='text-primary-color font-semibold'>{surveyDetail.soLuongCauHoiKhaoSat}</span></p>
+            <p className='font-medium'>Người tham gia khảo sát: <span className='text-primary-color font-semibold'>{surveyDetail.soLuongThamGiaKhaoSat}</span></p>
+          </div>
         </div>
       </Box>
       {chartsData.map((chart, index) => (

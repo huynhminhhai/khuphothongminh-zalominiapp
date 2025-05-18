@@ -13,6 +13,7 @@ const defaultValues: SurveyType = {
     id: 0,
     title: '',
     description: '',
+    startDate: '',
     expiryDate: '',
     questions: [],
 };
@@ -52,6 +53,7 @@ const SurveyUpdateForm: React.FC = () => {
                 id: surveyDetail.khaoSatId,
                 title: surveyDetail.tieuDe,
                 description: surveyDetail.noiDung,
+                startDate: surveyDetail.tuNgay,
                 expiryDate: surveyDetail.denNgay,
 
                 questions: surveyDetail.cauHoiKhaoSats.map((q) => ({
@@ -126,7 +128,7 @@ const SurveyUpdateForm: React.FC = () => {
     };
 
     const validateForm = () => {
-        if (!formData.title.trim() || !formData.description.trim() || !formData.expiryDate) {
+        if (!formData.title.trim() || !formData.description.trim() || !formData.expiryDate || !formData.startDate) {
             setDescModal('Tiêu đề, mô tả và ngày hết hạn không thể trống');
             setPopupVisible(true);
             return false;
@@ -180,14 +182,11 @@ const SurveyUpdateForm: React.FC = () => {
             }
         });
 
-        console.log(data)
-        console.log(detailData)
-
         return {
             khaoSatId: Number(surveyId),
             tieuDe: data.title,
             noiDung: data.description,
-            tuNgay: detailData.tuNgay,
+            tuNgay: data.startDate,
             denNgay: data.expiryDate,
             tinhTrangId: detailData.tinhTrangId,
 
@@ -260,6 +259,24 @@ const SurveyUpdateForm: React.FC = () => {
                                 value={formData.title}
                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                 className="p-2 w-full border border-gray-300 rounded-lg"
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-[2px]">
+                                Ngày bắt đầu <span className="text-red-600">(*)</span>
+                            </label>
+                            <DatePicker
+                                placeholder="Chọn ngày bắt đầu"
+                                value={parseDate(formData.startDate)}
+                                mask
+                                maskClosable
+                                onChange={(date) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        startDate: formatDate(date as Date | null),
+                                    }))
+                                }
                             />
                         </div>
 

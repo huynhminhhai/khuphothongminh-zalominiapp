@@ -13,6 +13,7 @@ import { formatDate, parseDate } from 'components/form/DatePicker';
 const defaultValues: SurveyType = {
     title: '',
     description: '',
+    startDate: '',
     expiryDate: '',
     questions: [],
 };
@@ -102,7 +103,7 @@ const CreateSurveyForm: React.FC = () => {
     };
 
     const validateForm = () => {
-        if (!formData.title.trim() || !formData.description.trim() || !formData.expiryDate) {
+        if (!formData.title.trim() || !formData.description.trim() || !formData.expiryDate || !formData.startDate) {
             setDescModal('Tiêu đề, mô tả và ngày hết hạn không thể trống');
             setPopupVisible(true);
             return false;
@@ -161,7 +162,7 @@ const CreateSurveyForm: React.FC = () => {
             apId: account?.thongTinDanCu?.apId,
             tieuDe: data.title,
             noiDung: data.description,
-            tuNgay: new Date().toISOString(),
+            tuNgay: data.startDate,
             denNgay: data.expiryDate,
 
             cauHoiKhaoSats: data.questions.map((q) => ({
@@ -230,6 +231,24 @@ const CreateSurveyForm: React.FC = () => {
                                 value={formData.title}
                                 onChange={(e) => setFormData((prev) => ({ ...prev, title: e.target.value }))}
                                 className="p-2 w-full border border-gray-300 rounded-lg"
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium mb-[2px]">
+                                Ngày bắt đầu <span className="text-red-600">(*)</span>
+                            </label>
+                            <DatePicker
+                                placeholder="Chọn ngày bắt đầu"
+                                value={parseDate(formData.startDate)}
+                                mask
+                                maskClosable
+                                onChange={(date) =>
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        startDate: formatDate(date as Date | null),
+                                    }))
+                                }
                             />
                         </div>
 

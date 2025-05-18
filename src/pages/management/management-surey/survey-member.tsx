@@ -139,7 +139,7 @@ const SurveyMemberPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Danh sách người khảo sát" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Danh sách người khảo sát" />
                 <Box>
                     <Box pb={4}>
                         <Box>
