@@ -41,6 +41,7 @@ import safety from './safety.png'
 import bg1 from './bg-1.jpg'
 import bg2 from './bg-2.jpg'
 import resident from './resident.png'
+import chart from './chart.png'
 
 const images = {
     logo,
@@ -85,7 +86,8 @@ const images = {
     bg1,
     bg2,
     resident,
-    shape5
+    shape5,
+    chart
 }
 
 export default images

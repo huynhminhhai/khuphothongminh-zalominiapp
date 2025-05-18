@@ -1,103 +1,83 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Box, Select } from 'zmp-ui'
-import { Bar, Doughnut, Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2'
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Tooltip,
-} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { optionsPercent } from './type';
-import { monthOptions } from 'constants/mock';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+} from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { optionsPercent } from './type'
+import { monthOptions } from 'constants/mock'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, ChartDataLabels);
+ChartJS.register(CategoryScale, LinearScale, Tooltip, ChartDataLabels)
 
 const initParam = {
-    month: 0,
-    year: 0
+  month: 0,
+  year: 0,
 }
 
-const PercentInsuranceChart: React.FC = () => {
+const PercentInsuranceChart: React.FC<{ data: any[] }> = ({ data }) => {
+  const [param, setParam] = useState(initParam)
 
-    const [param, setParam] = useState(initParam)
+  // Lọc theo tháng, năm (giả sử data có tháng và năm)
+  const filteredData = useMemo(() => {
+    return data.filter((item) => {
+      if (param.month && item.month !== param.month) return false
+      if (param.year && item.year !== param.year) return false
+      return true
+    })
+  }, [data, param])
 
-    const { Option } = Select
+  // Đếm số người có bảo hiểm và không có bảo hiểm
+  const counts = useMemo(() => {
+    let insured = 0
+    let uninsured = 0
+  
+    filteredData.forEach((item) => {
+      if (item.baoHiemYTe) {
+        insured++
+      } else {
+        uninsured++
+      }
+    })
+  
+    return { insured, uninsured, total: filteredData.length }
+  }, [filteredData])
 
-    const insuranceRawData = {
-        total: 1000, // Tổng số người
-        insured: 744, // Có bảo hiểm
-        uninsured: 256, // Không có bảo hiểm
-    };
+  const insurancePercentage = useMemo(() => {
+    return {
+      insured:
+        counts.total > 0
+          ? ((counts.insured / counts.total) * 100).toFixed(2)
+          : '0.00',
+      uninsured:
+        counts.total > 0
+          ? ((counts.uninsured / counts.total) * 100).toFixed(2)
+          : '0.00',
+    }
+  }, [counts])
 
-    const insurancePercentage = {
-        insured: ((insuranceRawData.insured / insuranceRawData.total) * 100).toFixed(2),
-        uninsured: ((insuranceRawData.uninsured / insuranceRawData.total) * 100).toFixed(2),
-    };
+  const insuranceData = useMemo(() => ({
+    labels: [
+      `Có bảo hiểm ${counts.insured}`,
+      `Không có bảo hiểm ${counts.uninsured}`,
+    ],
+    datasets: [
+      {
+        data: [insurancePercentage.insured, insurancePercentage.uninsured],
+        backgroundColor: ['#02457a', '#a3ccf5'],
+      },
+    ],
+  }), [counts, insurancePercentage])
 
-    const insuranceData = {
-        labels: [
-            `Có bảo hiểm ${insuranceRawData.insured}`,
-            `Không có bảo hiểm ${insuranceRawData.uninsured}`
-        ],
-        datasets: [
-            {
-                data: [
-                    insurancePercentage.insured,
-                    insurancePercentage.uninsured
-                ],
-                backgroundColor: ['#89d3d4', '#b9ebe0'],
-            },
-        ],
-    };
-
-    return (
-        <Box>
-            <div className="text-[18px] font-medium mb-1 text-center">Tình trạng bảo hiểm y tế</div>
-            <div className="grid grid-cols-2 gap-4 my-2">
-                <div>
-                    <Select
-                        className="h-[32px]"
-                        placeholder="Chọn tháng"
-                        closeOnSelect
-                        onChange={(value) => {
-                            setParam((prevParam) => ({
-                                ...prevParam,
-                                month: value as number
-                            }));
-                        }}
-                    >
-                        <Option title={'Tất cả'} value={0} />
-                        {
-                            monthOptions.map((item) => (
-                                <Option key={item.value} title={item.label} value={item.value} />
-                            ))
-                        }
-                    </Select>
-                </div>
-                <div>
-                    <Select
-                        className="h-[32px]"
-                        placeholder="Chọn năm"
-                        closeOnSelect
-                        onChange={(value) => {
-                            setParam((prevParam) => ({
-                                ...prevParam,
-                                year: value as number
-                            }));
-                        }}
-                    >
-                        <Option title={'Tất cả'} value={0} />
-                        <Option title={'2024'} value={2024} />
-                        <Option title={'2025'} value={2025} />
-
-                    </Select>
-                </div>
-            </div>
-            <Doughnut data={insuranceData} options={optionsPercent} />
-        </Box>
-    )
+  return (
+    <Box>
+      <div className="text-[18px] font-semibold mb-3 text-center">Tình trạng bảo hiểm y tế</div>
+      <Doughnut data={insuranceData} options={optionsPercent} />
+    </Box>
+  )
 }
 
 export default PercentInsuranceChart

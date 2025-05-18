@@ -1,105 +1,81 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Box, Select } from 'zmp-ui'
-import { Bar, Doughnut, Pie } from 'react-chartjs-2';
+import { Doughnut } from 'react-chartjs-2'
 import {
-    Chart as ChartJS,
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Tooltip,
-} from 'chart.js';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
-import { optionsPercent } from './type';
-import { monthOptions } from 'constants/mock';
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+} from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
+import { optionsPercent } from './type'
+import { monthOptions } from 'constants/mock'
+import { useStoreApp } from 'store/store'
+import { generateUniqueBlueColors } from 'utils/chart'
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, ChartDataLabels);
+ChartJS.register(CategoryScale, LinearScale, Tooltip, ChartDataLabels)
 
 const initParam = {
-    month: 0,
-    year: 0
+  month: 0,
+  year: 0
 }
 
-const JobChart: React.FC = () => {
+const JobChart: React.FC<{ data: any[] }> = ({ data }) => {
+  const [param, setParam] = useState(initParam)
+  const { Option } = Select
+  const { ngheNghieps } = useStoreApp()
 
-    const [param, setParam] = useState(initParam)
+  // Lọc dữ liệu theo tháng, năm nếu cần (bạn có thể tùy chỉnh logic)
+  const filteredResidents = useMemo(() => {
+    return data.filter(r => {
+      if (param.month && r.month !== param.month) return false
+      if (param.year && r.year !== param.year) return false
+      return true
+    })
+  }, [data, param])
 
-    const { Option } = Select
+  // Thống kê số lượng dân cư theo nghề nghiệp
+  const countsByJob = useMemo(() => {
+    // Khởi tạo object đếm
+    const counts: Record<number, number> = {}
 
-    const JobData = {
-        total: 547,
-        others: 47,
-        workers: 200,
-        farmers: 120,
-        officers: 90,
-        freelancers: 90
-    };
+    filteredResidents.forEach(r => {
+      const job = r.ngheNghiep || 1  // default nếu ko có nghề thì gán 1 = "Khác"
+      counts[job] = (counts[job] || 0) + 1
+    })
+    return counts
+  }, [filteredResidents])
 
-    const pieJobData = {
-        labels: [
-            `Công nhân ${JobData.workers}`,
-            `Nông dân ${JobData.farmers}`,
-            `Viên chức ${JobData.officers}`,
-            `Lao động tự do ${JobData.freelancers}`,
-            `Khác ${JobData.others}`
-        ],
-        datasets: [
-            {
-                data: [((JobData.workers / JobData.total) * 100).toFixed(2),
-                ((JobData.farmers / JobData.total) * 100).toFixed(2),
-                ((JobData.officers / JobData.total) * 100).toFixed(2),
-                ((JobData.freelancers / JobData.total) * 100).toFixed(2),
-                ((JobData.others / JobData.total) * 100).toFixed(2),],
-                backgroundColor: ['#f1b821', '#545e90', '#ee4880', '#b275d4', '#41b5ee'],
-            },
-        ],
-    };
+  // Tạo data cho biểu đồ dựa vào ngheNghieps và counts
+  const total = useMemo(() => {
+    return Object.values(countsByJob).reduce((a, b) => a + b, 0)
+  }, [countsByJob])
 
-    return (
-        <Box>
-            <div className="text-[18px] font-medium mb-1 text-center">Thống kê nghề nghiệp</div>
-            <div className="grid grid-cols-2 gap-4 my-2">
-                <div>
-                    <Select
-                        className="h-[32px]"
-                        placeholder="Chọn tháng"
-                        closeOnSelect
-                        onChange={(value) => {
-                            setParam((prevParam) => ({
-                                ...prevParam,
-                                month: value as number
-                            }));
-                        }}
-                    >
-                        <Option title={'Tất cả'} value={0} />
-                        {
-                            monthOptions.map((item) => (
-                                <Option key={item.value} title={item.label} value={item.value} />
-                            ))
-                        }
-                    </Select>
-                </div>
-                <div>
-                    <Select
-                        className="h-[32px]"
-                        placeholder="Chọn năm"
-                        closeOnSelect
-                        onChange={(value) => {
-                            setParam((prevParam) => ({
-                                ...prevParam,
-                                year: value as number
-                            }));
-                        }}
-                    >
-                        <Option title={'Tất cả'} value={0} />
-                        <Option title={'2024'} value={2024} />
-                        <Option title={'2025'} value={2025} />
-
-                    </Select>
-                </div>
-            </div>
-            <Doughnut data={pieJobData} options={optionsPercent} />
-        </Box>
+  const pieJobData = useMemo(() => {
+    const labels = ngheNghieps.map(item => {
+      const count = countsByJob[item.value] || 0
+      return `${item.label}: ${count}`
+    })
+    const data = ngheNghieps.map(item =>
+      total > 0 ? ((countsByJob[item.value] || 0) / total * 100).toFixed(2) : 0
     )
+    return {
+      labels,
+      datasets: [
+        {
+          data,
+          backgroundColor: generateUniqueBlueColors(ngheNghieps.length),
+        }
+      ]
+    }
+  }, [ngheNghieps, countsByJob, total])
+
+  return (
+    <Box>
+      <div className="text-[18px] font-semibold mb-3 text-center">Nghề nghiệp</div>
+      <Doughnut data={pieJobData} options={optionsPercent} />
+    </Box>
+  )
 }
 
 export default JobChart

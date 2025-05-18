@@ -16,7 +16,7 @@ export const optionsBarChart = {
     scales: {
         y: {
             grid: {
-                display: false,
+                display: true,
             },
             border: {
                 display: false,

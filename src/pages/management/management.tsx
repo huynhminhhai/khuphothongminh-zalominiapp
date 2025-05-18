@@ -61,7 +61,7 @@ const ManagementPage: React.FC = () => {
                         <div className="col-span-4">
                             <ManagementItem
                                 title="Biểu đồ"
-                                prefix={<img src={images.map}
+                                prefix={<img src={images.chart}
                                     alt='news'
                                     className="w-[30px] h-auto"
                                 />}
