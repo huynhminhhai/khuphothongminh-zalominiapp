@@ -12,6 +12,7 @@ import React, { useCallback, useEffect, useState } from "react"
 import { openUrlInWebview } from "services/zalo"
 import { useStoreApp } from "store/store"
 import { getFullImageUrl, isImage } from "utils/file"
+import { PermissionActions, permissionsList } from "utils/permission"
 import { Box, Input, Page, Select, Swiper, useNavigate } from "zmp-ui"
 
 const FeedbackManagementPage: React.FC = () => {
@@ -138,23 +139,6 @@ const FeedbackManagementPage: React.FC = () => {
                 )
             }
         },
-        // {
-        //     accessorKey: 'noiDung',
-        //     header: 'Nội dung',
-        //     size: 300
-        // },
-        // {
-        //     id: 'isAnswer',
-        //     header: 'Phản hồi',
-        //     cell: ({ row }) => {
-
-        //         return (
-        //             <div className="flex items-center justify-center">
-
-        //             </div>
-        //         )
-        //     }
-        // },
         {
             id: 'tinhTrangId',
             header: 'Trạng thái',
@@ -177,7 +161,7 @@ const FeedbackManagementPage: React.FC = () => {
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={
                                 isPending
-                                // || !hasPermission('Cập nhật tình trạng của 1 phản ánh', 'SUA')
+                                || !hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, PermissionActions.SUA)
                             }
                         >
                             {feedbackStatus?.tinhTrangs?.map((item) => (
@@ -220,48 +204,19 @@ const FeedbackManagementPage: React.FC = () => {
                 )
             }
         },
-        // {
-        //     id: 'address',
-        //     header: 'Địa chỉ',
-        //     cell: ({ row }) => {
-
-        //         const data = row.original
-
-        //         return (
-        //             <div className="h-[42px]">
-        //                 {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
-        //             </div>
-        //         )
-        //     }
-        // },
-        // {
-        //     id: 'isAnswer',
-        //     header: 'Phản hồi',
-        //     cell: ({ row }) => {
-
-        //         return (
-        //             <div>
-        //                 {row.original.isAnswer ? 'Đã phản hồi' : 'Chưa phản hồi'}
-        //             </div>
-        //         )
-        //     }
-        // },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/feedback-detail?id=${row.original.phanAnhId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                     {
-                        // hasPermission('Lấy thông tin chi tiết 1 phản ánh', 'XEM') &&
-                        <button
-                            onClick={() => navigate(`/feedback-detail?id=${row.original.phanAnhId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        // hasPermission('Sửa thông tin 1 phản ánh', 'SUA') &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/feedback-answer?id=${row.original.phanAnhId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -270,7 +225,7 @@ const FeedbackManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        // hasPermission('Xóa 1 phản ánh', 'XOA') &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, PermissionActions.XOA) &&
                         <button
                             onClick={() => removeFeedback(row.original.phanAnhId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -343,22 +298,6 @@ const FeedbackManagementPage: React.FC = () => {
                                 }}
                             />
                         </div>
-                        {/* <div className="col-span-12">
-                            <Select
-                                defaultValue={3}
-                                closeOnSelect
-                                onChange={(value) => {
-                                    setParam((prevParam) => ({
-                                        ...prevParam,
-                                        status: value as number
-                                    }));
-                                }}
-                            >
-                                <Option value={3} title="Tất cả" />
-                                <Option value={1} title="Chưa đăng tải" />
-                                <Option value={2} title="Đã đăng tải" />
-                            </Select>
-                        </div> */}
                     </FilterBar>
                     <Box>
                         {renderContent()}

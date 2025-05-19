@@ -11,6 +11,7 @@ import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
+import { PermissionActions, permissionsList } from "utils/permission"
 import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const SurveyManagementPage: React.FC = () => {
@@ -147,10 +148,10 @@ const SurveyManagementPage: React.FC = () => {
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled=
-                                {
-                                    isPending
-                                    // || !hasPermission('Cập nhật tình trạng của 1 tin tức', 'SUA')
-                                }
+                            {
+                                isPending
+                                // || !hasPermission('Cập nhật tình trạng của 1 tin tức', 'SUA')
+                            }
                         >
                             {surveyStatus?.tinhTrangs && surveyStatus.tinhTrangs.map((item) => (
                                 <Option
@@ -170,17 +171,14 @@ const SurveyManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/survey-detail?id=${row.original.khaoSatId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                     {
-                        // hasPermission('Lấy thông tin chi tiết 1 khảo sát', 'XEM') &&
-                        <button
-                            onClick={() => navigate(`/survey-detail?id=${row.original.khaoSatId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        // hasPermission('Sửa thông tin 1 khảo sát', 'SUA') &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/survey-update?id=${row.original.khaoSatId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -189,7 +187,7 @@ const SurveyManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        // hasPermission('Xóa 1 khảo sát', 'XOA') &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, PermissionActions.XOA) &&
                         <button
                             onClick={() => removeSurvey(Number(row.original.khaoSatId))}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -250,7 +248,7 @@ const SurveyManagementPage: React.FC = () => {
                 <Box>
                     <Box pb={4}>
                         <FilterBar
-                            // showAddButton={hasPermission('Thêm mới 1 khảo sát', 'SUA')}
+                            showAddButton={hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, PermissionActions.THEM)}
                             onAddButtonClick={() => navigate("/survey-add")}
                             setViewCard={setViewCard}
                             viewCard={viewCard}

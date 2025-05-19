@@ -13,6 +13,7 @@ import { getFullImageUrl } from "utils/file"
 import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 import { debounce } from "lodash";
 import { formatDate, parseDate } from "components/form/DatePicker"
+import { PermissionActions, permissionsList } from "utils/permission"
 
 const NewsManagementPage: React.FC = () => {
 
@@ -146,10 +147,10 @@ const NewsManagementPage: React.FC = () => {
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled=
-                                {
-                                    isPending
-                                    // || !hasPermission('Cập nhật tình trạng của 1 tin tức', 'SUA')
-                                }
+                            {
+                                isPending
+                                || !hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.XUATBAN)
+                            }
                         >
                             {newsStatus && newsStatus.map((item) => (
                                 <Option
@@ -165,21 +166,18 @@ const NewsManagementPage: React.FC = () => {
             size: 160,
         },
         {
-            id: 'actions', // Custom column for actions
+            id: 'actions',
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/news-detail?id=${row.original.tinTucId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                     {
-                        // hasPermission('Lấy thông tin chi tiết 1 bài viết', 'XEM') &&
-                        <button
-                            onClick={() => navigate(`/news-detail?id=${row.original.tinTucId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        // hasPermission('Sửa thông tin 1 bài viết', 'SUA') &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/news-update?id=${row.original.tinTucId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -188,7 +186,7 @@ const NewsManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        // hasPermission('Xóa 1 bài viết', 'XOA') &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.XOA) &&
                         <button
                             onClick={() => removeNews(row.original.tinTucId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -249,7 +247,7 @@ const NewsManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý tin tức" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        // showAddButton={hasPermission('Thêm mới 1 bài viết', 'SUA')}
+                        showAddButton={hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.THEM)}
                         onAddButtonClick={() => navigate("/news-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
