@@ -29,7 +29,7 @@ const HomePage: React.FunctionComponent = () => {
             <>
               <Divider />
               {
-                hasPermission(permissionsList.khuPhoCongViec, PermissionActions.XEM) &&
+                hasPermission(permissionsList.khuPhoNhiemVuNhiemVuCuaToi, PermissionActions.XEM) &&
                 <TaskSection />
               }
               <Divider />
