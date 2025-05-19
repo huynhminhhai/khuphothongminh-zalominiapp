@@ -10,6 +10,7 @@ import { debounce } from "lodash"
 import React, { useCallback, useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
+import { PermissionActions, permissionsList } from "utils/permission"
 import { Box, Button, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const TaskManagementPage: React.FC = () => {
@@ -150,7 +151,7 @@ const TaskManagementPage: React.FC = () => {
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={
                                 isPending
-                                // || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')
+                                || !hasPermission(permissionsList.khuPhoNhiemVuGiaoNhiemVu, PermissionActions.SUA)
                             }
                         >
                             {taskStatus && taskStatus.map((item) => (
@@ -165,39 +166,19 @@ const TaskManagementPage: React.FC = () => {
                 );
             },
         },
-        // {
-        //     id: 'priority',
-        //     header: 'Ưu tiên',
-        //     cell: ({ row }) => (
-        //         <div className="flex items-center justify-center space-x-2 whitespace-nowrap">
-        //             <div className="text-[14px] text-white font-medium leading-[1] bg-red-600 px-2 py-[6px] rounded-xl"
-        //                 style={{
-        //                     backgroundColor: row.original.priority === 1 ? '#16a34a' : row.original.priority === 2 ? '#eab308' : '#dc2626'
-        //                 }}
-        //             >
-        //                 {
-        //                     getLabelOptions(row.original.priority, taskPriority)
-        //                 }
-        //             </div>
-        //         </div>
-        //     ),
-        // },
         {
-            id: 'actions', // Custom column for actions
+            id: 'actions',
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/task-detail?id=${row.original.nhiemVuId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                     {
-                        // hasPermission('Lấy thông tin chi tiết 1 nhiệm vụ', 'XEM') &&
-                        <button
-                            onClick={() => navigate(`/task-detail?id=${row.original.nhiemVuId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        // hasPermission('Sửa thông tin 1 nhiệm vụ', 'SUA') &&
+                        hasPermission(permissionsList.khuPhoNhiemVuGiaoNhiemVu, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/task-update?id=${row.original.nhiemVuId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -206,7 +187,7 @@ const TaskManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        // hasPermission('Xóa 1 tập tin nhiệm vụ', 'XOA') &&
+                        hasPermission(permissionsList.khuPhoNhiemVuGiaoNhiemVu, PermissionActions.XOA) &&
                         <button
                             onClick={() => removeFeedback(row.original.nhiemVuId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -267,7 +248,7 @@ const TaskManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý nhiệm vụ" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        // showAddButton={hasPermission('Thêm mới 1 nhiệm vụ', 'SUA')}
+                        showAddButton={hasPermission(permissionsList.khuPhoNhiemVuGiaoNhiemVu, PermissionActions.THEM)}
                         onAddButtonClick={() => navigate("/task-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}

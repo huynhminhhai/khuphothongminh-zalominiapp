@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
 import { convertNumberVND } from "utils/number"
+import { PermissionActions, permissionsList } from "utils/permission"
 import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const TransactionsManagementPage: React.FC = () => {
@@ -143,17 +144,14 @@ const TransactionsManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/transactions-detail?id=${row.original.thuChiId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                     {
-                        // hasPermission('Lấy thông tin chi tiết 1 giao dịch thu chi', 'XEM') &&
-                        <button
-                            onClick={() => navigate(`/transactions-detail?id=${row.original.thuChiId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        // hasPermission('Sửa thông tin 1 giao dịch thu chi', 'SUA') &&
+                        hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/transactions-update?id=${row.original.thuChiId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -162,7 +160,7 @@ const TransactionsManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        // hasPermission('Xóa 1 giao dịch thu chi', 'XOA') &&
+                        hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.XOA) &&
                         <button
                             onClick={() => removeTransaction(row.original.thuChiId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -222,7 +220,7 @@ const TransactionsManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý thu chi" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton
+                        showAddButton={hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.THEM)}
                         onAddButtonClick={() => navigate('/transactions-add')}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
@@ -248,13 +246,13 @@ const TransactionsManagementPage: React.FC = () => {
                                 closeOnSelect
                                 onChange={(e) => setParam(prev => ({ ...prev, LoaiGiaoDichTaiChinhId: Number(e) }))}
                             >
-                                <Option title="Tất cả" value={0}/>
+                                <Option title="Tất cả" value={0} />
                                 {
                                     transactionType?.map((item) => (
                                         <Option key={item.loaiGiaoDichTaiChinhId} value={item.loaiGiaoDichTaiChinhId} title={item.tenLoaiGiaoDichTaiChinh} />
                                     ))
                                 }
-                                
+
                             </Select>
                         </div>
                     </FilterBar>

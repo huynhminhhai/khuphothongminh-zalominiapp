@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { copyToClipboard } from "utils/copyToClipboard"
 import { getHourFromDate, formatDate as formatDateMeeting } from "utils/date"
+import { PermissionActions, permissionsList } from "utils/permission"
 import { useCustomSnackbar } from "utils/useCustomSnackbar"
 import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 
@@ -158,7 +159,7 @@ const MeetingManagementPage: React.FC = () => {
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={
                                 isPending
-                                // || !hasPermission('Cập nhật tình trạng của 1 nhiệm vụ', 'SUA')
+                                || !hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.SUA)
                             }
                         >
                             {meetingStatus?.tinhTrangs && meetingStatus?.tinhTrangs.map((item) => (
@@ -179,17 +180,14 @@ const MeetingManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/meeting-detail?id=${row.original.cuocHopId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                     {
-                        // hasPermission('Lấy thông tin chi tiết 1 cuộc họp', 'XEM') &&
-                        <button
-                            onClick={() => navigate(`/meeting-detail?id=${row.original.cuocHopId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        // hasPermission('Sửa thông tin 1 cuộc họp', 'SUA') &&
+                       hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/meeting-update?id=${row.original.cuocHopId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -198,7 +196,7 @@ const MeetingManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        // hasPermission('Xóa 1 cuộc họp', 'XOA') &&
+                        hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.XOA) &&
                         <button
                             onClick={() => removeMeeting(row.original.cuocHopId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -258,7 +256,7 @@ const MeetingManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý cuộc họp" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        // showAddButton={hasPermission('Thêm mới 1 cuộc họp', 'SUA')}
+                        showAddButton={hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.THEM)}
                         onAddButtonClick={() => navigate("/meeting-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
