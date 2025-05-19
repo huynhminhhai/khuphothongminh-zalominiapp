@@ -10,7 +10,7 @@ import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "compone
 import { debounce } from "lodash"
 import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
-import { formatDate } from "utils/date"
+import { PermissionActions, permissionsList } from "utils/permission"
 import { formatAddress } from "utils/useAddress"
 import { Box, Button, Input, Page, useNavigate } from "zmp-ui"
 
@@ -125,22 +125,6 @@ const ResidentManagementPage: React.FC = () => {
             accessorKey: 'soGiayTo',
             header: 'CCCD',
         },
-        // {
-        //     accessorKey: 'tenGioiTinh',
-        //     header: 'Giới tính',
-        // },
-        // {
-        //     id: 'ngaySinh',
-        //     header: 'Ngày sinh',
-        //     cell: ({ row }) => (
-        //         <div>
-        //             {
-        //                 formatDate(row.original.ngaySinh)
-        //             }
-        //         </div>
-        //     ),
-        //     size: 100
-        // },
         {
             accessorKey: 'dienThoai',
             header: 'SĐT',
@@ -155,32 +139,19 @@ const ResidentManagementPage: React.FC = () => {
             ),
             size: 300
         },
-        // {
-        //     id: 'tamTru',
-        //     header: 'Tạm trú',
-        //     cell: ({ row }) => (
-        //         <div className="line-clamp-2 text-[14px]">
-        //             {formatAddress(row.original.noiTamTru)}
-        //         </div>
-        //     ),
-        //     size: 300
-        // },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/profile-resident?id=${row.original.danCuId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                     {
-                        // hasPermission('Lấy thông tin chi tiết 1 dân cư', 'XEM') &&
-                        <button
-                            onClick={() => navigate(`/profile-resident?id=${row.original.danCuId}`)}
-                            className="px-3 py-1 bg-gray-700 text-white rounded"
-                        >
-                            <Icon icon='mdi:eye' fontSize={18} />
-                        </button>
-                    }
-                    {
-                        // hasPermission('Sửa thông tin 1 dân cư', 'SUA') &&
+                        hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/resident-profile-update?id=${row.original.danCuId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
@@ -189,7 +160,7 @@ const ResidentManagementPage: React.FC = () => {
                         </button>
                     }
                     {
-                        // hasPermission('Xóa 1 dân cư', 'XOA') &&
+                        hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.XOA) &&
                         <button
                             onClick={() => removeResident(row.original.danCuId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
@@ -250,7 +221,7 @@ const ResidentManagementPage: React.FC = () => {
                 <HeaderSub title="Quản lý thông tin hộ dân" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        // showAddButton={hasPermission('Thêm mới 1 dân cư', 'SUA')}
+                        showAddButton={hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.THEM)}
                         onAddButtonClick={() => navigate("/resident-profile-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}

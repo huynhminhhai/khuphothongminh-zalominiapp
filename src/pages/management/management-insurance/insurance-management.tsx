@@ -12,10 +12,11 @@ import { useStoreApp } from "store/store";
 import { formatDate } from "utils/date";
 import { Box, Input, Page, useNavigate } from "zmp-ui";
 import { debounce } from "lodash";
+import { PermissionActions, permissionsList } from "utils/permission";
 
 const InsuranceManagementPage: React.FC = () => {
     const navigate = useNavigate();
-    const { account } = useStoreApp();
+    const { account, hasPermission } = useStoreApp();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -161,32 +162,42 @@ const InsuranceManagementPage: React.FC = () => {
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
-                    <button
-                        onClick={() => navigate(`/insurance-management-add?danCuId=${row.original.danCuId}`)}
-                        className="px-3 py-1 bg-green-700 text-white rounded"
-                    >
-                        <Icon icon="material-symbols:add" fontSize={18} />
-                    </button>
+                    {
+                        hasPermission(permissionsList.khuPhoCongViecBaoHiemYTe, PermissionActions.THEM) &&
+                        <button
+                            onClick={() => navigate(`/insurance-management-add?danCuId=${row.original.danCuId}`)}
+                            className="px-3 py-1 bg-green-700 text-white rounded"
+                        >
+                            <Icon icon="material-symbols:add" fontSize={18} />
+                        </button>
+                    }
                     {row.original.baoHiemYTe && (
                         <>
-                            <button
-                                onClick={() =>
-                                    navigate(
-                                        `/insurance-update?id=${row.original.baoHiemYTe?.thongTinBaoHiemId}`
-                                    )
-                                }
-                                className="px-3 py-1 bg-blue-700 text-white rounded"
-                            >
-                                <Icon icon="ri:edit-line" fontSize={18} />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    removeInsurance(row.original.baoHiemYTe?.thongTinBaoHiemId)
-                                }
-                                className="px-3 py-1 bg-red-700 text-white rounded"
-                            >
-                                <Icon icon="material-symbols:delete" fontSize={18} />
-                            </button>
+                            {
+                                hasPermission(permissionsList.khuPhoCongViecBaoHiemYTe, PermissionActions.SUA) &&
+                                <button
+                                    onClick={() =>
+                                        navigate(
+                                            `/insurance-update?id=${row.original.baoHiemYTe?.thongTinBaoHiemId}`
+                                        )
+                                    }
+                                    className="px-3 py-1 bg-blue-700 text-white rounded"
+                                >
+                                    <Icon icon="ri:edit-line" fontSize={18} />
+                                </button>
+                            }
+
+                            {
+                                hasPermission(permissionsList.khuPhoCongViecBaoHiemYTe, PermissionActions.XOA) &&
+                                <button
+                                    onClick={() =>
+                                        removeInsurance(row.original.baoHiemYTe?.thongTinBaoHiemId)
+                                    }
+                                    className="px-3 py-1 bg-red-700 text-white rounded"
+                                >
+                                    <Icon icon="material-symbols:delete" fontSize={18} />
+                                </button>
+                            }
                         </>
                     )}
 
