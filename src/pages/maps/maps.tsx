@@ -95,11 +95,11 @@ const ResidentMapPage = () => {
         const hoNgheo = tinhTrangHoGiaDinhs[2]?.value;
 
         const color = {
-            [binthuong]: "blue",
-            [hoCanNgheo]: "orange",
-            [hoNgheo]: "red",
-            true: "green",
-            false: "orange",
+            [binthuong]: "#018abe",
+            [hoCanNgheo]: "#ff6d00",
+            [hoNgheo]: "#c1121f",
+            true: "#008000",
+            false: "#e66f5c",
         }[status] || "gray";
 
         return L.divIcon({
@@ -121,7 +121,7 @@ const ResidentMapPage = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Bản đồ" />
+                <HeaderSub title="Bản đồ tổng quản" />
 
                 {
                     isLoading ?

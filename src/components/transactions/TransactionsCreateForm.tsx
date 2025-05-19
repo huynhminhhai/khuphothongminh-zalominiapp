@@ -107,11 +107,12 @@ const TransactionsAddForm: React.FC = () => {
                             error={errors.ngayGiaoDich?.message}
                         />
                     </div>
-                    <div className="col-span-6">
+                    <div className="col-span-12">
                         <FormSwitchField
                             name="congKhai"
                             label="Công khai"
                             control={control}
+                            required
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">

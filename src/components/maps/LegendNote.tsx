@@ -30,13 +30,13 @@ const LegendNote = (props?: any) => {
                             props?.filter === 'poor' &&
                             <>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-blue-500 rounded-full mr-2"></span> Bình thường
+                                    <span className="inline-block w-3 h-3 bg-[#018abe] rounded-full mr-2"></span> Bình thường
                                 </li>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-orange-500 rounded-full mr-2"></span> Hộ cận nghèo
+                                    <span className="inline-block w-3 h-3 bg-[#ff6d00] rounded-full mr-2"></span> Hộ cận nghèo
                                 </li>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-red-500 rounded-full mr-2"></span> Hộ nghèo
+                                    <span className="inline-block w-3 h-3 bg-[#c1121f] rounded-full mr-2"></span> Hộ nghèo
                                 </li>
                             </>
                         }
@@ -44,10 +44,10 @@ const LegendNote = (props?: any) => {
                             props?.filter === 'culture' &&
                             <>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-green-500 rounded-full mr-2"></span> Gia đình văn hóa
+                                    <span className="inline-block w-3 h-3 bg-[#008000] rounded-full mr-2"></span> Gia đình văn hóa
                                 </li>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-orange-500 rounded-full mr-2"></span> Gia đình chưa văn hóa
+                                    <span className="inline-block w-3 h-3 bg-[#e66f5c] rounded-full mr-2"></span> Gia đình chưa văn hóa
                                 </li>
                             </>
                         }

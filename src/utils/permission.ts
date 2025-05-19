@@ -29,7 +29,7 @@ export const permissionsList = {
   khuPhoCongViec: 'khu-pho_cong-viec',
   khuPhoCongViecCuocHop: 'khu-pho_cong-viec_cuoc-hop',
   khuPhoCongViecNhiemVu: 'khu-pho_cong-viec_nhiem-vu',
-  khuPhoCongViecNhiemVuCuaToi: 'khu-pho_cong-viec_nhiem-vu-cua-toi',
+  khuPhoCongViecNhiemVuCuaToi: 'khu-pho_nhiem-vu_nhiem-vu-cua-toi',
   khuPhoCongViecTaiChinh: 'khu-pho_cong-viec_tai-chinh',
   khuPhoCongViecBaoHiemYTe: 'khu-pho_cong-viec_bao-hiem-y-te',
 } as const;

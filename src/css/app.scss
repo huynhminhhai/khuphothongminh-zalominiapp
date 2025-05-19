@@ -72,6 +72,8 @@ body {
 .zaui-page.home {
   background-color: var(--primary-color);
   margin-top: 0;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 .zaui-header {
