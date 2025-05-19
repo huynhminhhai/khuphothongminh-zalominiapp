@@ -36,7 +36,7 @@ const SERVICES: ServicesType[] = [
         label: 'Nhiệm vụ',
         url: '/task',
         icon: images.todo,
-        requiredPermission: { maChucNang: permissionsList.khuPhoCongViecNhiemVuCuaToi, quyen: PermissionActions.XEM },
+        requiredPermission: { maChucNang: permissionsList.khuPhoNhiemVuNhiemVuCuaToi, quyen: PermissionActions.XEM },
     },
     {
         label: 'Tình hình tài chính',

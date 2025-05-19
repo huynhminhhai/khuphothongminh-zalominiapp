@@ -4,6 +4,9 @@ export const PermissionActions = {
   XOA: 'XOA',
   THEM: 'THEM',
   XUATBAN: 'XUATBAN',
+  BAOCAO: 'BAOCAO',
+  TIEPNHAN: 'TIEPNHAN',
+  XOACUATOI: 'XOACUATOI',
 } as const;
 
 export const permissionsList = {
@@ -12,24 +15,39 @@ export const permissionsList = {
   homeDanhSachTaiKhoan: 'home_danh-sach-tai-khoan',
   homeThemTaiKhoan: 'home_them-moi-tai-khoan',
   homeChinhSuaTaiKhoan: 'home_chinh-sua-tai-khoan',
+  homeBangDieuKhien: 'home_bang-dieu-khien',
+  homeTinMoi: 'home_tin-moi',
+
   thongKe: 'thong-ke',
   thongKeSoLieu: 'thong-ke_so-lieu',
   thongKeBieuDo: 'thong-ke_bieu-do',
+
   cauHinh: 'cau-hinh',
   cauHinhThongTin: 'cau-hinh_thong-tin',
   cauHinhPhanQuyen: 'cau-hinh_phan-quyen',
+
   khuPho: 'khu-pho',
   khuPhoToChucDanCu: 'khu-pho_to-chuc-dan-cu',
   khuPhoToChucDanCuBanDieuHanh: 'khu-pho_to-chuc-dan-cu_ban-dieu-hanh',
   khuPhoToChucDanCuDanCu: 'khu-pho_to-chuc-dan-cu_dan-cu',
+  khuPhoToChucDanCuHoGiaDinh: 'khu-pho_to-chuc-dan-cu_ho-gia-dinh',
+
   khuPhoTuyenTruyenPhanAnh: 'khu-pho_tuyen-truyen-phan-anh',
   khuPhoTuyenTruyenPhanAnhTinTucSuKien: 'khu-pho_tuyen-truyen-phan-anh_tin-tuc-su-kien',
   khuPhoTuyenTruyenPhanAnhKhaoSat: 'khu-pho_tuyen-truyen-phan-anh_khao-sat',
   khuPhoTuyenTruyenPhanAnhPhanAnh: 'khu-pho_tuyen-truyen-phan-anh_phan-anh',
+
   khuPhoCongViec: 'khu-pho_cong-viec',
   khuPhoCongViecCuocHop: 'khu-pho_cong-viec_cuoc-hop',
   khuPhoCongViecNhiemVu: 'khu-pho_cong-viec_nhiem-vu',
-  khuPhoCongViecNhiemVuCuaToi: 'khu-pho_nhiem-vu_nhiem-vu-cua-toi',
   khuPhoCongViecTaiChinh: 'khu-pho_cong-viec_tai-chinh',
   khuPhoCongViecBaoHiemYTe: 'khu-pho_cong-viec_bao-hiem-y-te',
+
+  khuPhoNhiemVu: 'khu-pho_nhiem-vu',
+  khuPhoNhiemVuGiaoNhiemVu: 'khu-pho_nhiem-vu_giao-nhiem-vu',
+  khuPhoNhiemVuNhiemVuCuaToi: 'khu-pho_nhiem-vu_nhiem-vu-cua-toi',
+
+  thongKeBaoCao: 'thong-ke-bao-cao',
+  thongKeBaoCaoThongTinHoGiaDinh: 'thong-ke-bao-cao_thong-tin-ho-gia-dinh',
+  thongKeBaoCaoTongHopTinhHinhDanCu: 'thong-ke-bao-cao_tong-hop-tinh-hinh-dan-cu',
 } as const;
