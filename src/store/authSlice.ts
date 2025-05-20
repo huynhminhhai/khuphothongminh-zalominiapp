@@ -11,7 +11,7 @@ type Role = {
 type Permission = {
     maChucNang: string;
     tenVaiTro: string;
-    quyenXuLy: "XEM" | "SUA" | "XOA" | "THEM" | "XUATBAN";
+    quyenXuLy: "XEM" | "XEMCONGKHAI" | "SUA" | "XOA" | "THEM" | "XUATBAN" | "BAOCAO" | "TIEPNHAN" | "XOACUATOI" | "THUCHIEN";
     hoatDong: boolean;
 };
 
@@ -41,7 +41,7 @@ export interface AuthSliceType {
     setAccount: (account: Account | null) => void;
     setToken: (tokens: { accessToken: string | null; refreshToken: string | null, hanSuDungToken: string | null }) => void;
     clearAuth: () => void;
-    hasPermission: (maChucNang: string, quyen: "XEM" | "SUA" | "XOA" | "THEM" | "XUATBAN") => boolean;
+    hasPermission: (maChucNang: string, quyen:  "XEM" | "XEMCONGKHAI" | "SUA" | "XOA" | "THEM" | "XUATBAN" | "BAOCAO" | "TIEPNHAN" | "XOACUATOI" | "THUCHIEN") => boolean;
     hasRole: (vaiTro: string) => boolean;
 }
 

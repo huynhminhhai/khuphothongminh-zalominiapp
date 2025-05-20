@@ -1,5 +1,6 @@
 export const PermissionActions = {
   XEM: 'XEM',
+  XEMCONGKHAI: 'XEMCONGKHAI',
   SUA: 'SUA',
   XOA: 'XOA',
   THEM: 'THEM',
@@ -7,6 +8,7 @@ export const PermissionActions = {
   BAOCAO: 'BAOCAO',
   TIEPNHAN: 'TIEPNHAN',
   XOACUATOI: 'XOACUATOI',
+  THUCHIEN: 'THUCHIEN',
 } as const;
 
 export const permissionsList = {
@@ -17,6 +19,7 @@ export const permissionsList = {
   homeChinhSuaTaiKhoan: 'home_chinh-sua-tai-khoan',
   homeBangDieuKhien: 'home_bang-dieu-khien',
   homeTinMoi: 'home_tin-moi',
+  bandodancu: 'home_ban-do-so_phan-bo-dan-cu',
 
   thongKe: 'thong-ke',
   thongKeSoLieu: 'thong-ke_so-lieu',

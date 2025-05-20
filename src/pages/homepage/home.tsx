@@ -40,7 +40,7 @@ const HomePage: React.FunctionComponent = () => {
             </>
           }
           {
-            hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.XEM) &&
+            hasPermission(permissionsList.homeTinMoi, PermissionActions.XEM) &&
             <NewsSection />
           }
         </div>

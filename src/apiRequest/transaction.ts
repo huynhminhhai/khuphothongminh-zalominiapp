@@ -8,6 +8,9 @@ const transactionApiRequest = {
     getTransactionList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string }) => {
         return await http.get<any>(`/thuchi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&LoaiGiaoDichTaiChinhId=${param.LoaiGiaoDichTaiChinhId}&NoiDung=${param.NoiDung}`);
     },
+    getTransactionPublicList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string }) => {
+        return await http.get<any>(`/thuchi/danhsachcongkhai?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&LoaiGiaoDichTaiChinhId=${param.LoaiGiaoDichTaiChinhId}&NoiDung=${param.NoiDung}`);
+    },
     getTransactionType: async () => {
         return await http.get<any>(`/thuchi/danhmuc`);
     },
@@ -50,7 +53,7 @@ export const useGetTransactionList = (param: { page: number; pageSize: number, A
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
-                const res = await transactionApiRequest.getTransactionList({ ...param, page: pageParam });
+                const res = await transactionApiRequest.getTransactionPublicList({ ...param, page: pageParam });
 
                 return res.data
             } catch (error) {

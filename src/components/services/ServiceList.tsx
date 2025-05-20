@@ -10,7 +10,7 @@ export type ServicesType = {
     url: string;
     icon?: string;
     isCheckLogin?: boolean,
-    requiredPermission?: { maChucNang: string; quyen: "XEM" | "SUA" | "XOA" | "THEM" | "XUATBAN" };
+    requiredPermission?: { maChucNang: string; quyen:  "XEM" | "XEMCONGKHAI" | "SUA" | "XOA" | "THEM" | "XUATBAN" | "BAOCAO" | "TIEPNHAN" | "XOACUATOI" | "THUCHIEN" };
 }
 
 const SERVICES: ServicesType[] = [
@@ -42,7 +42,7 @@ const SERVICES: ServicesType[] = [
         label: 'Tình hình tài chính',
         url: '/transactions',
         icon: images.money,
-        requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
+        // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEMCONGKHAI },
     },
     // {
     //     label: 'Thông tin tổ chức',
@@ -61,7 +61,7 @@ const SERVICES: ServicesType[] = [
         label: 'Khảo sát',
         url: '/survey',
         icon: images.survey,
-        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEM },
+        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEMCONGKHAI },
     },
     {
         label: 'Phản ánh',

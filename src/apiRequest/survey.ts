@@ -7,6 +7,9 @@ const surveyApiRequest = {
     getSurveyList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
         return await http.get<any>(`/khaosat?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
     },
+    getSurveyPublicList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
+        return await http.get<any>(`/khaosat/nguoidan?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    },
     getSurveyDetail: async (id: number) => {
         return await http.get<any>(`/khaosat/chitiet/${id}`);
     },
@@ -77,7 +80,7 @@ export const useGetSurveyList = (param: { page: number; pageSize: number, ApId: 
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
-                const res = await surveyApiRequest.getSurveyList({ ...param, page: pageParam });
+                const res = await surveyApiRequest.getSurveyPublicList({ ...param, page: pageParam });
 
                 return res.data
             } catch (error) {

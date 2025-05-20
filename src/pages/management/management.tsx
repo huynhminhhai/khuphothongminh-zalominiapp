@@ -44,36 +44,48 @@ const ManagementPage: React.FC = () => {
             <Box>
                 <HeaderSub title="Quản lý" onBackClick={() => navigate('/')} />
 
-                <Box mx={4} mb={2} mt={3}>
-                    <div className="grid grid-cols-12 gap-3">
-                        <div className="col-span-12">
-                            <ManagementTitle title="Tổng quan tình hình hộ dân" />
-                        </div>
-                        <div className="col-span-4">
-                            <ManagementItem
-                                title="Bản đồ"
-                                prefix={<img src={images.map}
-                                    alt='news'
-                                    className="w-[30px] h-auto"
-                                />}
-                                onClick={() => navigate('/maps')}
-                            />
-                        </div>
-                        {
-                            hasPermission(permissionsList.thongKeBaoCaoTongHopTinhHinhDanCu, PermissionActions.XEM) &&
-                            <div className="col-span-4">
-                                <ManagementItem
-                                    title="Biểu đồ"
-                                    prefix={<img src={images.chart}
-                                        alt='news'
-                                        className="w-[30px] h-auto"
-                                    />}
-                                    onClick={() => navigate('/resident-household')}
-                                />
+                {
+                    (
+                        hasPermission(permissionsList.bandodancu, PermissionActions.XEM) ||
+                        hasPermission(permissionsList.thongKeBaoCaoTongHopTinhHinhDanCu, PermissionActions.XEM)
+                    ) &&
+
+                    <Box mx={4} mb={2} mt={3}>
+                        <div className="grid grid-cols-12 gap-3">
+                            <div className="col-span-12">
+                                <ManagementTitle title="Tổng quan tình hình hộ dân" />
                             </div>
-                        }
-                    </div>
-                </Box>
+                            {
+                                hasPermission(permissionsList.bandodancu, PermissionActions.XEM) &&
+
+                                <div className="col-span-4">
+                                    <ManagementItem
+                                        title="Bản đồ"
+                                        prefix={<img src={images.map}
+                                            alt='news'
+                                            className="w-[30px] h-auto"
+                                        />}
+                                        onClick={() => navigate('/maps')}
+                                    />
+                                </div>
+                            }
+
+                            {
+                                hasPermission(permissionsList.thongKeBaoCaoTongHopTinhHinhDanCu, PermissionActions.XEM) &&
+                                <div className="col-span-4">
+                                    <ManagementItem
+                                        title="Biểu đồ"
+                                        prefix={<img src={images.chart}
+                                            alt='news'
+                                            className="w-[30px] h-auto"
+                                        />}
+                                        onClick={() => navigate('/resident-household')}
+                                    />
+                                </div>
+                            }
+                        </div>
+                    </Box>
+                }
 
                 {
                     hasPermission(permissionsList.khuPhoToChucDanCu, PermissionActions.XEM) &&
