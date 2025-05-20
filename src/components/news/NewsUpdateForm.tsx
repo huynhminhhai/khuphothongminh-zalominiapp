@@ -38,6 +38,7 @@ const NewsUpdateForm = () => {
     useEffect(() => {
         if (newsDetail) {
             reset({
+                ...newsDetail,
                 TieuDe: newsDetail.tieuDe,
                 MoTa: newsDetail.moTa,
                 NoiDung: newsDetail.noiDung,
@@ -73,7 +74,7 @@ const NewsUpdateForm = () => {
         setConfirmVisible(false);
 
         try {
-            const dataSubmit = {...formData, TinTucId: Number(newsId), ApId: newsDetail.apId, TinhTrangId: newsDetail.tinhTrangId, NgayXuatBan: newsDetail.ngayXuatBan}
+            const dataSubmit = {...formData, TinTucId: Number(newsId), TinhTrangId: newsDetail.tinhTrangId, NgayXuatBan: newsDetail.ngayXuatBan}
 
             const formDataConverted = convertToFormData(dataSubmit);
 

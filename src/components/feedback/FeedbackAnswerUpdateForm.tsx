@@ -10,6 +10,7 @@ import { useDeleteFileFeedbackAnswer, useGetFeebackAnswerDetail, useUpdateFeedba
 import { useSearchParams } from "react-router-dom"
 import { convertToFormData, loadFile } from "utils/file"
 import { omit } from "lodash"
+import { useStoreApp } from "store/store"
 
 const defaultValues: FormDataFeedbackAnswer = {
     noiDung: '',
@@ -20,6 +21,8 @@ const FeedbackAnswerAddForm: React.FC = () => {
 
     const [searchParams] = useSearchParams();
     const feedbackId = searchParams.get("id");
+
+    const { account } = useStoreApp();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataFeedbackAnswer>(defaultValues)
@@ -86,7 +89,7 @@ const FeedbackAnswerAddForm: React.FC = () => {
                 );
             }
 
-            const dataSubmit = convertToFormData({ ...formData, phanAnhId: feedbackId });
+            const dataSubmit = convertToFormData({ ...formData, phanAnhId: feedbackId, nguoiTao: account?.nguoiDungId });
 
             await updateFeedbackAnswer(dataSubmit);
 

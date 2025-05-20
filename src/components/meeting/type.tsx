@@ -11,12 +11,12 @@ export const schemaMeeting = yup.object().shape({
     diaDiem: yup.string().required('Không được để trống'),
     // tinhTrangId: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
     chuTri: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
-    fileDinhKems: yup
-        .array()
-        .of(yup.mixed<File>().required("Tệp không hợp lệ"))
-        .default([])
-        .ensure()
-        .min(1, "Vui lòng tải lên ít nhất một tệp"),
+    // fileDinhKems: yup
+    //     .array()
+    //     .of(yup.mixed<File>().required("Tệp không hợp lệ"))
+    //     .default([])
+    //     .ensure()
+    //     .min(1, "Vui lòng tải lên ít nhất một tệp"),
 });
 
 interface TinhTrang {

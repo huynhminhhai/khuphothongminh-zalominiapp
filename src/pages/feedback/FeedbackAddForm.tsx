@@ -106,7 +106,7 @@ const FeedbackAddForm: React.FC = () => {
         setConfirmVisible(false);
         try {
 
-            const dataSubmit = convertToFormData({ ...formData });
+            const dataSubmit = convertToFormData({ ...formData, nguoiTao: account?.nguoiDungId });
 
             await createFeedback(dataSubmit);
 

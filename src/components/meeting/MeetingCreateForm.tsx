@@ -103,7 +103,7 @@ const MeetingAddForm: React.FC = () => {
         if (formData && account) {
             try {
 
-                const dataConvertDate = convertMeetingTime(formData)
+                const dataConvertDate = convertMeetingTime({ ...formData, apId: account?.apId, nguoiTao: account?.nguoiDungId, maXa: account?.maXa })
 
                 const dataConvertParticipants = convertParticipants(dataConvertDate)
 

@@ -160,6 +160,8 @@ const CreateSurveyForm: React.FC = () => {
         return {
 
             apId: account?.apId,
+            maXa: account?.maXa,
+            nguoiTao: account?.nguoiDungId,
             tieuDe: data.title,
             noiDung: data.description,
             tuNgay: data.startDate,

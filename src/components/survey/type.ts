@@ -14,7 +14,9 @@ export interface CauHoiKhaoSat {
 }
 
 export interface SurveyTypeAPI {
-    apId: number;
+    apId?: number;
+    maXa?: string;
+    nguoiTao?: number;
     tieuDe: string;
     noiDung: string;
     tuNgay: string;

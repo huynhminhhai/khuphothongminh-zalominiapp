@@ -9,6 +9,7 @@ import { FormDataFeedbackAnswer, schemaFeedbackAnswer } from "./type"
 import { useCreateFeebackAnswer } from "apiRequest/feeback"
 import { useSearchParams } from "react-router-dom"
 import { convertToFormData } from "utils/file"
+import { useStoreApp } from "store/store"
 
 const defaultValues: FormDataFeedbackAnswer = {
     noiDung: '',
@@ -19,6 +20,7 @@ const FeedbackAnswerAddForm: React.FC = () => {
 
     const [searchParams] = useSearchParams();
     const feedbackId = searchParams.get("id");
+    const { account } = useStoreApp();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataFeedbackAnswer>(defaultValues)
@@ -40,7 +42,7 @@ const FeedbackAnswerAddForm: React.FC = () => {
         setConfirmVisible(false);
         try {
 
-            const dataSubmit = convertToFormData({ ...formData, phanAnhId: feedbackId });
+            const dataSubmit = convertToFormData({ ...formData, phanAnhId: feedbackId, nguoiTao: account?.nguoiDungId });
 
             await createFeedbackAnswer(dataSubmit);
 
