@@ -49,7 +49,7 @@ const TransactionsAddForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData) {
             try {
-                await createTransaction({ ...formData, ApId: account?.thongTinDanCu?.apId });
+                await createTransaction({ ...formData, ApId: account?.apId });
 
                 reset(defaultValues);
             } catch (error) {

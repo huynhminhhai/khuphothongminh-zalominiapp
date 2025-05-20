@@ -76,7 +76,7 @@ const TaskAddForm: React.FC = () => {
         if (formData && account) {
             try {
 
-                const prepareDataSubmit = { ...formData, apId: account?.thongTinDanCu?.apId, tinhTrangId: tinhTrangs[0]?.value }
+                const prepareDataSubmit = { ...formData, apId: account?.apId, nguoiTao: account?.nguoiDungId, maXa: account?.maXa }
 
                 const dataConvertParticipants = convertParticipants(prepareDataSubmit)
 

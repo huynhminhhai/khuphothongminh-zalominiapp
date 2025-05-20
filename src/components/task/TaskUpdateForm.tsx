@@ -88,7 +88,7 @@ const TaskUpdateForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData) {
             try {
-                const prepareDataSubmit = { ...formData, nhiemVuId: taskDetail.nhiemVuId, apId: taskDetail.apId, tinhTrangId: taskDetail.tinhTrangId }
+                const prepareDataSubmit = { ...formData, nhiemVuId: taskDetail.nhiemVuId, tinhTrangId: taskDetail.tinhTrangId }
 
                 const dataSubmit = convertParticipants(prepareDataSubmit)
 
