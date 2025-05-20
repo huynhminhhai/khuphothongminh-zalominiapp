@@ -1,26 +1,27 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useDeleteTransaction, useGetTransactionListNormal, useGetTransactionType } from "apiRequest/transaction"
+import { useDeleteTransactionDetail, useGetTransactionDetail, useGetTransactionDetailList } from "apiRequest/transaction"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
-import { TransactionColor, TransactionsType } from "constants/utinities"
 import { debounce } from "lodash"
 import React, { useEffect, useState } from "react"
+import { useSearchParams } from "react-router-dom"
 import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
 import { convertNumberVND } from "utils/number"
 import { PermissionActions, permissionsList } from "utils/permission"
-import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
+import { Box, Input, Page, useNavigate } from "zmp-ui"
 
-const TransactionsManagementPage: React.FC = () => {
+const TransactionsDetailManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { account, hasPermission } = useStoreApp()
 
-    const { Option } = Select;
+    const [searchParams] = useSearchParams();
+    const transactionsId = searchParams.get("id");
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -28,20 +29,20 @@ const TransactionsManagementPage: React.FC = () => {
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const [filters, setFilters] = useState({
         search: "",
-        noiDung: "",
     });
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
         ApId: account ? account?.apId : 0,
         keyword: '',
-        LoaiGiaoDichTaiChinhId: 0,
-        NoiDung: ''
+        ThuChiId: Number(transactionsId),
     })
 
-    const { data, isLoading } = useGetTransactionListNormal(param);
-    const { mutate: deleteTransaction } = useDeleteTransaction();
-    const { data: transactionType } = useGetTransactionType();
+    const { data, isLoading } = useGetTransactionDetailList(param);
+    const { mutate: deleteTransactionDetail } = useDeleteTransactionDetail();
+    const { data: detailData } = useGetTransactionDetail(Number(transactionsId));
+
+    console.log(data)
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -60,7 +61,6 @@ const TransactionsManagementPage: React.FC = () => {
     }
 
     useDebouncedParam(filters.search, 'keyword');
-    useDebouncedParam(filters.noiDung, 'NoiDung');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -96,34 +96,31 @@ const TransactionsManagementPage: React.FC = () => {
         setConfirmAction(null);
     };
 
-    const removeTransaction = (id: number) => {
+    const removeTransactionDetail = (id: number) => {
         openConfirmModal(() => {
-            deleteTransaction(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa thu/chi này?');
+            deleteTransactionDetail(id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa chi tiết thu/chi này?');
     }
 
-    const columns: ColumnDef<TransactionsType>[] = [
+    const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'noiDung',
-            header: 'Nội dung'
+            id: 'nguoiGiaoDich',
+            header: detailData?.tenLoaiGiaoDichTaiChinh === 'Thu' ? 'Người nộp' : 'Người chi',
+            cell: ({ row }) => {
+                return (
+                    <div>
+                        {row.original.tenNguoiGiaoDich}
+                    </div>
+                )
+            }
         },
         {
             id: 'amount',
             header: 'Số tiền',
             cell: ({ row }) => {
-
-                const { data: transactionType } = useGetTransactionType();
-
-                const type = transactionType?.find(item => item.loaiGiaoDichTaiChinhId === row.original.loaiGiaoDichTaiChinhId);
-                const typeColor = TransactionColor[type?.tenLoaiGiaoDichTaiChinh] || "var(--gray-color)";
-
                 return (
-                    <div style={{ color: typeColor }}>
-                        {
-                            `
-                              ${type?.tenLoaiGiaoDichTaiChinh === "Thu" ? "+" : "-"}  ${convertNumberVND(row.original.soTien)}
-                            `
-                        }
+                    <div>
+                        {convertNumberVND(row.original.soTien)}
                     </div>
                 )
             }
@@ -140,16 +137,21 @@ const TransactionsManagementPage: React.FC = () => {
             }
         },
         {
+            id: 'ghiChu',
+            header: 'Ghi chú',
+            cell: ({ row }) => {
+                return (
+                    <div>
+                        {row.original.ghiChu || '-'}
+                    </div>
+                )
+            }
+        },
+        {
             id: 'actions',
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/transactions-detail-management?id=${row.original.thuChiId}`)}
-                        className="px-3 py-1 bg-gray-700 text-white rounded"
-                    >
-                        <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
                     {
                         hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.SUA) &&
                         <button
@@ -162,7 +164,7 @@ const TransactionsManagementPage: React.FC = () => {
                     {
                         hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.XOA) &&
                         <button
-                            onClick={() => removeTransaction(row.original.thuChiId)}
+                            onClick={() => removeTransactionDetail(row.original.chiTietThuChiId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
                         >
                             <Icon icon='material-symbols:delete' fontSize={18} />
@@ -186,7 +188,7 @@ const TransactionsManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có thu/chi nào!"
+                        title="Hiện chưa có chi tiết thu/chi nào!"
                     />
                 </Box>
             );
@@ -217,11 +219,11 @@ const TransactionsManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý thu chi" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Danh sách chi tiết khoản thu chi" />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.THEM)}
-                        onAddButtonClick={() => navigate('/transactions-add')}
+                        onAddButtonClick={() => navigate(`/transactions-detail-add?thuChiId=${transactionsId}`)}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
                     >
@@ -231,29 +233,6 @@ const TransactionsManagementPage: React.FC = () => {
                                 value={filters.search}
                                 onChange={(e) => updateFilter('search', e.target.value)}
                             />
-                        </div>
-                        <div className="col-span-6">
-                            <Input
-                                placeholder="Nội dung..."
-                                value={filters.noiDung}
-                                onChange={(e) => updateFilter('noiDung', e.target.value)}
-                            />
-                        </div>
-                        <div className="col-span-6">
-                            <Select
-                                placeholder="Loại giao dich"
-                                value={param.LoaiGiaoDichTaiChinhId}
-                                closeOnSelect
-                                onChange={(e) => setParam(prev => ({ ...prev, LoaiGiaoDichTaiChinhId: Number(e) }))}
-                            >
-                                <Option title="Tất cả" value={0} />
-                                {
-                                    transactionType?.map((item) => (
-                                        <Option key={item.loaiGiaoDichTaiChinhId} value={item.loaiGiaoDichTaiChinhId} title={item.tenLoaiGiaoDichTaiChinh} />
-                                    ))
-                                }
-
-                            </Select>
                         </div>
                     </FilterBar>
                     <Box>
@@ -272,4 +251,4 @@ const TransactionsManagementPage: React.FC = () => {
     )
 }
 
-export default TransactionsManagementPage
+export default TransactionsDetailManagementPage

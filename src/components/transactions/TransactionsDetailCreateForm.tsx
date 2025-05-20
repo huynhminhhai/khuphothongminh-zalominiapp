@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react"
-import { Box } from "zmp-ui"
+import { Box, useNavigate } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
@@ -24,6 +24,7 @@ const defaultValues: FormDataTranscationsDetail = {
 const TransactionsDetailCreateForm: React.FC = () => {
 
     const { account } = useStoreApp()
+    const navigator = useNavigate()
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataTranscationsDetail>(defaultValues)
@@ -68,6 +69,8 @@ const TransactionsDetailCreateForm: React.FC = () => {
                 await createTransactionDetail({ ...formData, thuChiId: Number(transactionsId) });
 
                 reset(defaultValues);
+
+                navigator(`/transactions-detail-management?id=${transactionsId}`);
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -84,9 +87,20 @@ const TransactionsDetailCreateForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <Box mb={4}>
-                            <div className="block text-xl font-medium">
+                            <div className="text-[14px] font-medium flex items-center gap-1 mb-1">
+                                <span>
+                                    - Nội dung: 
+                                </span>
                                 {
                                     isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.noiDung
+                                }
+                            </div>
+                            <div className="text-[14px] font-medium flex items-center gap-1">
+                                <span>
+                                    - Loại: 
+                                </span>
+                                {
+                                    isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.tenLoaiGiaoDichTaiChinh
                                 }
                             </div>
                         </Box>

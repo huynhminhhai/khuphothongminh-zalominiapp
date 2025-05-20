@@ -29,6 +29,12 @@ const transactionApiRequest = {
     createDetailTransaction: async (formData: any) => {
         return await http.post<any>("/chitietthuchi", formData);
     },
+    getTransactionDetailList: async (param: { page: number; pageSize: number; ThuChiId: number, ApId: number; keyword: string; }) => {
+        return await http.get<any>(`/chitietthuchi?current=${param.page}&size=${param.pageSize}&ThuChiId=${param.ThuChiId}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    },
+    deleteTransactionDetail: async (id: number) => {
+        return await http.delete<any>(`/chitietthuchi/${id}`)
+    },
 }
 
 /**
@@ -206,8 +212,44 @@ export const useCreateTransactionDetail = () => {
             showSuccess('Tạo chi tiết thu/chi thành công')
 
             queryClient.invalidateQueries({ queryKey: ["transactionDetailList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
 
-            navigator('/transactions-detail-list')
+/**
+* GET TRANSACTION LIST
+**/
+export const useGetTransactionDetailList = (param: { page: number; pageSize: number; ApId: number; keyword: string; ThuChiId: number }) => {
+    return useQuery({
+        queryKey: ['transactionDetailList', param.page, param.pageSize, param.ApId, param.keyword, param.ThuChiId],
+        queryFn: async () => {
+            const res = await transactionApiRequest.getTransactionDetailList(param);
+            return res
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+/**
+* DELETE TRANSACTION DETAIL
+**/
+export const useDeleteTransactionDetail = () => {
+    const queryClient = useQueryClient();
+    const { showSuccess, showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await transactionApiRequest.deleteTransactionDetail(id);
+        },
+        onSuccess: () => {
+            showSuccess('Xóa chi tiết thu/chi thành công')
+
+            queryClient.invalidateQueries({ queryKey: ["transactionDetailList"] });
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)
