@@ -8,7 +8,7 @@ import { useStoreApp } from "store/store";
 const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: string }> = {
   "/": {
     label: "Trang chủ",
-    icon: <div className="relative"><Icon icon="line-md:home-simple-twotone"/></div>,
+    icon: <div className="relative"><Icon icon="line-md:home-simple-twotone" /></div>,
     activeIcon: <Icon icon="line-md:home-simple-twotone" />,
   },
   // "/notification": {
@@ -26,8 +26,6 @@ const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: 
     label: "Quản lý",
     icon: <div className="relative"><Icon icon="line-md:folder-zip-twotone" /></div>,
     activeIcon: <Icon icon="line-md:folder-zip-twotone" />,
-    requiresLogin: true, // Yêu cầu đăng nhập
-    requiredRole: "TRUONG_AP", // Chỉ hiển thị nếu là TRUONG_AP
   },
   "/account": {
     label: "Tài khoản",
@@ -53,38 +51,26 @@ export const Navigation: FC = () => {
     return <></>;
   }
 
-  const hasRole = (role: string) => {
-    return account?.vaiTros.some((r) => r.tenVaiTro === role) || false;
-  };
-
   const isAdmin = account?.vaiTros.some((r) => r.tenVaiTro === "Administrators");
 
-  // Lọc các tab hiển thị dựa trên đăng nhập và vai trò
+  const isRegisteredWithAnotherRole =
+    account?.vaiTros.some((r) => r.tenVaiTro === "Registered Users") &&
+    (account?.vaiTros.length ?? 0) > 1;
+
   const visibleTabs = Object.keys(tabs).filter((path: TabKeys) => {
-    const tab = tabs[path];
 
-
-    if (isAdmin) {
+    if (path === "/" || path === "/account") {
       return true;
     }
 
-    // Không yêu cầu đăng nhập → hiển thị luôn
-    if (!tab.requiresLogin) {
-      return true;
-    }
+    // Nếu không đăng nhập → không hiện gì cả
+    if (!account) return false;
 
-    // Yêu cầu đăng nhập nhưng chưa đăng nhập → ẩn
-    if (!account) {
-      return false;
-    }
+    // Là admin → luôn thấy hết
+    if (isAdmin) return true;
 
-    // Có yêu cầu vai trò → kiểm tra vai trò
-    if (tab.requiredRole) {
-      return hasRole(tab.requiredRole);
-    }
-
-    // Chỉ yêu cầu đăng nhập, không cần vai trò → hiển thị nếu đã đăng nhập
-    return true;
+    // Chỉ hiển thị nếu có "Registered Users" và ít nhất 1 vai trò khác
+    return isRegisteredWithAnotherRole;
   });
 
   return (

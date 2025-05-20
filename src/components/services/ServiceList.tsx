@@ -26,18 +26,18 @@ const SERVICES: ServicesType[] = [
         icon: images.safety,
         requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
-    {
-        label: 'Cuộc họp',
-        url: '/meeting',
-        icon: images.meeting,
-        requiredPermission: { maChucNang: permissionsList.khuPhoCongViecCuocHop, quyen: PermissionActions.XEM },
-    },
-    {
-        label: 'Nhiệm vụ',
-        url: '/task',
-        icon: images.todo,
-        requiredPermission: { maChucNang: permissionsList.khuPhoNhiemVuNhiemVuCuaToi, quyen: PermissionActions.XEM },
-    },
+    // {
+    //     label: 'Cuộc họp',
+    //     url: '/meeting',
+    //     icon: images.meeting,
+    //     requiredPermission: { maChucNang: permissionsList.khuPhoCongViecCuocHop, quyen: PermissionActions.XEM },
+    // },
+    // {
+    //     label: 'Nhiệm vụ',
+    //     url: '/task',
+    //     icon: images.todo,
+    //     requiredPermission: { maChucNang: permissionsList.khuPhoNhiemVuNhiemVuCuaToi, quyen: PermissionActions.XEM },
+    // },
     {
         label: 'Tình hình tài chính',
         url: '/transactions',

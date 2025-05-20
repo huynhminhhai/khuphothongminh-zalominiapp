@@ -19,7 +19,7 @@ const ManagementItem = ({ title, prefix, onClick }: any) => {
             <div className="w-[60px] h-[60px] rounded-full bg-blue-50 flex-center">
                 {prefix}
             </div>
-            <div className="text-[14px] leading-[18px] font-medium text-center">
+            <div className="text-[14px] leading-[18px] font-medium text-center min-h-[36px]">
                 {title}
             </div>
         </motion.div>
@@ -181,54 +181,87 @@ const ManagementPage: React.FC = () => {
 
                 {
                     hasPermission(permissionsList.khuPhoCongViec, PermissionActions.XEM) &&
-                    <Box mx={4} mb={2} mt={3}>
-                        <div className="grid grid-cols-12 gap-3">
-                            <div className="col-span-12">
-                                <ManagementTitle title="Công việc, nhiệm vụ" />
+                    <>
+                        <Box mx={4} mb={2} mt={3}>
+                            <div className="grid grid-cols-12 gap-3">
+                                <div className="col-span-12">
+                                    <ManagementTitle title="Công việc, nhiệm vụ" />
+                                </div>
+                                {
+                                    hasPermission(permissionsList.khuPhoNhiemVuGiaoNhiemVu, PermissionActions.XEM) &&
+                                    <div className="col-span-4">
+                                        <ManagementItem
+                                            title="Giao nhiệm vụ"
+                                            prefix={<img src={images.todo}
+                                                alt='news'
+                                                className="w-[30px] h-auto"
+                                            />}
+                                            onClick={() => navigate('/task-management')}
+                                        />
+                                    </div>
+                                }
+
+                                {
+                                    hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.XEM) &&
+                                    <div className="col-span-4">
+                                        <ManagementItem
+                                            title="Cuộc họp"
+                                            prefix={<img src={images.meeting}
+                                                alt='news'
+                                                className="w-[30px] h-auto"
+                                            />}
+                                            onClick={() => navigate('/meeting-management')}
+                                        />
+                                    </div>
+                                }
+
+                                {
+                                    hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.XEM) &&
+                                    <div className="col-span-4">
+                                        <ManagementItem
+                                            title="Thu/chi"
+                                            prefix={<img src={images.money}
+                                                alt='news'
+                                                className="w-[30px] h-auto"
+                                            />}
+                                            onClick={() => navigate('/transactions-management')}
+                                        />
+                                    </div>
+                                }
                             </div>
-                            {
-                                hasPermission(permissionsList.khuPhoNhiemVuGiaoNhiemVu, PermissionActions.XEM) &&
-                                <div className="col-span-4">
-                                    <ManagementItem
-                                        title="Nhiệm vụ"
-                                        prefix={<img src={images.todo}
-                                            alt='news'
-                                            className="w-[30px] h-auto"
-                                        />}
-                                        onClick={() => navigate('/task-management')}
-                                    />
-                                </div>
-                            }
+                        </Box>
+                        <Box mx={4} mb={2} mt={3}>
+                            <div className="grid grid-cols-12 gap-3">
+                                {
+                                    hasPermission(permissionsList.khuPhoNhiemVuNhiemVuCuaToi, PermissionActions.XEM) &&
+                                    <div className="col-span-4">
+                                        <ManagementItem
+                                            title="Nhiệm vụ của tôi"
+                                            prefix={<img src={images.todo}
+                                                alt='news'
+                                                className="w-[30px] h-auto"
+                                            />}
+                                            onClick={() => navigate('/task')}
+                                        />
+                                    </div>
+                                }
 
-                            {
-                                hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.XEM) &&
-                                <div className="col-span-4">
-                                    <ManagementItem
-                                        title="Cuộc họp"
-                                        prefix={<img src={images.meeting}
-                                            alt='news'
-                                            className="w-[30px] h-auto"
-                                        />}
-                                        onClick={() => navigate('/meeting-management')}
-                                    />
-                                </div>
-                            }
-
-                            {
-                                hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.XEM) &&
-                                <div className="col-span-4">
-                                    <ManagementItem
-                                        title="Thu/chi"
-                                        prefix={<img src={images.money}
-                                            alt='news'
-                                            className="w-[30px] h-auto"
-                                        />}
-                                        onClick={() => navigate('/transactions-management')}
-                                    />
-                                </div>
-                            }
-                        </div>
-                    </Box>
+                                {
+                                    hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.XEM) &&
+                                    <div className="col-span-4">
+                                        <ManagementItem
+                                            title="Cuộc họp của tôi"
+                                            prefix={<img src={images.meeting}
+                                                alt='news'
+                                                className="w-[30px] h-auto"
+                                            />}
+                                            onClick={() => navigate('/meeting')}
+                                        />
+                                    </div>
+                                }
+                            </div>
+                        </Box>
+                    </>
                 }
             </Box>
         </Page>

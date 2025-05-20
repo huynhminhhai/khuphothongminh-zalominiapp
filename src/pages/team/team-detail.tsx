@@ -58,7 +58,7 @@ const TeamDetailPage: React.FC = () => {
                                                     }
                                                     
                                                     <div className="flex items-center gap-3">
-                                                        <Icon fontSize={20} className="text-[#808080]" icon='material-symbols-light:date-range' />
+                                                        <Icon fontSize={20} className="text-[#808080]" icon='lsicon:calendar-filled' />
                                                         <span className="text-[14px] font-medium">{formatDate(detailData.tuNgay)} - {formatDate(detailData.denNgay)}</span>
                                                     </div>
 
