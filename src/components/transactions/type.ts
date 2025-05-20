@@ -21,3 +21,21 @@ export type FormDataTranscations = {
     congKhai: boolean;
     hoatDong: boolean;
 }
+
+export const schemaTransactionsDetail = yup.object().shape({
+    nguoiGiaoDichId: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
+    soTien: yup.number().transform((value, originalValue) => (originalValue === "" ? null : value))
+            .nullable()
+            .required("Không được để trống")
+            .moreThan(0, "Số tiền phải lớn hơn 0"),
+    ngayGiaoDich: yup.string().required("Ngày giao dịch là bắt buộc"),
+});
+
+export type FormDataTranscationsDetail = {
+    thuChiId?: number;
+    nguoiGiaoDichId: number;
+    nguoiGiaoDichKhac?: string;
+    soTien: number;
+    ngayGiaoDich: string;
+    ghiChu?: string;
+}

@@ -151,6 +151,15 @@ const TransactionsManagementPage: React.FC = () => {
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     {
+                        hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.THEM) &&
+                        <button
+                            onClick={() => navigate(`/transactions-detail-add?thuChiId=${row.original.thuChiId}`)}
+                            className="px-3 py-1 bg-green-700 text-white rounded"
+                        >
+                            <Icon icon="material-symbols:add" fontSize={18} />
+                        </button>
+                    }
+                    {
                         hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.SUA) &&
                         <button
                             onClick={() => navigate(`/transactions-update?id=${row.original.thuChiId}`)}

@@ -81,6 +81,7 @@ const TransactionsUpdateForm: React.FC = () => {
                             control={control}
                             options={transactionTypeOpton}
                             error={errors.loaiGiaoDichTaiChinhId?.message}
+                            required
                         />
                     </div>
                     <div className="col-span-12">

@@ -26,6 +26,9 @@ const transactionApiRequest = {
     updateTransaction: async (formData: any) => {
         return await http.put<any>("/thuchi", formData);
     },
+    createDetailTransaction: async (formData: any) => {
+        return await http.post<any>("/chitietthuchi", formData);
+    },
 }
 
 /**
@@ -102,7 +105,7 @@ export const useGetTransactionDetail = (id: number) => {
 
                 const res = await transactionApiRequest.getTransactionDetail(id);
 
-                return res.data as TransactionsType
+                return res.data
             } catch (error) {
                 console.error(error);
                 throw error;
@@ -179,6 +182,32 @@ export const useUpdateTransaction = () => {
 
             queryClient.invalidateQueries({ queryKey: ["transactionDetail"] });
             queryClient.invalidateQueries({ queryKey: ["transactionList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* POST DETAIL TRANSACTION
+**/
+export const useCreateTransactionDetail = () => {
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+    const navigator = useNavigate()
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await transactionApiRequest.createDetailTransaction(formData);
+        },
+        onSuccess: () => {
+            showSuccess('Tạo chi tiết thu/chi thành công')
+
+            queryClient.invalidateQueries({ queryKey: ["transactionDetailList"] });
+
+            navigator('/transactions-detail-list')
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)
