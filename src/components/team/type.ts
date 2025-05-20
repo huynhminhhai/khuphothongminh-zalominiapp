@@ -1,16 +1,23 @@
 import * as yup from 'yup';
 
-export const schemaTeam = yup.object().shape({
-    fullname: yup.string().required('Họ tên không được để trống'),
-    birthDate: yup.string().required('Ngày sinh không được để trống'),
-    phoneNumber: yup.string().required('SĐT không được để trống'),
-    officeAddress: yup.string().required('Không được để trống'),
-    residential_group_id: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
-    term: yup.object().shape({
-        position: yup.string().required('Chức vụ không được để trống'), 
-        start_date: yup.string().required('Ngày bắt đầu không được để trống'), 
-        end_date: yup.string().required('Ngày kết thúc không được để trống') 
-    })
+export const schemaTeam = (isUpdateAccount: boolean) => yup.object().shape({
+    maHuyen: yup.string().required('Không được để trống'),
+    maXa: yup.string().required('Không được để trống'),
+    apId: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
+    hoTen: yup.string().required('Không được để trống'),
+    chucVuId: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
+    tuNgay: yup.string().required('Không được để trống'),
+    denNgay: yup.string().required('Không được để trống'),
+    tenDangNhap: yup.string().when([], {
+        is: () => isUpdateAccount,
+        then: (schema) => schema.required("Không được để trống"),
+        otherwise: (schema) => schema.notRequired(),
+    }),
+    matKhau: yup.string().when([], {
+        is: () => isUpdateAccount,
+        then: (schema) => schema.required("Không được để trống"),
+        otherwise: (schema) => schema.notRequired(),
+    }),
 });
 
 
@@ -20,20 +27,19 @@ export const schemaTermAdd = yup.object().shape({
     end_date: yup.string().required('Không được để trống'),
 });
 
-export type FormDataTerm = {
-    position: string;
-    start_date: string;
-    end_date: string;
-}
-
 export type FormDataTeam = {
-    fullname: string;
-    birthDate: string;
-    phoneNumber: string;
-    email?: string;
-    officeAddress: string;
-    residential_group_id: number;
-    term: FormDataTerm;
+    maHuyen: string;
+    maXa: string;
+    apId: number;
+    nguoiDungId?: number;
+    hoTen: string;
+    chucVuId: number;
+    tuNgay: string;
+    denNgay: string;
+    hoatDong?: boolean;
+    nguoiTao?: number;
+    tenDangNhap?: string;
+    matKhau?: string;
 }
 
 export const schemaTeamUpdate = yup.object().shape({
@@ -75,4 +81,4 @@ export interface BanDieuHanh {
     anhDaiDien?: string;
     tuNgay?: string;
     denNgay?: string;
-  }
+}

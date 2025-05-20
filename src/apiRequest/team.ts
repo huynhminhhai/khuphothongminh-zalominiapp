@@ -25,7 +25,7 @@ const teamApiRequest = {
         return await http.delete<any>(`/bandieuhanh/${id}`)
     },
     createTeam: async (formData: any) => {
-        return await http.post<any>("/thuchi", formData);
+        return await http.post<any>("/bandieuhanh", formData);
     },
     updateTeam: async (formData: any) => {
         return await http.put<any>("/thuchi", formData);
@@ -158,7 +158,7 @@ export const useDeleteTeam = () => {
 };
 
 /**
-* POST TRANSACTION
+* POST TEAM
 **/
 export const useCreateTeam = () => {
     const { showSuccess, showError } = useCustomSnackbar();
@@ -170,11 +170,11 @@ export const useCreateTeam = () => {
             return await teamApiRequest.createTeam(formData);
         },
         onSuccess: () => {
-            showSuccess('Tạo thu/chi thành công')
+            showSuccess('Thêm thành viên thành công')
 
-            queryClient.invalidateQueries({ queryKey: ["transactionList"] });
+            queryClient.invalidateQueries({ queryKey: ["teamList"] });
 
-            navigator('/transactions-management')
+            navigator('/team-management')
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

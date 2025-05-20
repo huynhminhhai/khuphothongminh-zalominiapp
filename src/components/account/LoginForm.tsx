@@ -41,7 +41,6 @@ const LoginForm: React.FC = () => {
         } catch (error) {
             console.error("Error:", error);
         } finally {
-            reset(defaultValues);
             setLoading(false);
         }
 

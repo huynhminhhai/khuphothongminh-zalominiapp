@@ -57,9 +57,16 @@ export const Navigation: FC = () => {
     return account?.vaiTros.some((r) => r.tenVaiTro === role) || false;
   };
 
+  const isAdmin = account?.vaiTros.some((r) => r.tenVaiTro === "Administrators");
+
   // Lọc các tab hiển thị dựa trên đăng nhập và vai trò
   const visibleTabs = Object.keys(tabs).filter((path: TabKeys) => {
     const tab = tabs[path];
+
+
+    if (isAdmin) {
+      return true;
+    }
 
     // Không yêu cầu đăng nhập → hiển thị luôn
     if (!tab.requiresLogin) {

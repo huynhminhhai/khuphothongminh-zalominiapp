@@ -68,7 +68,7 @@ const AuthWrapper = ({ children }) => {
         }
       }
 
-      if (!storedAccount?.apId) {
+      if (!storedAccount?.apId && !storedAccount?.vaiTros.some((r) => r.tenVaiTro === "Administrators")) {
         navigate("/register-ap");
       }
 

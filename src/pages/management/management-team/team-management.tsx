@@ -10,6 +10,7 @@ import { BanDieuHanh } from "components/team/type"
 import { debounce } from "lodash"
 import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
+import { PermissionActions, permissionsList } from "utils/permission"
 import { Box, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const TeamManagementPage: React.FC = () => {
@@ -107,16 +108,16 @@ const TeamManagementPage: React.FC = () => {
             accessorKey: 'tenChucVu',
             header: 'Chức vụ',
         },
-        // {
-        //     id: 'address',
-        //     header: 'Đơn vị',
-        //     size: 250,
-        //     cell: ({ row }) => (
-        //         <div className="flex items-center gap-3">
-        //             {[row.original.tenAp, row.original.tenXa].filter(Boolean).join(', ')}
-        //         </div>
-        //     )
-        // },
+        {
+            id: 'address',
+            header: 'Đơn vị',
+            size: 250,
+            cell: ({ row }) => (
+                <div className="flex items-center gap-3">
+                    {[row.original.tenAp, row.original.tenXa].filter(Boolean).join(', ')}
+                </div>
+            )
+        },
         // {
         //     id: 'termDate',
         //     header: 'Nhiệm kỳ',
@@ -129,32 +130,32 @@ const TeamManagementPage: React.FC = () => {
         //         </div>
         //     )
         // },
-        // {
-        //     id: 'actions', // Custom column for actions
-        //     header: 'Thao tác',
-        //     cell: ({ row }) => (
-        //         <div className="flex items-center space-x-2 whitespace-nowrap">
-        //             <button
-        //                 onClick={() => navigate(`/team-detail?id=${row.original.banDieuHanhId}`)}
-        //                 className="px-3 py-1 bg-gray-700 text-white rounded"
-        //             >
-        //                 <Icon icon='mdi:eye' fontSize={18} />
-        //             </button>
-        //             <button
-        //                 onClick={() => navigate(`/team-update?id=${row.original.banDieuHanhId}`)}
-        //                 className="px-3 py-1 bg-blue-700 text-white rounded"
-        //             >
-        //                 <Icon icon='ri:edit-line' fontSize={18} />
-        //             </button>
-        //             <button
-        //                 onClick={() => removeTeam(row.original.banDieuHanhId)}
-        //                 className="px-3 py-1 bg-red-700 text-white rounded"
-        //             >
-        //                 <Icon icon='material-symbols:delete' fontSize={18} />
-        //             </button>
-        //         </div>
-        //     ),
-        // },
+        {
+            id: 'actions', // Custom column for actions
+            header: 'Thao tác',
+            cell: ({ row }) => (
+                <div className="flex items-center space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/team-detail?id=${row.original.banDieuHanhId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
+                    <button
+                        onClick={() => navigate(`/team-update?id=${row.original.banDieuHanhId}`)}
+                        className="px-3 py-1 bg-blue-700 text-white rounded"
+                    >
+                        <Icon icon='ri:edit-line' fontSize={18} />
+                    </button>
+                    <button
+                        onClick={() => removeTeam(row.original.banDieuHanhId)}
+                        className="px-3 py-1 bg-red-700 text-white rounded"
+                    >
+                        <Icon icon='material-symbols:delete' fontSize={18} />
+                    </button>
+                </div>
+            ),
+        },
     ];
 
     const renderContent = () => {
@@ -205,8 +206,7 @@ const TeamManagementPage: React.FC = () => {
                 <HeaderSub title="Tổ chức" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        // showAddButton={hasPermission('Thêm mới 1 dân cư', 'SUA')}
-                        showAddButton={false}
+                        showAddButton={hasPermission(permissionsList.khuPhoToChucDanCuBanDieuHanh, PermissionActions.THEM)}
                         onAddButtonClick={() => navigate("/team-add")}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
