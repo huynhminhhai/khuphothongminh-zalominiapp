@@ -28,7 +28,7 @@ const teamApiRequest = {
         return await http.post<any>("/bandieuhanh", formData);
     },
     updateTeam: async (formData: any) => {
-        return await http.put<any>("/thuchi", formData);
+        return await http.put<any>("/bandieuhanh", formData);
     },
 }
 
@@ -184,7 +184,7 @@ export const useCreateTeam = () => {
 };
 
 /**
-* PUT TRANSACTION
+* PUT TEAM
 **/
 export const useUpdateTeam = () => {
     const { showSuccess, showError } = useCustomSnackbar();
@@ -195,10 +195,10 @@ export const useUpdateTeam = () => {
             return await teamApiRequest.updateTeam(formData);
         },
         onSuccess: () => {
-            showSuccess('Cập nhật thông tin thu/chi thành công')
+            showSuccess('Cập nhật thông thành viên thành công')
 
-            queryClient.invalidateQueries({ queryKey: ["transactionDetail"] });
-            queryClient.invalidateQueries({ queryKey: ["transactionList"] });
+            queryClient.invalidateQueries({ queryKey: ["teamList"] });
+            queryClient.invalidateQueries({ queryKey: ["teamDetail"] });
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

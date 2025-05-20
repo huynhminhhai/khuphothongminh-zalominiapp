@@ -28,11 +28,10 @@ const defaultValues: FormDataTeam = {
 const TeamAddForm: React.FC = () => {
 
     const { account, tinhs, hasRole } = useStoreApp();
-
-    const [loading, setLoading] = useState(false);
+    
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataTeam>(defaultValues)
-    const [isUpdateAccount, setIsUpdateAccount] = useState(true);
+    const [isUpdateAccount, setIsUpdateAccount] = useState(false);
 
     const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataTeam>({
         resolver: yupResolver(schemaTeam(isUpdateAccount)),
@@ -243,7 +242,7 @@ const TeamAddForm: React.FC = () => {
 
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton fullWidth disabled={isPending} label={isPending ? "Đang xử lý..." : "Thêm thành viên"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

@@ -1,137 +1,98 @@
-import React, { useEffect, useState } from "react"
-import { Box, useNavigate, useSnackbar } from "zmp-ui"
+import React, { useEffect, useMemo, useState } from "react"
+import { Box, Switch } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
-import { FormDataTeamUpdate, schemaTeamUpdate } from "./type"
-import { convertToValueLabel } from "utils/options"
-import { RESIDENTIALGROUPDATA, TEAMDATA } from "constants/utinities"
+import { FormDataTeam, schemaTeam } from "./type"
 import { useSearchParams } from "react-router-dom"
+import { useStoreApp } from "store/store"
+import { useGetTeamDetail, useGetTeamType, useUpdateTeam } from "apiRequest/team"
+import { setAddressWithoutPrefixStepByStep, useAddressSelectorWithoutPrefix } from "utils/useAddress"
+import { omit } from "lodash"
 
-const defaultValues: FormDataTeamUpdate = {
-    fullname: '',
-    birthDate: '',
-    phoneNumber: '',
-    officeAddress: '',
-    residential_group_id: 1,
-    email: ''
+const defaultValues: FormDataTeam = {
+    maHuyen: '',
+    maXa: '',
+    apId: 0,
+    hoTen: '',
+    chucVuId: 0,
+    tuNgay: '',
+    denNgay: '',
+    hoatDong: true,
+    nguoiTao: 0,
+    tenDangNhap: '',
+    matKhau: ''
 }
 
 const TeamUpdateForm: React.FC = () => {
 
-    const { openSnackbar } = useSnackbar();
-    const navigate = useNavigate()
+    const { account, tinhs, hasRole } = useStoreApp();
 
-    const [loading, setLoading] = useState(false);
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
+    const [isUpdateAccount, setIsUpdateAccount] = useState(false);
 
-    const { handleSubmit, reset, control, formState: { errors } } = useForm<FormDataTeamUpdate>({
-        resolver: yupResolver(schemaTeamUpdate),
+    const { handleSubmit, reset, watch, setValue, control, formState: { errors } } = useForm<FormDataTeam>({
+        resolver: yupResolver(schemaTeam(isUpdateAccount)),
         defaultValues
     });
 
     const [searchParams] = useSearchParams();
-
     const staffId = searchParams.get("id");
 
+    const { mutateAsync: updateTeam, isPending } = useUpdateTeam();
+    const { data: teamDetail } = useGetTeamDetail(Number(staffId));
+    const { data: teamStatus } = useGetTeamType();
+
+    const chucVus = useMemo(() => {
+        return teamStatus?.chucVus?.map((item) => ({
+            value: item.chucVuId,
+            label: item.tenChucVu
+        })) || [];
+    }, [teamStatus]);
+
+    const teamAddress = useAddressSelectorWithoutPrefix({
+        tinhOptions: tinhs,
+        watch,
+        setValue,
+    });
+
     useEffect(() => {
+        if (teamDetail) {
 
-        const fetchResidentData = async () => {
-            setLoading(true);
-            try {
+            reset({ ...teamDetail })
 
-                const data = TEAMDATA.find(resident => resident.id === Number(staffId))
+            setAddressWithoutPrefixStepByStep(
+                { maTinh: '80', maHuyen: teamDetail.maHuyen, maXa: teamDetail.maXa, apId: teamDetail.apId },
+                setValue
+            );
 
-                if (data) {
-                    setFormData(data)
-                    reset(data)
-                }
-
-            } catch (error) {
-                console.error("Failed to fetch resident data:", error);
-                openSnackbar({
-                    text: "Không thể tải thông tin. Vui lòng thử lại sau.",
-                    type: "error",
-                    duration: 5000,
-                });
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchResidentData();
-    }, [staffId]);
-
-    const onSubmit: SubmitHandler<FormDataTeamUpdate> = (data) => {
-
-        const updatedData = {};
-
-        let hasChanges = false;
-
-        Object.keys(data).forEach((key) => {
-            if (data[key] !== formData[key]) {
-                updatedData[key] = data[key];
-                hasChanges = true;
-            }
-        });
-
-        if (!hasChanges) {
-            openSnackbar({
-                icon: true,
-                text: "Không có thay đổi nào để cập nhật.",
-                type: 'warning',
-                duration: 3000,
-            });
-            return;
         }
+    }, [teamDetail, reset])
 
+    const onSubmit: SubmitHandler<FormDataTeam> = (data) => {
         setConfirmVisible(true);
-
-        setFormData(updatedData)
+        setFormData(data)
     };
 
-    const fetchApi = () => {
-        setLoading(true);
-        try {
-            console.log('call api update with: ', formData);
-
-            openSnackbar({
-                icon: true,
-                text: "Cập nhật thông tin nhân sự thành công",
-                type: 'success',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-
-            reset(defaultValues);
-            
-            navigate('/team-management');
-        } catch (error) {
-            console.error('Error:', error);
-            openSnackbar({
-                icon: true,
-                text: "Có lỗi xảy ra, vui lòng thử lại sau.",
-                type: 'error',
-                action: { text: "Đóng", close: true },
-                duration: 5000,
-            });
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    const handleConfirm = () => {
+    const handleConfirm = async () => {
         setConfirmVisible(false);
-        if (formData) {
-            fetchApi()
+        try {
+
+            const dataSubmit = {
+                ...(isUpdateAccount ? formData : omit(formData, ['tenDangNhap', 'matKhau'])),
+                nguoiTao: account?.nguoiDungId,
+            };
+
+            await updateTeam(dataSubmit);
+        } catch (error) {
+            console.error("Error:", error);
         }
     };
 
     const handleCancel = () => {
-        console.log("Cancelled!");
         setConfirmVisible(false);
     };
 
@@ -140,72 +101,139 @@ const TeamUpdateForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
-                        <h3 className="text-[18px] font-semibold mb-3">Thông tin cơ bản</h3>
+                        <h3 className="text-[16px] font-semibold mb-3">Thông tin cơ bản</h3>
                     </div>
                     <div className="col-span-12">
-                        <FormInputField
-                            name="fullname"
-                            label="Họ tên"
-                            placeholder="Nhập họ tên"
+                        <FormSelectField
+                            name="maHuyen"
+                            label="Quận/Huyện"
+                            placeholder="Chọn quận/huyện"
                             control={control}
-                            error={errors.fullname?.message}
+                            options={teamAddress.huyenOptions}
+                            error={errors.maHuyen?.message}
                             required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormControllerDatePicker
-                            name="birthDate"
-                            label="Ngày sinh"
-                            control={control}
-                            placeholder="Chọn ngày sinh"
-                            required
-                            dateFormat="dd/mm/yyyy"
-                            error={errors.birthDate?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="phoneNumber"
-                            label="Số điện thoại"
-                            placeholder="Nhập số điện thoại"
-                            control={control}
-                            error={errors.phoneNumber?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="email"
-                            label="Email (nếu có)"
-                            placeholder="Nhập email"
-                            control={control}
-                            error={errors.email?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="officeAddress"
-                            label="Nơi công tác"
-                            placeholder="Nhập công tác"
-                            control={control}
-                            error={errors.officeAddress?.message}
-                            required
+                            disabled={!hasRole('Administrators')}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormSelectField
-                            name="residential_group_id"
-                            label="Thuộc tổ cư dân"
-                            placeholder="Chọn tổ cư dân"
+                            name="maXa"
+                            label="Phường/Xã"
+                            placeholder="Chọn phường/xã"
                             control={control}
-                            options={convertToValueLabel(RESIDENTIALGROUPDATA)}
-                            error={errors.residential_group_id?.message}
+                            options={teamAddress.xaOptions}
+                            error={errors.maXa?.message}
+                            required
+                            disabled={!teamAddress.watchedHuyen || !hasRole('Administrators')}
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="apId"
+                            label="Ấp"
+                            placeholder="Chọn ấp"
+                            control={control}
+                            options={teamAddress.apOptions}
+                            error={errors.apId?.message}
+                            required
+                            disabled={!teamAddress.watchedXa || !hasRole('Administrators')}
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="hoTen"
+                            label="Họ tên"
+                            placeholder="Nhập họ tên"
+                            control={control}
+                            error={errors.hoTen?.message}
                             required
                         />
                     </div>
+
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="chucVuId"
+                            label="Chức vụ"
+                            placeholder="Chọn chức vụ"
+                            control={control}
+                            options={chucVus}
+                            error={errors.chucVuId?.message}
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormControllerDatePicker
+                            name="tuNgay"
+                            label="Ngày bắt đầu nhiệm kỳ"
+                            control={control}
+                            placeholder="Chọn ngày bắt đầu nhiệm kỳ"
+                            required
+                            error={errors.tuNgay?.message}
+                        />
+                    </div>
+
+                    <div className="col-span-12">
+                        <FormControllerDatePicker
+                            name="denNgay"
+                            label="Ngày kết thúc nhiệm kỳ"
+                            control={control}
+                            placeholder="Chọn ngày kết thúc nhiệm kỳ"
+                            required
+                            error={errors.denNgay?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <div className="flex items-center gap-2 mb-2">
+                            <Switch checked={isUpdateAccount} onClick={() => setIsUpdateAccount(!isUpdateAccount)} />
+                            <span className="font-medium"> (Chọn để tạo/sửa tài khoản đăng nhập) </span>
+                        </div>
+                    </div>
+                    {
+                        isUpdateAccount &&
+                        <>
+                            <div className="col-span-12">
+                                <h3 className="text-[16px] font-semibold mt-3 mb-3">Thông tin tài khoản</h3>
+                            </div>
+                            <div className="col-span-12">
+                                <FormInputField
+                                    name="tenDangNhap"
+                                    label="Tên đăng nhập"
+                                    placeholder="Nhập tên đăng nhập"
+                                    control={control}
+                                    error={errors.tenDangNhap?.message}
+                                    required
+                                />
+                            </div>
+
+                            <div className="col-span-12">
+                                <FormInputField
+                                    name="matKhau"
+                                    label="Mật khẩu"
+                                    placeholder="Nhập mật khẩu"
+                                    control={control}
+                                    error={errors.matKhau?.message}
+                                    required
+                                />
+                            </div>
+
+                            <div className="col-span-12">
+                                <strong>Yêu cầu mật khẩu:</strong>
+                                <ul>
+                                    <li>+ Tối thiểu 8 ký tự</li>
+                                    <li>+ Có ít nhất 1 chữ viết hoa</li>
+                                    <li>+ Có ít nhất 1 chữ viết thường</li>
+                                    <li>+ Có ít nhất 1 chữ số (0-9)</li>
+                                    <li>+ Có ít nhất 1 ký tự đặc biệt (!, @, #, $, %)</li>
+                                </ul>
+                            </div>
+                        </>
+                    }
+
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton fullWidth label={loading ? "Đang xử lý..." : "Cập nhật thông tin nhân sự"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật thành viên"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>

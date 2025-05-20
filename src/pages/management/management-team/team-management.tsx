@@ -118,18 +118,6 @@ const TeamManagementPage: React.FC = () => {
                 </div>
             )
         },
-        // {
-        //     id: 'termDate',
-        //     header: 'Nhiệm kỳ',
-        //     size: 250,
-        //     cell: ({ row }) => (
-        //         <div className="flex items-center gap-3">
-        //             <div>
-        //                 {row.original.tuNgay} - {row.original.denNgay}
-        //             </div>
-        //         </div>
-        //     )
-        // },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',
@@ -141,18 +129,24 @@ const TeamManagementPage: React.FC = () => {
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
-                    <button
-                        onClick={() => navigate(`/team-update?id=${row.original.banDieuHanhId}`)}
-                        className="px-3 py-1 bg-blue-700 text-white rounded"
-                    >
-                        <Icon icon='ri:edit-line' fontSize={18} />
-                    </button>
-                    <button
-                        onClick={() => removeTeam(row.original.banDieuHanhId)}
-                        className="px-3 py-1 bg-red-700 text-white rounded"
-                    >
-                        <Icon icon='material-symbols:delete' fontSize={18} />
-                    </button>
+                    {
+                        hasPermission(permissionsList.khuPhoToChucDanCuBanDieuHanh, PermissionActions.SUA) &&
+                        <button
+                            onClick={() => navigate(`/team-update?id=${row.original.banDieuHanhId}`)}
+                            className="px-3 py-1 bg-blue-700 text-white rounded"
+                        >
+                            <Icon icon='ri:edit-line' fontSize={18} />
+                        </button>
+                    }
+                    {
+                        hasPermission(permissionsList.khuPhoToChucDanCuBanDieuHanh, PermissionActions.XOA) &&
+                        <button
+                            onClick={() => removeTeam(row.original.banDieuHanhId)}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
                 </div>
             ),
         },
