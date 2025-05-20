@@ -51,7 +51,7 @@ const TransactionsDetailUpdateForm: React.FC = () => {
             value: item.nguoiDungId,
             label: item.hoTen
         })) || [];
-    }, [chuHos]);
+    }, [userList]);
 
     useEffect(() => {
         if (transactionDetailDetail) {

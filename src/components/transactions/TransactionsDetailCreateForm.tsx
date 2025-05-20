@@ -54,7 +54,7 @@ const TransactionsDetailCreateForm: React.FC = () => {
             value: item.nguoiDungId,
             label: item.hoTen
         })) || [];
-    }, [chuHos]);
+    }, [userList]);
 
     const onSubmit: SubmitHandler<FormDataTranscationsDetail> = (data) => {
         setConfirmVisible(true);
