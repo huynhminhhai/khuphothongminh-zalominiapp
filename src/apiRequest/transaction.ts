@@ -35,6 +35,12 @@ const transactionApiRequest = {
     deleteTransactionDetail: async (id: number) => {
         return await http.delete<any>(`/chitietthuchi/${id}`)
     },
+    getTransactionDetailDetail: async (id: number) => {
+        return await http.get<any>(`/chitietthuchi/chitiet/${id}`);
+    },
+    updateTransactionDetail: async (formData: any) => {
+        return await http.put<any>("/chitietthuchi", formData);
+    },
 }
 
 /**
@@ -249,6 +255,54 @@ export const useDeleteTransactionDetail = () => {
         onSuccess: () => {
             showSuccess('Xóa chi tiết thu/chi thành công')
 
+            queryClient.invalidateQueries({ queryKey: ["transactionDetailList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* GET TRANSACTION DETAIL DETAIL
+**/
+export const useGetTransactionDetailDetail = (id: number) => {
+
+    return useQuery({
+        queryKey: ['transactionDetailDetail', id],
+        queryFn: async () => {
+            try {
+
+                const res = await transactionApiRequest.getTransactionDetailDetail(id);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        enabled: !!id,
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+/**
+* PUT TRANSACTION DETAIL
+**/
+export const useUpdateTransactionDetail = () => {
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            return await transactionApiRequest.updateTransactionDetail(formData);
+        },
+        onSuccess: () => {
+            showSuccess('Cập nhật thông tin chi tiết thu/chi thành công')
+
+            queryClient.invalidateQueries({ queryKey: ["transactionDetailDetail"] });
             queryClient.invalidateQueries({ queryKey: ["transactionDetailList"] });
         },
         onError: (error: string) => {

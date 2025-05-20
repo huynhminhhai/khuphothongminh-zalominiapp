@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
@@ -240,6 +240,7 @@ const MyApp = () => {
                         <Route path="/transactions-update" element={<TransactionsUpdatePage></TransactionsUpdatePage>}></Route>
                         <Route path="/transactions-detail-add" element={<TransactionsDetailAddPage></TransactionsDetailAddPage>}></Route>
                         <Route path="/transactions-detail-management" element={<TransactionsDetailManagementPage></TransactionsDetailManagementPage>}></Route>
+                        <Route path="/transactions-detail-update" element={<TransactionsDetailUpdatePage></TransactionsDetailUpdatePage>}></Route>
 
                         {/* MANAGEMENT INVOICE */}
                         <Route path="/invoice-management" element={<InvoiceManagementPage></InvoiceManagementPage>}></Route>

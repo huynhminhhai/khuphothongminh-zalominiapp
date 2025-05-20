@@ -1,17 +1,16 @@
-import React, { useMemo, useState } from "react"
-import { Box, useNavigate } from "zmp-ui"
+import React, { useEffect, useMemo, useState } from "react"
+import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataTranscationsDetail, schemaTransactionsDetail } from "./type"
-import { useStoreApp } from "store/store"
-import { useCreateTransactionDetail, useGetTransactionDetail } from "apiRequest/transaction"
 import { useSearchParams } from "react-router-dom"
-import { Icon } from "@iconify/react"
-import { useGetChuHosList } from "apiRequest/resident"
+import { useGetTransactionDetail, useGetTransactionDetailDetail, useUpdateTransactionDetail } from "apiRequest/transaction"
 import { useGetUserList } from "apiRequest/user"
+import { useGetChuHosList } from "apiRequest/resident"
+import { Icon } from "@iconify/react"
 
 const defaultValues: FormDataTranscationsDetail = {
     nguoiGiaoDichId: 0,
@@ -20,11 +19,7 @@ const defaultValues: FormDataTranscationsDetail = {
     ghiChu: '',
     nguoiGiaoDichKhac: ''
 }
-
-const TransactionsDetailCreateForm: React.FC = () => {
-
-    const { account } = useStoreApp()
-    const navigator = useNavigate()
+const TransactionsDetailUpdateForm: React.FC = () => {
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataTranscationsDetail>(defaultValues)
@@ -36,10 +31,12 @@ const TransactionsDetailCreateForm: React.FC = () => {
 
     const [searchParams] = useSearchParams();
     const transactionsId = searchParams.get("thuChiId");
+    const transactionsDetailId = searchParams.get("chiTietThuChiId");
 
+    const { mutateAsync: updateTransactionDetail, isPending } = useUpdateTransactionDetail();
     const { data: detailData, isLoading: isLoadingDetail } = useGetTransactionDetail(Number(transactionsId));
+    const { data: transactionDetailDetail } = useGetTransactionDetailDetail(Number(transactionsDetailId));
     const { data: userList } = useGetUserList();
-    const { mutateAsync: createTransactionDetail, isPending } = useCreateTransactionDetail();
     const { data: chuHos } = useGetChuHosList();
 
     const houseHoldOptions = useMemo(() => {
@@ -56,6 +53,14 @@ const TransactionsDetailCreateForm: React.FC = () => {
         })) || [];
     }, [chuHos]);
 
+    useEffect(() => {
+        if (transactionDetailDetail) {
+
+            reset({ ...transactionDetailDetail })
+
+        }
+    }, [transactionDetailDetail, reset])
+
     const onSubmit: SubmitHandler<FormDataTranscationsDetail> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
@@ -65,12 +70,7 @@ const TransactionsDetailCreateForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData) {
             try {
-
-                await createTransactionDetail({ ...formData, thuChiId: Number(transactionsId) });
-
-                reset(defaultValues);
-
-                navigator(`/transactions-detail-management?id=${transactionsId}`);
+                await updateTransactionDetail(formData);
             } catch (error) {
                 console.error("Error:", error);
             }
@@ -89,7 +89,7 @@ const TransactionsDetailCreateForm: React.FC = () => {
                         <Box mb={4}>
                             <div className="text-[14px] font-medium flex items-center gap-1 mb-1">
                                 <span>
-                                    - Nội dung: 
+                                    - Nội dung:
                                 </span>
                                 {
                                     isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.noiDung
@@ -97,7 +97,7 @@ const TransactionsDetailCreateForm: React.FC = () => {
                             </div>
                             <div className="text-[14px] font-medium flex items-center gap-1">
                                 <span>
-                                    - Loại: 
+                                    - Loại:
                                 </span>
                                 {
                                     isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.tenLoaiGiaoDichTaiChinh
@@ -161,7 +161,7 @@ const TransactionsDetailCreateForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Thêm chi tiết khoản thu/chi"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật tiết khoản thu/chi"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -169,7 +169,7 @@ const TransactionsDetailCreateForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn thêm chi tiết thu/chi này không?"
+                message="Bạn có chắc chắn muốn cập nhật thông tin chi tiết khoản thu/chi này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
@@ -177,4 +177,4 @@ const TransactionsDetailCreateForm: React.FC = () => {
     )
 }
 
-export default TransactionsDetailCreateForm
+export default TransactionsDetailUpdateForm

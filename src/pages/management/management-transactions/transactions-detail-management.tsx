@@ -155,7 +155,7 @@ const TransactionsDetailManagementPage: React.FC = () => {
                     {
                         hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.SUA) &&
                         <button
-                            onClick={() => navigate(`/transactions-update?id=${row.original.thuChiId}`)}
+                            onClick={() => navigate(`/transactions-detail-update?thuChiId=${transactionsId}&chiTietThuChiId=${row.original.chiTietThuChiId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
                         >
                             <Icon icon='ri:edit-line' fontSize={18} />

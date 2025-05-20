@@ -67,6 +67,7 @@ export { default as TransactionsAddPage } from "./management-transactions/transa
 export { default as TransactionsDetailAddPage } from "./management-transactions/transactions-detail-create";
 export { default as TransactionsUpdatePage } from "./management-transactions/transactions-update";
 export { default as TransactionsDetailManagementPage } from "./management-transactions/transactions-detail-management";
+export { default as TransactionsDetailUpdatePage } from "./management-transactions/transactions-detail-update";
 
 /**
 * INVOICE
