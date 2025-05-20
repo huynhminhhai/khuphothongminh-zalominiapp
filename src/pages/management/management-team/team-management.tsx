@@ -117,18 +117,18 @@ const TeamManagementPage: React.FC = () => {
         //         </div>
         //     )
         // },
-        {
-            id: 'termDate',
-            header: 'Nhiệm kỳ',
-            size: 250,
-            cell: ({ row }) => (
-                <div className="flex items-center gap-3">
-                    <div>
-                        {row.original.tuNgay} - {row.original.denNgay}
-                    </div>
-                </div>
-            )
-        },
+        // {
+        //     id: 'termDate',
+        //     header: 'Nhiệm kỳ',
+        //     size: 250,
+        //     cell: ({ row }) => (
+        //         <div className="flex items-center gap-3">
+        //             <div>
+        //                 {row.original.tuNgay} - {row.original.denNgay}
+        //             </div>
+        //         </div>
+        //     )
+        // },
         // {
         //     id: 'actions', // Custom column for actions
         //     header: 'Thao tác',
