@@ -5,7 +5,8 @@ import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { createMiniAppShortcut, openPermissionSettingApp } from "services/zalo";
 import { useStoreApp } from "store/store";
-import { Box, List, Page, useNavigate } from "zmp-ui"
+import { getFullImageUrl } from "utils/file";
+import { Avatar, Box, List, Page, useNavigate } from "zmp-ui"
 
 const ManagementTitle = ({ title }: any) => {
     return (
@@ -32,6 +33,19 @@ const AccountPage: React.FC = () => {
                     {
                         accessToken &&
                         <>
+                            <Box m={4}>
+                                <div onClick={() => navigate('/profile-account')} className="flex items-center gap-3 bg-white rounded-lg p-4" >
+                                    <div className="flex-1">
+                                        <Avatar className="border-[2px] border-secondary-color" src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.avatar} size={80} />
+                                    </div>
+                                    <div className="flex flex-col gap-2 w-full">
+                                        <div className="text-[18px] leading-6 font-semibold text-primary-color">{account?.hoTen}</div>
+                                        <div className="text-[15px] text-primary-color font-semibold tracking-[0.6px] flex items-center gap-1">
+                                            <Icon icon="bxs:phone" fontSize={16} />
+                                            {account?.dienThoai || 'Chưa có'}</div>
+                                    </div>
+                                </div>
+                            </Box>
                             <Box m={4}>
                                 <List className="bg-white rounded-lg">
                                     <Item
