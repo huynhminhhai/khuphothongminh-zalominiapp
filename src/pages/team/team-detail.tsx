@@ -9,6 +9,8 @@ import { TEAMDATA, TeamType, TERMDATA, TermType } from "constants/utinities";
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import { getUser, openChatScreen, openUrlInWebview } from "services/zalo";
+import { formatDate } from "utils/date";
+import { getFullImageUrl } from "utils/file";
 import { Avatar, Box, Page, useNavigate, useSnackbar } from "zmp-ui";
 
 const TeamDetailPage: React.FC = () => {
@@ -18,6 +20,8 @@ const TeamDetailPage: React.FC = () => {
     const memberId = searchParams.get("id");
 
     const { data: detailData, isLoading } = useGetTeamDetail(Number(memberId));
+
+    console.log(detailData)
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -32,7 +36,7 @@ const TeamDetailPage: React.FC = () => {
                                     <div className="relative bg-[#f6f7fb] mt-[60px] rounded-lg px-6 pb-10">
                                         <img src={images.shape2} alt="shape" className="absolute top-0 left-0 w-fit h-auto opacity-[0.06] z-0" />
                                         <div className="absolute top-[-60px] left-[50%] translate-x-[-50%] z-10">
-                                            <Avatar size={120} src={detailData.avatar || images.avatar} />
+                                            <Avatar size={120} src={detailData?.anhDaiDien?.trim() ? getFullImageUrl(detailData.anhDaiDien) : images.avatar} />
                                         </div>
                                         <div className="pt-[72px] relative z-10">
                                             <Box className="text-center">
@@ -42,19 +46,25 @@ const TeamDetailPage: React.FC = () => {
                                             <Box mt={4}>
                                                 <div className="flex flex-col gap-4">
                                                     <div className="flex items-center gap-3">
-                                                        <Icon fontSize={20} className="text-[#808080]" icon='vaadin:office' />
+                                                        <Icon fontSize={20} className="text-[#808080]" icon='ix:work-case-filled' />
                                                         <span className="text-[14px] font-medium">{[detailData?.tenAp, detailData?.tenXa, detailData?.tenHuyen, detailData?.tenTinh].filter(Boolean).join(', ')}</span>
                                                     </div>
                                                     {
                                                         detailData.dienThoai &&
                                                         <div className="flex items-center gap-3">
-                                                            <Icon fontSize={20} className="text-[#808080]" icon='icon-park-solid:phone' />
+                                                            <Icon fontSize={20} className="text-[#808080]" icon='ri:phone-fill' />
                                                             <span className="text-[14px] font-medium">{detailData.dienThoai}</span>
                                                         </div>
                                                     }
+                                                    
                                                     <div className="flex items-center gap-3">
                                                         <Icon fontSize={20} className="text-[#808080]" icon='material-symbols-light:date-range' />
-                                                        <span className="text-[14px] font-medium">{detailData.tuNgay} - {detailData.denNgay}</span>
+                                                        <span className="text-[14px] font-medium">{formatDate(detailData.tuNgay)} - {formatDate(detailData.denNgay)}</span>
+                                                    </div>
+
+                                                    <div className="flex items-center gap-3">
+                                                        <Icon fontSize={20} className="text-[#808080]" icon='mdi:account' />
+                                                        <span className="text-[14px] font-medium">{detailData.tenDangNhap}</span>
                                                     </div>
                                                 </div>
                                             </Box>
@@ -64,12 +74,12 @@ const TeamDetailPage: React.FC = () => {
                                                     <div
                                                         onClick={async () => {
                                                             try {
-                                                                await openUrlInWebview('https://zalo.me/0848551555')
+                                                                await openUrlInWebview(`https://zalo.me/${detailData.dienThoai}`);
                                                             } catch (error) {
                                                                 console.error("error: ", error);
                                                             }
                                                         }}
-                                                        className="rounded-3xl text-[16px] bg-blue-600 text-[#fff] font-medium w-full text-center px-4 py-3"
+                                                        className="rounded-3xl text-[14px] bg-secondary-color text-[#fff] font-medium w-full text-center px-3 py-2"
                                                     >
                                                         Liên hệ Zalo
                                                     </div>
