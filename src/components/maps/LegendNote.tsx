@@ -20,7 +20,7 @@ const LegendNote = (props?: any) => {
 
             {/* Nội dung chú thích */}
             {isOpen && (
-                <div className="mt-2 bg-white p-3 shadow-md rounded-md w-48 relative">
+                <div className="mt-2 bg-white p-3 shadow-md rounded-md w-fit min-w-48 relative">
                     <button onClick={() => setIsOpen(false)} className="opacity-80 absolute right-2 top-2 p-1 bg-black text-white rounded-full">
                         <Icon icon='ic:round-close' />
                     </button>
@@ -30,7 +30,7 @@ const LegendNote = (props?: any) => {
                             props?.filter === 'poor' &&
                             <>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-[#018abe] rounded-full mr-2"></span> Bình thường
+                                    <span className="inline-block w-3 h-3 bg-[#018abe] rounded-full mr-2"></span> Hộ bình thường
                                 </li>
                                 <li className="flex items-center">
                                     <span className="inline-block w-3 h-3 bg-[#ff6d00] rounded-full mr-2"></span> Hộ cận nghèo
@@ -44,10 +44,10 @@ const LegendNote = (props?: any) => {
                             props?.filter === 'culture' &&
                             <>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-[#008000] rounded-full mr-2"></span> Gia đình văn hóa
+                                    <span className="inline-block w-3 h-3 bg-[#008000] rounded-full mr-2"></span> Đạt chuẩn gia đình văn hóa
                                 </li>
                                 <li className="flex items-center">
-                                    <span className="inline-block w-3 h-3 bg-[#e66f5c] rounded-full mr-2"></span> Gia đình chưa văn hóa
+                                    <span className="inline-block w-3 h-3 bg-[#e66f5c] rounded-full mr-2"></span> Chưa đạt chuẩn gia đình văn hóa
                                 </li>
                             </>
                         }

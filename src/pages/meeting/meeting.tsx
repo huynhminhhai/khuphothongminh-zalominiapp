@@ -10,7 +10,7 @@ const MeetingPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Thông tin cuộc họp" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Thông tin cuộc họp" />
                 <Box>
                     <MeetingList />
                 </Box>
