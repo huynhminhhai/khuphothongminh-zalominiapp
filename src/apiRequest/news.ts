@@ -7,6 +7,9 @@ const newsApiRequest = {
     getNewsList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
         return await http.get<any>(`/tintuc?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NgayXuatBanTuNgay=${param.NgayXuatBanTuNgay}&NgayXuatBanDenNgay=${param.NgayXuatBanDenNgay}&TacGia=${param.TacGia}&TieuDe=${param.TieuDe}`);
     },
+    getNewsPublicList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
+        return await http.get<any>(`/tintuc/danhsachxuatban?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NgayXuatBanTuNgay=${param.NgayXuatBanTuNgay}&NgayXuatBanDenNgay=${param.NgayXuatBanDenNgay}&TacGia=${param.TacGia}&TieuDe=${param.TieuDe}`);
+    },
     getNewsDetail: async (id: number) => {
         return await http.get<any>(`/tintuc/chitiet/${id}`);
     },
@@ -46,6 +49,21 @@ export const useGetNewsListNormal = (param: { page: number; pageSize: number; Ap
 };
 
 /**
+* GET NEWS PUBLIC LIST
+**/
+export const useGetNewsPublicListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
+    return useQuery({
+        queryKey: ['newsList', param.page, param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
+        queryFn: async () => {
+            const res = await newsApiRequest.getNewsPublicList(param);
+            return res
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+/**
 * GET NEWS LIST (INFINITE)
 **/
 export const useGetNewsList = (param: { page: number; pageSize: number, ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
@@ -55,7 +73,7 @@ export const useGetNewsList = (param: { page: number; pageSize: number, ApId: nu
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
-                const res = await newsApiRequest.getNewsList({ ...param, page: pageParam });
+                const res = await newsApiRequest.getNewsPublicList({ ...param, page: pageParam });
 
                 return res.data
             } catch (error) {

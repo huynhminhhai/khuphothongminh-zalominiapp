@@ -1,4 +1,4 @@
-import { useGetNewsListNormal } from "apiRequest/news"
+import { useGetNewsListNormal, useGetNewsPublicListNormal } from "apiRequest/news"
 import images from "assets/images"
 import { Divider } from "components/divider"
 import { NewsSectionSkeleton } from "components/skeleton"
@@ -28,7 +28,7 @@ const NewsSection: React.FC = () => {
         TieuDe: '',
     });
 
-    const { data, isLoading } = useGetNewsListNormal(param);
+    const { data, isLoading } = useGetNewsPublicListNormal(param);
 
     if (isLoading) {
         return <NewsSectionSkeleton count={1}/>
