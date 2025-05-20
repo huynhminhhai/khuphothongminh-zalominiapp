@@ -35,7 +35,7 @@ const InsuranceManagementPage: React.FC = () => {
         HoTen: "",
         HoTenChuHo: "",
         SoGiayTo: "",
-        ApId: account ? account.thongTinDanCu?.apId : 0,
+        ApId: account ? account?.apId : 0,
         LaChuHo: false,
     });
 
@@ -114,6 +114,16 @@ const InsuranceManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div>
                     {row.original.hoTen}
+                </div>
+            ),
+            size: 250,
+        },
+        {
+            id: "cccd",
+            header: "CCCD",
+            cell: ({ row }) => (
+                <div>
+                    {row.original.soGiayTo}
                 </div>
             ),
             size: 250,

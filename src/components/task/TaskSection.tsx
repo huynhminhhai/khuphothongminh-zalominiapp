@@ -17,7 +17,7 @@ const TaskSection: React.FC<any> = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 4,
-        ApId: account ? account.thongTinDanCu?.apId : 0,
+        ApId: account ? account?.apId : 0,
         keyword: '',
         nguoiThucHienId: account ? account?.nguoiDungId : 0,
         TieuDe: ''

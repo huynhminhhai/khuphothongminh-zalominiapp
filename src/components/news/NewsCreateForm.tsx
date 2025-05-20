@@ -42,7 +42,7 @@ const NewsAddForm: React.FC = () => {
         setConfirmVisible(false);
         if (formData && account) {
             try {
-                const dataSubmit = { ...formData, ApId: account.thongTinDanCu?.apId, TinhTrangId: 1 }
+                const dataSubmit = { ...formData, ApId: account?.apId, TinhTrangId: 1 }
     
                 const formDataConverted = convertToFormData(dataSubmit);
     
