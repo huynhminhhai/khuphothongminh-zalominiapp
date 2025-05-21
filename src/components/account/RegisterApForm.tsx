@@ -24,6 +24,10 @@ const RegisterApForm: React.FC = () => {
 
     const { account, tinhs, hasRole } = useStoreApp()
 
+    const isRegisteredWithAnotherRole =
+        account?.vaiTros.some((r) => r.tenVaiTro === "Registered Users") &&
+        (account?.vaiTros.length ?? 0) > 1;
+
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataRegisterAp>(defaultValues);
 
@@ -60,7 +64,7 @@ const RegisterApForm: React.FC = () => {
 
             reset({
                 hoTen: hoTen,
-                dienThoai: hasRole('TRUONG_AP') ? dienThoai : tenDangNhap,
+                dienThoai: isRegisteredWithAnotherRole ? dienThoai : tenDangNhap,
                 soGiayTo: soGiayTo,
                 maXa: maXa,
                 maHuyen: maHuyen,
@@ -116,7 +120,7 @@ const RegisterApForm: React.FC = () => {
                             control={control}
                             error={errors.dienThoai?.message}
                             required
-                            disabled={!hasRole('TRUONG_AP')}
+                            disabled={!isRegisteredWithAnotherRole}
                         />
                     </div>
                     <div className="col-span-12">
@@ -140,7 +144,7 @@ const RegisterApForm: React.FC = () => {
                             options={registerApAddress.huyenOptions}
                             error={errors.maHuyen?.message}
                             required
-                        // disabled={!registerApAddress.watchedTinh}
+                            disabled={isRegisteredWithAnotherRole}
                         />
                     </div>
                     <div className="col-span-12">
@@ -152,7 +156,7 @@ const RegisterApForm: React.FC = () => {
                             options={registerApAddress.xaOptions}
                             error={errors.maXa?.message}
                             required
-                            disabled={!registerApAddress.watchedHuyen}
+                            disabled={!registerApAddress.watchedHuyen || isRegisteredWithAnotherRole}
                         />
                     </div>
 
@@ -165,7 +169,7 @@ const RegisterApForm: React.FC = () => {
                             options={registerApAddress.apOptions}
                             error={errors.apId?.message}
                             required
-                            disabled={!registerApAddress.watchedXa}
+                            disabled={!registerApAddress.watchedXa || isRegisteredWithAnotherRole}
                         />
                     </div>
 
