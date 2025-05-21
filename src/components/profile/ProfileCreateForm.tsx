@@ -31,7 +31,7 @@ const ProfileAddForm: React.FC = () => {
     ngheNghiep: 0,
     noiLamViec: '',
     email: '',
-    dienThoai: '',
+    dienThoai: null,
     website: '',
     moiQuanHeVoiChuHo: 0,
     tinhTrangHoGiaDinhId: 0,
