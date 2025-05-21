@@ -219,7 +219,7 @@ const TransactionsDetailManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Danh sách chi tiết khoản thu chi" />
+                <HeaderSub title="Danh sách chi tiết khoản thu chi" onBackClick={() => navigate('/transactions-management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoCongViecTaiChinh, PermissionActions.THEM)}

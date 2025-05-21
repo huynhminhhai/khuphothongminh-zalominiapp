@@ -3,6 +3,7 @@ import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { AgeChart, JobChart, PercentInsuranceChart } from "components/overview"
 import { ChartSkeleton } from "components/skeleton"
+import { StatisticList2 } from "components/statistics"
 import React, { useState } from "react"
 import { useStoreApp } from "store/store"
 import { Box, Page } from "zmp-ui"
@@ -28,9 +29,14 @@ const ResidentOverviewPage = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white" style={{ backgroundColor: '#f5f6f7' }}>
             <Box>
-                <HeaderSub title="Biểu đồ tổng quan" />
+                <HeaderSub title="Tổng quan" />
                 <Box>
+                    <Box px={4} py={2}>
+                        <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">
+                            <StatisticList2 />
+                        </div>
 
+                    </Box>
                     {
                         isLoading ?
                             <ChartSkeleton count={3} /> :

@@ -5,7 +5,7 @@ const appApiRequest = {
     getHuyen: (maTinh: string) => http.get<any>(`/huyen/tinh/${maTinh}`),
     getXa: (maHuyen: string) => http.get<any>(`/xa/huyen/${maHuyen}`),
     getAp: (maXa: string) => http.get<any>(`/ap/xa/${maXa}`),
-    getSoLieuHienThi: () => http.get<any>(`/thongkebaocao/solieuhienthitrangchumobileapp`),
+    getSoLieuHienThi: () => http.get<any>(`/thongkebaocao/solieuhienthitrangchumobileapp`),getsoLuongTaiKhoanTrongDiaPhuong: () => http.get<any>(`/thongkebaocao/soluongtaikhoantrongdiaphuong`),
 }
 
 /**
@@ -91,6 +91,26 @@ export const useGetSoLieuHienThi = () => {
             try {
 
                 const res = await appApiRequest.getSoLieuHienThi();
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+export const useGetSoLuongTaiKhoanTrongAp = () => {
+
+    return useQuery({
+        queryKey: ['soLuongTaiKhoanTrongAp'],
+        queryFn: async () => {
+            try {
+
+                const res = await appApiRequest.getsoLuongTaiKhoanTrongDiaPhuong();
 
                 return res.data
             } catch (error) {

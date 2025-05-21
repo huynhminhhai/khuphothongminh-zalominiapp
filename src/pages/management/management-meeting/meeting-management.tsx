@@ -14,7 +14,7 @@ import { copyToClipboard } from "utils/copyToClipboard"
 import { getHourFromDate, formatDate as formatDateMeeting } from "utils/date"
 import { PermissionActions, permissionsList } from "utils/permission"
 import { useCustomSnackbar } from "utils/useCustomSnackbar"
-import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
+import { Box, Button, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 
 const MeetingManagementPage: React.FC = () => {
 
@@ -301,6 +301,18 @@ const MeetingManagementPage: React.FC = () => {
                             />
                         </div>
                     </FilterBar>
+                    <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">
+                        <Button
+                            size="small"
+                            variant="tertiary"
+                            onClick={() => navigate('/meeting')}
+                        >
+                            <div className="flex items-center gap-1">
+                                Cuộc họp của tôi
+                                <Icon fontSize={18} icon='iconamoon:enter' />
+                            </div>
+                        </Button>
+                    </Box>
                     <Box>
                         {
                             renderContent()

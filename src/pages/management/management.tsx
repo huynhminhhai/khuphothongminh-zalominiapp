@@ -55,9 +55,23 @@ const ManagementPage: React.FC = () => {
                             <div className="col-span-12">
                                 <ManagementTitle title="Tổng quan tình hình hộ dân" />
                             </div>
+
+                            {
+                                hasPermission(permissionsList.thongKeBaoCaoTongHopTinhHinhDanCu, PermissionActions.XEM) &&
+                                <div className="col-span-4">
+                                    <ManagementItem
+                                        title="Tổng quan"
+                                        prefix={<img src={images.chart}
+                                            alt='news'
+                                            className="w-[30px] h-auto"
+                                        />}
+                                        onClick={() => navigate('/resident-household')}
+                                    />
+                                </div>
+                            }
+
                             {
                                 hasPermission(permissionsList.bandodancu, PermissionActions.XEM) &&
-
                                 <div className="col-span-4">
                                     <ManagementItem
                                         title="Bản đồ"
@@ -70,19 +84,6 @@ const ManagementPage: React.FC = () => {
                                 </div>
                             }
 
-                            {
-                                hasPermission(permissionsList.thongKeBaoCaoTongHopTinhHinhDanCu, PermissionActions.XEM) &&
-                                <div className="col-span-4">
-                                    <ManagementItem
-                                        title="Biểu đồ"
-                                        prefix={<img src={images.chart}
-                                            alt='news'
-                                            className="w-[30px] h-auto"
-                                        />}
-                                        onClick={() => navigate('/resident-household')}
-                                    />
-                                </div>
-                            }
                         </div>
                     </Box>
                 }

@@ -4,11 +4,12 @@ import { useGetChuHosList, useGetResidentData } from "apiRequest/resident"
 import { Icon } from "@iconify/react"
 import { motion } from "framer-motion";
 import images from "assets/images";
+import { useGetSoLieuHienThi } from "apiRequest/app";
 
 const StatisticList: React.FC<any> = () => {
 
     const { familyNumberQuery, residentNumberQuery } = useGetResidentData();
-    const { data: chuHos, isLoading } = useGetChuHosList();
+    const { data, isLoading } = useGetSoLieuHienThi();
 
     return (
         <Box>
@@ -32,7 +33,7 @@ const StatisticList: React.FC<any> = () => {
                                     {
                                         (familyNumberQuery.isLoading || isLoading)
                                             ? <Icon icon='line-md:loading-twotone-loop' />
-                                            : (chuHos.length > 0 ? chuHos.length : familyNumberQuery.data || 0)
+                                            : (data ? data.tongSoHoGiaDinh : familyNumberQuery.data || 0)
                                     }
                                 </h4>
                             </Box>
