@@ -3,7 +3,7 @@ import * as yup from 'yup';
 export const schemaTeam = (isUpdateAccount: boolean) => yup.object().shape({
     maHuyen: yup.string().required('Không được để trống'),
     maXa: yup.string().required('Không được để trống'),
-    apId: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
+    apId: yup.number().typeError('Không được để trống').required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
     hoTen: yup.string().required('Không được để trống'),
     chucVuId: yup.number().required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
     tuNgay: yup.string().required('Không được để trống'),

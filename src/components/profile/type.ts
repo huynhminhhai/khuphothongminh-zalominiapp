@@ -79,7 +79,7 @@ export type FormDataProfile = {
 const residenceSchema = yup.object().shape({
     // loaiCuTruId: yup.number().required('Loại cư trú là bắt buộc'),
     diaChi: yup.string().required('Địa chỉ là bắt buộc'),
-    apId: yup.number().required('Ấp là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
+    apId: yup.number().typeError('Không được để trống').required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
     xa: yup.string().required('Xã là bắt buộc'),
     huyen: yup.string().required('Huyện là bắt buộc'),
     tinh: yup.string().required('Tỉnh là bắt buộc'),

@@ -131,7 +131,6 @@ const RegisterApForm: React.FC = () => {
                             placeholder="Nhập số định danh cá nhân"
                             control={control}
                             error={errors.soGiayTo?.message}
-                            required
                         />
                     </div>
 

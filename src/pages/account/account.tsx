@@ -39,10 +39,10 @@ const AccountPage: React.FC = () => {
                                         <Avatar className="border-[2px] border-secondary-color" src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.avatar} size={80} />
                                     </div>
                                     <div className="flex flex-col gap-1 w-full">
-                                        <div className="text-[18px] leading-6 font-semibold text-primary-color">{account?.hoTen}</div>
+                                        <div className="text-[18px] leading-6 font-semibold text-primary-color">{account?.hoTen ? account.hoTen : 'Chưa cập nhật'}</div>
                                         <div className="text-[15px] text-primary-color font-semibold tracking-[0.6px] flex items-center gap-1">
                                             <Icon icon="bxs:phone" fontSize={16} />
-                                            {account?.dienThoai || 'Chưa có'}</div>
+                                            {account?.dienThoai || ''}</div>
                                     </div>
                                 </div>
                             </Box>
