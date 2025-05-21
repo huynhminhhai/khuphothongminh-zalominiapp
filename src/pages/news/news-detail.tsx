@@ -38,7 +38,7 @@ const NewsDetailPage: React.FC = () => {
                                     </h2>
                                     <h4 className="text-[13px] leading-[1] font-semibold">{formatDate(data.ngayXuatBan)}</h4>
                                 </Box>
-                                <Box mt={6} pb={4} mb={4} className="border-b-[1px] border-primary-color">
+                                <Box mt={4} pb={4} mb={2} className="border-b-[1px] border-primary-color">
                                     {/* <div className="mb-3">
                                         <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
                                     </div> */}

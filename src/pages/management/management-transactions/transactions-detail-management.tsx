@@ -240,7 +240,7 @@ const TransactionsDetailManagementPage: React.FC = () => {
                     >
                         <div className="col-span-12">
                             <Input
-                                placeholder="Tìm kiếm nhanh..."
+                                placeholder="Tìm kiếm nhanh"
                                 value={filters.search}
                                 onChange={(e) => updateFilter('search', e.target.value)}
                             />

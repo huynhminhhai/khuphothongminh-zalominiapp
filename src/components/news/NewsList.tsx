@@ -95,7 +95,7 @@ const NewsList: React.FC = () => {
             <FilterBar2
                 searchComponent={
                     <Input.Search
-                        placeholder='Tìm kiếm nhanh...'
+                        placeholder='Tìm kiếm nhanh'
                         value={filters.search}
                         onChange={(e) => updateFilter('search', e.target.value)}
                     />
@@ -103,14 +103,14 @@ const NewsList: React.FC = () => {
             >
                 <div className="col-span-6">
                     <Input
-                        placeholder="Tiêu đề..."
+                        placeholder="Tiêu đề"
                         value={filters.tieuDe}
                         onChange={(e) => updateFilter('tieuDe', e.target.value)}
                     />
                 </div>
                 <div className="col-span-6">
                     <Input
-                        placeholder="Tác giả..."
+                        placeholder="Tác giả"
                         value={filters.tacGia}
                         onChange={(e) => updateFilter('tacGia', e.target.value)}
                     />

@@ -431,6 +431,8 @@ textarea[name="address"] {
   line-height: 24px;
   position: relative;
   overflow: hidden;
+  // text-align: justify;
+  font-weight: 500;
 }
 
 .detail-content * {

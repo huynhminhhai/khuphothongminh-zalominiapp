@@ -1,11 +1,12 @@
 import { Icon } from "@iconify/react"
 import { useDeleteFeedback, useGetFeedbackStatus } from "apiRequest/feeback"
-import React from "react"
+import React, { useState } from "react"
 import { getFullImageUrl, isImage } from "utils/file"
 import { getTinhTrangFeedbackColor } from "utils/renderColor"
 import { Box, Button, useNavigate } from "zmp-ui"
 import { formatDate, getHourFromDate } from "utils/date"
 import images from "assets/images"
+import { ConfirmModal } from "components/modal"
 
 type FeedbackItemHistoryProps = {
     data: any
@@ -14,6 +15,10 @@ type FeedbackItemHistoryProps = {
 const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
 
     const navigate = useNavigate();
+
+    const [isConfirmVisible, setConfirmVisible] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+    const [modalContent, setModalContent] = useState({ title: '', message: '' });
 
     const { data: feedbackStatus } = useGetFeedbackStatus();
     const { mutate: deleteFeedback } = useDeleteFeedback();
@@ -24,6 +29,31 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
     const imageFiles = data?.tapTinPhanAnhs?.filter(item =>
         isImage(item.tapTin)
     ) || [];
+
+    const openConfirmModal = (action: () => void, title: string, message: string) => {
+        setConfirmAction(() => action);
+        setModalContent({ title, message });
+        setConfirmVisible(true);
+    };
+
+    const handleConfirm = () => {
+        if (confirmAction) {
+            confirmAction();
+            setConfirmVisible(false);
+            setConfirmAction(null);
+        }
+    };
+
+    const handleCancel = () => {
+        setConfirmVisible(false);
+        setConfirmAction(null);
+    };
+
+    const removeFeedback = (id: number) => {
+        openConfirmModal(() => {
+            deleteFeedback(id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa phản ánh này?');
+    }
 
     return (
         <Box
@@ -68,12 +98,19 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
                         Cập nhật
                     </div>
                 </Button>
-                <Button className="!bg-red-100 !text-red-700" size="small" fullWidth onClick={() => deleteFeedback(data.phanAnhId)}>
+                <Button className="!bg-red-100 !text-red-700" size="small" fullWidth onClick={() => removeFeedback(data.phanAnhId)}>
                     <div className="flex items-center justify-center gap-1 font-semibold">
                         Xóa
                     </div>
                 </Button>
             </div>
+            <ConfirmModal
+                visible={isConfirmVisible}
+                title={modalContent.title}
+                message={modalContent.message}
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+            />
         </Box>
     )
 }

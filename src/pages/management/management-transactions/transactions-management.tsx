@@ -263,8 +263,8 @@ const TransactionsManagementPage: React.FC = () => {
             </Box>
             <ConfirmModal
                 visible={isConfirmVisible}
-                title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa khoản thu/chi này không?"
+                title={modalContent.title}
+                message={modalContent.message}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

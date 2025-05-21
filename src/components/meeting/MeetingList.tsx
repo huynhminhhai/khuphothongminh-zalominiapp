@@ -104,7 +104,7 @@ const MeetingList: React.FC = () => {
             >
                 <div className="col-span-6">
                     <Input
-                        placeholder="Tiêu đề..."
+                        placeholder="Tiêu đề"
                         value={filters.tieuDe}
                         onChange={(e) => updateFilter('tieuDe', e.target.value)}
                     />

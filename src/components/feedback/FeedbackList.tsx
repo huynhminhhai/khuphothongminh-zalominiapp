@@ -1,11 +1,10 @@
 import React from "react"
 import { Box, Button, useNavigate } from "zmp-ui"
 import FeedbackItem from "./FeedbackItem"
-import { Feedback } from "constants/utinities"
 import images from "assets/images"
 
 type FeedbackListProps = {
-    data: Feedback[]
+    data: any[]
 }
 
 const FeedbackList: React.FC<FeedbackListProps> = ({data}) => {

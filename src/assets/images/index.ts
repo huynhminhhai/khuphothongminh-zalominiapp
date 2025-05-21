@@ -42,9 +42,13 @@ import bg1 from './bg-1.jpg'
 import bg2 from './bg-2.jpg'
 import resident from './resident.png'
 import chart from './chart.png'
+import logo1 from './logo.png'
+import logopng from './logo-png.png'
 
 const images = {
     logo,
+    logo1,
+    logopng,
     avatar,
     shape1,
     shape2,

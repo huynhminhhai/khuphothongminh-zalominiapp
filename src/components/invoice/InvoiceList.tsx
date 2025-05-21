@@ -182,7 +182,7 @@ const InvoiceList: React.FC = () => {
             <FilterBar2
                 searchComponent={
                     <Input.Search
-                        placeholder='Tìm kiếm nhanh...'
+                        placeholder='Tìm kiếm nhanh'
                         value={filters.search}
                         onChange={(e) => updateFilter('search', e.target.value)}
                     />
