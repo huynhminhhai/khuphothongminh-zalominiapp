@@ -121,7 +121,7 @@ const ResidentMapPage = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Bản đồ tổng quản" />
+                <HeaderSub title="Bản đồ hộ dân" />
 
                 {
                     isLoading ?

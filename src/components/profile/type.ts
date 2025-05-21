@@ -126,11 +126,15 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
     email: yup
         .string()
         .email('Email không hợp lệ'),
-        // .required('Email là bắt buộc'),
-    dienThoai: yup
-        .string()
-        .required('Số điện thoại không được để trống')
-        .matches(/^(\+84|0)(9|3|7|8|5|6)[0-9]{8}$/, 'Số điện thoại không hợp lệ'),
+    // .required('Email là bắt buộc'),
+    // dienThoai: yup
+    //     .string()
+    //     .nullable()
+    //     .notRequired()
+    //     .matches(
+    //         /^(\+84|0)(9|3|7|8|5|6)[0-9]{8}$/,
+    //         'Số điện thoại không hợp lệ'
+    //     ),
     moiQuanHeVoiChuHo: yup
         .number()
         .typeError('Chưa chọn mục này')
@@ -177,7 +181,7 @@ export interface FormResidentDetail {
     ngheNghiep: number;
     noiLamViec?: string;
     email?: string;
-    dienThoai: string;
+    dienThoai?: string | null;
     website?: string;
     moiQuanHeVoiChuHo?: number;
     tinhTrangHoGiaDinhId: number;

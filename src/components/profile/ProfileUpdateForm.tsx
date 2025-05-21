@@ -285,7 +285,6 @@ const ProfileUpdateForm: React.FC = () => {
                             placeholder="Nhập số điện thoại"
                             control={control}
                             error={errors.dienThoai?.message}
-                            required
                         />
                     </div>
                     <div className="col-span-12">

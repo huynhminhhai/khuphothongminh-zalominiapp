@@ -115,6 +115,17 @@ const TransactionsDetailManagementPage: React.FC = () => {
             }
         },
         {
+            id: 'noiDung',
+            header: 'Nội dung',
+            cell: () => {
+                return (
+                    <div>
+                        {detailData.noiDung}
+                    </div>
+                )
+            }
+        },
+        {
             id: 'amount',
             header: 'Số tiền',
             cell: ({ row }) => {

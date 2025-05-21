@@ -63,8 +63,6 @@ const ProfileAddForm: React.FC = () => {
   const [isConfirmVisible, setConfirmVisible] = useState(false);
   const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
   const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
-  const [showMapNoiThuongTru, setShowMapNoiThuongTru] = useState(false);
-  const [showMapNoiTamTru, setShowMapNoiTamTru] = useState(false);
 
   const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
     resolver: yupResolver(residentSchema(isHouseHold)),
@@ -227,7 +225,6 @@ const ProfileAddForm: React.FC = () => {
               placeholder="Nhập số điện thoại"
               control={control}
               error={errors.dienThoai?.message}
-              required
             />
           </div>
           <div className="col-span-12">
@@ -525,7 +522,6 @@ const ProfileAddForm: React.FC = () => {
               </div>
               <div className="col-span-12">
                 <MapPicker
-                  onClose={() => setShowMapNoiTamTru(false)}
                   onPick={(lat, lng) => {
                     setValue("noiTamTru.latitude", lat);
                     setValue("noiTamTru.longitude", lng);

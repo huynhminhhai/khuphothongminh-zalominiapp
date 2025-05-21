@@ -61,7 +61,7 @@ const AccountPage: React.FC = () => {
                                     <ManagementTitle title="Tài khoản" />
                                     <Item
                                         onClick={() => navigate('/profile-account')}
-                                        title="Thông tin"
+                                        title="Thông tin tài khoản"
                                         prefix={<img src={images.resume} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     />
