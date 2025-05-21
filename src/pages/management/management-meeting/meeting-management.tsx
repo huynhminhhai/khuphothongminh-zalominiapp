@@ -42,6 +42,7 @@ const MeetingManagementPage: React.FC = () => {
         ThoiGianBatDau: '',
         ThoiGianKetThuc: '',
         DiaDiem: '',
+        NguoiDungId: undefined
     })
 
     const { data, isLoading } = useGetMeetingListNormal(param);

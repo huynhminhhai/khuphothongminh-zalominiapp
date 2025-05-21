@@ -28,6 +28,7 @@ const MeetingList: React.FC = () => {
         ThoiGianBatDau: '',
         ThoiGianKetThuc: '',
         DiaDiem: '',
+        NguoiDungId: account ? account?.nguoiDungId : 0
     });
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
