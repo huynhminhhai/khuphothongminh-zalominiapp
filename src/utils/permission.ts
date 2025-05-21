@@ -1,3 +1,6 @@
+import { useCallback } from "react";
+import { useStoreApp } from "store/store";
+
 export const PermissionActions = {
   XEM: 'XEM',
   XEMCONGKHAI: 'XEMCONGKHAI',
@@ -54,3 +57,18 @@ export const permissionsList = {
   thongKeBaoCaoThongTinHoGiaDinh: 'thong-ke-bao-cao_thong-tin-ho-gia-dinh',
   thongKeBaoCaoTongHopTinhHinhDanCu: 'thong-ke-bao-cao_tong-hop-tinh-hinh-dan-cu',
 } as const;
+
+export const useCheckRequireApId = () => {
+  const { account } = useStoreApp();
+  const { setIsShowModalRegisterAp } = useStoreApp();
+
+  const checkRequireApId = useCallback((action: () => void) => {
+    if (!account?.apId) {
+      setIsShowModalRegisterAp(true);
+      return;
+    }
+    action();
+  }, [account?.apId, setIsShowModalRegisterAp]);
+
+  return checkRequireApId;
+};

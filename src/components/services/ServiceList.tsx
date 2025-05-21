@@ -11,6 +11,7 @@ export type ServicesType = {
     icon?: string;
     isCheckLogin?: boolean,
     requiredPermission?: { maChucNang: string; quyen:  "XEM" | "XEMCONGKHAI" | "SUA" | "XOA" | "THEM" | "XUATBAN" | "BAOCAO" | "TIEPNHAN" | "XOACUATOI" | "THUCHIEN" };
+    isRequireApId?: boolean,
 }
 
 const SERVICES: ServicesType[] = [
@@ -42,7 +43,8 @@ const SERVICES: ServicesType[] = [
         label: 'Tình hình tài chính',
         url: '/transactions',
         icon: images.money,
-        // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEMCONGKHAI },
+        isRequireApId: true,
+        // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
     },
     // {
     //     label: 'Thông tin tổ chức',
@@ -62,6 +64,7 @@ const SERVICES: ServicesType[] = [
         url: '/survey',
         icon: images.survey,
         requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEMCONGKHAI },
+        isRequireApId: true,
     },
     {
         label: 'Phản ánh',

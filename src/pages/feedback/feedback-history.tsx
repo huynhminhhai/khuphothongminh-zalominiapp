@@ -7,12 +7,14 @@ import { HeaderSub } from "components/header-sub"
 import { FeedbackSkeleton } from "components/skeleton";
 import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store";
+import { useCheckRequireApId } from "utils/permission";
 import { useInfiniteScroll } from "utils/useInfiniteScroll";
 import { Box, Button, Page, useNavigate } from "zmp-ui"
 
 const FeedbackHistoryPage: React.FC = () => {
 
     const { account } = useStoreApp()
+    const checkRequireApId = useCheckRequireApId();
 
     const navigate = useNavigate()
     const [param, setParam] = useState({
@@ -46,7 +48,11 @@ const FeedbackHistoryPage: React.FC = () => {
                                         <Box mb={3}>
                                             <EmptyData title="Bạn chưa có phản ánh nào!" />
                                         </Box>
-                                        <Button variant="primary" size="medium" fullWidth onClick={() => navigate('/feedback-add')}>
+                                        <Button variant="primary" size="medium" fullWidth
+                                            onClick={() => checkRequireApId(() => {
+                                                navigate('/feedback-add');
+                                            })}
+                                        >
                                             <div className="flex items-center justify-center gap-1">
                                                 <Icon fontSize={16} icon='line-md:edit' />
                                                 <span>Gửi phản ánh</span>

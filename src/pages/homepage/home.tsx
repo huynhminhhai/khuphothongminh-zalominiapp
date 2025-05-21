@@ -30,6 +30,7 @@ const HomePage: React.FunctionComponent = () => {
               <Divider />
               {
                 hasPermission(permissionsList.khuPhoNhiemVuNhiemVuCuaToi, PermissionActions.XEM) &&
+                account?.apId &&
                 <TaskSection />
               }
               <Divider />

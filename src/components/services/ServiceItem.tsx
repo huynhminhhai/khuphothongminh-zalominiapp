@@ -1,8 +1,8 @@
 import React from "react";
-import { useLoginWithZalo } from "services/loginWithZalo";
 import { Box, useNavigate } from "zmp-ui";
 import { ServicesType } from "./ServiceList";
 import { motion } from "framer-motion";
+import { useCheckRequireApId } from "utils/permission";
 
 type ServiceItemType = {
     data: ServicesType;
@@ -11,19 +11,19 @@ type ServiceItemType = {
 const ServiceItem: React.FC<ServiceItemType> = ({ data }) => {
 
     const navigate = useNavigate()
-    const { loginWithZalo } = useLoginWithZalo();
+    const checkRequireApId = useCheckRequireApId();
 
-    const handleNavigate = (url: string) => {
-        if (data.isCheckLogin) {
-            loginWithZalo(url)
+    const handleClick = () => {
+        if (data.isRequireApId) {
+            checkRequireApId(() => navigate(data.url));
         } else {
-            navigate(url)
+            navigate(data.url);
         }
-    }
+    };
 
     return (
         <motion.div
-            onClick={() => navigate(data.url)}
+            onClick={handleClick}
             initial={{ opacity: 0.5 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}

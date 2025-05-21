@@ -26,6 +26,7 @@ import { getDataFromStorage } from "services/zalo";
 import ForbiddenPage from "pages/403";
 import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
 import { InsuranceAddPage, InsuranceAUpdatePage, InsurancePage } from "pages/insurance";
+import { RegisterApModal } from "./modal";
 
 
 const AuthWrapper = ({ children }) => {
@@ -101,6 +102,7 @@ const MyApp = () => {
           <SnackbarProvider>
             <ZMPRouter>
               <ScrollToTop />
+              <RegisterApModal />
               <LoadingFullScreen isLoading={isLoadingFullScreen} />
               <Routes>
 
