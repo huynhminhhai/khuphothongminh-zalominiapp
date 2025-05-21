@@ -95,7 +95,7 @@ const MeetingDetailPage: React.FC = () => {
                 <HeaderSub title="Chi tiết cuộc họp" />
                 <Box>
                     {
-                        isLoading || loading ?
+                        (isLoading || loading) ?
                             <NewsDetailSkeleton count={1} /> :
                             detailData ?
                                 <Box>

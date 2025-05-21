@@ -16,7 +16,7 @@ const NewsDetailSkeleton: React.FC<NewsDetailSkeletonProps> = ({ count }) => {
                     <Skeleton count={2} height={38} />
                     <Skeleton count={1} width={100} />
                     <Skeleton count={1} height={200} />
-                    <Skeleton count={12} />
+                    <Skeleton count={18} />
                 </Box>
             ))}
         </Box>

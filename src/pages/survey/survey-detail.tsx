@@ -1,8 +1,10 @@
 import { useCreateResultSurvey, useGetSurveyDetail } from "apiRequest/survey";
 import images from "assets/images";
 import { PrimaryButton } from "components/button";
+import { EmptyData } from "components/data";
 import { HeaderSub } from "components/header-sub";
 import { ConfirmModal } from "components/modal";
+import { NewsDetailSkeleton } from "components/skeleton";
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { formatDate, isExpired } from "utils/date";
@@ -78,7 +80,7 @@ const SurveyDetailPage: React.FC = () => {
     const surveyId = searchParams.get("id");
 
     const { mutateAsync: createResultSurvey, isPending } = useCreateResultSurvey();
-    const { data: surveyDetail } = useGetSurveyDetail(Number(surveyId));
+    const { data: surveyDetail, isLoading } = useGetSurveyDetail(Number(surveyId));
 
     useEffect(() => {
         if (surveyDetail) {
@@ -87,7 +89,7 @@ const SurveyDetailPage: React.FC = () => {
             // Khởi tạo responses ban đầu dựa trên câu hỏi từ API
             const initialResponses = surveyDetail.cauHoiKhaoSats.map((q) => ({
                 questionId: q.cauHoiKhaoSatId,
-                answer: q.loaiCauHoiKhaoSatId === 2 ? [] : "", 
+                answer: q.loaiCauHoiKhaoSatId === 2 ? [] : "",
             }));
             setResponses(initialResponses);
         }
@@ -192,94 +194,99 @@ const SurveyDetailPage: React.FC = () => {
             </Modal>
             <Box>
                 <HeaderSub title="Khảo sát" />
-                <Box>
-                    <Box p={4} className="text-center font-medium border-t border-b">
-                        <h3 className="title-page mb-2">{detailData?.tieuDe}</h3>
-                        <p className="text-[16px] leading-1 mb-1">
-                            Thời hạn: <span className="font-semibold">{formatDate(detailData?.denNgay as string)}</span>
-                        </p>
-                        <p className="text-[14px] leading-1">{detailData?.noiDung}</p>
-                        {
-                            detailData?.khaoSatId &&
-                            <p className="text-black text-[14px] mt-2 leading-1 flex items-center justify-center gap-2" onClick={() => navigator(`/survey-charts?id=${detailData.khaoSatId}`)}>Xem kết quả khảo sát: <img width={30} src={images.pieChart} alt={detailData?.tieuDe} /></p>
-                        }
+                {
+                    isLoading ? <NewsDetailSkeleton count={1} /> :
+                        detailData ?
+                            <Box>
+                                <Box p={4} className="text-center font-medium border-t border-b">
+                                    <h3 className="title-page mb-2">{detailData?.tieuDe}</h3>
+                                    <p className="text-[16px] leading-1 mb-1">
+                                        Thời hạn: <span className="font-semibold">{formatDate(detailData?.denNgay as string)}</span>
+                                    </p>
+                                    <p className="text-[14px] leading-1">{detailData?.noiDung}</p>
+                                    {
+                                        detailData?.khaoSatId &&
+                                        <p className="text-black text-[14px] mt-2 leading-1 flex items-center justify-center gap-2" onClick={() => navigator(`/survey-charts?id=${detailData.khaoSatId}`)}>Xem kết quả khảo sát: <img width={30} src={images.pieChart} alt={detailData?.tieuDe} /></p>
+                                    }
 
-                    </Box>
-                    <Box>
-                        {detailData?.cauHoiKhaoSats.map((q, index) => (
-                            <div key={q.cauHoiKhaoSatId} className="p-4 border-b">
-                                <label className="block text-sm font-semibold mb-3 text-black">
-                                    Câu hỏi {index + 1}: {q.noiDung}
-                                </label>
+                                </Box>
+                                <Box>
+                                    {detailData?.cauHoiKhaoSats.map((q, index) => (
+                                        <div key={q.cauHoiKhaoSatId} className="p-4 border-b">
+                                            <label className="block text-sm font-semibold mb-3 text-black">
+                                                Câu hỏi {index + 1}: {q.noiDung}
+                                            </label>
 
-                                {/* Câu hỏi dạng text */}
-                                {q.loaiCauHoiKhaoSatId === 1 && (
-                                    <input
-                                        type="text"
-                                        value={responses.find((res) => res.questionId === q.cauHoiKhaoSatId)?.answer || ""}
-                                        onChange={(e) => handleAnswerChange(q.cauHoiKhaoSatId, e.target.value)}
-                                        className="p-2 w-full border-b rounded-none border-gray-300 h-[48px]"
-                                    />
-                                )}
-
-                                {/* Câu hỏi dạng multiple-choice (checkbox) */}
-                                {q.loaiCauHoiKhaoSatId === 2 && (
-                                    <div className="flex flex-col">
-                                        {q.chiTietCauHoiKhaoSats.map((opt) => (
-                                            <div key={opt.chiTietCauHoiKhaoSatId} className="mb-2 flex items-center gap-2">
-                                                <Checkbox
-                                                    value={opt.noiDungChiTiet}
-                                                    checked={responses
-                                                        .find((res) => res.questionId === q.cauHoiKhaoSatId)
-                                                        ?.answer.includes(opt.noiDungChiTiet)}
-                                                    onChange={(e) => {
-                                                        const selectedOptions = responses.find(
-                                                            (res) => res.questionId === q.cauHoiKhaoSatId
-                                                        )?.answer || [];
-                                                        const newOptions = e.target.checked
-                                                            ? [...(selectedOptions as string[]), opt.noiDungChiTiet]
-                                                            : (selectedOptions as string[]).filter((o) => o !== opt.noiDungChiTiet);
-                                                        handleAnswerChange(q.cauHoiKhaoSatId, newOptions);
-                                                    }}
+                                            {/* Câu hỏi dạng text */}
+                                            {q.loaiCauHoiKhaoSatId === 1 && (
+                                                <input
+                                                    type="text"
+                                                    value={responses.find((res) => res.questionId === q.cauHoiKhaoSatId)?.answer || ""}
+                                                    onChange={(e) => handleAnswerChange(q.cauHoiKhaoSatId, e.target.value)}
+                                                    className="p-2 w-full border-b rounded-none border-gray-300 h-[48px]"
                                                 />
-                                                <span className="font-medium text-gray-color">{opt.noiDungChiTiet}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
+                                            )}
 
-                                {/* Câu hỏi dạng one-choice (radio) */}
-                                {q.loaiCauHoiKhaoSatId === 3 && (
-                                    <div className="flex flex-col">
-                                        {q.chiTietCauHoiKhaoSats.map((opt) => (
-                                            <div key={opt.chiTietCauHoiKhaoSatId} className="mb-2 flex items-center">
-                                                <Radio
-                                                    value={opt.noiDungChiTiet}
-                                                    checked={
-                                                        responses.find((res) => res.questionId === q.cauHoiKhaoSatId)?.answer ===
-                                                        opt.noiDungChiTiet
-                                                    }
-                                                    onChange={() => handleAnswerChange(q.cauHoiKhaoSatId, opt.noiDungChiTiet)}
-                                                />
-                                                <span className="font-medium text-gray-color">{opt.noiDungChiTiet}</span>
-                                            </div>
-                                        ))}
+                                            {/* Câu hỏi dạng multiple-choice (checkbox) */}
+                                            {q.loaiCauHoiKhaoSatId === 2 && (
+                                                <div className="flex flex-col">
+                                                    {q.chiTietCauHoiKhaoSats.map((opt) => (
+                                                        <div key={opt.chiTietCauHoiKhaoSatId} className="mb-2 flex items-center gap-2">
+                                                            <Checkbox
+                                                                value={opt.noiDungChiTiet}
+                                                                checked={responses
+                                                                    .find((res) => res.questionId === q.cauHoiKhaoSatId)
+                                                                    ?.answer.includes(opt.noiDungChiTiet)}
+                                                                onChange={(e) => {
+                                                                    const selectedOptions = responses.find(
+                                                                        (res) => res.questionId === q.cauHoiKhaoSatId
+                                                                    )?.answer || [];
+                                                                    const newOptions = e.target.checked
+                                                                        ? [...(selectedOptions as string[]), opt.noiDungChiTiet]
+                                                                        : (selectedOptions as string[]).filter((o) => o !== opt.noiDungChiTiet);
+                                                                    handleAnswerChange(q.cauHoiKhaoSatId, newOptions);
+                                                                }}
+                                                            />
+                                                            <span className="font-medium text-gray-color">{opt.noiDungChiTiet}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+
+                                            {/* Câu hỏi dạng one-choice (radio) */}
+                                            {q.loaiCauHoiKhaoSatId === 3 && (
+                                                <div className="flex flex-col">
+                                                    {q.chiTietCauHoiKhaoSats.map((opt) => (
+                                                        <div key={opt.chiTietCauHoiKhaoSatId} className="mb-2 flex items-center">
+                                                            <Radio
+                                                                value={opt.noiDungChiTiet}
+                                                                checked={
+                                                                    responses.find((res) => res.questionId === q.cauHoiKhaoSatId)?.answer ===
+                                                                    opt.noiDungChiTiet
+                                                                }
+                                                                onChange={() => handleAnswerChange(q.cauHoiKhaoSatId, opt.noiDungChiTiet)}
+                                                            />
+                                                            <span className="font-medium text-gray-color">{opt.noiDungChiTiet}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
+                                        <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
+                                            <PrimaryButton
+                                                disabled={detailData && isExpired(formatDate(detailData.denNgay as string))}
+                                                fullWidth
+                                                label={isPending ? "Đang xử lý..." : "Gửi"}
+                                                handleClick={handleSubmit}
+                                            />
+                                        </Box>
                                     </div>
-                                )}
-                            </div>
-                        ))}
-                        <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
-                            <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                                <PrimaryButton
-                                    disabled={detailData && isExpired(formatDate(detailData.denNgay as string))}
-                                    fullWidth
-                                    label={isPending ? "Đang xử lý..." : "Gửi"}
-                                    handleClick={handleSubmit}
-                                />
-                            </Box>
-                        </div>
-                    </Box>
-                </Box>
+                                </Box>
+                            </Box> :
+                            <EmptyData title="Không tìm thấy khảo sát" />
+                }
             </Box>
             <ConfirmModal
                 visible={isConfirmVisible}

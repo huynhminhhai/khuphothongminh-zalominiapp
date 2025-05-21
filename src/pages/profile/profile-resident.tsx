@@ -6,17 +6,14 @@ import { InforItemMain } from "components/inforResident/ResidentInfoList";
 import UserInfoSkeleton from "components/skeleton/info/UserInfoSkeleton";
 import React from "react"
 import { useSearchParams } from "react-router-dom";
-import { Box, Page, useNavigate, useSnackbar } from "zmp-ui"
+import { Box, Page, useSnackbar } from "zmp-ui"
 
 const ProfileResidentPage: React.FC = () => {
 
     const [searchParams] = useSearchParams();
 
     const residentId = searchParams.get("id");
-    const { data: residentDetailData, isLoading, error } = useGetResidentDetail((Number(residentId)));
-
-    if (isLoading) return <UserInfoSkeleton />;
-    if (error) return <EmptyData title="Có lỗi khi lấy thông tin người dùng" />;
+    const { data: residentDetailData, isLoading } = useGetResidentDetail((Number(residentId)));
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -24,11 +21,13 @@ const ProfileResidentPage: React.FC = () => {
                 <HeaderSub title="Thông tin cư dân" />
                 <Box>
                     {
-                        !residentDetailData ? <EmptyData title="Không tìm thấy thông tin hộ dân" /> :
+                        isLoading ? <UserInfoSkeleton /> :
+                        residentDetailData ? 
                         <Box px={4}>
                             <InforItemMain label="Họ tên" value={residentDetailData.hoTen}  />
                             <ResidentInfoList residentDetailData={residentDetailData} isShow={true} />
-                        </Box>
+                        </Box> :
+                        <EmptyData title="Không tìm thấy thông tin hộ dân" />
                     }
                 </Box>
             </Box>
