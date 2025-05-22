@@ -7,7 +7,7 @@ const TeamUpdatePage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
-                <HeaderSub title="Chỉnh sửa thông tin nhân sự" />
+                <HeaderSub title="Cập nhật thông tin nhân sự" />
                 <TeamUpdateForm />
             </Box>
         </Page>

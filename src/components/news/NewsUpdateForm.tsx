@@ -7,6 +7,7 @@ import { FormDataNews, schemaNews } from "components/news/type"
 import React, { useEffect, useState } from "react"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
+import { useStoreApp } from "store/store"
 import { convertToFormData, loadImage } from "utils/file"
 import { Box } from "zmp-ui"
 
@@ -21,6 +22,8 @@ const defaultValues: FormDataNews = {
 
 const NewsUpdateForm = () => {
 
+    const { setIsLoadingFullScreen } = useStoreApp();
+
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
 
@@ -33,7 +36,7 @@ const NewsUpdateForm = () => {
     const newsId = searchParams.get("id");
 
     const { mutateAsync: updateNews, isPending } = useUpdateNews();
-    const { data: newsDetail } = useGetNewsDetail(Number(newsId));
+    const { data: newsDetail, isLoading } = useGetNewsDetail(Number(newsId));
 
     useEffect(() => {
         if (newsDetail) {
@@ -62,6 +65,10 @@ const NewsUpdateForm = () => {
             fetchAndSetImage();
         }
     }, [newsDetail, reset]);
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const onSubmit: SubmitHandler<FormDataNews> = (data) => {
 

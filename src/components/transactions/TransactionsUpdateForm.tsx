@@ -8,6 +8,7 @@ import { ConfirmModal } from "components/modal"
 import { FormDataTranscations, schemaTransactions } from "./type"
 import { useSearchParams } from "react-router-dom"
 import { useGetTransactionDetail, useGetTransactionType, useUpdateTransaction } from "apiRequest/transaction"
+import { useStoreApp } from "store/store"
 
 const defaultValues: FormDataTranscations = {
     noiDung: '',
@@ -18,6 +19,8 @@ const defaultValues: FormDataTranscations = {
     ngayGiaoDich: '',
 }
 const TransactionsUpdateForm: React.FC = () => {
+
+    const { setIsLoadingFullScreen } = useStoreApp();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataTranscations>(defaultValues)
@@ -31,8 +34,12 @@ const TransactionsUpdateForm: React.FC = () => {
     const transactionsId = searchParams.get("id");
 
     const { mutateAsync: updateTransaction, isPending } = useUpdateTransaction();
-    const { data: transactionDetail } = useGetTransactionDetail(Number(transactionsId));
+    const { data: transactionDetail, isLoading } = useGetTransactionDetail(Number(transactionsId));
     const { data: transactionType } = useGetTransactionType();
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const transactionTypeOpton = useMemo(() => {
         return transactionType?.map((item) => ({

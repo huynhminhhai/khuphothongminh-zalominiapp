@@ -49,6 +49,7 @@ const ResidentMapPage = () => {
     const { account, tinhTrangHoGiaDinhs } = useStoreApp();
     const [sheetVisible, setSheetVisible] = useState(false);
     const [filter, setFilter] = useState<"poor" | "culture">("poor");
+    const [listFilter, setListFilter] = useState<"all" | "poor" | "nearPoor" | "culture">("all");
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedResident, setSelectedResident] = useState(null);
     const markerRefs = useRef({}); // Store marker refs to trigger Popups
@@ -57,6 +58,10 @@ const ResidentMapPage = () => {
         setFilter(value);
         setSearchTerm(""); // Reset search term when filter changes
         setSelectedResident(null); // Reset selected resident when filter changes
+    }, []);
+
+    const handleSetListFilter = useCallback((value: "all" | "poor" | "nearPoor" | "culture") => {
+        setListFilter(value);
     }, []);
 
     const { data: hoGiaDinh, isLoading: isLoadingHoGiaDinh } = useGetBanDoSo();
@@ -84,9 +89,18 @@ const ResidentMapPage = () => {
 
     // Filter residents by search term
     const searchedResidents = useMemo(() => {
-        if (!searchTerm) return filteredResidents;
+        let filtered = filteredResidents;
+        if (listFilter === "poor") {
+            filtered = filteredResidents.filter(res => res.thongTinHoGiaDinh?.hoNgheo);
+        } else if (listFilter === "nearPoor") {
+            filtered = filteredResidents.filter(res => res.thongTinHoGiaDinh?.hoCanNgheo);
+        } else if (listFilter === "culture") {
+            filtered = filteredResidents.filter(res => typeof res.thongTinHoGiaDinh?.giaDinhVanHoa === "boolean" && res.thongTinHoGiaDinh.giaDinhVanHoa);
+        }
+        // Apply search term
+        if (!searchTerm) return filtered;
         const lowerSearch = searchTerm.toLowerCase();
-        return filteredResidents.filter(res => {
+        return filtered.filter(res => {
             const address = [
                 res.noiThuongTru?.diaChi,
                 res.noiThuongTru?.tenAp,
@@ -102,15 +116,31 @@ const ResidentMapPage = () => {
                 address.includes(lowerSearch)
             );
         });
-    }, [filteredResidents, searchTerm]);
+    }, [filteredResidents, listFilter, searchTerm]);
+
+    const counts = useMemo(() => {
+        const all = residents.length;
+        const poor = residents.filter(res => res.thongTinHoGiaDinh?.hoNgheo).length;
+        const nearPoor = residents.filter(res => res.thongTinHoGiaDinh?.hoCanNgheo).length;
+        const culture = residents.filter(res => typeof res.thongTinHoGiaDinh?.giaDinhVanHoa === "boolean" && res.thongTinHoGiaDinh.giaDinhVanHoa).length;
+        return { all, poor, nearPoor, culture };
+    }, [residents]);
 
     const center: [number, number] = useMemo(() => {
         if (residents.length > 0) {
-            const { latitude, longitude } = residents[0].noiThuongTru;
-            return [latitude, longitude];
+            const validResidents = residents.filter(
+                res => res.noiThuongTru?.latitude && res.noiThuongTru?.longitude
+            );
+            if (validResidents.length === 0) {
+                return [10.520740944310496, 106.47778872238479];
+            }
+            const avgLat = validResidents.reduce((sum, res) => sum + res.noiThuongTru.latitude, 0) / validResidents.length;
+            const avgLng = validResidents.reduce((sum, res) => sum + res.noiThuongTru.longitude, 0) / validResidents.length;
+            return [avgLat, avgLng];
         }
         return [10.520740944310496, 106.47778872238479];
     }, [residents]);
+
     const zoom = 15;
 
     const getMarkerIcon = useCallback((resident: any) => {
@@ -329,6 +359,60 @@ const ResidentMapPage = () => {
                                                 </div>
                                             </div>
                                         </div>
+                                    </label>
+                                </div>
+                                <div className="grid grid-cols-1 gap-3 mb-4">
+                                    <label className="flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            className="mr-2"
+                                            name="listFilter"
+                                            value="all"
+                                            checked={listFilter === "all"}
+                                            onChange={() => handleSetListFilter("all")}
+                                        />
+                                        <p className="text-[13px] font-bold text-gray-600">
+                                            Tất cả ({counts.all})
+                                        </p>
+                                    </label>
+                                    <label className="flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            className="mr-2"
+                                            name="listFilter"
+                                            value="poor"
+                                            checked={listFilter === "poor"}
+                                            onChange={() => handleSetListFilter("poor")}
+                                        />
+                                        <p className="text-[13px] font-bold text-gray-600">
+                                            Hộ nghèo ({counts.poor})
+                                        </p>
+                                    </label>
+                                    <label className="flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            className="mr-2"
+                                            name="listFilter"
+                                            value="nearPoor"
+                                            checked={listFilter === "nearPoor"}
+                                            onChange={() => handleSetListFilter("nearPoor")}
+                                        />
+                                        <p className="text-[13px] font-bold text-gray-600">
+                                            Hộ cận nghèo ({counts.nearPoor})
+                                        </p>
+                                    </label>
+                                    <label className="flex items-center cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            className="mr-2"
+                                            name="listFilter"
+                                            value="culture"
+                                            checked={listFilter === "culture"}
+                                            onChange={() => handleSetListFilter("culture")}
+                                        />
+                                        <p className="text-[13px] font-bold text-gray-600">
+                                            Gia đình văn hóa ({counts.culture})
+                                        </p>
                                     </label>
                                 </div>
                                 <Input

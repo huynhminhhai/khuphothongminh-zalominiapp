@@ -33,7 +33,7 @@ const defaultValues: FormDataPhanAnh = {
 
 const FeedbackUpdateForm: React.FC = () => {
 
-    const { tinhs, account } = useStoreApp()
+    const { tinhs, account, setIsLoadingFullScreen } = useStoreApp()
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataPhanAnh>(defaultValues)
     const [initialImages, setInitialImages] = useState<{ tapTinPhanAnhId: number; tapTin: string }[]>([]);
@@ -47,10 +47,14 @@ const FeedbackUpdateForm: React.FC = () => {
     const feedbackId = searchParams.get("id");
 
     const { mutateAsync: updateFeedback, isPending } = useUpdateFeedback();
-    const { data: feedbackDetail } = useGetFeebackDetail(Number(feedbackId));
+    const { data: feedbackDetail, isLoading } = useGetFeebackDetail(Number(feedbackId));
     const { mutate: deleteFileFeedback } = useDeleteFileFeedback();
 
     const { data: feedbackStatus } = useGetFeedbackStatus();
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const feedbackStatusOptions = useMemo(() => {
         return feedbackStatus?.tinhTrangs?.map((item) => ({

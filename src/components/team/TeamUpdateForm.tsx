@@ -28,7 +28,7 @@ const defaultValues: FormDataTeam = {
 
 const TeamUpdateForm: React.FC = () => {
 
-    const { account, tinhs, hasRole } = useStoreApp();
+    const { account, tinhs, hasRole, setIsLoadingFullScreen } = useStoreApp();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<any>(defaultValues)
@@ -43,7 +43,7 @@ const TeamUpdateForm: React.FC = () => {
     const staffId = searchParams.get("id");
 
     const { mutateAsync: updateTeam, isPending } = useUpdateTeam();
-    const { data: teamDetail } = useGetTeamDetail(Number(staffId));
+    const { data: teamDetail, isLoading } = useGetTeamDetail(Number(staffId));
     const { data: teamStatus } = useGetTeamType();
 
     const chucVus = useMemo(() => {
@@ -52,6 +52,10 @@ const TeamUpdateForm: React.FC = () => {
             label: item.tenChucVu
         })) || [];
     }, [teamStatus]);
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const teamAddress = useAddressSelectorWithoutPrefix({
         tinhOptions: tinhs,

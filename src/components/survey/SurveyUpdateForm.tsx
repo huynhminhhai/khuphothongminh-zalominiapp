@@ -8,6 +8,7 @@ import { ConfirmModal } from 'components/modal';
 import { useGetSurveyDetail, useGetSurveyStatus, useUpdateSurvey } from 'apiRequest/survey';
 import { SurveyDetail, SurveyType, SurveyUpdateAPI } from './type';
 import { formatDate, parseDate } from 'components/form/DatePicker';
+import { useStoreApp } from 'store/store';
 
 const defaultValues: SurveyType = {
     id: 0,
@@ -19,6 +20,9 @@ const defaultValues: SurveyType = {
 };
 
 const SurveyUpdateForm: React.FC = () => {
+
+    const { setIsLoadingFullScreen } = useStoreApp();
+
     const [formData, setFormData] = useState<SurveyType>(defaultValues);
     const [popupVisible, setPopupVisible] = useState<boolean>(false);
     const [previewVisible, setPreviewVisible] = useState<boolean>(false);
@@ -29,7 +33,7 @@ const SurveyUpdateForm: React.FC = () => {
     const surveyId = searchParams.get('id');
 
     const { mutateAsync: updateSurvey, isPending } = useUpdateSurvey();
-    const { data: surveyDetail } = useGetSurveyDetail(Number(surveyId));
+    const { data: surveyDetail, isLoading } = useGetSurveyDetail(Number(surveyId));
     const { data: surveyStatus } = useGetSurveyStatus();
 
     const surveyStatusOption = useMemo(() => {
@@ -38,6 +42,10 @@ const SurveyUpdateForm: React.FC = () => {
             label: item.tenLoaiCauHoiKhaoSat
         })) || [];
     }, [surveyStatus]);
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     useEffect(() => {
         if (surveyDetail) {

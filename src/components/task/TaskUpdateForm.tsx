@@ -10,6 +10,7 @@ import { useSearchParams } from "react-router-dom"
 import { useGetMeetingStatus } from "apiRequest/meeting"
 import { useGetTaskDetail, useGetTaskStatus, useUpdateTask } from "apiRequest/task"
 import { useQueryClient } from "@tanstack/react-query"
+import { useStoreApp } from "store/store"
 
 const defaultValues: FormDataTask = {
     tieuDe: '',
@@ -22,6 +23,8 @@ const defaultValues: FormDataTask = {
 }
 
 const TaskUpdateForm: React.FC = () => {
+
+    const { setIsLoadingFullScreen } = useStoreApp();
 
     const queryClient = useQueryClient();
     const [isConfirmVisible, setConfirmVisible] = useState(false);
@@ -38,7 +41,11 @@ const TaskUpdateForm: React.FC = () => {
     const { mutateAsync: updateTask, isPending } = useUpdateTask();
     const { data: taskStatus } = useGetTaskStatus();
     const { data: meetingStatus } = useGetMeetingStatus();
-    const { data: taskDetail } = useGetTaskDetail(Number(taskId));
+    const { data: taskDetail, isLoading } = useGetTaskDetail(Number(taskId));
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const nguoiThamDus = useMemo(() => {
         return meetingStatus?.nguoiThamDus?.map((item) => ({

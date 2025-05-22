@@ -17,7 +17,7 @@ import { MapPicker } from "components/maps"
 
 const ProfileUpdateForm: React.FC = () => {
 
-    const { ngheNghieps, tinhTrangHoGiaDinhs, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account } = useStoreApp()
+    const { ngheNghieps, tinhTrangHoGiaDinhs, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account, setIsLoadingFullScreen } = useStoreApp()
 
     const defaultValues: FormResidentDetail = {
         laChuHo: false,
@@ -73,11 +73,15 @@ const ProfileUpdateForm: React.FC = () => {
     const residentId = searchParams.get("id");
 
     const { data: chuHos } = useGetChuHosList();
-    const { data: residentDetail } = useGetResidentDetail(Number(residentId));
+    const { data: residentDetail, isLoading } = useGetResidentDetail(Number(residentId));
     const { mutateAsync: updateResident, isPending } = useUpdateResident();
 
     const thuongTruAddress = useResidentAddress("noiThuongTru", tinhs, watch, setValue);
     const tamTruAddress = useResidentAddress("noiTamTru", tinhs, watch, setValue);
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const houseHoldOptions = useMemo(() => {
         return chuHos?.map((item) => ({

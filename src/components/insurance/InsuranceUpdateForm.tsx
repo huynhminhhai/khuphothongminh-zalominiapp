@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Box, useNavigate } from "zmp-ui"
+import { Box } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
@@ -8,6 +8,7 @@ import { ConfirmModal } from "components/modal"
 import { FormDataInsurance, schemaInsurance } from "./type"
 import { useGetInsuranceDetail, useUpdateInsurance } from "apiRequest/insurance"
 import { useSearchParams } from "react-router-dom"
+import { useStoreApp } from "store/store"
 
 const defaultValues: FormDataInsurance = {
     loaiBaoHiemId: 1,
@@ -19,7 +20,7 @@ const defaultValues: FormDataInsurance = {
 
 const InsuranceUpdateForm: React.FC = () => {
 
-    const navigator = useNavigate()
+    const { setIsLoadingFullScreen } = useStoreApp();
 
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormDataInsurance>(defaultValues)
@@ -33,7 +34,7 @@ const InsuranceUpdateForm: React.FC = () => {
     const thongTinBaoHiemId = searchParams.get("id");
 
     const { mutateAsync: updateInsurance, isPending } = useUpdateInsurance();
-    const { data: insuranceDetail } = useGetInsuranceDetail(Number(thongTinBaoHiemId));
+    const { data: insuranceDetail, isLoading } = useGetInsuranceDetail(Number(thongTinBaoHiemId));
 
     useEffect(() => {
         if (insuranceDetail) {
@@ -50,6 +51,10 @@ const InsuranceUpdateForm: React.FC = () => {
 
         }
     }, [insuranceDetail, reset])
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const onSubmit: SubmitHandler<FormDataInsurance> = (data) => {
         setConfirmVisible(true);

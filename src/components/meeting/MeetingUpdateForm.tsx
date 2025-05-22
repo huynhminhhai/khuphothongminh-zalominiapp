@@ -11,6 +11,7 @@ import { useDeleteFileMeeting, useGetMeetingDetail, useGetMeetingStatus, useUpda
 import { useQueryClient } from "@tanstack/react-query"
 import { omit } from "lodash"
 import { convertToFormData, loadFile } from "utils/file"
+import { useStoreApp } from "store/store"
 
 const defaultValues: FormDataMeeting = {
     tieuDe: '',
@@ -27,6 +28,8 @@ const defaultValues: FormDataMeeting = {
 }
 
 const MeetingUpdateForm = () => {
+
+    const { setIsLoadingFullScreen } = useStoreApp();
 
     const queryClient = useQueryClient();
 
@@ -45,7 +48,11 @@ const MeetingUpdateForm = () => {
     const { mutateAsync: updateMeeting, isPending } = useUpdateMeeting();
     const { mutate: deleteFileMeeting } = useDeleteFileMeeting();
     const { data: meetingStatus } = useGetMeetingStatus();
-    const { data: meetingkDetail } = useGetMeetingDetail(Number(meetingId));
+    const { data: meetingkDetail, isLoading } = useGetMeetingDetail(Number(meetingId));
+
+    useEffect(() => {
+        setIsLoadingFullScreen((isLoading))
+    }, [isLoading])
 
     const nguoiThamDus = useMemo(() => {
         return meetingStatus?.nguoiThamDus?.map((item) => ({
