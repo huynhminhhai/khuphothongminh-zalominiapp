@@ -3,7 +3,7 @@ import { Box, Switch } from "zmp-ui"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormCheckboxField, FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form"
+import { FormControllerDatePicker, FormInputAreaField, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormResidentDetail, residentSchema } from "./type"
 import { useSearchParams } from "react-router-dom"
@@ -17,7 +17,7 @@ import { MapPicker } from "components/maps"
 
 const ProfileUpdateForm: React.FC = () => {
 
-    const { ngheNghieps, danTocs, gioiTinhs, loaiCuTrus, moiQuanHeGiaDinhs, tinhs, tonGiaos, tinhTrangHoGiaDinhs, account } = useStoreApp()
+    const { ngheNghieps, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account } = useStoreApp()
 
     const defaultValues: FormResidentDetail = {
         laChuHo: false,
@@ -29,14 +29,11 @@ const ProfileUpdateForm: React.FC = () => {
         danToc: '',
         tonGiao: '',
         quocGia: '',
-        ngheNghiep: 0,
+        ngheNghiep: 1,
         noiLamViec: '',
         email: '',
         dienThoai: null,
-        website: '',
         moiQuanHeVoiChuHo: 0,
-        tinhTrangHoGiaDinhId: 0,
-        giaDinhVanHoa: false,
         noiThuongTru: {
             diaChi: '',
             apId: 0,
@@ -64,8 +61,6 @@ const ProfileUpdateForm: React.FC = () => {
     const [isConfirmVisible, setConfirmVisible] = useState(false);
     const [formData, setFormData] = useState<FormResidentDetail>(defaultValues)
     const [isHouseHold, setIsHouseHold] = useState<boolean>(false)
-    const [showMapNoiThuongTru, setShowMapNoiThuongTru] = useState(false);
-    const [showMapNoiTamTru, setShowMapNoiTamTru] = useState(false);
 
     const { handleSubmit, reset, control, watch, setValue, formState: { errors } } = useForm<FormResidentDetail>({
         resolver: yupResolver(residentSchema(isHouseHold)),
@@ -217,8 +212,6 @@ const ProfileUpdateForm: React.FC = () => {
                     tuNgay,
                     denNgay,
                 },
-                tinhTrangHoGiaDinhId: chuHoData.tinhTrangHoGiaDinhId,
-                giaDinhVanHoa: chuHoData.giaDinhVanHoa
             });
 
             await setAddressStepByStep("noiThuongTru", { tinh, huyen, xa, apId }, setValue);
@@ -269,6 +262,9 @@ const ProfileUpdateForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
+                        <div className="text-[20px] font-semibold mb-3 text-primary-color">Thông tin cá nhân</div>
+                    </div>
+                    <div className="col-span-12">
                         <FormInputField
                             name="hoTen"
                             label="Họ và tên"
@@ -280,20 +276,13 @@ const ProfileUpdateForm: React.FC = () => {
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="dienThoai"
-                            label="Số điện thoại"
-                            placeholder="Nhập số điện thoại"
+                            type="number"
+                            name="soGiayTo"
+                            label="Số định danh cá nhân"
+                            placeholder="Nhập số định danh cá nhân"
                             control={control}
-                            error={errors.dienThoai?.message}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="email"
-                            label="Email"
-                            placeholder="Nhập email"
-                            control={control}
-                            error={errors.email?.message}
+                            error={errors.soGiayTo?.message}
+                            required
                         />
                     </div>
                     <div className="col-span-6">
@@ -317,35 +306,15 @@ const ProfileUpdateForm: React.FC = () => {
                             required
                         />
                     </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            type="number"
-                            name="soGiayTo"
-                            label="Số định danh cá nhân"
-                            placeholder="Nhập số định danh cá nhân"
-                            control={control}
-                            error={errors.soGiayTo?.message}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
+                    <div className="col-span-6">
                         <FormSelectField
-                            name="ngheNghiep"
-                            label="Nghề nghiệp"
-                            placeholder="Chọn nghề nghiệp"
+                            name="danToc"
+                            label="Dân tộc"
+                            placeholder="Nhập dân tộc"
                             control={control}
-                            options={ngheNghieps}
-                            error={errors.ngheNghiep?.message}
+                            options={danTocs}
+                            error={errors.danToc?.message}
                             required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="noiLamViec"
-                            label="Nơi làm việc"
-                            placeholder="Nhập nơi làm việc"
-                            control={control}
-                            error={errors.noiLamViec?.message}
                         />
                     </div>
                     <div className="col-span-6">
@@ -359,19 +328,45 @@ const ProfileUpdateForm: React.FC = () => {
                             required
                         />
                     </div>
-                    <div className="col-span-6">
-                        <FormSelectField
-                            name="danToc"
-                            label="Dân tộc"
-                            placeholder="Nhập dân tộc"
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="dienThoai"
+                            label="Số điện thoại"
+                            placeholder="Nhập số điện thoại"
                             control={control}
-                            options={danTocs}
-                            error={errors.danToc?.message}
-                            required
+                            error={errors.dienThoai?.message}
                         />
                     </div>
                     <div className="col-span-12">
-                        <div className="flex items-center gap-2 mb-2">
+                        <FormInputField
+                            name="email"
+                            label="Email"
+                            placeholder="Nhập email"
+                            control={control}
+                            error={errors.email?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormSelectField
+                            name="ngheNghiep"
+                            label="Nghề nghiệp"
+                            placeholder="Chọn nghề nghiệp"
+                            control={control}
+                            options={ngheNghieps}
+                            error={errors.ngheNghiep?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormInputField
+                            name="noiLamViec"
+                            label="Nơi làm việc"
+                            placeholder="Nhập nơi làm việc"
+                            control={control}
+                            error={errors.noiLamViec?.message}
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <div className="flex items-center gap-2 mb-2 mt-3">
                             <Switch checked={isHouseHold} onClick={() => setIsHouseHold(!isHouseHold)} />
                             <span className="font-medium">Chủ hộ</span>
                         </div>
@@ -402,6 +397,9 @@ const ProfileUpdateForm: React.FC = () => {
                             </div>
                         </>
                     )}
+                    <div className="col-span-12">
+                        <div className="text-[20px] font-semibold mb-3 mt-2 text-primary-color">Nơi thường trú</div>
+                    </div>
                     {/* Nơi thường trú */}
                     <div className="col-span-12">
                         <FormSelectField
@@ -482,7 +480,6 @@ const ProfileUpdateForm: React.FC = () => {
                         isHouseHold &&
                         <div className="col-span-12">
                             <MapPicker
-                                onClose={() => setShowMapNoiThuongTru(false)}
                                 onPick={(lat, lng) => {
                                     setValue("noiThuongTru.latitude", lat);
                                     setValue("noiThuongTru.longitude", lng);
@@ -509,6 +506,9 @@ const ProfileUpdateForm: React.FC = () => {
                     {/* Nơi tạm trú */}
                     {!isHouseHold && (
                         <>
+                            <div className="col-span-12">
+                                <div className="text-[20px] font-semibold mb-3 mt-2 text-primary-color">Nơi tạm trú</div>
+                            </div>
                             <div className="col-span-12">
                                 <FormSelectField
                                     name="noiTamTru.tinh"
@@ -581,7 +581,6 @@ const ProfileUpdateForm: React.FC = () => {
                             </div>
                             <div className="col-span-12">
                                 <MapPicker
-                                    onClose={() => setShowMapNoiTamTru(false)}
                                     onPick={(lat, lng) => {
                                         setValue("noiTamTru.latitude", lat);
                                         setValue("noiTamTru.longitude", lng);
@@ -606,36 +605,6 @@ const ProfileUpdateForm: React.FC = () => {
                             </div>
                         </>
                     )}
-                    <div className="col-span-12">
-                        <FormSelectField
-                            name="tinhTrangHoGiaDinhId"
-                            label="Tình trạng hộ gia đình"
-                            placeholder="Chọn tình trạng hộ gia đình"
-                            control={control}
-                            options={tinhTrangHoGiaDinhs}
-                            error={errors.tinhTrangHoGiaDinhId?.message}
-                            disabled={!isHouseHold}
-                            required
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormCheckboxField
-                            name="giaDinhVanHoa"
-                            label="Gia đình văn hóa"
-                            control={control}
-                            defaultChecked={false}
-                            disabled={!isHouseHold}
-                        />
-                    </div>
-                    <div className="col-span-12">
-                        <FormInputField
-                            name="website"
-                            label="Website"
-                            placeholder="Nhập website"
-                            control={control}
-                            error={errors.website?.message}
-                        />
-                    </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
                             <PrimaryButton

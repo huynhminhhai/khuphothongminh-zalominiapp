@@ -108,10 +108,6 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
     ngaySinh: yup
         .string()
         .required('Ngày sinh là bắt buộc')
-    // .matches(
-    //     /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/,
-    //     'Ngày sinh phải theo định dạng ISO 8601'
-    // )
     ,
     gioiTinh: yup.number().required('Giới tính là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
     soGiayTo: yup
@@ -120,21 +116,9 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
         .matches(/^[0-9]{12}$/, 'Số định danh cá nhân phải bao gồm 12 số'),
     danToc: yup.string().required('Dân tộc là bắt buộc'),
     tonGiao: yup.string().required('Tôn giáo là bắt buộc'),
-    // quocGia: yup.string().required('Quốc gia là bắt buộc'),
-    ngheNghiep: yup.number().required('Giới tính là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
-    // noiLamViec: yup.string().required('Nơi làm việc là bắt buộc'),
     email: yup
         .string()
         .email('Email không hợp lệ'),
-    // .required('Email là bắt buộc'),
-    // dienThoai: yup
-    //     .string()
-    //     .nullable()
-    //     .notRequired()
-    //     .matches(
-    //         /^(\+84|0)(9|3|7|8|5|6)[0-9]{8}$/,
-    //         'Số điện thoại không hợp lệ'
-    //     ),
     moiQuanHeVoiChuHo: yup
         .number()
         .typeError('Chưa chọn mục này')
@@ -146,11 +130,7 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
 
             return true;
         }),
-    tinhTrangHoGiaDinhId: yup.number().required('Tình trạng hộ gia đình là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
-    giaDinhVanHoa: yup.boolean().required('Gia đình văn hóa là bắt buộc'),
     noiThuongTru: residenceSchema.required('Nơi thường trú là bắt buộc'),
-    // noiTamTru: residenceSchema.required('Nơi tạm trú là bắt buộc'),
-    // noiTamTru: residenceSchema.nullable().notRequired(),
 });
 
 interface Residence {
@@ -178,15 +158,11 @@ export interface FormResidentDetail {
     danToc: string;
     tonGiao: string;
     quocGia?: string;
-    ngheNghiep: number;
+    ngheNghiep?: number;
     noiLamViec?: string;
     email?: string;
     dienThoai?: string | null;
-    website?: string;
     moiQuanHeVoiChuHo?: number;
-    tinhTrangHoGiaDinhId: number;
-    giaDinhVanHoa: boolean;
     noiThuongTru: Residence;
-    // noiTamTru: Residence;
     noiTamTru?: Residence | null;
 }
