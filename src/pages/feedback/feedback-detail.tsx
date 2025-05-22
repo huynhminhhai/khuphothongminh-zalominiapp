@@ -118,7 +118,6 @@ const FeedbackDetailPage: React.FC = () => {
                                     <>
                                         <Divider />
                                         <Divider />
-                                        <Divider />
                                         <Box pt={4} px={4} className="relative">
                                             <Box pb={2} mb={3} className="border-b-[1px]">
                                                 <h3 className="text-[18px] leading-[26px] font-semibold">
@@ -128,7 +127,7 @@ const FeedbackDetailPage: React.FC = () => {
                                                     <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
                                                 </Box> */}
                                             </Box>
-                                            <Box pb={4} className="border-b-[1px]" mb={4}>
+                                            <Box pb={2} className="border-b-[1px]" mb={4}>
                                                 <div className="detail-content text-[14px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.ketQuaXuLyPhanAnh?.noiDung || '' }}>
                                                 </div>
                                             </Box>

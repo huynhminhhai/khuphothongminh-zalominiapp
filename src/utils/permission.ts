@@ -63,12 +63,12 @@ export const useCheckRequireApId = () => {
   const { setIsShowModalRegisterAp } = useStoreApp();
 
   const checkRequireApId = useCallback((action: () => void) => {
-    if (!account?.apId) {
+    if (!account?.maXa) {
       setIsShowModalRegisterAp(true);
       return;
     }
     action();
-  }, [account?.apId, setIsShowModalRegisterAp]);
+  }, [account?.maXa, setIsShowModalRegisterAp]);
 
   return checkRequireApId;
 };

@@ -31,7 +31,7 @@ const InsurancePage: React.FC = () => {
     const { data: insuranceList, isLoading: insuranceLoading } = useGetInsuranceListNormal(param);
 
     return (
-        <Page className="relative flex-1 flex flex-col !bg-[#f4f5f6] pb-[0px]">
+        <Page className="relative flex-1 flex flex-col !bg-[#f4f5f6] pb-[72px]">
             <Box>
                 <HeaderSub title="Bảo hiểm y tế" />
                 <Box p={4}>

@@ -12,7 +12,7 @@ const RegisterApModal = () => {
         <Modal
             visible={isShowModalRegisterAp}
             onClose={() => setIsShowModalRegisterAp(false)}
-            title='Cần cập nhật thông tin ấp/khu phố'
+            title='Bạn cần cập nhật thông tin ấp/khu phố'
         >
             <div style={{ padding: "20px" }}>
                 <p style={{ marginBottom: "20px", textAlign: "center" }}>Vui lòng cập nhật thông tin ấp/khu phố để sử dụng tính năng này.</p>
