@@ -42,6 +42,7 @@ export { default as ResidentProfileUpdatePage } from "./management-resident/resi
 **/
 export { default as HouseholdManagementPage } from "./management-household/household-management";
 export { default as HouseholdHoNgheoUpdatePage } from "./management-household/household-update-hongheo";
+export { default as HouseholdDetailListPage } from "./management-household/household-detail-list";
 
 /**
  * INSURANCE

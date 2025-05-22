@@ -59,17 +59,20 @@ const HouseholdHoNgheoUpdateForm: React.FC = () => {
     const onSubmit: SubmitHandler<FormDataHouseHold> = (data) => {
         setConfirmVisible(true);
         setFormData(data)
+        handleUpdate(data);
     };
 
-    const handleUpdate = async () => {
-        if (formData) {
+    const handleUpdate = async (data: any) => {
+        if (data) {
             try {
 
                 if (householdDetail) {
 
                     const dataSubmit = {
-                        ...formData
+                        ...data
                     }
+
+                    console.log(dataSubmit)
 
                     openConfirmModal( async () => {
                         await updateHouseholdInfo(dataSubmit);
@@ -86,7 +89,7 @@ const HouseholdHoNgheoUpdateForm: React.FC = () => {
                                     : {};
 
                     const dataSubmit = {
-                        ...formData,
+                        ...data,
                         ...extraFields,
                         danCuId: Number(danCuId)
                     }
@@ -235,7 +238,7 @@ const HouseholdHoNgheoUpdateForm: React.FC = () => {
                                 variant="primary"
                                 disabled={isPendingCreate || isPendingUpdate}
                                 fullWidth
-                                onClick={handleSubmit(handleUpdate)}
+                                onClick={handleSubmit(onSubmit)}
                             >
                                 {(isPendingCreate || isPendingUpdate) ? "Đang xử lý..." : `${householdDetail ? "Cập nhật thông tin" : "Thêm mới thông tin"}`}
                             </Button>

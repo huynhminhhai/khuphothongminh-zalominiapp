@@ -2,7 +2,6 @@ import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { useDeleteResident, useGetResidentListNormal } from "apiRequest/resident"
 import { EmptyData } from "components/data"
-import { CanToggle } from "components/form/FormSwitchField"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton } from "components/skeleton"
@@ -10,7 +9,6 @@ import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "compone
 import { debounce } from "lodash"
 import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
-import { PermissionActions, permissionsList } from "utils/permission"
 import { formatAddress } from "utils/useAddress"
 import { Box, Button, Input, Page, useNavigate } from "zmp-ui"
 
@@ -162,6 +160,20 @@ const HouseholdManagementPage: React.FC = () => {
                             : <div className="text-[12px] font-semibold leading-[1] text-gray-500 px-4 py-1 border-[2px] border-gray-500 w-fit rounded-3xl">Chưa đạt chuẩn</div>
 
                     }
+                </div>
+            ),
+        },
+        {
+            id: 'actions',
+            header: 'Lịch sử',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    <button
+                        onClick={() => navigate(`/household-detail-list?danCuId=${row.original.danCuId}`)}
+                        className="px-3 py-1 bg-gray-700 text-white rounded"
+                    >
+                        <Icon icon='mdi:eye' fontSize={18} />
+                    </button>
                 </div>
             ),
         },

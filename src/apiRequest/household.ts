@@ -1,9 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate } from "zmp-ui";
 
+export type HouseholdQueryParams = {
+    page: number;
+    pageSize: number;
+    keyword?: string;
+    ApId?: number;
+    MaXa?: string;
+    DanCuId?: number;
+    NguoiTao?: number;
+    TinhTrangHoGiaDinhId?: string;
+    HoTen?: string;
+};
+
 const householdApiRequest = {
+    getHouseholdList: async (param: HouseholdQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            DanCuId: param.DanCuId,
+            TextSearch: param.keyword,
+            NguoiTao: param.NguoiTao,
+            TinhTrangHoGiaDinhId: param.TinhTrangHoGiaDinhId,
+            HoTen: param.HoTen
+        });
+
+        return await http.get<any>(`/thongtinhogiadinh${queryString}`);
+    },
     getHouseholdDetail: async (danCuId: number, loai: number) => {
         return await http.get<any>(`/thongtinhogiadinh/chitiet/dancu/${danCuId}/loai/${loai}`);
     },
@@ -17,6 +45,27 @@ const householdApiRequest = {
         return await http.put<any>(`/thongtinhogiadinh`, formData);
     },
 }
+
+/**
+* GET INSURANCE LIST
+**/
+export const useGetHouseholdListNormal = (param: HouseholdQueryParams) => {
+    return useQuery({
+        queryKey: ['householdList', param],
+        queryFn: async () => {
+            try {
+                const res = await householdApiRequest.getHouseholdList(param);
+                return res
+            } catch (error) {
+                console.error("Lỗi khi lấy danh sách lịch sử công nhận:", error);
+                throw error;
+            }
+        },
+        // enabled: !!param.DanCuId,
+        staleTime: 0,
+        retry: 1,
+    });
+};
 
 /**
 * GET HOUSEHOLD DETAIL
