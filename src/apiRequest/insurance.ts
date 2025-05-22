@@ -1,12 +1,34 @@
 import http from "services/http";
-import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "zmp-ui";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { buildQueryString } from "utils/handleApi";
+
+export type InsuranceQueryParams = {
+    page: number;
+    pageSize: number;
+    keyword: string;
+    ApId?: number;
+    MaXa?: string;
+    DanCuId?: number | null;
+    LoaiBaoHiemId?: number;
+    MaSo?: string;
+};
 
 const insuranceApiRequest = {
-    
-    getInsuranceList: async (param: { page: number; pageSize: number; DanCuId: number | null; keyword: string; LoaiBaoHiemId: number; MaSo: string; }) => {
-        return await http.get<any>(`/thongtinbaohiem?current=${param.page}&size=${param.pageSize}&DanCuId=${param.DanCuId}&TextSearch=${param.keyword}&LoaiBaoHiemId=${param.LoaiBaoHiemId}&MaSo=${param.MaSo}`);
+
+    getInsuranceList: async (param: InsuranceQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            DanCuId: param.DanCuId,
+            TextSearch: param.keyword,
+            LoaiBaoHiemId: param.LoaiBaoHiemId,
+            MaSo: param.MaSo,
+        });
+
+        return await http.get<any>(`/thongtinbaohiem${queryString}`);
     },
     createInsurance: async (param: { danCuId: number; loaiBaoHiemId: number; noiDangKy: string; tuNgay: string; denNgay: string; maSo: string; }) => {
         return await http.post<any>(`/thongtinbaohiem`, param);
@@ -14,7 +36,7 @@ const insuranceApiRequest = {
     updateInsurance: async (formData: any) => {
         return await http.put<any>("/thongtinbaohiem", formData);
     },
-    getInssuranceDetail: async (thongTinBaoHiemId: number ) => {
+    getInssuranceDetail: async (thongTinBaoHiemId: number) => {
         return await http.get<any>(`/thongtinbaohiem/chitiet?thongTinBaoHiemId=${thongTinBaoHiemId}`);
     },
     deleteInsurance: async (id: number) => {
@@ -25,9 +47,9 @@ const insuranceApiRequest = {
 /**
 * GET INSURANCE LIST
 **/
-export const useGetInsuranceListNormal = (param: { page: number; pageSize: number; keyword: string; DanCuId: number | null; LoaiBaoHiemId: number; MaSo: string; }) => {
+export const useGetInsuranceListNormal = (param: InsuranceQueryParams) => {
     return useQuery({
-        queryKey: ['insuranceList', param.page, param.pageSize, param.keyword, param.DanCuId, param.LoaiBaoHiemId, param.MaSo],
+        queryKey: ['insuranceList', param],
         queryFn: async () => {
             try {
                 const res = await insuranceApiRequest.getInsuranceList(param);

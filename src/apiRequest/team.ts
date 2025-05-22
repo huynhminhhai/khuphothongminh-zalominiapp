@@ -1,19 +1,34 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate } from "zmp-ui";
 
+export type TeamQueryParams = {
+    page: number;
+    pageSize: number;
+    keyword?: string;
+    ApId?: number;
+    MaXa?: string;
+    TinhTrang?: any;
+    TenChucVu?: string;
+    HoTen?: string;
+};
+
 const teamApiRequest = {
-    getTeamList: async (param: {
-        page: number;
-        pageSize: number;
-        ApId: number;
-        keyword: string;
-        TinhTrang: any;
-        TenChucVu: string;
-        HoTen: string;
-    }) => {
-        return await http.get<any>(`/bandieuhanh?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&TinhTrang=${param.TinhTrang}&TenChucVu=${param.TenChucVu}&HoTen=${param.HoTen}`);
+    getTeamList: async (param: TeamQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            TextSearch: param.keyword,
+            TinhTrang: param.TinhTrang,
+            TenChucVu: param.TenChucVu,
+            HoTen: param.HoTen,
+        });
+
+        return await http.get<any>(`/bandieuhanh${queryString}`);
     },
     getTeamType: async () => {
         return await http.get<any>(`/bandieuhanh/danhmuc`);
@@ -35,17 +50,9 @@ const teamApiRequest = {
 /**
 * GET TEAM LIST
 **/
-export const useGetTeamListNormal = (param: {
-    page: number;
-    pageSize: number;
-    ApId: number;
-    keyword: string;
-    TinhTrang: any;
-    TenChucVu: string;
-    HoTen: string;
-}) => {
+export const useGetTeamListNormal = (param: TeamQueryParams) => {
     return useQuery({
-        queryKey: ['teamList', param.page, param.pageSize, param.ApId, param.keyword, param.TinhTrang, param.TenChucVu, param.HoTen],
+        queryKey: ['teamList', param],
         queryFn: async () => {
             const res = await teamApiRequest.getTeamList(param);
             return res
@@ -58,18 +65,10 @@ export const useGetTeamListNormal = (param: {
 /**
 * GET TRANSACTION LIST (INFINITE)
 **/
-export const useGetTeamList = (param: {
-    page: number;
-    pageSize: number;
-    ApId: number;
-    keyword: string;
-    TinhTrang: any;
-    TenChucVu: string;
-    HoTen: string;
-}) => {
+export const useGetTeamList = (param: TeamQueryParams) => {
 
     return useInfiniteQuery({
-        queryKey: ['teamList', param.page, param.pageSize, param.ApId, param.keyword, param.TinhTrang, param.TenChucVu, param.HoTen],
+        queryKey: ['teamList', param.pageSize, param.ApId, param.keyword, param.TinhTrang, param.TenChucVu, param.HoTen, param.MaXa],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 

@@ -19,9 +19,11 @@ const InsurancePage: React.FC = () => {
 
     const [param, setParam] = useState<any>({
         page: 1,
-        pageSize: 10,
+        pageSize: 999,
         keyword: '',
-        DanCuId: Number(danCuId) || account?.thongTinDanCu?.danCuId || 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
+        DanCuId: Number(danCuId) || account?.thongTinDanCu?.danCuId,
         LoaiBaoHiemId: 1,
         MaSo: '',
     })
