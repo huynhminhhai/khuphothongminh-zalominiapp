@@ -44,8 +44,10 @@ import resident from './resident.png'
 import chart from './chart.png'
 import logo1 from './logo.png'
 import logopng from './logo-png.png'
+import household from './household.png'
 
 const images = {
+    household,
     logo,
     logo1,
     logopng,

@@ -113,6 +113,20 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
+                                        title="Hộ dân"
+                                        prefix={<img src={images.household}
+                                            alt='news'
+                                            className="w-[30px] h-auto"
+                                        />}
+                                        onClick={() => navigate('/household-management')}
+                                    />
+                                </div>
+                            }
+
+                            {
+                                hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.XEM) &&
+                                <div className="col-span-4">
+                                    <ManagementItem
                                         title="Dân cư"
                                         prefix={<img src={images.resident}
                                             alt='news'

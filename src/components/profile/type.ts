@@ -165,4 +165,6 @@ export interface FormResidentDetail {
     moiQuanHeVoiChuHo?: number;
     noiThuongTru: Residence;
     noiTamTru?: Residence | null;
+    tinhTrangHoGiaDinhId?: number;
+    giaDinhVanHoa?: boolean;
 }

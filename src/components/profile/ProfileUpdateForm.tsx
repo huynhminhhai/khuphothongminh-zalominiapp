@@ -17,7 +17,7 @@ import { MapPicker } from "components/maps"
 
 const ProfileUpdateForm: React.FC = () => {
 
-    const { ngheNghieps, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account } = useStoreApp()
+    const { ngheNghieps, tinhTrangHoGiaDinhs, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account } = useStoreApp()
 
     const defaultValues: FormResidentDetail = {
         laChuHo: false,
@@ -34,6 +34,8 @@ const ProfileUpdateForm: React.FC = () => {
         email: '',
         dienThoai: null,
         moiQuanHeVoiChuHo: 0,
+        tinhTrangHoGiaDinhId: tinhTrangHoGiaDinhs[0]?.value ?? 29,
+        giaDinhVanHoa: false,
         noiThuongTru: {
             diaChi: '',
             apId: 0,
@@ -212,6 +214,8 @@ const ProfileUpdateForm: React.FC = () => {
                     tuNgay,
                     denNgay,
                 },
+                tinhTrangHoGiaDinhId: chuHoData.tinhTrangHoGiaDinhId,
+                giaDinhVanHoa: chuHoData.giaDinhVanHoa
             });
 
             await setAddressStepByStep("noiThuongTru", { tinh, huyen, xa, apId }, setValue);

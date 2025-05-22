@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
+import { FeedbackAnswerPage, FeedbackManagementPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
@@ -209,6 +209,10 @@ const MyApp = () => {
                         <Route path="/resident-craft-management" element={<ResidentCraftManagementPage></ResidentCraftManagementPage>}></Route>
                         <Route path="/resident-profile-add" element={<ResidentProfileAddPage></ResidentProfileAddPage>}></Route>
                         <Route path="/resident-profile-update" element={<ResidentProfileUpdatePage></ResidentProfileUpdatePage>}></Route>
+
+                        {/* MANAGEMENT HOUSEHOLD */}
+                        <Route path="/household-management" element={<HouseholdManagementPage></HouseholdManagementPage>}></Route>
+                        <Route path="/household-hongheo-update" element={<HouseholdHoNgheoUpdatePage></HouseholdHoNgheoUpdatePage>}></Route>
 
                         {/* PROFILE */}
                         <Route path="/profile-resident" element={<ProfileResidentPage></ProfileResidentPage>}></Route>

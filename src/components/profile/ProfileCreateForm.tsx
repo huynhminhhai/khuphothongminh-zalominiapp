@@ -15,7 +15,7 @@ import { MapPicker } from "components/maps"
 
 const ProfileAddForm: React.FC = () => {
 
-  const { ngheNghieps, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account } = useStoreApp()
+  const { ngheNghieps, tinhTrangHoGiaDinhs, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account } = useStoreApp()
 
   const defaultValues: FormResidentDetail = {
     laChuHo: false,
@@ -32,6 +32,8 @@ const ProfileAddForm: React.FC = () => {
     email: '',
     dienThoai: null,
     moiQuanHeVoiChuHo: 0,
+    tinhTrangHoGiaDinhId: tinhTrangHoGiaDinhs[0]?.value ?? 29,
+    giaDinhVanHoa: false,
     noiThuongTru: {
       diaChi: '',
       apId: 0,
@@ -149,7 +151,9 @@ const ProfileAddForm: React.FC = () => {
           longitude,
           tuNgay,
           denNgay,
-        }
+        },
+        tinhTrangHoGiaDinhId: chuHoData.tinhTrangHoGiaDinhId,
+        giaDinhVanHoa: chuHoData.giaDinhVanHoa
       });
 
       await setAddressStepByStep("noiThuongTru", { tinh, huyen, xa, apId }, setValue);
@@ -183,7 +187,11 @@ const ProfileAddForm: React.FC = () => {
       };
 
       if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.apId === 0) {
-        dataSubmit = omit(dataSubmit, ['noiTamTru']);
+        dataSubmit = {
+          ...omit(dataSubmit, ['noiTamTru']),
+          tinhTrangHoGiaDinhId: defaultValues.tinhTrangHoGiaDinhId,
+          giaDinhVanHoa: defaultValues.giaDinhVanHoa
+        };
       }
 
       await createResident(dataSubmit);

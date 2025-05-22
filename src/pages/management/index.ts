@@ -38,6 +38,12 @@ export { default as ResidentProfileAddPage } from "./management-resident/residen
 export { default as ResidentProfileUpdatePage } from "./management-resident/resident-profile-update";
 
 /**
+ * HOUSEHOLD
+**/
+export { default as HouseholdManagementPage } from "./management-household/household-management";
+export { default as HouseholdHoNgheoUpdatePage } from "./management-household/household-update-hongheo";
+
+/**
  * INSURANCE
 **/ 
 export { default as InsuranceManagementPage } from "./management-insurance/insurance-management";
