@@ -20,9 +20,10 @@ const FeedbackHistoryPage: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
-        NguoiThucHienId: account ? account?.nguoiDungId : 0
+        NguoiTao: account?.nguoiDungId
     });
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyFeedbackList(param);

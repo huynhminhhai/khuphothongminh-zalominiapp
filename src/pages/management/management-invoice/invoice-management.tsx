@@ -32,7 +32,8 @@ const InvoiceManagementPage: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         LoaiGiaoDichTaiChinhId: 0,
         NoiDung: ''

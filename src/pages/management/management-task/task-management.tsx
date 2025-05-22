@@ -31,9 +31,12 @@ const TaskManagementPage: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         TieuDe: '',
+        NguoiTao: account?.nguoiDungId,
+        TinhTrangId: 0
     })
 
     const { data, isLoading } = useGetTaskListNormal(param);
@@ -260,12 +263,28 @@ const TaskManagementPage: React.FC = () => {
                                 onChange={(e) => updateFilter('search', e.target.value)}
                             />
                         </div>
-                        <div className="col-span-12">
+                        <div className="col-span-6">
                             <Input
                                 placeholder="Tiêu đề"
                                 value={filters.tieuDe}
                                 onChange={(e) => updateFilter('tieuDe', e.target.value)}
                             />
+                        </div>
+                        <div className="col-span-6">
+                            <Select
+                                placeholder="Tình trạng"
+                                value={param.TinhTrangId}
+                                closeOnSelect
+                                onChange={(e) => setParam(prev => ({ ...prev, TinhTrangId: Number(e) }))}
+                            >
+                                <Option title="Tất cả" value={0} />
+                                {
+                                    taskStatus?.map((item) => (
+                                        <Option key={item.tinhTrangId} value={item.tinhTrangId} title={item.tenTinhTrang} />
+                                    ))
+                                }
+
+                            </Select>
                         </div>
                     </FilterBar>
                     <Box pb={1} flex justifyContent="flex-end" className="bg-[#f9f9f9]">

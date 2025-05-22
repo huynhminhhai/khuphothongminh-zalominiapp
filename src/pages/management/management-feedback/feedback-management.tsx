@@ -30,8 +30,9 @@ const FeedbackManagementPage: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
-        ApId: account ? account?.apId : 0,
-        keyword: ''
+        ApId: account?.apId,
+        MaXa: account?.maXa,
+        keyword: '',
     })
 
     const { data, isLoading } = useGetFeedbackListNormal(param);

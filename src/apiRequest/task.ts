@@ -1,14 +1,52 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate } from "zmp-ui";
 
+export type TaskQueryParams = {
+    page: number;
+    pageSize: number;
+    ApId?: number;
+    MaXa?: string;
+    NguoiTao?: number;
+    NguoiThucHienId?: number;
+    TinhTrangId?: number;
+    keyword?: string;
+    TieuDe?: string;
+};
+
 const taskApiRequest = {
-    getTaskList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; }) => {
-        return await http.get<any>(`/nhiemvu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&TieuDe=${param.TieuDe}`);
+    getTaskList: async (param: TaskQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            NguoiThucHienId: param.NguoiThucHienId,
+            TinhTrangId: param.TinhTrangId,
+            TextSearch: param.keyword,
+            TieuDe: param.TieuDe,
+        });
+
+        return await http.get<any>(`/nhiemvu${queryString}`);
     },
-    getMyTaskList: async (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string; TieuDe?: string; }) => {
-        return await http.get<any>(`/nhiemvu/cuatoi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&NguoiThucHienId=${param.nguoiThucHienId}&TextSearch=${param.keyword}&TieuDe=${param.TieuDe}`);
+    getMyTaskList: async (param: TaskQueryParams) => {
+
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            NguoiThucHienId: param.NguoiThucHienId,
+            TinhTrangId: param.TinhTrangId,
+            TextSearch: param.keyword,
+            TieuDe: param.TieuDe,
+        });
+
+        return await http.get<any>(`/nhiemvu/cuatoi${queryString}`);
     },
     getTaskDetail: async (id: number) => {
         return await http.get<any>(`/nhiemvu/chitiet/${id}`);
@@ -42,9 +80,9 @@ const taskApiRequest = {
 /**
 * GET TASK LIST
 **/
-export const useGetTaskListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; }) => {
+export const useGetTaskListNormal = (param: TaskQueryParams) => {
     return useQuery({
-        queryKey: ['taskList', param.page, param.pageSize, param.ApId, param.keyword, param.TieuDe],
+        queryKey: ['taskList', param],
         queryFn: async () => {
             const res = await taskApiRequest.getTaskList(param);
             return res
@@ -57,9 +95,9 @@ export const useGetTaskListNormal = (param: { page: number; pageSize: number; Ap
 /**
 * GET MY TASK LIST
 **/
-export const useGetMyTaskListNormal = (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string, TieuDe?: string; }) => {
+export const useGetMyTaskListNormal = (param: TaskQueryParams) => {
     return useQuery({
-        queryKey: ['myTaskList', param.page, param.pageSize, param.ApId, param.keyword, param.nguoiThucHienId, param.TieuDe],
+        queryKey: ['myTaskList', param],
         queryFn: async () => {
             const res = await taskApiRequest.getMyTaskList(param);
             return res
@@ -72,10 +110,10 @@ export const useGetMyTaskListNormal = (param: { page: number; pageSize: number; 
 /**
 * GET MY TASK LIST (INFINITE)
 **/
-export const useGetMyTaskList = (param: { page: number; pageSize: number; nguoiThucHienId: number; ApId: number; keyword: string; TieuDe?: string; }) => {
+export const useGetMyTaskList = (param: TaskQueryParams) => {
 
     return useInfiniteQuery({
-        queryKey: ['myTaskList', param.pageSize, param.nguoiThucHienId, param.ApId, param.keyword, param.TieuDe],
+        queryKey: ['myTaskList', param.pageSize, param.NguoiThucHienId, param.NguoiTao, param.ApId, param.TinhTrangId, param.MaXa, param.keyword, param.TieuDe],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -135,8 +173,8 @@ export const useGetTaskStatus = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 60 * 24, 
-        retry: 1, 
+        staleTime: 1000 * 60 * 60 * 24,
+        retry: 1,
     });
 };
 
@@ -168,7 +206,7 @@ export const useUpdateTaskStatus = () => {
 
 /**
 * DELETE TASK
-**/ 
+**/
 export const useDeleteTask = () => {
     const queryClient = useQueryClient();
     const { showSuccess, showError } = useCustomSnackbar();
@@ -191,7 +229,7 @@ export const useDeleteTask = () => {
 
 /**
 * POST TASK
-**/ 
+**/
 export const useCreateTask = () => {
     const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
@@ -241,7 +279,7 @@ export const useUpdateTask = () => {
 
 /**
 * POST FILE TASK
-**/ 
+**/
 export const useAddFileTask = () => {
     const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
@@ -264,7 +302,7 @@ export const useAddFileTask = () => {
 
 /**
 * DELETE File TASK
-**/ 
+**/
 export const useDeleteFileTask = () => {
     const queryClient = useQueryClient();
     const { showSuccess, showError } = useCustomSnackbar();

@@ -33,7 +33,8 @@ const TransactionsDetailManagementPage: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         ThuChiId: Number(transactionsId),
     })
@@ -120,7 +121,7 @@ const TransactionsDetailManagementPage: React.FC = () => {
             cell: () => {
                 return (
                     <div>
-                        {detailData.noiDung}
+                        {detailData?.noiDung}
                     </div>
                 )
             }

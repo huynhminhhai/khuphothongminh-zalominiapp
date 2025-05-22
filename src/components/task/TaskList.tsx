@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { Box, Input } from "zmp-ui"
+import { Box, Input, Select } from "zmp-ui"
 import TaskItem from "./TaskItem"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
 import { TaskItemSkeleton } from "components/skeleton"
 import { EmptyData } from "components/data"
 import { useStoreApp } from "store/store"
 import { debounce } from "lodash"
-import { useGetMyTaskList } from "apiRequest/task"
+import { useGetMyTaskList, useGetTaskStatus } from "apiRequest/task"
 import { FilterBar2 } from "components/table"
 import { Divider } from "components/divider"
 
 
 const TaskList: React.FC = () => {
+
+    const { Option } = Select;
 
     const { account } = useStoreApp()
     const [filters, setFilters] = useState({
@@ -21,10 +23,12 @@ const TaskList: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
-        nguoiThucHienId: account ? account?.nguoiDungId : 0,
+        NguoiThucHienId: account?.nguoiDungId,
         TieuDe: '',
+        TinhTrangId: 0
     });
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
@@ -46,6 +50,7 @@ const TaskList: React.FC = () => {
     useDebouncedParam(filters.search, 'keyword');
     useDebouncedParam(filters.tieuDe, 'TieuDe');
 
+    const { data: taskStatus } = useGetTaskStatus();
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyTaskList(param);
 
     const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
@@ -95,13 +100,29 @@ const TaskList: React.FC = () => {
                     />
                 }
             >
-                <div className="col-span-12">
+                <div className="col-span-6">
                     <Input
                         placeholder="Tiêu đề"
                         value={filters.tieuDe}
                         onChange={(e) => updateFilter('tieuDe', e.target.value)}
                     />
                 </div>
+                <div className="col-span-6">
+                            <Select
+                                placeholder="Tình trạng"
+                                value={param.TinhTrangId}
+                                closeOnSelect
+                                onChange={(e) => setParam(prev => ({ ...prev, TinhTrangId: Number(e) }))}
+                            >
+                                <Option title="Tất cả" value={0} />
+                                {
+                                    taskStatus?.map((item) => (
+                                        <Option key={item.tinhTrangId} value={item.tinhTrangId} title={item.tenTinhTrang} />
+                                    ))
+                                }
+
+                            </Select>
+                        </div>
             </FilterBar2>
             <Divider />
             {renderContent()}

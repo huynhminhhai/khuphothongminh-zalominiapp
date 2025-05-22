@@ -1,11 +1,32 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate } from "zmp-ui";
 
+export type FeedbackQueryParams = {
+    page: number;
+    pageSize: number;
+    ApId?: number;
+    MaXa?: string;
+    NguoiTao?: number;
+    NguoiThucHienId?: number;
+    keyword?: string;
+};
+
 const feebackApiRequest = {
-    getFeedbackList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/phananh?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getFeedbackList: async (param: FeedbackQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            NguoiThucHienId: param.NguoiThucHienId,
+            TextSearch: param.keyword,
+        });
+
+        return await http.get<any>(`/phananh${queryString}`);
     },
     getFeebackStatus: async () => {
         return await http.get<any>(`/phananh/danhmuc`);
@@ -31,8 +52,19 @@ const feebackApiRequest = {
     deleteFileFeedback: async (id: number) => {
         return await http.delete<any>(`/taptinphananh/${id}`);
     },
-    getMyFeedbackList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NguoiThucHienId: number; }) => {
-        return await http.get<any>(`/phananh/cuatoi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NguoiThucHienId=${param.NguoiThucHienId}`);
+    getMyFeedbackList: async (param: FeedbackQueryParams) => {
+
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            NguoiThucHienId: param.NguoiThucHienId,
+            TextSearch: param.keyword,
+        });
+
+        return await http.get<any>(`/phananh/cuatoi${queryString}`);
     },
     createFeedbackAnswer: async (formData: any) => {
         return await http.postFormData<any>(`/ketquaxulyphananh`, formData);
@@ -51,9 +83,9 @@ const feebackApiRequest = {
 /**
 * GET FEEDBACK LIST
 **/
-export const useGetFeedbackListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
+export const useGetFeedbackListNormal = (param: FeedbackQueryParams) => {
     return useQuery({
-        queryKey: ['feedbackList', param.page, param.pageSize, param.ApId, param.keyword],
+        queryKey: ['feedbackList', param],
         queryFn: async () => {
             const res = await feebackApiRequest.getFeedbackList(param);
             return res
@@ -66,10 +98,10 @@ export const useGetFeedbackListNormal = (param: { page: number; pageSize: number
 /**
 * GET FEEDBACK LIST (INFINITE)
 **/
-export const useGetFeedbackList = (param: { page: number; pageSize: number, ApId: number; keyword: string }) => {
+export const useGetFeedbackList = (param: FeedbackQueryParams) => {
 
     return useInfiniteQuery({
-        queryKey: ['feedbackList', param.pageSize, param.ApId, param.keyword],
+        queryKey: ['feedbackList', param.pageSize, param.ApId, param.MaXa, param.NguoiTao, param.NguoiThucHienId, param.keyword],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -93,10 +125,10 @@ export const useGetFeedbackList = (param: { page: number; pageSize: number, ApId
 /**
 * GET MY FEEDBACK LIST (INFINITE)
 **/
-export const useGetMyFeedbackList = (param: { page: number; pageSize: number, ApId: number; keyword: string, NguoiThucHienId: number }) => {
+export const useGetMyFeedbackList = (param: FeedbackQueryParams) => {
 
     return useInfiniteQuery({
-        queryKey: ['myFeedbackList', param.pageSize, param.ApId, param.keyword, param.NguoiThucHienId],
+        queryKey: ['myFeedbackList', param.pageSize, param.ApId, param.MaXa, param.NguoiTao, param.NguoiThucHienId, param.keyword],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -276,7 +308,7 @@ export const useDeleteFileFeedback = () => {
             return await feebackApiRequest.deleteFileFeedback(id);
         },
         onSuccess: () => {
-            
+
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)
@@ -350,7 +382,7 @@ export const useDeleteFileFeedbackAnswer = () => {
             return await feebackApiRequest.deleteFileFeedbackAnswer(id);
         },
         onSuccess: () => {
-            
+
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

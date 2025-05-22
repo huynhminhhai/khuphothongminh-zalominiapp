@@ -1,15 +1,61 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { TransactionsType } from "constants/utinities";
 import http from "services/http";
+import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate, useSnackbar } from "zmp-ui";
 
+export type TransactionQueryParams = {
+    page: number;
+    pageSize: number;
+    ApId?: number;
+    MaXa?: string;
+    NguoiTao?: number;
+    keyword?: string;
+    LoaiGiaoDichTaiChinhId?: number;
+    NoiDung?: string;
+};
+
+export type TransactionDetailQueryParams = {
+    page: number;
+    pageSize: number;
+    ThuChiId: number;
+    ApId?: number;
+    MaXa?: string;
+    NguoiTao?: number;
+    keyword?: string;
+};
+
 const transactionApiRequest = {
-    getTransactionList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string }) => {
-        return await http.get<any>(`/thuchi?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&LoaiGiaoDichTaiChinhId=${param.LoaiGiaoDichTaiChinhId}&NoiDung=${param.NoiDung}`);
+    getTransactionList: async (param: TransactionQueryParams) => {
+
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            TextSearch: param.keyword,
+            LoaiGiaoDichTaiChinhId: param.LoaiGiaoDichTaiChinhId,
+            NoiDung: param.NoiDung,
+        });
+
+        return await http.get<any>(`/thuchi${queryString}`);
     },
-    getTransactionPublicList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string }) => {
-        return await http.get<any>(`/thuchi/danhsachcongkhai?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&LoaiGiaoDichTaiChinhId=${param.LoaiGiaoDichTaiChinhId}&NoiDung=${param.NoiDung}`);
+    getTransactionPublicList: async (param: TransactionQueryParams) => {
+
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            TextSearch: param.keyword,
+            LoaiGiaoDichTaiChinhId: param.LoaiGiaoDichTaiChinhId,
+            NoiDung: param.NoiDung,
+        });
+
+        return await http.get<any>(`/thuchi/danhsachcongkhai${queryString}`);
     },
     getTransactionType: async () => {
         return await http.get<any>(`/thuchi/danhmuc`);
@@ -29,8 +75,19 @@ const transactionApiRequest = {
     createDetailTransaction: async (formData: any) => {
         return await http.post<any>("/chitietthuchi", formData);
     },
-    getTransactionDetailList: async (param: { page: number; pageSize: number; ThuChiId: number, ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/chitietthuchi?current=${param.page}&size=${param.pageSize}&ThuChiId=${param.ThuChiId}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getTransactionDetailList: async (param: TransactionDetailQueryParams) => {
+
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ThuChiId: param.ThuChiId,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            TextSearch: param.keyword,
+        });
+
+        return await http.get<any>(`/chitietthuchi${queryString}`);
     },
     deleteTransactionDetail: async (id: number) => {
         return await http.delete<any>(`/chitietthuchi/${id}`)
@@ -46,9 +103,9 @@ const transactionApiRequest = {
 /**
 * GET TRANSACTION LIST
 **/
-export const useGetTransactionListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string; }) => {
+export const useGetTransactionListNormal = (param: TransactionQueryParams) => {
     return useQuery({
-        queryKey: ['transactionList', param.page, param.pageSize, param.ApId, param.keyword, param.LoaiGiaoDichTaiChinhId, param.NoiDung],
+        queryKey: ['transactionList', param],
         queryFn: async () => {
             const res = await transactionApiRequest.getTransactionList(param);
             return res
@@ -61,10 +118,10 @@ export const useGetTransactionListNormal = (param: { page: number; pageSize: num
 /**
 * GET TRANSACTION LIST (INFINITE)
 **/
-export const useGetTransactionList = (param: { page: number; pageSize: number, ApId: number; keyword: string; LoaiGiaoDichTaiChinhId?: number; NoiDung?: string; }) => {
+export const useGetTransactionList = (param: TransactionQueryParams) => {
 
     return useInfiniteQuery({
-        queryKey: ['transactionList', param.pageSize, param.ApId, param.keyword, param.LoaiGiaoDichTaiChinhId, param.NoiDung],
+        queryKey: ['transactionList', param.pageSize, param.ApId, param.keyword, param.LoaiGiaoDichTaiChinhId, param.NoiDung, param.MaXa, param.NguoiTao],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -229,9 +286,9 @@ export const useCreateTransactionDetail = () => {
 /**
 * GET TRANSACTION LIST
 **/
-export const useGetTransactionDetailList = (param: { page: number; pageSize: number; ApId: number; keyword: string; ThuChiId: number }) => {
+export const useGetTransactionDetailList = (param: TransactionDetailQueryParams) => {
     return useQuery({
-        queryKey: ['transactionDetailList', param.page, param.pageSize, param.ApId, param.keyword, param.ThuChiId],
+        queryKey: ['transactionDetailList', param],
         queryFn: async () => {
             const res = await transactionApiRequest.getTransactionDetailList(param);
             return res
