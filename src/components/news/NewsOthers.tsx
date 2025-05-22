@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { Box } from "zmp-ui"
 import NewsItem from "./NewsItem"
-import { useGetNewsListNormal } from "apiRequest/news"
+import { useGetNewsPublicListNormal } from "apiRequest/news"
 import { NewsSkeleton } from "components/skeleton"
 import { useStoreApp } from "store/store"
 import { NewsType } from "./type"
@@ -14,7 +14,7 @@ const NewsOthers: React.FC<NewsOthersProps> = ({ idNews }) => {
     const { account } = useStoreApp()
     const [param, setParam] = useState({
         page: 1,
-        pageSize: 4,
+        pageSize: 5,
         ApId: account?.apId,
         MaXa: account?.maXa,
         keyword: '',
@@ -24,7 +24,7 @@ const NewsOthers: React.FC<NewsOthersProps> = ({ idNews }) => {
         TieuDe: '',
     });
 
-    const { data, isLoading } = useGetNewsListNormal(param);
+    const { data, isLoading } = useGetNewsPublicListNormal(param);
 
     if (isLoading) {
         return <NewsSkeleton count={4} />
