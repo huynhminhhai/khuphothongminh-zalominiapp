@@ -1,14 +1,48 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate } from "zmp-ui";
 
+export type SurveyQueryParams = {
+    page: number;
+    pageSize: number;
+    ApId?: number;
+    MaXa?: string;
+    keyword?: string;
+};
+
+export type SurveyMemberQueryParams = {
+    page: number;
+    pageSize: number;
+    ApId?: number;
+    MaXa?: string;
+    keyword?: string;
+    khaoSatId: number;
+};
+
 const surveyApiRequest = {
-    getSurveyList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/khaosat?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getSurveyList: async (param: SurveyQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            TextSearch: param.keyword,
+        });
+
+        return await http.get<any>(`/khaosat${queryString}`);
     },
-    getSurveyPublicList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; }) => {
-        return await http.get<any>(`/khaosat/nguoidan?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}`);
+    getSurveyPublicList: async (param: SurveyQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            TextSearch: param.keyword,
+        });
+
+        return await http.get<any>(`/khaosat/nguoidan${queryString}`);
     },
     getSurveyDetail: async (id: number) => {
         return await http.get<any>(`/khaosat/chitiet/${id}`);
@@ -28,8 +62,17 @@ const surveyApiRequest = {
     createResultSurvey: async (formData: any) => {
         return await http.post<any>("/ketquakhaosat", formData);
     },
-    getSurveyMemberList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; khaoSatId: number; }) => {
-        return await http.get<any>(`/ketquakhaosat?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&khaoSatId=${param.khaoSatId}`);
+    getSurveyMemberList: async (param: SurveyMemberQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            TextSearch: param.keyword,
+            khaoSatId: param.khaoSatId,
+        });
+
+        return await http.get<any>(`/ketquakhaosat${queryString}`);
     },
     updateSurveyStatus: async (param: { khaoSatId: number; tinhTrangId: number; }) => {
         return await http.put<any>(`/khaosat/tinhtrang`, {
@@ -41,10 +84,10 @@ const surveyApiRequest = {
 
 /**
 * GET TASK LIST
-**/ 
-export const useGetSurveyListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string }) => {
+**/
+export const useGetSurveyListNormal = (param: SurveyQueryParams) => {
     return useQuery({
-        queryKey: ['surveyList', param.page, param.pageSize, param.ApId, param.keyword],
+        queryKey: ['surveyList', param],
         queryFn: async () => {
             const res = await surveyApiRequest.getSurveyList(param);
             return res
@@ -56,10 +99,10 @@ export const useGetSurveyListNormal = (param: { page: number; pageSize: number; 
 
 /**
 * GET TASK LIST
-**/ 
-export const useGetSurveyMemberListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; khaoSatId: number; }) => {
+**/
+export const useGetSurveyMemberListNormal = (param: SurveyMemberQueryParams) => {
     return useQuery({
-        queryKey: ['surveyMemberList', param.page, param.pageSize, param.ApId, param.keyword, param.khaoSatId],
+        queryKey: ['surveyMemberList', param],
         queryFn: async () => {
             const res = await surveyApiRequest.getSurveyMemberList(param);
             return res
@@ -72,11 +115,11 @@ export const useGetSurveyMemberListNormal = (param: { page: number; pageSize: nu
 
 /**
 * GET TASK LIST (INFINITE)
-**/ 
-export const useGetSurveyList = (param: { page: number; pageSize: number, ApId: number; keyword: string }) => {
+**/
+export const useGetSurveyList = (param: SurveyQueryParams) => {
 
     return useInfiniteQuery({
-        queryKey: ['surveyList', param.pageSize, param.ApId, param.keyword],
+        queryKey: ['surveyList', param.pageSize, param.ApId, param.MaXa, param.keyword],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -100,7 +143,7 @@ export const useGetSurveyList = (param: { page: number; pageSize: number, ApId: 
 
 /**
 * POST SURVEY
-**/ 
+**/
 export const useCreateSurvey = () => {
     const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();
@@ -127,7 +170,7 @@ export const useCreateSurvey = () => {
 
 /**
 * GET SURVEY STATUS
-**/ 
+**/
 export const useGetSurveyStatus = () => {
     return useQuery({
         queryKey: ["surveyStatus"],
@@ -140,14 +183,14 @@ export const useGetSurveyStatus = () => {
                 throw error;
             }
         },
-        staleTime: 1000 * 60 * 60 * 24, 
+        staleTime: 1000 * 60 * 60 * 24,
         retry: 1,
     });
 };
 
 /**
 * DELETE SURVEY
-**/ 
+**/
 export const useDeleteSurvey = () => {
     const queryClient = useQueryClient();
     const { showSuccess, showError } = useCustomSnackbar();
@@ -170,7 +213,7 @@ export const useDeleteSurvey = () => {
 
 /**
 * GET SURVEY DETAIL
-**/ 
+**/
 export const useGetSurveyDetail = (id: number) => {
 
     return useQuery({
@@ -218,7 +261,7 @@ export const useUpdateSurvey = () => {
 
 /**
 * POST RESULT SURVEY
-**/ 
+**/
 export const useCreateResultSurvey = () => {
     const { showSuccess, showError } = useCustomSnackbar();
     const queryClient = useQueryClient();

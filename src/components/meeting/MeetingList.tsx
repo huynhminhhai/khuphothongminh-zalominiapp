@@ -22,13 +22,14 @@ const MeetingList: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         TieuDe: '',
         ThoiGianBatDau: '',
         ThoiGianKetThuc: '',
         DiaDiem: '',
-        NguoiDungId: account ? account?.nguoiDungId : 0
+        NguoiDungId: account?.nguoiDungId
     });
 
     const updateFilter = (key: keyof typeof filters, value: string) => {

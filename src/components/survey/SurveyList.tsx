@@ -17,9 +17,9 @@ const SurveyList: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
-        nguoiThucHienId: account ? account?.nguoiDungId : 0
     });
 
     const debouncedSearch = useCallback(

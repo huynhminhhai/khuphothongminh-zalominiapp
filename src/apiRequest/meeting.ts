@@ -1,11 +1,40 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate } from "zmp-ui";
 
+export type MeetingQueryParams = {
+    page: number;
+    pageSize: number;
+    ApId?: number;
+    MaXa?: string;
+    NguoiTao?: number;
+    keyword?: string;
+    TieuDe?: string;
+    ThoiGianBatDau?: string;
+    ThoiGianKetThuc?: string;
+    DiaDiem?: string;
+    NguoiDungId?: number;
+};
+
 export const meetingApiRequest = {
-    getMeeitngList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; NguoiDungId?: number; }) => {
-        return await http.get<any>(`/cuochop?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&TieuDe=${param.TieuDe}&ThoiGianBatDau=${param.ThoiGianBatDau}&ThoiGianKetThuc=${param.ThoiGianKetThuc}&DiaDiem=${param.DiaDiem}&NguoiDungId=${param.NguoiDungId}`);
+    getMeeitngList: async (param: MeetingQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            TextSearch: param.keyword,
+            TieuDe: param.TieuDe,
+            ThoiGianBatDau: param.ThoiGianBatDau,
+            ThoiGianKetThuc: param.ThoiGianKetThuc,
+            DiaDiem: param.DiaDiem,
+            NguoiDungId: param.NguoiDungId,
+        });
+
+        return await http.get<any>(`/cuochop${queryString}`);
     },
     getMeeitngTodayList: async () => {
         return await http.get<any>(`/cuochop/trongngay`);
@@ -48,9 +77,9 @@ export const meetingApiRequest = {
 /**
 * GET MEETING LIST
 **/
-export const useGetMeetingListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; NguoiDungId?: number; }) => {
+export const useGetMeetingListNormal = (param: MeetingQueryParams) => {
     return useQuery({
-        queryKey: ['meetingList', param.page, param.pageSize, param.ApId, param.keyword, param.TieuDe, param.ThoiGianBatDau, param.ThoiGianKetThuc, param.DiaDiem, param.NguoiDungId],
+        queryKey: ['meetingList', param],
 
         queryFn: async () => {
             const res = await meetingApiRequest.getMeeitngList(param);
@@ -64,10 +93,10 @@ export const useGetMeetingListNormal = (param: { page: number; pageSize: number;
 /**
 * GET NEWS LIST (INFINITE)
 **/
-export const useGetMeetingList = (param: { page: number; pageSize: number, ApId: number; keyword: string; TieuDe?: string; ThoiGianBatDau?: string; ThoiGianKetThuc?: string; DiaDiem?: string; NguoiDungId?: number; }) => {
+export const useGetMeetingList = (param: MeetingQueryParams) => {
 
     return useInfiniteQuery({
-        queryKey: ['meetingList', param.pageSize, param.ApId, param.keyword, param.TieuDe, param.ThoiGianBatDau, param.ThoiGianKetThuc, param.DiaDiem, param.NguoiDungId],
+        queryKey: ['meetingList', param.pageSize, param.ApId, param.MaXa, param.NguoiTao, param.keyword, param.TieuDe, param.ThoiGianBatDau, param.ThoiGianKetThuc, param.DiaDiem, param.NguoiDungId],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -308,7 +337,7 @@ export const useDeleteFileMeeting = () => {
             return await meetingApiRequest.deleteFileMeeting(id);
         },
         onSuccess: () => {
-            
+
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)
