@@ -12,7 +12,7 @@ const RegisterApModal = () => {
         <Modal
             visible={isShowModalRegisterAp}
             onClose={() => setIsShowModalRegisterAp(false)}
-            title='Bạn cần cập nhật thông tin'
+            title='Cần cập nhật thông tin ấp/khu phố'
         >
             <div style={{ padding: "20px" }}>
                 <p style={{ marginBottom: "20px", textAlign: "center" }}>Vui lòng cập nhật thông tin ấp/khu phố để sử dụng tính năng này.</p>
@@ -26,9 +26,9 @@ const RegisterApModal = () => {
                     <Button
                         size='medium'
                         onClick={() => setIsShowModalRegisterAp(false)}
-                        style={{ flex: 1, backgroundColor: "#e4e4e4", color: "#000" }}
+                        style={{ flex: 1, backgroundColor: "#ececec", color: "#000" }}
                     >
-                        Bỏ qua
+                        Để sau
                     </Button>
                     <Button
                         size='medium'

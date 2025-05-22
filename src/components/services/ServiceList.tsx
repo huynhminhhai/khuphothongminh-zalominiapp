@@ -19,13 +19,15 @@ const SERVICES: ServicesType[] = [
         label: 'Thông tin hộ dân',
         url: '/resident',
         icon: images.home,
-        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
+        isRequireApId: true,
+        // requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
     {
         label: 'Thẻ BHYT',
         url: '/insurance',
         icon: images.safety,
-        requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
+        isRequireApId: true,
+        // requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
     // {
     //     label: 'Cuộc họp',
@@ -56,21 +58,21 @@ const SERVICES: ServicesType[] = [
         label: 'Tin tức',
         url: '/news',
         icon: images.news,
-        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, quyen: PermissionActions.XEM },
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, quyen: PermissionActions.XEM },
     },
     
     {
         label: 'Khảo sát',
         url: '/survey',
         icon: images.survey,
-        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEMCONGKHAI },
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEMCONGKHAI },
         isRequireApId: true,
     },
     {
         label: 'Phản ánh',
         url: '/feedback',
         icon: images.idea,
-        requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     // {
     //     label: 'Hóa đơn',

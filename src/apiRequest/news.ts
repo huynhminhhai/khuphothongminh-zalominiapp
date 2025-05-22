@@ -1,14 +1,39 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import http from 'services/http';
+import { buildQueryString } from 'utils/handleApi';
 import { useCustomSnackbar } from 'utils/useCustomSnackbar';
 import { useNavigate } from 'zmp-ui';
 
 const newsApiRequest = {
-    getNewsList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
-        return await http.get<any>(`/tintuc?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NgayXuatBanTuNgay=${param.NgayXuatBanTuNgay}&NgayXuatBanDenNgay=${param.NgayXuatBanDenNgay}&TacGia=${param.TacGia}&TieuDe=${param.TieuDe}`);
+    getNewsList: async (param: any) => {
+
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            TextSearch: param.keyword,
+            NgayXuatBanTuNgay: param.NgayXuatBanTuNgay,
+            NgayXuatBanDenNgay: param.NgayXuatBanDenNgay,
+            TacGia: param.TacGia,
+            TieuDe: param.TieuDe,
+        });
+
+        return await http.get<any>(`/tintuc?${queryString}`);
     },
-    getNewsPublicList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
-        return await http.get<any>(`/tintuc/danhsachxuatban?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&NgayXuatBanTuNgay=${param.NgayXuatBanTuNgay}&NgayXuatBanDenNgay=${param.NgayXuatBanDenNgay}&TacGia=${param.TacGia}&TieuDe=${param.TieuDe}`);
+    getNewsPublicList: async (param: any) => {
+        
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            TextSearch: param.keyword,
+            NgayXuatBanTuNgay: param.NgayXuatBanTuNgay,
+            NgayXuatBanDenNgay: param.NgayXuatBanDenNgay,
+            TacGia: param.TacGia,
+            TieuDe: param.TieuDe
+        });
+    
+        return await http.get<any>(`/tintuc/danhsachxuatban${queryString}`);
     },
     getNewsDetail: async (id: number) => {
         return await http.get<any>(`/tintuc/chitiet/${id}`);
@@ -36,9 +61,18 @@ const newsApiRequest = {
 /**
 * GET NEWS LIST
 **/
-export const useGetNewsListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
+export const useGetNewsListNormal = (param: {
+    page: number;
+    pageSize: number;
+    ApId: number;
+    keyword: string;
+    NgayXuatBanTuNgay?: string;
+    NgayXuatBanDenNgay?: string;
+    TacGia?: string;
+    TieuDe?: string;
+}) => {
     return useQuery({
-        queryKey: ['newsList', param.page, param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
+        queryKey: ['newsList', param],
         queryFn: async () => {
             const res = await newsApiRequest.getNewsList(param);
             return res
@@ -51,9 +85,18 @@ export const useGetNewsListNormal = (param: { page: number; pageSize: number; Ap
 /**
 * GET NEWS PUBLIC LIST
 **/
-export const useGetNewsPublicListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
+export const useGetNewsPublicListNormal = (param: {
+    page: number;
+    pageSize: number;
+    ApId: number;
+    keyword: string;
+    NgayXuatBanTuNgay?: string;
+    NgayXuatBanDenNgay?: string;
+    TacGia?: string;
+    TieuDe?: string;
+}) => {
     return useQuery({
-        queryKey: ['newsList', param.page, param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
+        queryKey: ['newsList', param],
         queryFn: async () => {
             const res = await newsApiRequest.getNewsPublicList(param);
             return res
@@ -66,8 +109,16 @@ export const useGetNewsPublicListNormal = (param: { page: number; pageSize: numb
 /**
 * GET NEWS LIST (INFINITE)
 **/
-export const useGetNewsList = (param: { page: number; pageSize: number, ApId: number; keyword: string; NgayXuatBanTuNgay?: string; NgayXuatBanDenNgay?: string; TacGia?: string; TieuDe?: string; }) => {
-
+export const useGetNewsList = (param: {
+    page: number;
+    pageSize: number,
+    ApId: number;
+    keyword: string;
+    NgayXuatBanTuNgay?: string;
+    NgayXuatBanDenNgay?: string;
+    TacGia?: string;
+    TieuDe?: string;
+}) => {
     return useInfiniteQuery({
         queryKey: ['newsList', param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
         queryFn: async ({ pageParam = 1 }) => {

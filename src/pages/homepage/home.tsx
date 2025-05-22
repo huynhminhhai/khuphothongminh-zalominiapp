@@ -41,7 +41,6 @@ const HomePage: React.FunctionComponent = () => {
             </>
           }
           {
-            hasPermission(permissionsList.homeTinMoi, PermissionActions.XEM) &&
             <NewsSection />
           }
         </div>
