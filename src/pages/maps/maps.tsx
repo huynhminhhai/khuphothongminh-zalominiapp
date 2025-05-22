@@ -1,13 +1,13 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { Box, Page, Sheet } from "zmp-ui";
+import { Box, Page, Sheet, Input } from "zmp-ui";
 import { HeaderSub } from "components/header-sub";
 import "leaflet.heat";
 import { LegendNote } from "components/maps";
 import { Icon } from "@iconify/react";
-import { useGetResidentListNormal } from "apiRequest/resident";
+import { useGetBanDoSo } from "apiRequest/app";
 import { useStoreApp } from "store/store";
 import { EmptyData } from "components/data";
 
@@ -28,57 +28,81 @@ function FitBounds({ residents }) {
     return null;
 }
 
+function MapController({ selectedResident, markerRefs, zoom }) {
+    const map = useMap();
+
+    useEffect(() => {
+        if (selectedResident) {
+            const { latitude, longitude } = selectedResident.noiThuongTru;
+            map.setView([latitude, longitude], 19);
+            const marker = markerRefs.current[selectedResident.danCuId];
+            if (marker) {
+                marker.openPopup();
+            }
+        }
+    }, [selectedResident, map, markerRefs]);
+
+    return null;
+}
+
 const ResidentMapPage = () => {
-
     const { account, tinhTrangHoGiaDinhs } = useStoreApp();
-
     const [sheetVisible, setSheetVisible] = useState(false);
     const [filter, setFilter] = useState<"poor" | "culture">("poor");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedResident, setSelectedResident] = useState(null);
+    const markerRefs = useRef({}); // Store marker refs to trigger Popups
 
     const handleSetFilter = useCallback((value: "poor" | "culture") => {
         setFilter(value);
+        setSearchTerm(""); // Reset search term when filter changes
+        setSelectedResident(null); // Reset selected resident when filter changes
     }, []);
 
-    const [param, setParam] = useState({
-        page: 1,
-        pageSize: 9999999,
-        ApId: account?.apId,
-        MaXa: account?.maXa,
-        keyword: '',
-        HoTen: '',
-        HoTenChuHo: '',
-        SoGiayTo: '',
-        LaChuHo: false
-    })
+    const { data: hoGiaDinh, isLoading: isLoadingHoGiaDinh } = useGetBanDoSo();
 
-    const { data, isLoading } = useGetResidentListNormal(param);
+    // Filter residents with valid coordinates
+    const residents = useMemo(() => {
+        if (!hoGiaDinh) return [];
+        return hoGiaDinh.filter(
+            res => res.noiThuongTru?.latitude && res.noiThuongTru?.longitude
+        );
+    }, [hoGiaDinh]);
 
-    function locChuHoCoToaDo(data: any[]) {
-        // Lọc ra chủ hộ có tọa độ
-        const chuHos = data.filter(danCu => {
-            const laChuHo = danCu.laChuHo === true;
-            const thuongTru = danCu.noiThuongTru;
-            const coToaDo = thuongTru?.latitude != null && thuongTru?.longitude != null;
-            return laChuHo && coToaDo;
+    // Filter residents based on selected filter
+    const filteredResidents = useMemo(() => {
+        return residents.filter(res => {
+            if (filter === "poor") {
+                return res.thongTinHoGiaDinh != null;
+            }
+            if (filter === "culture") {
+                return typeof res.thongTinHoGiaDinh?.giaDinhVanHoa === "boolean";
+            }
+            return false;
         });
+    }, [residents, filter]);
 
-        // Đếm số thành viên của mỗi hộ (giả sử cùng maHoKhau)
-        return chuHos.map(chuHo => {
-            const soThanhVien = data.filter(dc => dc.hoTenChuHo === chuHo.hoTenChuHo).length;
-            return {
-                ...chuHo,
-                soThanhVien,
-            };
+    // Filter residents by search term
+    const searchedResidents = useMemo(() => {
+        if (!searchTerm) return filteredResidents;
+        const lowerSearch = searchTerm.toLowerCase();
+        return filteredResidents.filter(res => {
+            const address = [
+                res.noiThuongTru?.diaChi,
+                res.noiThuongTru?.tenAp,
+                res.noiThuongTru?.tenXa,
+                res.noiThuongTru?.tenHuyen,
+                res.noiThuongTru?.tenTinh,
+            ]
+                .filter(Boolean)
+                .join(", ")
+                .toLowerCase();
+            return (
+                res.hoTen.toLowerCase().includes(lowerSearch) ||
+                address.includes(lowerSearch)
+            );
         });
-    }
-
-    const residents = locChuHoCoToaDo(data?.data || []);
-
-    const filteredResidents = residents.filter((res) => {
-        if (filter === "poor") return !!res.tinhTrangHoGiaDinhId;
-        if (filter === "culture") return typeof res.giaDinhVanHoa === "boolean";
-        return false;
-    });
+    }, [filteredResidents, searchTerm]);
 
     const center: [number, number] = useMemo(() => {
         if (residents.length > 0) {
@@ -89,11 +113,23 @@ const ResidentMapPage = () => {
     }, [residents]);
     const zoom = 15;
 
-    const getMarkerIcon = useCallback((status: any) => {
+    const getMarkerIcon = useCallback((resident: any) => {
+        const binthuong = tinhTrangHoGiaDinhs[0]?.value; // Normal
+        const hoCanNgheo = tinhTrangHoGiaDinhs[1]?.value; // Near poor
+        const hoNgheo = tinhTrangHoGiaDinhs[2]?.value; // Poor
 
-        const binthuong = tinhTrangHoGiaDinhs[0]?.value;
-        const hoCanNgheo = tinhTrangHoGiaDinhs[1]?.value;
-        const hoNgheo = tinhTrangHoGiaDinhs[2]?.value;
+        let status;
+        if (filter === "poor") {
+            if (resident.thongTinHoGiaDinh?.hoNgheo) {
+                status = hoNgheo;
+            } else if (resident.thongTinHoGiaDinh?.hoCanNgheo) {
+                status = hoCanNgheo;
+            } else {
+                status = binthuong;
+            }
+        } else {
+            status = resident.thongTinHoGiaDinh?.giaDinhVanHoa;
+        }
 
         const color = {
             [binthuong]: "#018abe",
@@ -117,128 +153,249 @@ const ResidentMapPage = () => {
             iconSize: [12, 12],
             iconAnchor: [6, 6],
         });
-    }, [tinhTrangHoGiaDinhs]);
+    }, [tinhTrangHoGiaDinhs, filter]);
+
+    // Handle clicking a household to move map and open Popup
+    const handleHouseholdClick = useCallback(
+        (resident) => {
+            setSelectedResident(resident);
+            setSheetVisible(false); // Close sheet after selection
+        },
+        []
+    );
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Bản đồ hộ dân" />
 
-                {
-                    isLoading ?
-                        <div className="relative w-full h-[calc(100vh-56px)] bg-gray-300 rounded">
-                            <Icon fontSize={48} color="white" icon='eos-icons:bubble-loading' className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
-                        </div>
-
-                        :
-                        filteredResidents.length > 0 ?
-                            <Box>
-                                <Box className="relative">
-                                    <LegendNote tinhTrang={tinhTrangHoGiaDinhs} filter={filter} />
-                                    <Box className="absolute top-[72px] right-3 z-[9999] border-[2px] rounded-md border-[#00000033]">
-                                        <button onClick={() => setSheetVisible(true)} className="p-2 bg-white text-[#a8a8a8] rounded-[5px] opacity-95">
-                                            <Icon fontSize={26} icon='line-md:filter-twotone' />
-                                        </button>
-                                    </Box>
-                                    <MapContainer style={{ height: "calc(100vh - 58px)", width: "100%" }} center={center} zoom={zoom}>
-                                        <LayersControl position="topright">
-                                            <LayersControl.BaseLayer name="Bản đồ đường">
-                                                <TileLayer
-                                                    url="https://mt1.google.com/vt/lyrs=m&hl=vi&x={x}&y={y}&z={z}"
-                                                    attribution=""
-                                                    maxZoom={22}
-                                                />
-                                            </LayersControl.BaseLayer>
-
-                                            <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
-                                                <TileLayer
-                                                    url="https://mt0.google.com/vt/lyrs=s&hl=vi&x={x}&y={y}&z={z}"
-                                                    attribution=""
-                                                    maxZoom={22}
-                                                />
-                                            </LayersControl.BaseLayer>
-
-                                        </LayersControl>
-                                        {
-                                            filteredResidents.map((res, index) => (
-                                                <Marker key={index} position={[res.noiThuongTru.latitude, res.noiThuongTru.longitude]} icon={filter === "poor" ? getMarkerIcon(res.tinhTrangHoGiaDinhId) : getMarkerIcon(res.giaDinhVanHoa)}>
-                                                    <Popup>
-                                                        <div className="mt-2">
-                                                            <ul className="flex flex-col gap-1 p-3 rounded-xl bg-gray-50 shadow-sm text-sm text-gray-700 w-full max-w-xs">
-                                                                
-                                                                <li className="flex gap-1">
-                                                                    <span className="font-medium text-gray-500">Chủ hộ:</span>
-                                                                    <span className="font-semibold text-gray-800 truncate">{res.hoTen}</span>
-                                                                </li>
-                                                                <li className="flex gap-1">
-                                                                    <span className="font-medium text-gray-500">Số thành viên:</span>
-                                                                    <span className="font-semibold text-gray-800">{res.soThanhVien}</span>
-                                                                </li>
-                                                                <li className="flex gap-1">
-                                                                    <span className="font-medium text-gray-500">Tình trạng:</span>
-                                                                    <span className="font-semibold text-gray-800">
-                                                                        {
-                                                                            filter === "poor"
-                                                                                ? tinhTrangHoGiaDinhs.find(i => i.value === res.tinhTrangHoGiaDinhId)?.label || "Không rõ"
-                                                                                : res.giaDinhVanHoa ? "Gia đình văn hóa" : "Chưa đạt văn hóa"
-                                                                        }
-                                                                    </span>
-                                                                </li>
-                                                                <li className="flex flex-col">
-                                                                    <span className="text-[13px] font-semibold text-gray-800">
-                                                                        {[res?.noiThuongTru?.diaChi, res?.noiThuongTru?.tenAp, res?.noiThuongTru?.tenXa, res?.noiThuongTru?.tenHuyen, res?.noiThuongTru?.tenTinh]
-                                                                            .filter(Boolean)
-                                                                            .join(", ")}
-                                                                    </span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </Popup>
-                                                </Marker>
-                                            ))
-                                        }
-
-                                        <FitBounds residents={residents} />
-                                    </MapContainer>
-                                </Box>
-
-                                <Sheet
-                                    visible={sheetVisible}
-                                    onClose={() => setSheetVisible(false)}
-                                    autoHeight
-                                    zIndex={9999}
+                {isLoadingHoGiaDinh ? (
+                    <div className="relative w-full h-[calc(100vh-56px)] bg-gray-300 rounded">
+                        <Icon
+                            fontSize={48}
+                            color="white"
+                            icon="eos-icons:bubble-loading"
+                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+                        />
+                    </div>
+                ) : filteredResidents.length > 0 ? (
+                    <Box>
+                        <Box className="relative">
+                            <LegendNote tinhTrang={tinhTrangHoGiaDinhs} filter={filter} />
+                            <Box className="absolute top-[72px] right-3 z-[9999] border-[2px] rounded-md border-[#00000033]">
+                                <button
+                                    onClick={() => setSheetVisible(true)}
+                                    className="p-2 bg-white text-[#a8a8a8] rounded-[5px] opacity-95"
                                 >
-                                    <Box mt={6} p={4} mb={10}>
-                                        <div className="grid grid-cols-2 gap-3">
-                                            <label className="cursor-pointer" onClick={() => handleSetFilter("poor")}>
-                                                <input type="radio" className="peer sr-only" name="pricing" defaultChecked />
-                                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
-                                                    <div className="flex flex-col gap-1">
-                                                        <div className="flex items-end justify-center">
-                                                            <p className="text-[13px] text-center font-bold">Hộ nghèo & cận nghèo</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                            <label className="cursor-pointer" onClick={() => handleSetFilter("culture")}>
-                                                <input type="radio" className="peer sr-only" name="pricing" />
-                                                <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
-                                                    <div className="flex flex-col gap-1">
-                                                        <div className="flex items-end justify-center">
-                                                            <p className="text-[13px] text-center font-bold">Gia đình văn hóa</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </label>
-                                        </div>
-                                    </Box>
-                                </Sheet>
+                                    <Icon fontSize={26} icon="line-md:filter-twotone" />
+                                </button>
                             </Box>
+                            <MapContainer
+                                style={{ height: "calc(100vh - 58px)", width: "100%" }}
+                                center={center}
+                                zoom={zoom}
+                            >
+                                <LayersControl position="topright">
+                                    <LayersControl.BaseLayer name="Bản đồ đường">
+                                        <TileLayer
+                                            url="https://mt1.google.com/vt/lyrs=m&hl=vi&x={x}&y={y}&z={z}"
+                                            attribution=""
+                                            maxZoom={22}
+                                        />
+                                    </LayersControl.BaseLayer>
+                                    <LayersControl.BaseLayer checked name="Bản đồ vệ tinh">
+                                        <TileLayer
+                                            url="https://mt0.google.com/vt/lyrs=s&hl=vi&x={x}&y={y}&z={z}"
+                                            attribution=""
+                                            maxZoom={22}
+                                        />
+                                    </LayersControl.BaseLayer>
+                                </LayersControl>
+                                {filteredResidents.map((res, index) => (
+                                    <Marker
+                                        key={index}
+                                        position={[res.noiThuongTru.latitude, res.noiThuongTru.longitude]}
+                                        icon={getMarkerIcon(res)}
+                                        ref={(ref) => {
+                                            markerRefs.current[res.danCuId] = ref;
+                                        }}
+                                    >
+                                        <Popup>
+                                            <div className="mt-2">
+                                                <ul className="py-2 flex flex-col gap-1 rounded-xl text-sm text-gray-700 w-full max-w-xs">
+                                                    <li className="flex gap-1">
+                                                        <span className="font-medium text-gray-500">Chủ hộ:</span>
+                                                        <span className="font-semibold text-gray-800 truncate">
+                                                            {res.hoTen}
+                                                        </span>
+                                                    </li>
+                                                    <li className="flex gap-1">
+                                                        <span className="font-medium text-gray-500">Số thành viên:</span>
+                                                        <span className="font-semibold text-gray-800">
+                                                            {res.soLuongThanhVien + 1}
+                                                        </span>
+                                                    </li>
+                                                    <li className="flex gap-1">
+                                                        <span className="font-medium text-gray-500 flex-1 whitespace-nowrap">Địa chỉ:</span>
+                                                        <span className="text-[13px] font-semibold text-gray-800">
+                                                            {[
+                                                                res?.noiThuongTru?.diaChi,
+                                                                res?.noiThuongTru?.tenAp,
+                                                                res?.noiThuongTru?.tenXa,
+                                                                res?.noiThuongTru?.tenHuyen,
+                                                                res?.noiThuongTru?.tenTinh,
+                                                            ]
+                                                                .filter(Boolean)
+                                                                .join(", ")}
+                                                        </span>
+                                                    </li>
+                                                    <li className="flex gap-1">
+                                                        <span className="font-medium text-gray-500">Tình trạng:</span>
+                                                        <span className="font-semibold text-gray-800 flex flex-col">
+                                                            <span
+                                                                style={{
+                                                                    color: res.thongTinHoGiaDinh?.hoNgheo
+                                                                        ? "#c1121f"
+                                                                        : res.thongTinHoGiaDinh?.hoCanNgheo
+                                                                            ? "#ff6d00"
+                                                                            : "#018abe",
+                                                                }}
+                                                            >
+                                                                {res.thongTinHoGiaDinh?.hoNgheo
+                                                                    ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[2]?.value)?.label || "Hộ nghèo"
+                                                                    : res.thongTinHoGiaDinh?.hoCanNgheo
+                                                                        ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[1]?.value)?.label || "Hộ cận nghèo"
+                                                                        : tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[0]?.value)?.label || "Hộ bình thường"}
+                                                            </span>
+                                                            {typeof res.thongTinHoGiaDinh?.giaDinhVanHoa === "boolean" && (
+                                                                <span
+                                                                    style={{
+                                                                        color: res.thongTinHoGiaDinh.giaDinhVanHoa ? "#008000" : "#e66f5c",
+                                                                    }}
+                                                                >
+                                                                    {res.thongTinHoGiaDinh.giaDinhVanHoa ? "Gia đình văn hóa" : "Chưa đạt văn hóa"}
+                                                                </span>
+                                                            )}
+                                                        </span>
+                                                    </li>
 
-                            : <EmptyData title="Không có dữ liệu" />
-                }
+                                                </ul>
+                                            </div>
+                                        </Popup>
+                                    </Marker>
+                                ))}
+                                <FitBounds residents={residents} />
+                                <MapController
+                                    selectedResident={selectedResident}
+                                    markerRefs={markerRefs}
+                                    zoom={zoom}
+                                />
+                            </MapContainer>
+                        </Box>
 
-
+                        <Sheet
+                            visible={sheetVisible}
+                            onClose={() => setSheetVisible(false)}
+                            autoHeight
+                            zIndex={9999}
+                        >
+                            <Box p={4}>
+                                <div className="grid grid-cols-2 gap-3 mb-6">
+                                    <label className="cursor-pointer" onClick={() => handleSetFilter("poor")}>
+                                        <input
+                                            type="radio"
+                                            className="peer sr-only"
+                                            name="pricing"
+                                            defaultChecked
+                                        />
+                                        <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
+                                            <div className="flex flex-col gap-1">
+                                                <div className="flex items-end justify-center">
+                                                    <p className="text-[13px] text-center font-bold">
+                                                        Hộ nghèo & cận nghèo
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <label className="cursor-pointer" onClick={() => handleSetFilter("culture")}>
+                                        <input type="radio" className="peer sr-only" name="pricing" />
+                                        <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
+                                            <div className="flex flex-col gap-1">
+                                                <div className="flex items-end justify-center">
+                                                    <p className="text-[13px] text-center font-bold">
+                                                        Gia đình văn hóa
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <Input
+                                    type="text"
+                                    placeholder="Tìm kiếm theo tên hoặc địa chỉ..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="mb-4"
+                                />
+                                <div className="mt-2 h-[500px] overflow-y-auto">
+                                    {searchedResidents.length > 0 ? (
+                                        searchedResidents.map((res) => (
+                                            <div
+                                                key={res.danCuId}
+                                                className="p-3 mb-2 bg-blue-50 rounded-lg cursor-pointer hover:bg-gray-100 box-shadow-1"
+                                                onClick={() => handleHouseholdClick(res)}
+                                            >
+                                                <p className="text-[16px] font-semibold text-primary-color mb-1">{res.hoTen}</p>
+                                                <p className="text-[13px] leading-[16px] font-medium text-gray-600">
+                                                    {[
+                                                        res.noiThuongTru?.diaChi,
+                                                        res.noiThuongTru?.tenAp,
+                                                        res.noiThuongTru?.tenXa,
+                                                        res.noiThuongTru?.tenHuyen,
+                                                        res.noiThuongTru?.tenTinh,
+                                                    ]
+                                                        .filter(Boolean)
+                                                        .join(", ")}
+                                                </p>
+                                                <p className="text-[13px] leading-[16px] font-medium mt-1">
+                                                    <span
+                                                        style={{
+                                                            color: res.thongTinHoGiaDinh?.hoNgheo
+                                                                ? "#c1121f"
+                                                                : res.thongTinHoGiaDinh?.hoCanNgheo
+                                                                    ? "#ff6d00"
+                                                                    : "#018abe",
+                                                        }}
+                                                    >
+                                                        {res.thongTinHoGiaDinh?.hoNgheo
+                                                            ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[2]?.value)?.label || "Hộ nghèo"
+                                                            : res.thongTinHoGiaDinh?.hoCanNgheo
+                                                                ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[1]?.value)?.label || "Hộ cận nghèo"
+                                                                : tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[0]?.value)?.label || "Hộ bình thường"}
+                                                    </span>
+                                                    {typeof res.thongTinHoGiaDinh?.giaDinhVanHoa === "boolean" && (
+                                                        <span
+                                                            style={{
+                                                                color: res.thongTinHoGiaDinh.giaDinhVanHoa ? "#008000" : "#e66f5c",
+                                                            }}
+                                                        >
+                                                            {`, ${res.thongTinHoGiaDinh.giaDinhVanHoa ? "Gia đình văn hóa" : "Chưa đạt văn hóa"}`}
+                                                        </span>
+                                                    )}
+                                                </p>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-center text-gray-500">Không tìm thấy hộ gia đình</p>
+                                    )}
+                                </div>
+                            </Box>
+                        </Sheet>
+                    </Box>
+                ) : (
+                    <EmptyData title="Không có dữ liệu" />
+                )}
             </Box>
         </Page>
     );

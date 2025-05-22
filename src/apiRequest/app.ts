@@ -5,12 +5,13 @@ const appApiRequest = {
     getHuyen: (maTinh: string) => http.get<any>(`/huyen/tinh/${maTinh}`),
     getXa: (maHuyen: string) => http.get<any>(`/xa/huyen/${maHuyen}`),
     getAp: (maXa: string) => http.get<any>(`/ap/xa/${maXa}`),
-    getSoLieuHienThi: () => http.get<any>(`/thongkebaocao/solieuhienthitrangchumobileapp`),getsoLuongTaiKhoanTrongDiaPhuong: () => http.get<any>(`/thongkebaocao/soluongtaikhoantrongdiaphuong`),
+    getSoLieuHienThi: () => http.get<any>(`/thongkebaocao/solieuhienthitrangchumobileapp`), getsoLuongTaiKhoanTrongDiaPhuong: () => http.get<any>(`/thongkebaocao/soluongtaikhoantrongdiaphuong`),
+    getBanDoSo: () => http.get<any>(`/bandoso/hogiadinh`),
 }
 
 /**
 * GET HUYEN
-**/ 
+**/
 export const useGetHuyenList = (maTinh: string) => {
 
     return useQuery({
@@ -34,7 +35,7 @@ export const useGetHuyenList = (maTinh: string) => {
 
 /**
 * GET XA
-**/ 
+**/
 export const useGetXaList = (maHuyen: string) => {
 
     return useQuery({
@@ -58,7 +59,7 @@ export const useGetXaList = (maHuyen: string) => {
 
 /**
 * GET AP
-**/ 
+**/
 export const useGetApList = (maXa: string) => {
 
     return useQuery({
@@ -82,7 +83,7 @@ export const useGetApList = (maXa: string) => {
 
 /**
 * GET SO LIEU THONG KE
-**/ 
+**/
 export const useGetSoLieuHienThi = () => {
 
     return useQuery({
@@ -111,6 +112,26 @@ export const useGetSoLuongTaiKhoanTrongAp = () => {
             try {
 
                 const res = await appApiRequest.getsoLuongTaiKhoanTrongDiaPhuong();
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+export const useGetBanDoSo = () => {
+
+    return useQuery({
+        queryKey: ['banDoSo'],
+        queryFn: async () => {
+            try {
+
+                const res = await appApiRequest.getBanDoSo();
 
                 return res.data
             } catch (error) {
