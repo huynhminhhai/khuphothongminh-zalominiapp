@@ -19,7 +19,7 @@ const NewsSection: React.FC = () => {
     const { account } = useStoreApp()
     const [param, setParam] = useState({
         page: 1,
-        pageSize: 4,
+        pageSize: 5,
         ApId: account ? account?.apId : 0,
         keyword: '',
         NgayXuatBanTuNgay: '',

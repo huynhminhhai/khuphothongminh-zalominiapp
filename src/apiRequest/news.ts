@@ -4,6 +4,19 @@ import { buildQueryString } from 'utils/handleApi';
 import { useCustomSnackbar } from 'utils/useCustomSnackbar';
 import { useNavigate } from 'zmp-ui';
 
+type NewsQueryParams = {
+    page: number;
+    pageSize: number;
+    ApId?: number;
+    MaXa?: string;
+    NguoiTao?: number;
+    keyword?: string;
+    NgayXuatBanTuNgay?: string;
+    NgayXuatBanDenNgay?: string;
+    TacGia?: string;
+    TieuDe?: string;
+};
+
 const newsApiRequest = {
     getNewsList: async (param: any) => {
 
@@ -16,12 +29,14 @@ const newsApiRequest = {
             NgayXuatBanDenNgay: param.NgayXuatBanDenNgay,
             TacGia: param.TacGia,
             TieuDe: param.TieuDe,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao
         });
 
         return await http.get<any>(`/tintuc?${queryString}`);
     },
     getNewsPublicList: async (param: any) => {
-        
+
         const queryString = buildQueryString({
             current: param.page,
             size: param.pageSize,
@@ -30,9 +45,11 @@ const newsApiRequest = {
             NgayXuatBanTuNgay: param.NgayXuatBanTuNgay,
             NgayXuatBanDenNgay: param.NgayXuatBanDenNgay,
             TacGia: param.TacGia,
-            TieuDe: param.TieuDe
+            TieuDe: param.TieuDe,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao
         });
-    
+
         return await http.get<any>(`/tintuc/danhsachxuatban${queryString}`);
     },
     getNewsDetail: async (id: number) => {
@@ -61,16 +78,7 @@ const newsApiRequest = {
 /**
 * GET NEWS LIST
 **/
-export const useGetNewsListNormal = (param: {
-    page: number;
-    pageSize: number;
-    ApId: number;
-    keyword: string;
-    NgayXuatBanTuNgay?: string;
-    NgayXuatBanDenNgay?: string;
-    TacGia?: string;
-    TieuDe?: string;
-}) => {
+export const useGetNewsListNormal = (param: NewsQueryParams) => {
     return useQuery({
         queryKey: ['newsList', param],
         queryFn: async () => {
@@ -85,16 +93,7 @@ export const useGetNewsListNormal = (param: {
 /**
 * GET NEWS PUBLIC LIST
 **/
-export const useGetNewsPublicListNormal = (param: {
-    page: number;
-    pageSize: number;
-    ApId: number;
-    keyword: string;
-    NgayXuatBanTuNgay?: string;
-    NgayXuatBanDenNgay?: string;
-    TacGia?: string;
-    TieuDe?: string;
-}) => {
+export const useGetNewsPublicListNormal = (param: NewsQueryParams) => {
     return useQuery({
         queryKey: ['newsList', param],
         queryFn: async () => {
@@ -108,19 +107,11 @@ export const useGetNewsPublicListNormal = (param: {
 
 /**
 * GET NEWS LIST (INFINITE)
+* QUERYKEY MUST BE NOT CONTAIN PARAM.PAGE AND DO NOT DESTRUCTURING
 **/
-export const useGetNewsList = (param: {
-    page: number;
-    pageSize: number,
-    ApId: number;
-    keyword: string;
-    NgayXuatBanTuNgay?: string;
-    NgayXuatBanDenNgay?: string;
-    TacGia?: string;
-    TieuDe?: string;
-}) => {
+export const useGetNewsList = (param: NewsQueryParams) => {
     return useInfiniteQuery({
-        queryKey: ['newsList', param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe],
+        queryKey: ['newsList', param.pageSize, param.ApId, param.keyword, param.NgayXuatBanTuNgay, param.NgayXuatBanDenNgay, param.TacGia, param.TieuDe, param.MaXa, param.NguoiTao],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
