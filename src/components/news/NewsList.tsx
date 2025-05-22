@@ -8,7 +8,6 @@ import { EmptyData } from "components/data";
 import { useGetNewsList } from "apiRequest/news";
 import { useStoreApp } from "store/store";
 import { FilterBar2 } from "components/table";
-import { Divider } from "components/divider";
 import { debounce } from "lodash";
 import { formatDate, parseDate } from "components/form/DatePicker";
 
@@ -23,7 +22,8 @@ const NewsList: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 5,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         NgayXuatBanTuNgay: '',
         NgayXuatBanDenNgay: '',

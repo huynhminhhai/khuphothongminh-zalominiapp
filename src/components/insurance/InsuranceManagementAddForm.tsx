@@ -6,9 +6,7 @@ import { PrimaryButton } from "components/button"
 import { FormControllerDatePicker, FormInputField, FormSelectField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataInsurance, schemaInsurance } from "./type"
-import { useStoreApp } from "store/store"
 import { useCreateInsurance } from "apiRequest/insurance"
-import { useGetResidentListNormal } from "apiRequest/resident"
 import { useSearchParams } from "react-router-dom"
 
 const defaultValues: FormDataInsurance = {

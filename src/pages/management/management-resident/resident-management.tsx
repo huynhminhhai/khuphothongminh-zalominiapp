@@ -31,7 +31,8 @@ const ResidentManagementPage: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         HoTen: '',
         HoTenChuHo: '',

@@ -2,6 +2,22 @@ import http from "services/http";
 import { useMutation, useQueries, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "zmp-ui";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
+import { buildQueryString } from "utils/handleApi";
+
+export type ResidentQueryParams = {
+    page: number;
+    pageSize: number;
+    keyword?: string;
+    ApId?: number;
+    MaXa?: string;
+    NguoiTao?: number;
+    HoTen?: string;
+    HoTenChuHo?: string;
+    SoGiayTo?: string;
+    LaChuHo?: boolean;
+    TinhTrangHoGiaDinhId?: number;
+    TinhTrangBaoHiemYTeId?: number;
+};
 
 const residentApiRequest = {
     getFamilyNumber: async () => {
@@ -19,8 +35,23 @@ const residentApiRequest = {
     getResidentCategory: async () => {
         return await http.get<any>(`/dancu/danhmuc`);
     },
-    getResidentList: async (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; HoTenChuHo?: string; SoGiayTo?: string; LaChuHo?: boolean;}) => {
-        return await http.get<any>(`/dancu?current=${param.page}&size=${param.pageSize}&ApId=${param.ApId}&TextSearch=${param.keyword}&HoTen=${param.HoTen}&HoTenChuHo=${param.HoTenChuHo}&SoGiayTo=${param.SoGiayTo}&LaChuHo=${param.LaChuHo}`);
+    getResidentList: async (param: ResidentQueryParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            ApId: param.ApId,
+            MaXa: param.MaXa,
+            NguoiTao: param.NguoiTao,
+            TextSearch: param.keyword,
+            HoTen: param.HoTen,
+            HoTenChuHo: param.HoTenChuHo,
+            SoGiayTo: param.SoGiayTo,
+            LaChuHo: param.LaChuHo,
+            TinhTrangHoGiaDinhId: param.TinhTrangHoGiaDinhId,
+            TinhTrangBaoHiemYTeId: param.TinhTrangBaoHiemYTeId
+        });
+
+        return await http.get<any>(`/dancu${queryString}`);
     },
     getChuHosList: async () => {
         return await http.get<any>(`/dancu/chuhos`);
@@ -135,9 +166,9 @@ export const useGetResidentCategory = () => {
 /**
 * GET RESIDENT LIST
 **/
-export const useGetResidentListNormal = (param: { page: number; pageSize: number; ApId: number; keyword: string; HoTen?: string; HoTenChuHo?: string; SoGiayTo?: string; LaChuHo?: boolean; }) => {
+export const useGetResidentListNormal = (param: ResidentQueryParams) => {
     return useQuery({
-        queryKey: ['residentList', param.page, param.pageSize, param.ApId, param.keyword, param.HoTen, param.SoGiayTo, param.LaChuHo, param.HoTenChuHo],
+        queryKey: ['residentList', param],
         queryFn: async () => {
             try {
                 const res = await residentApiRequest.getResidentList(param);

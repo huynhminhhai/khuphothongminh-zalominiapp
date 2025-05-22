@@ -42,7 +42,8 @@ const ResidentMapPage = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 9999999,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         HoTen: '',
         HoTenChuHo: '',

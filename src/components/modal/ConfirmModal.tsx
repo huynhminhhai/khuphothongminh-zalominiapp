@@ -32,12 +32,14 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
           }}
         >
           <Button
+            size="medium"
             onClick={onCancel}
-            style={{ flex: 1, backgroundColor: "#f8f9fa", color: "#000" }}
+            style={{ flex: 1, backgroundColor: "#ececec", color: "#000" }}
           >
             Hủy
           </Button>
           <Button
+            size="medium"
             onClick={onConfirm}
             style={{ flex: 1, backgroundColor: "#007bff", color: "#fff" }}
           >

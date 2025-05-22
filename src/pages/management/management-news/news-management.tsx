@@ -33,7 +33,8 @@ const NewsManagementPage: React.FC = () => {
     const [param, setParam] = useState({
         page: 1,
         pageSize: 10,
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         keyword: '',
         NgayXuatBanTuNgay: '',
         NgayXuatBanDenNgay: '',
@@ -102,7 +103,7 @@ const NewsManagementPage: React.FC = () => {
     const removeNews = (id: number) => {
         openConfirmModal(() => {
             deleteNews(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa phản ánh này?');
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa tin tức này?');
     }
 
     const columns: ColumnDef<NewsType>[] = [
@@ -300,8 +301,8 @@ const NewsManagementPage: React.FC = () => {
             </Box>
             <ConfirmModal
                 visible={isConfirmVisible}
-                title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa tin tức này không?"
+                title={modalContent.title}
+                message={modalContent.message}
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

@@ -35,7 +35,8 @@ const InsuranceManagementPage: React.FC = () => {
         HoTen: "",
         HoTenChuHo: "",
         SoGiayTo: "",
-        ApId: account ? account?.apId : 0,
+        ApId: account?.apId,
+        MaXa: account?.maXa,
         LaChuHo: false,
     });
 

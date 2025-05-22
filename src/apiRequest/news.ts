@@ -18,7 +18,7 @@ type NewsQueryParams = {
 };
 
 const newsApiRequest = {
-    getNewsList: async (param: any) => {
+    getNewsList: async (param: NewsQueryParams) => {
 
         const queryString = buildQueryString({
             current: param.page,
@@ -33,9 +33,9 @@ const newsApiRequest = {
             NguoiTao: param.NguoiTao
         });
 
-        return await http.get<any>(`/tintuc?${queryString}`);
+        return await http.get<any>(`/tintuc${queryString}`);
     },
-    getNewsPublicList: async (param: any) => {
+    getNewsPublicList: async (param: NewsQueryParams) => {
 
         const queryString = buildQueryString({
             current: param.page,
