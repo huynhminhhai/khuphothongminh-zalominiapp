@@ -103,64 +103,114 @@ const HouseholdManagementPage: React.FC = () => {
         {
             accessorKey: 'hoTen',
             header: 'Chủ hộ',
-            size: 200
+            size: 180,
+            cell: ({ row }) => (
+                <div>
+                    {row.original.hoTen}
+                </div>
+            )
         },
         {
             id: 'thuongTru',
             header: 'Thường trú',
+            size: 250,
             cell: ({ row }) => (
-                <div className="line-clamp-2 text-[14px]">
+                <div>
                     {formatAddress(row.original.noiThuongTru)}
                 </div>
             ),
-            size: 300
         },
         {
             id: 'hoNgheo',
             header: 'Hộ nghèo',
+            size: 140,
             cell: ({ row }) => (
-                <div
+                <button
                     onClick={() => navigate(`/household-hongheo-update?danCuId=${row.original.danCuId}&loai=1`)}
+                    className="focus:outline-none"
+                    aria-label={row.original.thongTinHoGiaDinh?.chiTietHoNgheo ? 'Cập nhật hộ nghèo' : 'Thêm hộ nghèo'}
                 >
-                    {
-                        row.original.thongTinHoGiaDinh?.chiTietHoNgheo ?
-                            <div className="text-[12px] font-semibold leading-[1] text-red-700 px-4 py-1 border-[2px] border-red-700 w-fit rounded-3xl">Là hộ nghèo</div>
-                            : <div className="text-[12px] font-semibold leading-[1] text-gray-500 px-4 py-1 border-[2px] border-gray-500 w-fit rounded-3xl">Không có</div>
-
-                    }
-                </div>
+                    <div
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-semibold transition-colors duration-200 ${row.original.thongTinHoGiaDinh?.chiTietHoNgheo
+                                ? 'bg-red-100 text-red-700 border border-red-300 hover:bg-red-200'
+                                : 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                            }`}
+                    >
+                        {row.original.thongTinHoGiaDinh?.chiTietHoNgheo ? (
+                            <>
+                                <Icon icon="mdi:check-circle" fontSize={14} />
+                                Là hộ nghèo
+                            </>
+                        ) : (
+                            <>
+                                <Icon icon="mdi:close-circle" fontSize={14} />
+                                Không có
+                            </>
+                        )}
+                    </div>
+                </button>
             ),
         },
         {
             id: 'hoCanNgheo',
             header: 'Hộ cận nghèo',
+            size: 140,
             cell: ({ row }) => (
-                <div
+                <button
                     onClick={() => navigate(`/household-hongheo-update?danCuId=${row.original.danCuId}&loai=2`)}
+                    className="focus:outline-none"
+                    aria-label={row.original.thongTinHoGiaDinh?.chiTietHoCanNgheo ? 'Cập nhật hộ cận nghèo' : 'Thêm hộ cận nghèo'}
                 >
-                    {
-                        row.original.thongTinHoGiaDinh?.chiTietHoCanNgheo ?
-                            <div className="text-[12px] font-semibold leading-[1] text-orange-700 px-4 py-1 border-[2px] border-orange-700 w-fit rounded-3xl">Là hộ cận nghèo</div>
-                            : <div className="text-[12px] font-semibold leading-[1] text-gray-500 px-4 py-1 border-[2px] border-gray-500 w-fit rounded-3xl">Không có</div>
-
-                    }
-                </div>
+                    <div
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-semibold transition-colors duration-200 ${row.original.thongTinHoGiaDinh?.chiTietHoCanNgheo
+                                ? 'bg-orange-100 text-orange-700 border border-orange-300 hover:bg-orange-200'
+                                : 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                            }`}
+                    >
+                        {row.original.thongTinHoGiaDinh?.chiTietHoCanNgheo ? (
+                            <>
+                                <Icon icon="mdi:check-circle" fontSize={14} />
+                                Là hộ cận nghèo
+                            </>
+                        ) : (
+                            <>
+                                <Icon icon="mdi:close-circle" fontSize={14} />
+                                Không có
+                            </>
+                        )}
+                    </div>
+                </button>
             ),
         },
         {
             id: 'giaDinhVanHoa',
             header: 'Gia đình văn hóa',
+            size: 140,
             cell: ({ row }) => (
-                <div
+                <button
                     onClick={() => navigate(`/household-hongheo-update?danCuId=${row.original.danCuId}&loai=3`)}
+                    className="focus:outline-none"
+                    aria-label={row.original.thongTinHoGiaDinh?.chiTietGiaDinhVanHoa ? 'Cập nhật gia đình văn hóa' : 'Thêm gia đình văn hóa'}
                 >
-                    {
-                        row.original.thongTinHoGiaDinh?.chiTietGiaDinhVanHoa ?
-                            <div className="text-[12px] font-semibold leading-[1] text-green-700 px-4 py-1 border-[2px] border-green-700 w-fit rounded-3xl">Đạt chuẩn</div>
-                            : <div className="text-[12px] font-semibold leading-[1] text-gray-500 px-4 py-1 border-[2px] border-gray-500 w-fit rounded-3xl">Chưa đạt chuẩn</div>
-
-                    }
-                </div>
+                    <div
+                        className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-semibold transition-colors duration-200 ${row.original.thongTinHoGiaDinh?.chiTietGiaDinhVanHoa
+                                ? 'bg-green-100 text-green-700 border border-green-300 hover:bg-green-200'
+                                : 'bg-gray-100 text-gray-600 border border-gray-300 hover:bg-gray-200'
+                            }`}
+                    >
+                        {row.original.thongTinHoGiaDinh?.chiTietGiaDinhVanHoa ? (
+                            <>
+                                <Icon icon="mdi:check-circle" fontSize={14} />
+                                Đạt chuẩn
+                            </>
+                        ) : (
+                            <>
+                                <Icon icon="mdi:close-circle" fontSize={14} />
+                                Chưa đạt chuẩn
+                            </>
+                        )}
+                    </div>
+                </button>
             ),
         },
         {

@@ -87,21 +87,25 @@ const TransactionsDetailCreateForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <Box mb={4}>
-                            <div className="text-[14px] font-medium flex items-center gap-1 mb-1">
-                                <span>
-                                    - Nội dung: 
+                            <div className="flex items-center gap-2 text-[15px] font-medium text-gray-800">
+                                <span className="text-gray-600">
+                                    Nội dung: 
                                 </span>
-                                {
-                                    isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.noiDung
-                                }
+                                <span className="truncate max-w-[250px] font-semibold">
+                                    {
+                                        isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.noiDung
+                                    }
+                                </span>
                             </div>
-                            <div className="text-[14px] font-medium flex items-center gap-1">
-                                <span>
-                                    - Loại: 
+                            <div className="flex items-center gap-2 text-[15px] font-medium text-gray-800">
+                                <span className="text-gray-600">
+                                    Loại: 
                                 </span>
-                                {
-                                    isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.tenLoaiGiaoDichTaiChinh
-                                }
+                                <span className="truncate max-w-[250px] font-semibold">
+                                    {
+                                        isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : detailData?.tenLoaiGiaoDichTaiChinh
+                                    }
+                                </span>
                             </div>
                         </Box>
                     </div>

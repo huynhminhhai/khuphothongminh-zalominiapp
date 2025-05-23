@@ -74,7 +74,7 @@ const HouseholdHoNgheoUpdateForm: React.FC = () => {
 
                     console.log(dataSubmit)
 
-                    openConfirmModal( async () => {
+                    openConfirmModal(async () => {
                         await updateHouseholdInfo(dataSubmit);
                     }, 'Xác nhận cập nhật', 'Bạn có chắc chắn muốn cập nhật thông tin này?');
                 } else {
@@ -94,7 +94,7 @@ const HouseholdHoNgheoUpdateForm: React.FC = () => {
                         danCuId: Number(danCuId)
                     }
 
-                    openConfirmModal( async () => {
+                    openConfirmModal(async () => {
                         await createHouseholdInfo(dataSubmit);
                     }, 'Xác nhận thêm', 'Bạn có chắc chắn muốn thêm thông tin này?');
 
@@ -136,41 +136,65 @@ const HouseholdHoNgheoUpdateForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
-                        <Box mb={4}>
-                            <div className="text-[14px] font-medium flex items-center gap-1 mb-1">
-                                <span>
-                                    Chủ hộ:
-                                </span>
-                                {
-                                    isLoadingDetail ? <Icon icon='line-md:loading-twotone-loop' /> : `${residentDetail?.hoTen} - ${residentDetail?.soGiayTo}`
-                                }
+                        <div className="flex flex-col gap-2 mb-4">
+                            <div className="flex items-center gap-2 text-[15px] font-medium text-gray-800">
+                                <span className="text-gray-600">Chủ hộ:</span>
+                                {isLoadingDetail ? (
+                                    <div className="flex items-center gap-1 text-gray-500" role="status" aria-label="Đang tải thông tin chủ hộ">
+                                        <Icon icon="line-md:loading-twotone-loop" fontSize={16} className="text-gray-400" />
+                                    </div>
+                                ) : (
+                                    <span
+                                        className="truncate max-w-[250px] font-semibold"
+                                        title={`${residentDetail?.hoTen} - ${residentDetail?.soGiayTo}`}
+                                    >
+                                        {residentDetail?.hoTen ? `${residentDetail.hoTen} - ${residentDetail.soGiayTo}` : 'Chưa có dữ liệu'}
+                                    </span>
+                                )}
                             </div>
-                            <div className="text-[14px] font-medium flex items-center gap-1">
-                                <span>
-                                    Công nhận:
-                                </span>
+                            <div className="flex items-center gap-2 text-[15px] font-medium text-gray-800">
+                                <span className="text-gray-600">Công nhận:</span>
                                 <span
-                                    style={{ fontWeight: 600 }}
-                                    className={
-                                        Number(loai) === 1
-                                            ? 'text-red-700'
+                                    className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[13px] font-semibold transition-colors duration-200 ${Number(loai) === 1
+                                            ? 'bg-red-100 text-red-700 border border-red-300'
                                             : Number(loai) === 2
-                                                ? 'text-orange-500'
+                                                ? 'bg-orange-100 text-orange-700 border border-orange-300'
                                                 : Number(loai) === 3
-                                                    ? 'text-green-600'
-                                                    : ''
+                                                    ? 'bg-green-100 text-green-700 border border-green-300'
+                                                    : 'bg-gray-100 text-gray-600 border border-gray-300'
+                                        }`}
+                                    role="status"
+                                    aria-label={
+                                        Number(loai) === 1
+                                            ? 'Hộ nghèo'
+                                            : Number(loai) === 2
+                                                ? 'Hộ cận nghèo'
+                                                : Number(loai) === 3
+                                                    ? 'Gia đình văn hóa'
+                                                    : 'Không xác định'
                                     }
                                 >
+                                    <Icon
+                                        icon={
+                                            Number(loai) === 1 || Number(loai) === 2
+                                                ? 'mdi:alert-circle'
+                                                : Number(loai) === 3
+                                                    ? 'mdi:check-circle'
+                                                    : 'mdi:information-outline'
+                                        }
+                                        fontSize={14}
+                                        aria-hidden="true"
+                                    />
                                     {Number(loai) === 1
                                         ? 'Hộ nghèo'
                                         : Number(loai) === 2
                                             ? 'Hộ cận nghèo'
                                             : Number(loai) === 3
                                                 ? 'Gia đình văn hóa'
-                                                : ''}
+                                                : 'Không xác định'}
                                 </span>
                             </div>
-                        </Box>
+                        </div>
                     </div>
 
                     <div className="col-span-12">
@@ -230,7 +254,7 @@ const HouseholdHoNgheoUpdateForm: React.FC = () => {
                                 householdDetail &&
                                 <Button
                                     onClick={() => removeInfo(householdDetail?.thongTinHoGiaDinhId)}
-                                    className="!bg-red-700"
+                                    className="!bg-red-100 !text-red-700"
                                 >Xóa</Button>
                             }
 

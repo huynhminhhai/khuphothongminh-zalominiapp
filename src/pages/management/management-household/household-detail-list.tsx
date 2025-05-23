@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { useGetHouseholdListNormal } from "apiRequest/household"
 import { EmptyData } from "components/data"
@@ -17,11 +18,10 @@ const statusLabels = {
 };
 
 const statusColors = {
-    hoNgheo: "text-red-500 border-red-500",
-    hoCanNgheo: "text-orange-500 border-orange-500",
-    giaDinhVanHoa: "text-green-600 border-green-600",
+    hoNgheo: 'bg-red-100 text-red-700 border-red-300',
+    hoCanNgheo: 'bg-orange-100 text-orange-700 border-orange-300',
+    giaDinhVanHoa: 'bg-green-100 text-green-700 border-green-300',
 };
-
 
 const HouseholdDetailListPage: React.FC = () => {
 
@@ -79,17 +79,24 @@ const HouseholdDetailListPage: React.FC = () => {
     const columns: ColumnDef<any>[] = [
         {
             id: 'congNhan',
-            header: 'Công nhận',
+            header: () => <div className="text-[13px] font-semibold text-gray-700">Công nhận</div>,
+            size: 180,
             cell: ({ row }) => (
-                <div>
+                <div className="flex flex-wrap gap-2">
                     {Object.entries(statusLabels).map(([key, label]) => {
-                        if (!row.original[key]) return null; // chỉ hiển thị nếu true
-
+                        if (!row.original[key]) return null; // Only show if true
                         return (
                             <div
                                 key={key}
-                                className={`border-[2px] w-fit px-3 py-1 rounded-full text-[12px] font-semibold leading-[1] ${statusColors[key]}`}
+                                className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-semibold border transition-colors duration-200 ${statusColors[key]}`}
+                                role="status"
+                                aria-label={label}
                             >
+                                <Icon
+                                    icon="mdi:check-circle"
+                                    fontSize={14}
+                                    aria-hidden="true"
+                                />
                                 {label}
                             </div>
                         );
@@ -99,52 +106,54 @@ const HouseholdDetailListPage: React.FC = () => {
         },
         {
             id: 'soHieu',
-            header: 'Số, ký hiệu văn bản',
+            header: () => <div className="text-[13px] font-semibold text-gray-700">Số, ký hiệu văn bản</div>,
+            size: 150,
             cell: ({ row }) => (
-                <div>
-                    {
-                        row.original.soHieu || '-'
-                    }
+                <div className="text-[13px] text-gray-600 truncate">
+                    {row.original.soHieu || <span className="text-gray-400">-</span>}
                 </div>
             ),
         },
         {
             id: 'trichYeu',
-            header: 'Trích yếu',
+            header: () => <div className="text-[13px] font-semibold text-gray-700">Trích yếu</div>,
+            size: 250,
             cell: ({ row }) => (
-                <div>
-                    {
-                        row.original.trichYeu || '-'
-                    }
+                <div
+                    className="text-[13px] text-gray-600 line-clamp-2 leading-tight"
+                    title={row.original.trichYeu || ''}
+                >
+                    {row.original.trichYeu || <span className="text-gray-400">-</span>}
                 </div>
             ),
         },
         {
             id: 'coQuanBanHanh',
-            header: 'Cơ quan ban hành',
+            header: () => <div className="text-[13px] font-semibold text-gray-700">Cơ quan ban hành</div>,
+            size: 200,
             cell: ({ row }) => (
-                <div>
-                    {
-                        row.original.coQuanBanHanh || '-'
-                    }
+                <div className="text-[13px] text-gray-600 truncate">
+                    {row.original.coQuanBanHanh || <span className="text-gray-400">-</span>}
                 </div>
             ),
         },
         {
             id: 'tuNgay',
-            header: 'Ngày công nhận',
+            header: () => <div className="text-[13px] font-semibold text-gray-700">Ngày công nhận</div>,
+            size: 120,
             cell: ({ row }) => (
-                <div>
-                    {formatDate(row.original.tuNgay)}
+                <div className="text-[13px] text-gray-600">
+                    {formatDate(row.original.tuNgay) || <span className="text-gray-400">-</span>}
                 </div>
             ),
         },
         {
             id: 'denNgay',
-            header: 'Ngày hết hạn',
+            header: () => <div className="text-[13px] font-semibold text-gray-700">Ngày hết hạn</div>,
+            size: 120,
             cell: ({ row }) => (
-                <div>
-                    {row.original.denNgay ? formatDate(row.original.denNgay) : '-'}
+                <div className="text-[13px] text-gray-600">
+                    {row.original.denNgay ? formatDate(row.original.denNgay) : <span className="text-gray-400">-</span>}
                 </div>
             ),
         },
