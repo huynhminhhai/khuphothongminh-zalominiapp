@@ -271,7 +271,7 @@ const ResidentManagementPage: React.FC = () => {
                             onClick={() => navigate('/maps')}
                         >
                             <div className="flex items-center gap-1">
-                                Bản đồ dân cư
+                                Bản đồ hộ dân
                                 <Icon fontSize={18} icon='tabler:map-2' />
                             </div>
                         </Button>

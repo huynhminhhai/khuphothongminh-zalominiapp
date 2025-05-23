@@ -211,7 +211,8 @@ const ResidentMapPage = () => {
                 ) : filteredResidents.length > 0 ? (
                     <Box>
                         <Box className="relative">
-                            <LegendNote tinhTrang={tinhTrangHoGiaDinhs} filter={filter} />
+                            <LegendNote tinhTrang={tinhTrangHoGiaDinhs} filter={filter} handleSetFilter={handleSetFilter} />
+                            
                             <Box className="absolute top-[72px] right-3 z-[9999] border-[2px] rounded-md border-[#00000033]">
                                 <button
                                     onClick={() => setSheetVisible(true)}
@@ -330,38 +331,7 @@ const ResidentMapPage = () => {
                             zIndex={9999}
                         >
                             <Box p={4}>
-                                <div className="grid grid-cols-2 gap-3 mb-6">
-                                    <label className="cursor-pointer" onClick={() => handleSetFilter("poor")}>
-                                        <input
-                                            type="radio"
-                                            className="peer sr-only"
-                                            name="pricing"
-                                            defaultChecked
-                                        />
-                                        <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
-                                            <div className="flex flex-col gap-1">
-                                                <div className="flex items-end justify-center">
-                                                    <p className="text-[13px] text-center font-bold">
-                                                        Hộ nghèo & cận nghèo
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <label className="cursor-pointer" onClick={() => handleSetFilter("culture")}>
-                                        <input type="radio" className="peer sr-only" name="pricing" />
-                                        <div className="w-full max-w-xl rounded-md bg-white p-2 text-gray-600 ring-2 ring-transparent transition-all hover:shadow peer-checked:text-primary-color peer-checked:ring-primary-color peer-checked:ring-offset-2">
-                                            <div className="flex flex-col gap-1">
-                                                <div className="flex items-end justify-center">
-                                                    <p className="text-[13px] text-center font-bold">
-                                                        Gia đình văn hóa
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </label>
-                                </div>
-                                <div className="grid grid-cols-1 gap-3 mb-4">
+                                <div className="grid grid-cols-2 gap-3 mb-4">
                                     <label className="flex items-center cursor-pointer">
                                         <input
                                             type="radio"
@@ -427,7 +397,7 @@ const ResidentMapPage = () => {
                                         searchedResidents.map((res) => (
                                             <div
                                                 key={res.danCuId}
-                                                className="p-3 mb-2 bg-blue-50 rounded-lg cursor-pointer hover:bg-gray-100 box-shadow-1"
+                                                className="p-3 mb-2 bg-blue-50 rounded-lg cursor-pointer hover:bg-gray-100"
                                                 onClick={() => handleHouseholdClick(res)}
                                             >
                                                 <p className="text-[16px] font-semibold text-primary-color mb-1">{res.hoTen}</p>

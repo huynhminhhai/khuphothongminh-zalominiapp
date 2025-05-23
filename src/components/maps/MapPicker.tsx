@@ -13,8 +13,6 @@ import { Icon } from '@iconify/react';
 import { useStoreApp } from 'store/store';
 import { useGetLocationWithZalo } from 'services/getLocationWithZalo';
 import { Loading } from 'components/data';
-import { motion, AnimatePresence } from "framer-motion";
-import { Box } from 'zmp-ui';
 
 interface ZaloLocationResponse {
     error: boolean;
@@ -79,11 +77,13 @@ const fetchLocationByKeyword = async (keyword: string): Promise<L.LatLng | null>
 };
 
 const MapPicker = ({
-    onClose,
     onPick,
+    lat,
+    lng,
 }: {
-    onClose?: () => void;
     onPick: (lat: number, lng: number) => void;
+    lat?: number;
+    lng?: number;
 }) => {
     const DEFAULT_POSITION = L.latLng(10.535, 106.415);
 
@@ -96,6 +96,8 @@ const MapPicker = ({
     const [mapCenter, setMapCenter] = useState<L.LatLng>(DEFAULT_POSITION);
 
     const { getLocationWithZalo } = useGetLocationWithZalo();
+
+
 
 
     const handleGetLocation = async () => {
@@ -114,9 +116,18 @@ const MapPicker = ({
         }
     };
 
-
     useEffect(() => {
         const initLocation = async () => {
+            // Check if lat and lng are provided and valid
+            if (typeof lat === 'number' && typeof lng === 'number' && !isNaN(lat) && !isNaN(lng)) {
+                const newPos = L.latLng(lat, lng);
+                setMapCenter(newPos);
+                setPosition(newPos); // Set marker at provided coordinates
+                // onPick(lat, lng); // Uncomment if you want to immediately trigger onPick
+                return;
+            }
+
+            // Fallback to existing logic
             if (account?.tenXa || account?.tenHuyen) {
                 const keyword = [account.tenXa, account.tenHuyen].filter(Boolean).join(', ');
                 setSearch(keyword);
@@ -124,19 +135,17 @@ const MapPicker = ({
                 if (pos) {
                     setMapCenter(pos);
                     setPosition(null);
-                    // onPick(pos.lat, pos.lng);
                     return;
                 }
             }
 
-            // fallback nếu không có dữ liệu hoặc tìm không ra
+            // Fallback to default position
             setMapCenter(DEFAULT_POSITION);
             setPosition(null);
-            // onPick(DEFAULT_POSITION.lat, DEFAULT_POSITION.lng);
         };
 
         initLocation();
-    }, [account?.tenXa, account?.tenHuyen]);
+    }, [account?.tenXa, account?.tenHuyen, lat, lng]);
 
     const handleSearch = async () => {
         setError('');

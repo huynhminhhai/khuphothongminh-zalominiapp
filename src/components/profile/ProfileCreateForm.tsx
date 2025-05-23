@@ -433,6 +433,8 @@ const ProfileAddForm: React.FC = () => {
                   setValue("noiThuongTru.latitude", lat);
                   setValue("noiThuongTru.longitude", lng);
                 }}
+                lat={watch("noiThuongTru.latitude") || undefined}
+                lng={watch("noiThuongTru.longitude") || undefined}
               />
             </div>
           }
@@ -534,6 +536,8 @@ const ProfileAddForm: React.FC = () => {
                     setValue("noiTamTru.latitude", lat);
                     setValue("noiTamTru.longitude", lng);
                   }}
+                  lat={watch("noiTamTru.latitude") || undefined}
+                  lng={watch("noiTamTru.longitude") || undefined}
                 />
               </div>
               <div className="col-span-6">
