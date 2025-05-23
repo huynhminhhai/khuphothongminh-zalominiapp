@@ -45,8 +45,10 @@ import chart from './chart.png'
 import logo1 from './logo.png'
 import logopng from './logo-png.png'
 import household from './household.png'
+import marker from './marker.png'
 
 const images = {
+    marker,
     household,
     logo,
     logo1,

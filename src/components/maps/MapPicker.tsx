@@ -13,6 +13,7 @@ import { Icon } from '@iconify/react';
 import { useStoreApp } from 'store/store';
 import { useGetLocationWithZalo } from 'services/getLocationWithZalo';
 import { Loading } from 'components/data';
+import images from 'assets/images';
 
 interface ZaloLocationResponse {
     error: boolean;
@@ -26,6 +27,13 @@ interface ZaloLocationResponse {
         timestamp: string;
     };
 }
+
+const customIcon = new L.Icon({
+    iconUrl: images.marker,
+    iconSize: [38, 38],
+    iconAnchor: [19, 38], // Điểm neo của icon (thường là giữa dưới)
+    popupAnchor: [0, -38], // Điểm neo của popup (nếu có)
+});
 
 // Component để xử lý click trên bản đồ
 const LocationMarker = ({
@@ -41,7 +49,7 @@ const LocationMarker = ({
         },
     });
 
-    return position ? <Marker position={position} /> : null;
+    return position ? <Marker position={position} icon={customIcon} /> : null;
 };
 
 // Component để di chuyển đến vị trí mới
