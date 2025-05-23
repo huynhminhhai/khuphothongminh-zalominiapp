@@ -59,7 +59,7 @@ export const useLogin = () => {
             showSuccess('Đăng nhập thành công');
 
             setToken({ accessToken: res?.data?.accessToken, refreshToken: res?.data?.refreshToken, hanSuDungToken: res?.data?.hanSuDung });
-            
+
             try {
                 const res = await authApiRequest.getUserInfo();
 
@@ -221,7 +221,7 @@ export const useRegisterAp = () => {
                 if (!accessToken || !refreshToken) {
                     throw new Error("Thiếu accessToken hoặc refreshToken");
                 }
-            
+
                 const [resUserInfo, resToken] = await Promise.all([
                     authApiRequest.getUserInfo(),
                     authApiRequest.refeshToken({
@@ -229,10 +229,10 @@ export const useRegisterAp = () => {
                         refreshToken: refreshToken
                     }),
                 ]);
-            
+
                 const newToken = resToken?.data;
                 const userInfo = (resUserInfo as any)?.data;
-            
+
                 if (newToken) {
                     setToken({
                         accessToken: newToken.accessToken,
@@ -240,7 +240,7 @@ export const useRegisterAp = () => {
                         hanSuDungToken: newToken.hanSuDung,
                     });
                 }
-            
+
                 if (userInfo) {
                     setAccount(userInfo);
                 }
@@ -257,6 +257,47 @@ export const useRegisterAp = () => {
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)
             showError(error)
+        },
+    });
+};
+
+/**
+* REFRESH TOKEN
+**/
+export const useRefreshToken = () => {
+    const { showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+    const { setAccount, setToken, accessToken, refreshToken } = useStoreApp();
+
+    return useMutation({
+        mutationFn: async () => {
+            if (!accessToken || !refreshToken) {
+                throw new Error("Thiếu accessToken hoặc refreshToken");
+            }
+
+            const resToken = await authApiRequest.refeshToken({ accessToken, refreshToken });
+            const newToken = resToken?.data;
+            if (!newToken) throw new Error("Không nhận được token mới");
+
+            setToken({
+                accessToken: newToken.accessToken,
+                refreshToken: newToken.refreshToken,
+                hanSuDungToken: newToken.hanSuDung,
+            });
+
+            const resUserInfo = await authApiRequest.getUserInfo();
+            const userInfo = (resUserInfo as any)?.data;
+
+            return { newToken, userInfo };
+        },
+        onSuccess: async ({ userInfo }) => {
+            if (userInfo) setAccount(userInfo);
+            queryClient.invalidateQueries({ queryKey: ['account'] });
+
+        },
+        onError: (error) => {
+            console.error("Lỗi khi refresh token:", error);
+            showError(error || 'Lỗi refresh token');
         },
     });
 };

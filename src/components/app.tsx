@@ -27,11 +27,13 @@ import ForbiddenPage from "pages/403";
 import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
 import { InsuranceAddPage, InsuranceAUpdatePage, InsurancePage } from "pages/insurance";
 import { RegisterApModal } from "./modal";
+import { useRefreshToken } from "apiRequest/auth";
 
 
 const AuthWrapper = ({ children }) => {
   const { setToken, setAccount, accessToken, fetchResidentTypes } = useStoreApp();
   const navigate = useNavigate();
+  const refreshTokenMutation = useRefreshToken();
 
   const loadAuthData = async () => {
 
@@ -54,15 +56,22 @@ const AuthWrapper = ({ children }) => {
       console.log('Hạn sử dụng token:', storedHanSuDungToken);
 
       if (storedHanSuDungToken) {
-        const now = new Date(); // Thời gian hiện tại
-        const expiry = new Date(storedHanSuDungToken); // Chuyển chuỗi hanSuDungToken thành Date
+        const now = new Date();
+        const expiry = new Date(storedHanSuDungToken);
 
-        if (now > expiry) {
-          // Nếu hết hạn, reset token và account, rồi chuyển hướng đến login
+        const timeDiff = expiry.getTime() - now.getTime();
+        const minutesLeft = timeDiff / (1000 * 60);
+
+        if (minutesLeft <= 0) {
+          // Token đã hết hạn
           setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
           setAccount(null);
           navigate("/login");
           return;
+        }
+
+        if (minutesLeft <= 15) {
+          refreshTokenMutation.mutate();
         }
       }
 
@@ -84,6 +93,31 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     loadAuthData();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      const storedHanSuDungToken = await getDataFromStorage(["hanSuDungToken"]);
+      if (!storedHanSuDungToken?.hanSuDungToken) return;
+
+      const now = new Date();
+      const expiry = new Date(storedHanSuDungToken.hanSuDungToken);
+
+      const timeDiff = expiry.getTime() - now.getTime();
+      const minutesLeft = timeDiff / (1000 * 60);
+
+      if (minutesLeft <= 0) {
+        // Hết hạn → logout
+        setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
+        setAccount(null);
+        navigate("/login");
+      } else if (minutesLeft <= 15 && !refreshTokenMutation.isPending) {
+        // Gần hết hạn → tự động refresh
+        refreshTokenMutation.mutate();
+      }
+    }, 60 * 1000); // Check mỗi phút
+
+    return () => clearInterval(interval); // Clear khi unmount
   }, []);
 
   // If accessToken is null, we'll redirect to login; otherwise, render children
