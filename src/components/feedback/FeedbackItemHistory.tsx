@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react"
 import { useDeleteFeedback, useGetFeedbackStatus } from "apiRequest/feeback"
-import React, { useState } from "react"
+import React, { useMemo, useState } from "react"
 import { getFullImageUrl, isImage } from "utils/file"
 import { getTinhTrangFeedbackColor } from "utils/renderColor"
 import { Box, Button, useNavigate } from "zmp-ui"
@@ -25,6 +25,13 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
 
     const status = feedbackStatus?.tinhTrangs?.find((item: any) => item.tinhTrangId === data.tinhTrangId);
     const { color, bg } = getTinhTrangFeedbackColor(status?.tenTinhTrang);
+
+    const feedbackStatusOptions = useMemo(() => {
+        return feedbackStatus?.tinhTrangs?.map((item) => ({
+            value: item.tinhTrangId,
+            label: item.tenTinhTrang,
+        })) ?? [];
+    }, [feedbackStatus]);
 
     const imageFiles = data?.tapTinPhanAnhs?.filter(item =>
         isImage(item.tapTin)
@@ -92,18 +99,21 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
                     </div>
                 </Box>
             </Box>
-            <div className="mt-3 grid grid-cols-2 gap-2">
-                <Button variant="secondary" size="small" fullWidth onClick={() => navigate(`/feedback-update?id=${data.phanAnhId}`)}>
-                    <div className="flex items-center justify-center gap-1 font-semibold">
-                        Cập nhật
-                    </div>
-                </Button>
-                <Button className="!bg-red-100 !text-red-700" size="small" fullWidth onClick={() => removeFeedback(data.phanAnhId)}>
-                    <div className="flex items-center justify-center gap-1 font-semibold">
-                        Xóa
-                    </div>
-                </Button>
-            </div>
+            {
+                data?.tinhTrangId === feedbackStatusOptions[3]?.value &&
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                    <Button variant="secondary" size="small" fullWidth onClick={() => navigate(`/feedback-update?id=${data.phanAnhId}`)}>
+                        <div className="flex items-center justify-center gap-1 font-semibold">
+                            Cập nhật
+                        </div>
+                    </Button>
+                    <Button className="!bg-red-100 !text-red-700" size="small" fullWidth onClick={() => removeFeedback(data.phanAnhId)}>
+                        <div className="flex items-center justify-center gap-1 font-semibold">
+                            Xóa
+                        </div>
+                    </Button>
+                </div>
+            }
             <ConfirmModal
                 visible={isConfirmVisible}
                 title={modalContent.title}

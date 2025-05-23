@@ -14,10 +14,14 @@ const InforResidentSection: React.FC = () => {
     const { data: userInfo, isLoading, error } = useGetUserInfo();
 
     if (isLoading) return <UserInfoSkeleton />;
+    
     if (error) return <EmptyData title="Có lỗi khi lấy thông tin người dùng" />;
+    
     if (!userInfo.thongTinDanCu) return <Box px={4}>
         <EmptyData title="Chưa có thông tin dân cư" desc="Vui lòng liên hệ với ban quản trị khu phố/ấp để đăng ký thông tin cư dân" />
     </Box>
+
+    if (userInfo?.apId !== userInfo.thongTinDanCu?.apId) return <EmptyData title="Bạn chưa có thông tin dân cư ở ấp/khu phố này" desc="Vui lòng liên hệ với ban quản trị khu phố/ấp" />
 
     return (
         <Box>

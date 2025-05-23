@@ -22,7 +22,17 @@ const defaultValues: FormDataRegisterAp = {
 
 const RegisterApForm: React.FC = () => {
 
-    const { account, tinhs, hasRole } = useStoreApp()
+    const { account, tinhs, setIsLoadingFullScreen } = useStoreApp()
+
+    useEffect(() => {
+        setIsLoadingFullScreen(true); 
+
+        const timer = setTimeout(() => {
+            setIsLoadingFullScreen(false);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const isRegisteredWithAnotherRole =
         account?.vaiTros.some((r) => r.tenVaiTro === "Registered Users") &&
