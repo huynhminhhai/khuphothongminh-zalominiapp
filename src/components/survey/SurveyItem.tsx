@@ -17,14 +17,14 @@ const SurveyItem: React.FC<SurveyItemProps> = ({data}) => {
         <Box
             onClick={() => navigate(`/survey-detail?id=${data.khaoSatId}`)}
         >
-            <Box py={4} className="border-b-[1px]" flex alignItems="center" justifyContent="space-between">
+            <Box py={4} className="survey-item border-b-[1px]" flex alignItems="center" justifyContent="space-between">
                 <Box flex alignItems="center" className="gap-6 w-[100%]">
                     <Box>
                         <img className="w-[40px]" src={images.survey} alt={data.tieuDe} />
                     </Box>
                     <Box className="flex-1 w-[100%]">
                         <div className="flex flex-col">
-                            <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-1">{data.tieuDe}</h3>
+                            <h3 className="survey-title text-[16px] leading-[20px] font-semibold line-clamp-2 mb-1">{data.tieuDe}</h3>
                             <div className="flex items-center justify-between w-[100%]">
                                 <h4 className="text-[14px] font-medium text-gray-color">{formatDate(data.tuNgay)} - {formatDate(data.denNgay)}</h4>
                                 {

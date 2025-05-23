@@ -22,13 +22,13 @@ const SERVICES: ServicesType[] = [
         isRequireApId: true,
         // requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
-    {
-        label: 'Thẻ BHYT',
-        url: '/insurance',
-        icon: images.safety,
-        isRequireApId: true,
-        // requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
-    },
+    // {
+    //     label: 'Thẻ BHYT',
+    //     url: '/insurance',
+    //     icon: images.safety,
+    //     isRequireApId: true,
+    //     // requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
+    // },
     // {
     //     label: 'Cuộc họp',
     //     url: '/meeting',
@@ -41,13 +41,6 @@ const SERVICES: ServicesType[] = [
     //     icon: images.todo,
     //     requiredPermission: { maChucNang: permissionsList.khuPhoNhiemVuNhiemVuCuaToi, quyen: PermissionActions.XEM },
     // },
-    {
-        label: 'Tình hình tài chính',
-        url: '/transactions',
-        icon: images.money,
-        isRequireApId: true,
-        // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
-    },
     // {
     //     label: 'Thông tin tổ chức',
     //     url: '/team',
@@ -80,6 +73,13 @@ const SERVICES: ServicesType[] = [
     //     icon: images.invoice,
     //     requiredPermission: { maChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: PermissionActions.XEM },
     // },
+    {
+        label: 'Tình hình tài chính',
+        url: '/transactions',
+        icon: images.money,
+        isRequireApId: true,
+        // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
+    },
 ]
 
 const ServiceList: React.FC<any> = () => {

@@ -281,8 +281,30 @@ tbody tr td:not(:first-child) {
 **/
 
 .home .meeting-item,
-.home .task-item {
+.home .task-item,
+.home .survey-item,
+.home .feedback-item {
   border-bottom: 0;
+}
+
+.home .feedback-item {
+  padding-bottom: 0px !important;
+  margin-bottom: 24px !important;
+}
+
+.home .feedback-tag {
+  bottom: -30px !important;
+  left: 0;
+  right: unset;
+}
+
+.home .feedback-title,
+.home .survey-title {
+  height: 40px !important;
+}
+
+.home .feeback-time {
+  display: none !important;
 }
 
 .meeting-item {

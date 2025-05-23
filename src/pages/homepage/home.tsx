@@ -1,10 +1,12 @@
 import images from "assets/images";
 import { Divider } from "components/divider";
+import { FeedbackSection } from "components/feedback";
 import { HeaderHome } from "components/header";
 import { MeetingSection } from "components/meeting";
 import NewsSection from "components/news/NewsSection";
 import { ServiceSection } from "components/services";
 import { StatisticSection } from "components/statistics";
+import { SurveySection } from "components/survey";
 import { TaskSection } from "components/task";
 import React from "react";
 import { useStoreApp } from "store/store";
@@ -27,16 +29,33 @@ const HomePage: React.FunctionComponent = () => {
           {
             account &&
             <>
-              <Divider />
               {
                 hasPermission(permissionsList.khuPhoNhiemVuNhiemVuCuaToi, PermissionActions.XEM) &&
-                account?.apId &&
-                <TaskSection />
+                account?.maXa &&
+                <>
+                  <Divider />
+                  <TaskSection />
+                </>
               }
-              <Divider />
               {
                 hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.XEM) &&
-                <MeetingSection />
+                <>
+                  <Divider />
+                  <MeetingSection />
+                </>
+              }
+              {
+                <>
+                  <Divider />
+                  <FeedbackSection />
+                </>
+              }
+              {
+                account?.maXa && 
+                <>
+                  <Divider />
+                  <SurveySection />
+                </>
               }
             </>
           }

@@ -112,6 +112,21 @@ export const useGetSurveyMemberListNormal = (param: SurveyMemberQueryParams) => 
     });
 };
 
+/**
+* GET TASK PUBLIC LIST
+**/
+export const useGetSurveyPublicListNormal = (param: SurveyQueryParams) => {
+    return useQuery({
+        queryKey: ['surveyList', param],
+        queryFn: async () => {
+            const res = await surveyApiRequest.getSurveyPublicList(param);
+            return res
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
 
 /**
 * GET TASK LIST (INFINITE)

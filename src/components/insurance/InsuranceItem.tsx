@@ -26,13 +26,6 @@ const InsuranceItem: React.FC<InsuranceItemProps> = ({ data }) => {
                     <Box flex flexDirection="column" className="gap-[2px]">
                         <span className="text-[18px] font-semibold">BHYT</span>
                     </Box>
-                    {
-                        !isExpired && (
-                            <div className="relative">
-                                <Icon fontSize={22} icon={'nimbus:edit'} className="cursor-pointer" onClick={() => navigator(`/insurance-update?id=${data?.thongTinBaoHiemId}`)} />
-                            </div>
-                        )
-                    }
                 </Box>
                 <div className="grid grid-cols-2 pt-2 gap-2">
                     <div className="col-span-1">
@@ -44,7 +37,7 @@ const InsuranceItem: React.FC<InsuranceItemProps> = ({ data }) => {
                     <div className="col-span-1">
                         <div className="flex flex-col gap-1">
                             <span className="text-[14px] font-medium text-gray-color">Nơi đăng ký</span>
-                            <span className="text-[16px] font-semibold text-primary-color">{data.noiDangKy}</span>
+                            <span className="text-[16px] font-semibold text-primary-color">{data?.noiDangKy || '-'}</span>
                         </div>
                     </div>
                     <div className="flex flex-col gap-1">

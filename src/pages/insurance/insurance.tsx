@@ -4,7 +4,7 @@ import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { InsuranceItem } from "components/insurance"
 import UserInfoSkeleton from "components/skeleton/info/UserInfoSkeleton"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { useStoreApp } from "store/store"
 import { Box, Page, useNavigate } from "zmp-ui"
@@ -23,7 +23,7 @@ const InsurancePage: React.FC = () => {
         keyword: '',
         ApId: account?.apId,
         MaXa: account?.maXa,
-        DanCuId: Number(danCuId) || account?.thongTinDanCu?.danCuId,
+        DanCuId: Number(danCuId),
         LoaiBaoHiemId: 1,
         MaSo: '',
     })
@@ -48,11 +48,6 @@ const InsurancePage: React.FC = () => {
                         <EmptyData title="Chưa có thẻ BHYT" />
                     )}
                 </Box>
-                <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">
-                    <Box py={3} flex alignItems="center" justifyContent="center" className="w-full">
-                        <PrimaryButton fullWidth label="Thêm thẻ BHYT" handleClick={() => navigate('/insurance-add')} />
-                    </Box>
-                </div>
             </Box>
         </Page>
     )

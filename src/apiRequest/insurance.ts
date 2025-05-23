@@ -151,6 +151,7 @@ export const useDeleteInsurance = () => {
             showSuccess('Xóa thẻ BHYT thành công')
 
             queryClient.invalidateQueries({ queryKey: ["insuranceList"] });
+            queryClient.invalidateQueries({ queryKey: ["residentList"] });
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

@@ -208,7 +208,6 @@ const SurveyDetailPage: React.FC = () => {
                                         detailData?.khaoSatId &&
                                         <p className="text-black text-[14px] mt-2 leading-1 flex items-center justify-center gap-2" onClick={() => navigator(`/survey-charts?id=${detailData.khaoSatId}`)}>Xem kết quả khảo sát: <img width={30} src={images.pieChart} alt={detailData?.tieuDe} /></p>
                                     }
-
                                 </Box>
                                 <Box>
                                     {detailData?.cauHoiKhaoSats.map((q, index) => (
