@@ -7,7 +7,33 @@ const appApiRequest = {
     getAp: (maXa: string) => http.get<any>(`/ap/xa/${maXa}`),
     getSoLieuHienThi: () => http.get<any>(`/thongkebaocao/solieuhienthitrangchumobileapp`), getsoLuongTaiKhoanTrongDiaPhuong: () => http.get<any>(`/thongkebaocao/soluongtaikhoantrongdiaphuong`),
     getBanDoSo: () => http.get<any>(`/bandoso/hogiadinh`),
+    getRanhGioiHuyen: (maHuyen) => http.get<any>(`/huyen/chitiet/mahuyen/${maHuyen}`),
 }
+
+/**
+ * GET RANH GIOI HUYEN
+**/ 
+
+export const useGetRanhGioiHuyen = (maHuyen: string) => {
+
+    return useQuery({
+        queryKey: ['ranhGioiHuyen', maHuyen],
+        queryFn: async () => {
+            try {
+
+                const res = await appApiRequest.getRanhGioiHuyen(maHuyen);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        enabled: !!maHuyen,
+        staleTime: 0,
+        retry: 1,
+    });
+};
 
 /**
 * GET HUYEN

@@ -4,6 +4,7 @@ import { useDeleteFeedback, useGetFeedbackListNormal, useGetFeedbackStatus, useU
 import images from "assets/images"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
+import { MapRender } from "components/maps"
 import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton } from "components/skeleton"
 import { CardTanStack, FilterBar, TablePagination, TableTanStack } from "components/table"
@@ -201,6 +202,21 @@ const FeedbackManagementPage: React.FC = () => {
                             )}
                             <span className="text-[13px] flex-1">Phản ánh</span>
                         </div>
+                    </div>
+                )
+            }
+        },
+        {
+            id: 'toaDo',
+            header: 'Tọa độ',
+            cell: ({ row }) => {
+
+                return (
+                    <div>
+                        <MapRender
+                            lat={row.original.latitude || undefined}
+                            lng={row.original.longitude || undefined}
+                        />
                     </div>
                 )
             }

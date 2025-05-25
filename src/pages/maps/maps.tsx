@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from "react";
-import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, LayersControl, useMap, Polygon } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Box, Page, Sheet, Input } from "zmp-ui";
@@ -7,9 +7,8 @@ import { HeaderSub } from "components/header-sub";
 import "leaflet.heat";
 import { LegendNote } from "components/maps";
 import { Icon } from "@iconify/react";
-import { useGetBanDoSo } from "apiRequest/app";
+import { useGetBanDoSo, useGetRanhGioiHuyen } from "apiRequest/app";
 import { useStoreApp } from "store/store";
-import { EmptyData } from "components/data";
 
 function FitBounds({ residents }) {
     const map = useMap();
@@ -65,6 +64,7 @@ const ResidentMapPage = () => {
     }, []);
 
     const { data: hoGiaDinh, isLoading: isLoadingHoGiaDinh } = useGetBanDoSo();
+    const { data: ranhGioiHuyen, isLoading: isLoadingRanhGioiHuyen } = useGetRanhGioiHuyen(account?.maHuyen || '');
 
     // Filter residents with valid coordinates
     const residents = useMemo(() => {
@@ -73,6 +73,21 @@ const ResidentMapPage = () => {
             res => res.noiThuongTru?.latitude && res.noiThuongTru?.longitude
         );
     }, [hoGiaDinh]);
+
+    const toaDoHuyen = useMemo(() => {
+        if (!ranhGioiHuyen || !ranhGioiHuyen.toaDoVung) return [];
+
+        try {
+            const parsed = typeof ranhGioiHuyen.toaDoVung === 'string'
+                ? JSON.parse(ranhGioiHuyen.toaDoVung)
+                : ranhGioiHuyen.toaDoVung;
+
+            return parsed;
+        } catch (error) {
+            console.error("Lỗi parse toaDoVung:", error);
+            return [];
+        }
+    }, [ranhGioiHuyen]);
 
     // Filter residents based on selected filter
     const filteredResidents = useMemo(() => {
@@ -127,19 +142,34 @@ const ResidentMapPage = () => {
     }, [residents]);
 
     const center: [number, number] = useMemo(() => {
-        if (residents.length > 0) {
-            const validResidents = residents.filter(
-                res => res.noiThuongTru?.latitude && res.noiThuongTru?.longitude
-            );
-            if (validResidents.length === 0) {
-                return [10.520740944310496, 106.47778872238479];
-            }
-            const avgLat = validResidents.reduce((sum, res) => sum + res.noiThuongTru.latitude, 0) / validResidents.length;
-            const avgLng = validResidents.reduce((sum, res) => sum + res.noiThuongTru.longitude, 0) / validResidents.length;
+        // B1: Lọc dân cư có tọa độ hợp lệ
+        const validResidents = residents.filter(
+            res => res.noiThuongTru?.latitude && res.noiThuongTru?.longitude
+        );
+
+        if (validResidents.length > 0) {
+            const avgLat =
+                validResidents.reduce((sum, res) => sum + res.noiThuongTru.latitude, 0) /
+                validResidents.length;
+            const avgLng =
+                validResidents.reduce((sum, res) => sum + res.noiThuongTru.longitude, 0) /
+                validResidents.length;
+
             return [avgLat, avgLng];
         }
+
+        // B2: Nếu không có dân cư, tính trung tâm từ ranh giới huyện
+        if (toaDoHuyen.length > 0) {
+        
+            const avgLat = toaDoHuyen.reduce((sum, item) => sum + item.lat, 0) / toaDoHuyen.length;
+            const avgLng = toaDoHuyen.reduce((sum, item) => sum + item.lng, 0) / toaDoHuyen.length;
+        
+            return [avgLat, avgLng];
+        }
+
+        // B3: Fallback mặc định
         return [10.520740944310496, 106.47778872238479];
-    }, [residents]);
+    }, [residents, toaDoHuyen]);
 
     const zoom = 15;
 
@@ -208,11 +238,11 @@ const ResidentMapPage = () => {
                             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
                         />
                     </div>
-                ) : filteredResidents.length > 0 ? (
+                ) : (
                     <Box>
                         <Box className="relative">
                             <LegendNote tinhTrang={tinhTrangHoGiaDinhs} filter={filter} handleSetFilter={handleSetFilter} />
-                            
+
                             <Box className="absolute top-[72px] right-3 z-[9999] border-[2px] rounded-md border-[#00000033]">
                                 <button
                                     onClick={() => setSheetVisible(true)}
@@ -242,79 +272,94 @@ const ResidentMapPage = () => {
                                         />
                                     </LayersControl.BaseLayer>
                                 </LayersControl>
-                                {filteredResidents.map((res, index) => (
-                                    <Marker
-                                        key={index}
-                                        position={[res.noiThuongTru.latitude, res.noiThuongTru.longitude]}
-                                        icon={getMarkerIcon(res)}
-                                        ref={(ref) => {
-                                            markerRefs.current[res.danCuId] = ref;
+
+                                {toaDoHuyen && toaDoHuyen.length > 0 && (
+                                    <Polygon
+                                        positions={toaDoHuyen}
+                                        pathOptions={{
+                                            color: 'blue',
+                                            weight: 2,
+                                            fillOpacity: 0
                                         }}
-                                    >
-                                        <Popup>
-                                            <div className="mt-2">
-                                                <ul className="py-2 flex flex-col gap-1 rounded-xl text-sm text-gray-700 w-full max-w-xs">
-                                                    <li className="flex gap-1">
-                                                        <span className="font-medium text-gray-500">Chủ hộ:</span>
-                                                        <span className="font-semibold text-gray-800 truncate">
-                                                            {res.hoTen}
-                                                        </span>
-                                                    </li>
-                                                    <li className="flex gap-1">
-                                                        <span className="font-medium text-gray-500">Số thành viên:</span>
-                                                        <span className="font-semibold text-gray-800">
-                                                            {res.soLuongThanhVien + 1}
-                                                        </span>
-                                                    </li>
-                                                    <li className="flex gap-1">
-                                                        <span className="font-medium text-gray-500 flex-1 whitespace-nowrap">Địa chỉ:</span>
-                                                        <span className="text-[13px] font-semibold text-gray-800">
-                                                            {[
-                                                                res?.noiThuongTru?.diaChi,
-                                                                res?.noiThuongTru?.tenAp,
-                                                                res?.noiThuongTru?.tenXa,
-                                                                res?.noiThuongTru?.tenHuyen,
-                                                                res?.noiThuongTru?.tenTinh,
-                                                            ]
-                                                                .filter(Boolean)
-                                                                .join(", ")}
-                                                        </span>
-                                                    </li>
-                                                    <li className="flex gap-1">
-                                                        <span className="font-medium text-gray-500">Tình trạng:</span>
-                                                        <span className="font-semibold text-gray-800 flex flex-col">
-                                                            <span
-                                                                style={{
-                                                                    color: res.thongTinHoGiaDinh?.hoNgheo
-                                                                        ? "#c1121f"
-                                                                        : res.thongTinHoGiaDinh?.hoCanNgheo
-                                                                            ? "#ff6d00"
-                                                                            : "#018abe",
-                                                                }}
-                                                            >
-                                                                {res.thongTinHoGiaDinh?.hoNgheo
-                                                                    ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[2]?.value)?.label || "Hộ nghèo"
-                                                                    : res.thongTinHoGiaDinh?.hoCanNgheo
-                                                                        ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[1]?.value)?.label || "Hộ cận nghèo"
-                                                                        : tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[0]?.value)?.label || "Hộ bình thường"}
+                                    />
+                                )}
+
+                                {
+                                    filteredResidents.length > 0 &&
+                                    filteredResidents.map((res, index) => (
+                                        <Marker
+                                            key={index}
+                                            position={[res.noiThuongTru.latitude, res.noiThuongTru.longitude]}
+                                            icon={getMarkerIcon(res)}
+                                            ref={(ref) => {
+                                                markerRefs.current[res.danCuId] = ref;
+                                            }}
+                                        >
+                                            <Popup>
+                                                <div className="mt-2">
+                                                    <ul className="py-2 flex flex-col gap-1 rounded-xl text-sm text-gray-700 w-full max-w-xs">
+                                                        <li className="flex gap-1">
+                                                            <span className="font-medium text-gray-500">Chủ hộ:</span>
+                                                            <span className="font-semibold text-gray-800 truncate">
+                                                                {res.hoTen}
                                                             </span>
-                                                            {typeof res.thongTinHoGiaDinh?.giaDinhVanHoa === "boolean" && (
+                                                        </li>
+                                                        <li className="flex gap-1">
+                                                            <span className="font-medium text-gray-500">Số thành viên:</span>
+                                                            <span className="font-semibold text-gray-800">
+                                                                {res.soLuongThanhVien + 1}
+                                                            </span>
+                                                        </li>
+                                                        <li className="flex gap-1">
+                                                            <span className="font-medium text-gray-500 flex-1 whitespace-nowrap">Địa chỉ:</span>
+                                                            <span className="text-[13px] font-semibold text-gray-800">
+                                                                {[
+                                                                    res?.noiThuongTru?.diaChi,
+                                                                    res?.noiThuongTru?.tenAp,
+                                                                    res?.noiThuongTru?.tenXa,
+                                                                    res?.noiThuongTru?.tenHuyen,
+                                                                    res?.noiThuongTru?.tenTinh,
+                                                                ]
+                                                                    .filter(Boolean)
+                                                                    .join(", ")}
+                                                            </span>
+                                                        </li>
+                                                        <li className="flex gap-1">
+                                                            <span className="font-medium text-gray-500">Tình trạng:</span>
+                                                            <span className="font-semibold text-gray-800 flex flex-col">
                                                                 <span
                                                                     style={{
-                                                                        color: res.thongTinHoGiaDinh.giaDinhVanHoa ? "#008000" : "#e66f5c",
+                                                                        color: res.thongTinHoGiaDinh?.hoNgheo
+                                                                            ? "#c1121f"
+                                                                            : res.thongTinHoGiaDinh?.hoCanNgheo
+                                                                                ? "#ff6d00"
+                                                                                : "#018abe",
                                                                     }}
                                                                 >
-                                                                    {res.thongTinHoGiaDinh.giaDinhVanHoa ? "Gia đình văn hóa" : "Chưa đạt văn hóa"}
+                                                                    {res.thongTinHoGiaDinh?.hoNgheo
+                                                                        ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[2]?.value)?.label || "Hộ nghèo"
+                                                                        : res.thongTinHoGiaDinh?.hoCanNgheo
+                                                                            ? tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[1]?.value)?.label || "Hộ cận nghèo"
+                                                                            : tinhTrangHoGiaDinhs.find(i => i.value === tinhTrangHoGiaDinhs[0]?.value)?.label || "Hộ bình thường"}
                                                                 </span>
-                                                            )}
-                                                        </span>
-                                                    </li>
+                                                                {typeof res.thongTinHoGiaDinh?.giaDinhVanHoa === "boolean" && (
+                                                                    <span
+                                                                        style={{
+                                                                            color: res.thongTinHoGiaDinh.giaDinhVanHoa ? "#008000" : "#e66f5c",
+                                                                        }}
+                                                                    >
+                                                                        {res.thongTinHoGiaDinh.giaDinhVanHoa ? "Gia đình văn hóa" : "Chưa đạt văn hóa"}
+                                                                    </span>
+                                                                )}
+                                                            </span>
+                                                        </li>
 
-                                                </ul>
-                                            </div>
-                                        </Popup>
-                                    </Marker>
-                                ))}
+                                                    </ul>
+                                                </div>
+                                            </Popup>
+                                        </Marker>
+                                    ))
+                                }
                                 <FitBounds residents={residents} />
                                 <MapController
                                     selectedResident={selectedResident}
@@ -447,8 +492,6 @@ const ResidentMapPage = () => {
                             </Box>
                         </Sheet>
                     </Box>
-                ) : (
-                    <EmptyData title="Không có dữ liệu" />
                 )}
             </Box>
         </Page>

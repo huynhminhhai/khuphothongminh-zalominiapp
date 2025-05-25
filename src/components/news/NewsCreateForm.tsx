@@ -11,12 +11,12 @@ import { useCreateNews } from "apiRequest/news"
 import { convertToFormData } from "utils/file"
 
 const defaultValues: FormDataNews = {
-    TieuDe: "",
-    MoTa: "",
-    NoiDung: "",
-    TacGia: "",
-    FileAnhDaiDien: undefined,
-    NgayXuatBan: new Date().toISOString().split("T")[0]
+    tieuDe: "",
+    moTa: "",
+    noiDung: "",
+    tacGia: "",
+    fileAnhDaiDien: undefined,
+    ngayXuatBan: new Date().toISOString().split("T")[0]
 };
 
 const NewsAddForm: React.FC = () => {
@@ -66,50 +66,50 @@ const NewsAddForm: React.FC = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="TieuDe"
+                            name="tieuDe"
                             label="Tiêu đề"
                             placeholder="Nhập tiêu đề"
                             control={control}
-                            error={errors.TieuDe?.message}
+                            error={errors.tieuDe?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormImageUploaderSingle
-                            name="FileAnhDaiDien"
+                            name="fileAnhDaiDien"
                             label="Upload ảnh đại diện"
                             control={control}
-                            error={errors.FileAnhDaiDien?.message}
+                            error={errors.fileAnhDaiDien?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="MoTa"
+                            name="moTa"
                             label="Mô tả"
                             placeholder="Nhập mô tả"
                             control={control}
-                            error={errors.MoTa?.message}
+                            error={errors.moTa?.message}
                             required
                         />
                     </div>
 
                     <div className="col-span-12">
                         <FormTextEditorField
-                            name="NoiDung"
+                            name="noiDung"
                             label="Nội dung tin tức"
                             placeholder="Nhập nội dung tin tức..."
                             control={control}
-                            error={errors.NoiDung?.message}
+                            error={errors.noiDung?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="TacGia"
+                            name="tacGia"
                             label="Tác giả"
                             placeholder="Nhập tên tác giả"
                             control={control}
-                            error={errors.TacGia?.message}
+                            error={errors.tacGia?.message}
                             required
                         />
                     </div>

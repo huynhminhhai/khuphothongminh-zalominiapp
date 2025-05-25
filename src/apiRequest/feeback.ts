@@ -78,6 +78,9 @@ const feebackApiRequest = {
     getFeedbackAnswerDetail: async (id: number) => {
         return await http.get<any>(`/ketquaxulyphananh/chitiet/phananh/${id}`);
     },
+    deleteFeedbackAnswer: async (id: number) => {
+        return await http.delete<any>(`/ketquaxulyphananh/${id}?ketQuaXuLyPhanAnhId=${id}`);
+    }
 }
 
 /**
@@ -412,5 +415,32 @@ export const useGetFeebackAnswerDetail = (id: number) => {
         enabled: !!id,
         staleTime: 0,
         retry: 1,
+    });
+};
+
+/**
+* DELETE FEEDBACK ASNWER
+**/
+export const useDeleteFeedbackAnswer = () => {
+    const queryClient = useQueryClient();
+    const { showSuccess, showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await feebackApiRequest.deleteFeedbackAnswer(id);
+        },
+        onSuccess: () => {
+            showSuccess('Xóa phản hồi thành công');
+
+            queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
+            queryClient.invalidateQueries({ queryKey: ["myFeedbackList"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
+            queryClient.invalidateQueries({ queryKey: ["feedbackAnswerDetail"] });
+
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(`Lỗi: ${error}`)
+        },
     });
 };

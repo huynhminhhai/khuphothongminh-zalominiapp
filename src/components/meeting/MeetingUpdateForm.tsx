@@ -159,7 +159,6 @@ const MeetingUpdateForm = () => {
 
                 queryClient.invalidateQueries({ queryKey: ["meetingDetail"] });
 
-                reset(defaultValues)
             } catch (error) {
                 console.error("Error:", error);
             }

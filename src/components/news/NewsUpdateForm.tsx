@@ -12,12 +12,12 @@ import { convertToFormData, loadImage } from "utils/file"
 import { Box } from "zmp-ui"
 
 const defaultValues: FormDataNews = {
-    TieuDe: "",
-    MoTa: "",
-    NoiDung: "",
-    TacGia: "",
-    FileAnhDaiDien: undefined,
-    NgayXuatBan: new Date().toISOString().split("T")[0]
+    tieuDe: "",
+    moTa: "",
+    noiDung: "",
+    tacGia: "",
+    fileAnhDaiDien: undefined,
+    ngayXuatBan: new Date().toISOString().split("T")[0]
 };
 
 const NewsUpdateForm = () => {
@@ -42,11 +42,11 @@ const NewsUpdateForm = () => {
         if (newsDetail) {
             reset({
                 ...newsDetail,
-                TieuDe: newsDetail.tieuDe,
-                MoTa: newsDetail.moTa,
-                NoiDung: newsDetail.noiDung,
-                TacGia: newsDetail.tacGia,
-                FileAnhDaiDien: undefined,
+                tieuDe: newsDetail.tieuDe,
+                moTa: newsDetail.moTa,
+                noiDung: newsDetail.noiDung,
+                tacGia: newsDetail.tacGia,
+                fileAnhDaiDien: undefined,
             });
 
             const fetchAndSetImage = async () => {
@@ -56,7 +56,7 @@ const NewsUpdateForm = () => {
                     if (file) {
                         reset((prevValues) => ({
                             ...prevValues,
-                            FileAnhDaiDien: file,
+                            fileAnhDaiDien: file,
                         }));
                     }
                 }
@@ -81,7 +81,9 @@ const NewsUpdateForm = () => {
         setConfirmVisible(false);
 
         try {
-            const dataSubmit = {...formData, TinTucId: Number(newsId), TinhTrangId: newsDetail.tinhTrangId, NgayXuatBan: newsDetail.ngayXuatBan}
+            const dataSubmit = {...formData}
+
+            console.log(dataSubmit)
 
             const formDataConverted = convertToFormData(dataSubmit);
 
@@ -102,50 +104,50 @@ const NewsUpdateForm = () => {
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
                         <FormInputField
-                            name="TieuDe"
+                            name="tieuDe"
                             label="Tiêu đề"
                             placeholder="Nhập tiêu đề"
                             control={control}
-                            error={errors.TieuDe?.message}
+                            error={errors.tieuDe?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormImageUploaderSingle
-                            name="FileAnhDaiDien"
+                            name="fileAnhDaiDien"
                             label="Upload ảnh đại diện"
                             control={control}
-                            error={errors.FileAnhDaiDien?.message}
+                            error={errors.fileAnhDaiDien?.message}
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputAreaField
-                            name="MoTa"
+                            name="moTa"
                             label="Mô tả"
                             placeholder="Nhập mô tả"
                             control={control}
-                            error={errors.MoTa?.message}
+                            error={errors.moTa?.message}
                             required
                         />
                     </div>
 
                     <div className="col-span-12">
                         <FormTextEditorField
-                            name="NoiDung"
+                            name="noiDung"
                             label="Nội dung tin tức"
                             placeholder="Nhập nội dung tin tức..."
                             control={control}
-                            error={errors.NoiDung?.message}
+                            error={errors.noiDung?.message}
                             required
                         />
                     </div>
                     <div className="col-span-12">
                         <FormInputField
-                            name="TacGia"
+                            name="tacGia"
                             label="Tác giả"
                             placeholder="Nhập tên tác giả"
                             control={control}
-                            error={errors.TacGia?.message}
+                            error={errors.tacGia?.message}
                             required
                         />
                     </div>

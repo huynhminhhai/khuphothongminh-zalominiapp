@@ -1,25 +1,25 @@
 import * as yup from 'yup';
 
 export const schemaNews = yup.object().shape({
-    TieuDe: yup.string().required('Không được để trống'),
-    MoTa: yup.string().required('Không được để trống'),
-    NoiDung: yup.string().required('Không được để trống'),
-    TacGia: yup.string().required('Không được để trống'),
-    FileAnhDaiDien: yup
+    tieuDe: yup.string().required('Không được để trống'),
+    moTa: yup.string().required('Không được để trống'),
+    noiDung: yup.string().required('Không được để trống'),
+    tacGia: yup.string().required('Không được để trống'),
+    fileAnhDaiDien: yup
         .mixed<File>()
         .test("required", "Vui lòng chọn một tệp ảnh", (value) => {
             return value instanceof File;
         }),
-    // NgayXuatBan: yup.string().required('Không được sé trống'), 
+    // ngayXuatBan: yup.string().required('Không được sé trống'), 
 });
 
 export type FormDataNews = {
-    TieuDe: string;
-    FileAnhDaiDien?: File;
-    MoTa: string;
-    NoiDung: string;
-    TacGia: string;
-    NgayXuatBan?: string;
+    tieuDe: string;
+    fileAnhDaiDien?: File;
+    moTa: string;
+    noiDung: string;
+    tacGia: string;
+    ngayXuatBan?: string;
 };
 
 export type NewsType = {

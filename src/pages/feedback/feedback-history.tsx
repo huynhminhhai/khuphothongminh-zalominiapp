@@ -39,7 +39,7 @@ const FeedbackHistoryPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box px={4} pb={4}>
-                <HeaderSub title="Phản ánh đã gửi" />
+                <HeaderSub title="Phản ánh đã gửi" onBackClick={() => navigate('/feedback')} />
                 <Box>
                     {
                         isLoading ? <FeedbackSkeleton count={5} /> :
