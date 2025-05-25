@@ -173,20 +173,20 @@ const MapPicker = ({
     };
 
     return (
-        <div className="col-span-12">
+        <div className="col-span-12 map-picker">
             <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMap(!showMap)}>
                 Chọn vị trí
                 <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
             </div>
             {showMap && (
                 <div
-                    className='fixed top-[56px] left-0 z-[999] w-screen h-screen'
+                    className='fixed top-0 left-0 z-[999] w-screen h-screen'
                 >
                     <div
                         className="bg-gray-50 w-full h-full z-0 flex flex-col gap-1 rounded-lg"
                     >
                         {/* Thanh tìm kiếm */}
-                        <div className="absolute top-[10px] left-[8px] flex flex-col z-[999]">
+                        <div className="absolute top-[48px] left-[8px] flex flex-col z-[999]">
                             <div className="flex">
                                 <input
                                     type="text"
@@ -205,7 +205,7 @@ const MapPicker = ({
                             {error && <p className="text-red-500 text-xs font-medium">{error}</p>}
                         </div>
 
-                        <div className="absolute bottom-[65px] left-[0px] px-2 flex flex-col z-[99999] w-full">
+                        <div className="absolute bottom-[12px] left-[0px] px-2 flex flex-col z-[99999] w-full">
                             <div className='grid grid-cols-12 gap-2'>
                                 <div className='col-span-8'>
                                     <button onClick={() => handleGetLocation()} className="bg-blue-100 text-blue-700 font-semibold rounded text-sm flex items-center justify-center gap-2 h-[48px] w-full !border-[2px] !border-blue-400">Vị trí hiện tại <Icon fontSize={18} icon="mingcute:map-pin-line" /> </button>

@@ -9,6 +9,7 @@ import { useGetSurveyDetail, useGetSurveyStatus, useUpdateSurvey } from 'apiRequ
 import { SurveyDetail, SurveyType, SurveyUpdateAPI } from './type';
 import { formatDate, parseDate } from 'components/form/DatePicker';
 import { useStoreApp } from 'store/store';
+import { Icon } from '@iconify/react';
 
 const defaultValues: SurveyType = {
     id: 0,
@@ -370,16 +371,16 @@ const SurveyUpdateForm: React.FC = () => {
                                                         onChange={(e) => handleOptionChange(q.questionId, index, e.target.value)}
                                                         className="p-2 w-full border border-gray-300 rounded-md shadow-sm"
                                                     />
-                                                    {/* <button
+                                                    <button
                                                         type="button"
                                                         onClick={() => handleRemoveOption(q.questionId, index)}
                                                         className="ml-2 text-white bg-[#c46574] p-2 rounded-lg"
                                                     >
                                                         <Icon fontSize={18} icon="material-symbols:close-rounded" />
-                                                    </button> */}
+                                                    </button>
                                                 </div>
                                             ))}
-                                            {/* <button
+                                            <button
                                                 type="button"
                                                 onClick={() => {
                                                     setFormData((prev) => ({
@@ -394,22 +395,22 @@ const SurveyUpdateForm: React.FC = () => {
                                                 className="mt-2 text-white bg-blue-500 p-2 rounded-lg ml-auto flex items-center"
                                             >
                                                 <Icon fontSize={18} icon="material-symbols:add-rounded" />
-                                            </button> */}
+                                            </button>
                                         </div>
                                     )}
 
-                                    {/* <button
+                                    <button
                                         type="button"
                                         onClick={() => removeQuestion(q.questionId)}
                                         className="mt-2 text-white font-medium bg-[#c46574] flex items-center gap-1 p-2 rounded-lg ml-auto"
                                     >
                                         Xóa câu hỏi
-                                    </button> */}
+                                    </button>
                                 </div>
                             ))}
                         </div>
 
-                        {/* <div className="mt-4 mb-2">
+                        <div className="mt-4 mb-2">
                             <Button
                                 variant="secondary"
                                 onClick={() => addQuestion('one-choice')}
@@ -418,7 +419,7 @@ const SurveyUpdateForm: React.FC = () => {
                             >
                                 <div className="flex items-center justify-center gap-1">Thêm câu hỏi văn bản</div>
                             </Button>
-                        </div> */}
+                        </div>
 
                         <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                             <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">

@@ -81,6 +81,18 @@ const InsuranceUpdateForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     <div className="col-span-12">
+                        <div className="flex flex-col gap-2 mb-4">
+                            <div className="flex items-center gap-2 text-[15px] font-medium text-gray-800">
+                                <span className="text-gray-600">Họ tên:</span>
+                                <span
+                                    className="truncate max-w-[250px] font-semibold"
+                                >
+                                    {insuranceDetail?.hoTen}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-span-12">
                         <FormInputField
                             name="maSo"
                             label="Mã số BHYT"

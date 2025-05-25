@@ -170,19 +170,19 @@ const MapPicker = ({
     };
 
     return (
-        <div>
+        <div className='map-picker'>
             <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMap(!showMap)}>
                 Xem vị trí
                 <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
             </div>
             {showMap && (
                 <div
-                    className='fixed top-[56px] left-0 z-[999] w-screen h-screen'
+                    className='fixed top-0 left-0 z-[999] w-screen h-screen'
                 >
                     <div
                         className="bg-gray-50 w-full h-full z-0 flex flex-col gap-1 rounded-lg"
                     >
-                        <div className="absolute bottom-[65px] left-[0px] px-2 flex flex-col z-[99999] w-full">
+                        <div className="absolute bottom-[12px] left-[0px] px-2 flex flex-col z-[99999] w-full">
                             <div className='grid grid-cols-12 gap-2'>
                                 <div className='col-span-12'>
                                     <div onClick={() => setShowMap(false)} className="bg-gray-100 text-gray-600 font-semibold rounded text-sm flex items-center justify-center gap-2 h-[48px] w-full !border-[2px] !border-[#b9bdc1]">Đóng</div>

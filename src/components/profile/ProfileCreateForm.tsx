@@ -186,7 +186,7 @@ const ProfileAddForm: React.FC = () => {
           : {}),
       };
 
-      if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.apId === 0) {
+      if (isHouseHold || !formData.noiTamTru || formData.noiTamTru.apId === 0 || (formData.noiTamTru.apId as any) === "") {
         dataSubmit = {
           ...omit(dataSubmit, ['noiTamTru']),
           tinhTrangHoGiaDinhId: defaultValues.tinhTrangHoGiaDinhId,

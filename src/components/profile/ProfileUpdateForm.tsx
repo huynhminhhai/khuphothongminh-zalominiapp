@@ -255,6 +255,18 @@ const ProfileUpdateForm: React.FC = () => {
                 dataSubmit = omit(dataSubmit, ['noiTamTru']);
             }
 
+            if ((formData.noiTamTru?.apId as any) === "") {
+                dataSubmit = {...dataSubmit, noiTamTru: {
+                    danCuId: dataSubmit.danCuId,
+                    thongTinCuTruId: dataSubmit.noiTamTru?.thongTinCuTruId,
+                    apId: null as any,
+                    xa: null as any,
+                    huyen: null as any,
+                    tinh: null as any,
+                    diaChi: '',
+                }}
+            }
+
             await updateResident(dataSubmit);
         } catch (error) {
             console.error("Error:", error);
