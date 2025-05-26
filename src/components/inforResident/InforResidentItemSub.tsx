@@ -35,15 +35,6 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
                             <Box>
                                 <ResidentInfoListForUser residentDetailData={data} />
                             </Box>
-                            {/* {
-                                account?.thongTinDanCu?.laChuHo && (
-                                    <Box mt={2}>
-                                        <div className=" flex items-center justify-end gap-3">
-                                            <SecondaryButton label="Cập nhật" handleClick={() => navigate(`/resident-edit?id=${data.danCuId}`)} size="small" />
-                                        </div>
-                                    </Box>
-                                )
-                            } */}
                         </Box>
                     )
                 }

@@ -459,7 +459,7 @@ const ProfileUpdateForm: React.FC = () => {
                         <FormSelectField
                             name="noiThuongTru.apId"
                             label=""
-                            placeholder="Chọn ấp"
+                            placeholder="Chọn khu phố/ấp"
                             control={control}
                             options={thuongTruAddress.apOptions}
                             error={errors.noiThuongTru?.apId?.message}
@@ -567,7 +567,7 @@ const ProfileUpdateForm: React.FC = () => {
                                 <FormSelectField
                                     name="noiTamTru.apId"
                                     label=""
-                                    placeholder="Chọn ấp"
+                                    placeholder="Chọn khu phố/ấp"
                                     control={control}
                                     options={tamTruAddress.apOptions}
                                     error={errors.noiTamTru?.apId?.message}

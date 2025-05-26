@@ -955,31 +955,15 @@ export const NOTIFICATIONDATA: NotificationType[] = [
         id: 1,
         title: "Thông báo cuộc họp",
         content: "Bạn có một cuộc họp sắp diễn ra. Hãy tham gia và kiểm tra thông tin chi tiết ngay!",
-        created_at: "2025-02-05T09:00:00",
+        created_at: "2025-05-15T09:00:00",
         status: 1,
-        sendTo: [101]
-    },
-    {
-        id: 2,
-        title: "Xét duyệt thông tin cư dân",
-        content: "Thông tin cư dân của bạn đang được xét duyệt. Vui lòng theo dõi cập nhật từ admin.",
-        created_at: "2025-02-06T09:00:00",
-        status: 2,
         sendTo: [101]
     },
     {
         id: 3,
         title: "Thông báo cuộc họp",
         content: "Cuộc họp sắp tới có một số thay đổi. Vui lòng kiểm tra lại lịch và thông tin cập nhật.",
-        created_at: "2025-02-01T09:00:00",
-        status: 1,
-        sendTo: [101]
-    },
-    {
-        id: 4,
-        title: "Xét duyệt thông tin cư dân",
-        content: "Thông tin cư dân của bạn đã được xét duyệt thành công. Vui lòng kiểm tra lại hồ sơ của bạn.",
-        created_at: "2025-01-05T09:00:00",
+        created_at: "2025-05-11T09:00:00",
         status: 2,
         sendTo: [101]
     }

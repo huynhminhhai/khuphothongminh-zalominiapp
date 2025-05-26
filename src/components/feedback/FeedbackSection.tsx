@@ -34,7 +34,7 @@ const FeedbackSection: React.FC<any> = () => {
                 <TitleSection title="Phản ánh gần đây (từ 1022)" handleClick={() => navigate('/feedback')} mB={4} />
                 <Box>
                     {
-                        data?.data && data?.data.length > 0 ?
+                        !data?.data && data?.data.length > 0 ?
                             <Swiper
                                 modules={[Pagination]}
                                 spaceBetween={12}

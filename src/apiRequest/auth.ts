@@ -245,7 +245,7 @@ export const useRegisterAp = () => {
                     setAccount(userInfo);
                 }
 
-                showSuccess('Đăng ký thông tin ấp/khu phố thành công');
+                showSuccess('Đăng ký thông tin khu phố/ấp thành công');
 
                 navigator('/');
             } catch (error) {

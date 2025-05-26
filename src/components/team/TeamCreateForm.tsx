@@ -140,8 +140,8 @@ const TeamAddForm: React.FC = () => {
                     <div className="col-span-12">
                         <FormSelectField
                             name="apId"
-                            label="Ấp"
-                            placeholder="Chọn ấp"
+                            label="Khu phố/Ấp"
+                            placeholder="Chọn khu phố/ấp"
                             control={control}
                             options={teamAddress.apOptions}
                             error={errors.apId?.message}

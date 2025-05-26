@@ -10,7 +10,7 @@ const ResidentPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[0px]">
             <Box>
-                <HeaderSub title="Thông tin hộ gia đình" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Hộ gia đình" onBackClick={() => navigate('/')} />
                 <InforResidentSection />
             </Box>
         </Page>

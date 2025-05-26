@@ -20,9 +20,6 @@ const MemberResidentSection: React.FC<{danCuId: number}> = ({danCuId}) => {
     return (
         <Box pt={4}>
             <Box>
-                {/* <InforResidentList />
-                <Divider />
-                <InforResidentCraftList /> */}
                 <Box>
                     {
                         familyMembers.map((item: any) => (
@@ -30,11 +27,6 @@ const MemberResidentSection: React.FC<{danCuId: number}> = ({danCuId}) => {
                         ))
                     }
                 </Box>
-                {/* <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">
-                    <Box py={3} flex alignItems="center" justifyContent="center" className="w-full">
-                        <PrimaryButton fullWidth label="Thêm thành viên" handleClick={() => navigate('/resident-add')} iconLeft={<Icon fontSize={16} icon='material-symbols:add-rounded' />} />
-                    </Box>
-                </div> */}
             </Box>
         </Box>
     )

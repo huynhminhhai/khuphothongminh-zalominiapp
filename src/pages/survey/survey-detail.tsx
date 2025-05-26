@@ -193,7 +193,7 @@ const SurveyDetailPage: React.FC = () => {
                 </Box>
             </Modal>
             <Box>
-                <HeaderSub title="Khảo sát" />
+                <HeaderSub title="Thực hiện khảo sát" />
                 {
                     isLoading ? <NewsDetailSkeleton count={1} /> :
                         detailData ?

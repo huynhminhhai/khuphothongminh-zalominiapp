@@ -244,7 +244,7 @@ const FeedbackUpdateForm: React.FC = () => {
                         <FormSelectField
                             name="apId"
                             label=""
-                            placeholder="Chọn ấp"
+                            placeholder="Chọn khu phố/ấp"
                             control={control}
                             options={phanAnhAddress.apOptions}
                             error={errors.apId?.message}

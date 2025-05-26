@@ -15,7 +15,7 @@ const InforResidentSection: React.FC = () => {
 
     if (isLoading) return <UserInfoSkeleton />;
     
-    if (error) return <EmptyData title="Có lỗi khi lấy thông tin người dùng" />;
+    if (error) return <EmptyData title="Có lỗi khi lấy thông tin hộ gia đình" />;
     
     if (!userInfo.thongTinDanCu) return <Box px={4}>
         <EmptyData title="Chưa có thông tin hộ gia đình" />
@@ -27,10 +27,10 @@ const InforResidentSection: React.FC = () => {
         <Box>
             <Box>
                 <Tabs className="tab-resident" activeKey={isResidentMainTab} onChange={(value) => setIsResidentMainTab(value)}>
-                    <Tabs.Tab key="residentTab" label="Người đại diện">
+                    <Tabs.Tab key="residentTab" label="Thông tin của tôi">
                         <InforResidentItemMain data={userInfo} />
                     </Tabs.Tab>
-                    <Tabs.Tab key="memberTab" label="Thành viên">
+                    <Tabs.Tab key="memberTab" label="Các thành viên khác">
                         <MemberResidentSection danCuId={userInfo.thongTinDanCu.danCuId} />
                     </Tabs.Tab>
                 </Tabs>

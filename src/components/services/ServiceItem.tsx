@@ -28,7 +28,7 @@ const ServiceItem: React.FC<ServiceItemType> = ({ data }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4, ease: "easeOut", delay: 0.2 }}
         >
-            <div className="flex-center flex-col gap-2">
+            <div className="flex-center flex-col gap-1">
                 <Box>
                     <div className="rounded-full flex-center w-[44px] h-[44px] relative">
                         <img className="w-[44px] h-[44px]" src={data.icon} alt={data.label} />

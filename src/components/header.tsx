@@ -31,13 +31,13 @@ export const HeaderHome: FC = () => {
                     <>
                       {account?.dienThoai && maskPhoneNumber(account?.dienThoai)}
                       {" ✦ "}
-                      {account?.tenAp || 'Chưa đăng ký thông tin ấp/khu phố'}
+                      {account?.tenAp || 'Chưa đăng ký thông tin khu phố/ấp'}
                     </>
                   )}
                 </h5>
               </Box>
             </Box>
-            <h5 className="mt-2 text-[12px] font-medium leading-[16px] tracking-widest text-white">
+            <h5 className="mt-1 text-[12px] font-medium leading-[16px] tracking-widest text-white">
               Ứng dụng đang được phát triển, hoàn thiện
             </h5>
           </Box>

@@ -38,7 +38,7 @@ const ResidentInfoListForUser: React.FC<ResidentInfoListForUserProps> = ({ resid
 
     const infoItems = [
         { label: "Số định danh cá nhân", value: residentDetailData.soGiayTo },
-        { label: "Vai trò", value: residentDetailData.laChuHo ? "Là chủ hộ" : residentDetailData.tenMoiQuanHeVoiChuHo },
+        // { label: "Vai trò", value: residentDetailData.laChuHo ? "Là chủ hộ" : residentDetailData.tenMoiQuanHeVoiChuHo },
         { label: "Giới tính", value: residentDetailData.tenGioiTinh },
         { label: "Ngày sinh", value: formatDate(residentDetailData.ngaySinh) },
         { label: "Số điện thoại", value: residentDetailData.dienThoai },
