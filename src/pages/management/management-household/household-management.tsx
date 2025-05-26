@@ -105,7 +105,7 @@ const HouseholdManagementPage: React.FC = () => {
             header: 'Chủ hộ',
             size: 180,
             cell: ({ row }) => (
-                <div>
+                <div className="text-blue-700 font-semibold" onClick={() => navigate(`/profile-resident?id=${row.original.danCuId}`)}>
                     {row.original.hoTen}
                 </div>
             )

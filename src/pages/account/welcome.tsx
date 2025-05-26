@@ -53,19 +53,22 @@ const WelcomePage: React.FC = () => {
             <Box p={4} mt={6}>
                 <Box>
                     <h3 className="text-[24px] font-bold text-primary-color text-center">Chào mừng đến với</h3>
-                    <h3 className="mt-4 text-[28px] font-bold text-primary-color text-center">Khu Phố Thông Minh</h3>
+                    <h3 className="mt-3 text-[28px] font-bold text-primary-color text-center">Khu Phố Thông Minh</h3>
+                    <h4 className="mt-4 text-[14px] font-normal text-[#8f8f8f] text-center">Vui lòng chọn đúng vai trò để sử dụng các chức năng phù hợp với bạn</h4>
                 </Box>
                 <Box mt={10}>
                     <Box p={4}>
-                        <div className="font-semibold text-[#8f8f8f]">Vui lòng chọn vai trò để tiếp tục:</div>
                         <div className="col-span-12 mt-2">
                             <button onClick={() => loginWithZalo()} className="flex items-center justify-center gap-2 bg-white h-[48px] rounded-3xl w-full border-[2px] border-primary-color">
-                                <span className="text-[15px] font-semibold text-primary-color">Đăng nhập dành cho hộ gia đình</span>
+                                <span className="text-[14px] font-semibold text-primary-color">Đăng nhập dành cho hộ gia đình</span>
                             </button>
+                            <div className="text-center italic text-[12px]">
+                                (Đăng nhập với Zalo)
+                            </div>
                         </div>
                         <div className="col-span-12 mt-4">
-                            <button onClick={() => navigate('/login')} className="flex items-center justify-center gap-2 bg-white h-[48px] rounded-3xl w-full border-[2px] border-primary-color">
-                                <span className="text-[15px] font-semibold text-primary-color">Đăng nhập dành cho ban điều hành</span>
+                            <button onClick={() => navigate('/login')} className="flex items-center justify-center gap-2 bg-primary-color h-[48px] rounded-3xl w-full border-[2px] border-primary-color">
+                                <span className="text-[14px] font-medium text-white">Đăng nhập dành cho ban điều hành</span>
                             </button>
                         </div>
 
