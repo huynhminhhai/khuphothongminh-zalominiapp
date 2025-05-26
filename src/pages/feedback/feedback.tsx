@@ -34,7 +34,7 @@ const FeedbackPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Phản ánh" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Gửi ý kiến đến bdh khu phố/ấp" onBackClick={() => navigate('/')} />
                 <Box px={4} pb={4}>
                     <FeedbackMenu />
                     <Box>
@@ -43,7 +43,7 @@ const FeedbackPage: React.FC = () => {
                                 <div className="grid grid-cols-1">
                                     {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
                                         <Box px={4}>
-                                            <EmptyData title="Hiện chưa có phản ánh nào!" />
+                                            <EmptyData title="Hiện chưa có ý kiến nào!" />
                                         </Box>
                                     ) : (
                                         <>
@@ -59,7 +59,7 @@ const FeedbackPage: React.FC = () => {
                     </Box>
                     <div ref={loaderRef} className="px-4">
                         {isFetchingNextPage && <FeedbackSkeleton count={1} />}
-                        {listData.length > 0 && !hasNextPage && <p className="text-center">Đã hiển thị tất cả phản ánh</p>}
+                        {listData.length > 0 && !hasNextPage && <p className="text-center">Đã hiển thị tất cả ý kiến</p>}
                     </div>
                 </Box>
             </Box>

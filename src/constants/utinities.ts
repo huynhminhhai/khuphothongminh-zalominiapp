@@ -7,7 +7,7 @@ export type StatisticsType = {
 
 export const STATISTICS: StatisticsType[] = [
     {
-        label: 'Hộ dân',
+        label: 'Hộ gia đình',
         value: '774',
         iconUrl: 'line-md:home',
         color: '#0a7460'

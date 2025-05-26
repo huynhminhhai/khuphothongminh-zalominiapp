@@ -227,7 +227,7 @@ const ResidentMapPage = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Bản đồ hộ dân" />
+                <HeaderSub title="Bản đồ hộ gia đình" />
 
                 {isLoadingHoGiaDinh ? (
                     <div className="relative w-full h-[calc(100vh-56px)] bg-gray-300 rounded">

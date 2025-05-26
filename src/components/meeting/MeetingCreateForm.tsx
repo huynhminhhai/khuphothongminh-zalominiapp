@@ -244,7 +244,7 @@ const MeetingAddForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn thêm tin tức này không?"
+                message="Bạn có chắc chắn muốn thêm cuộc họp này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

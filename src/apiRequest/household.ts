@@ -78,7 +78,7 @@ export const useGetHouseholdDetailInfo = (danCuId: number, loai: number) => {
                 const res = await householdApiRequest.getHouseholdDetail(danCuId, loai);
                 return res?.data ? res?.data : null;
             } catch (error) {
-                console.error("Lỗi khi lấy thông tin hộ dân:", error);
+                console.error("Lỗi khi lấy thông tin hộ gia đình:", error);
                 throw error;
             }
         },

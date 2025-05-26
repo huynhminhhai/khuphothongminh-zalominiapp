@@ -28,7 +28,7 @@ const StatisticList: React.FC<any> = () => {
                         </div>
                         <div className="flex items-center gap-3">
                             <Box>
-                                <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Hộ dân</h5>
+                                <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Hộ gia đình</h5>
                                 <h4 className="text-[20px] leading-[1] font-semibold">
                                     {
                                         (familyNumberQuery.isLoading || isLoading)

@@ -133,7 +133,7 @@ export const useGetResidentDetail = (id: number) => {
                 const res = await residentApiRequest.getResidentDetail(id);
                 return res.data;
             } catch (error) {
-                console.error("Lỗi khi lấy thông tin hộ dân:", error);
+                console.error("Lỗi khi lấy thông tin thành viên hộ gia đình:", error);
                 throw error;
             }
         },
@@ -154,7 +154,7 @@ export const useGetResidentCategory = () => {
                 const res = await residentApiRequest.getResidentCategory();
                 return res.data;
             } catch (error) {
-                console.error("Lỗi khi lấy danh mục hộ dân:", error);
+                console.error("Lỗi khi lấy danh mục thành viên hộ gia đình:", error);
                 throw error;
             }
         },
@@ -174,7 +174,7 @@ export const useGetResidentListNormal = (param: ResidentQueryParams) => {
                 const res = await residentApiRequest.getResidentList(param);
                 return res
             } catch (error) {
-                console.error("Lỗi khi lấy danh sách hộ dân:", error);
+                console.error("Lỗi khi lấy danh sách thành viên hộ gia đình:", error);
                 throw error;
             }
         },
@@ -195,7 +195,7 @@ export const useGetChuHosList = () => {
 
                 return res.data
             } catch (error) {
-                console.error("Lỗi khi lấy danh sách hộ dân:", error);
+                console.error("Lỗi khi lấy danh sách thành viên hộ gia đình:", error);
                 throw error;
             }
         },

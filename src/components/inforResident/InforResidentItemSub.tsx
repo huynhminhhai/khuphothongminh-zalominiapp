@@ -1,19 +1,13 @@
 import React, { useState } from "react"
-import { Box, useNavigate } from "zmp-ui"
+import { Box } from "zmp-ui"
 import { Icon } from "@iconify/react"
-import SecondaryButton from "components/button/SecondaryButton"
-import ResidentInfoList from "./ResidentInfoList"
-import { useStoreApp } from "store/store"
+import ResidentInfoListForUser from "./ResidentInfoListForUser"
 
 type InforResidentItemProps = {
     data: any
 }
 
 const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
-
-    const navigate = useNavigate()
-
-    const { account } = useStoreApp();
 
     const [isOpen, setIsOpen] = useState(false);
     const toggleDropdown = () => {
@@ -39,7 +33,7 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
                     isOpen && (
                         <Box>
                             <Box>
-                                <ResidentInfoList residentDetailData={data} />
+                                <ResidentInfoListForUser residentDetailData={data} />
                             </Box>
                             {/* {
                                 account?.thongTinDanCu?.laChuHo && (

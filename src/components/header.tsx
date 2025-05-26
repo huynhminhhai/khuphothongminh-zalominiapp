@@ -16,25 +16,30 @@ export const HeaderHome: FC = () => {
       showBackIcon={false}
       title={
         (
-          <Box flex alignItems="center" className="space-x-3" onClick={() => navigate(`/account`)}>
-            <div className="w-[54px] h-[54px] rounded-full border-[2px] border-[#e3ecf9] overflow-hidden bg-[#f0f0f0]">
-              <img
-                className="h-[100%] w-[100%] object-cover"
-                src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.avatar}
-              />
-            </div>
-            <Box>
-              <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{account?.hoTen ? account.hoTen : 'Chưa cập nhật'}</h4>
-              <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">
-                {account && (
-                  <>
-                    {account?.dienThoai && maskPhoneNumber(account?.dienThoai)}
-                    {" ✦ "}
-                    {account?.tenAp || 'Chưa đăng ký thông tin ấp/khu phố'}
-                  </>
-                )}
-              </h5>
+          <Box>
+            <Box flex alignItems="center" className="space-x-3" onClick={() => navigate(`/account`)}>
+              <div className="w-[54px] h-[54px] rounded-full border-[2px] border-[#e3ecf9] overflow-hidden bg-[#f0f0f0]">
+                <img
+                  className="h-[100%] w-[100%] object-cover"
+                  src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.vnpt}
+                />
+              </div>
+              <Box>
+                <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{account?.hoTen ? account.hoTen : 'Chưa cập nhật'}</h4>
+                <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">
+                  {account && (
+                    <>
+                      {account?.dienThoai && maskPhoneNumber(account?.dienThoai)}
+                      {" ✦ "}
+                      {account?.tenAp || 'Chưa đăng ký thông tin ấp/khu phố'}
+                    </>
+                  )}
+                </h5>
+              </Box>
             </Box>
+            <h5 className="mt-2 text-[12px] font-medium leading-[16px] tracking-widest text-white">
+              Ứng dụng đang được phát triển, hoàn thiện
+            </h5>
           </Box>
         ) as unknown as string
       }

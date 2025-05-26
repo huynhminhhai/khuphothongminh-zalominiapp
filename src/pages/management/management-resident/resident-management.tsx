@@ -219,7 +219,7 @@ const ResidentManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý thông tin hộ dân" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý thông tin thành viên hộ gia đình" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.THEM)}
@@ -271,7 +271,7 @@ const ResidentManagementPage: React.FC = () => {
                             onClick={() => navigate('/maps')}
                         >
                             <div className="flex items-center gap-1">
-                                Bản đồ hộ dân
+                                Bản đồ hộ gia đình
                                 <Icon fontSize={18} icon='tabler:map-2' />
                             </div>
                         </Button>
@@ -284,7 +284,7 @@ const ResidentManagementPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa thông tin hộ dân này không?"
+                message="Bạn có chắc chắn muốn xóa thông tin thành viên hộ gia đình này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

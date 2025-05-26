@@ -53,7 +53,7 @@ const ManagementPage: React.FC = () => {
                     <Box mx={4} mb={2} mt={3}>
                         <div className="grid grid-cols-12 gap-3">
                             <div className="col-span-12">
-                                <ManagementTitle title="Tổng quan tình hình hộ dân" />
+                                <ManagementTitle title="Tổng quan tình hình hộ gia đình" />
                             </div>
 
                             {
@@ -113,7 +113,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Hộ dân"
+                                        title="Hộ gia đình"
                                         prefix={<img src={images.household}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -165,7 +165,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Tin tức"
+                                        title="Thông tin cần biết"
                                         prefix={<img src={images.news}
                                             alt='news'
                                             className="w-[30px] h-auto"

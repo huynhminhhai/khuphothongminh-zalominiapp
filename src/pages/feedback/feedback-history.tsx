@@ -39,7 +39,7 @@ const FeedbackHistoryPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box px={4} pb={4}>
-                <HeaderSub title="Phản ánh đã gửi" onBackClick={() => navigate('/feedback')} />
+                <HeaderSub title="Ý kiến đã gửi" onBackClick={() => navigate('/feedback')} />
                 <Box>
                     {
                         isLoading ? <FeedbackSkeleton count={5} /> :
@@ -47,7 +47,7 @@ const FeedbackHistoryPage: React.FC = () => {
                                 {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
                                     <Box px={4}>
                                         <Box mb={3}>
-                                            <EmptyData title="Bạn chưa có phản ánh nào!" />
+                                            <EmptyData title="Bạn chưa có ý kiến nào!" />
                                         </Box>
                                         <Button variant="primary" size="medium" fullWidth
                                             onClick={() => checkRequireApId(() => {
@@ -56,7 +56,7 @@ const FeedbackHistoryPage: React.FC = () => {
                                         >
                                             <div className="flex items-center justify-center gap-1">
                                                 <Icon fontSize={16} icon='line-md:edit' />
-                                                <span>Gửi phản ánh</span>
+                                                <span>Gửi ý kiến</span>
                                             </div>
                                         </Button>
                                     </Box>
@@ -72,7 +72,7 @@ const FeedbackHistoryPage: React.FC = () => {
                 </Box>
                 <div ref={loaderRef} className="px-4">
                     {isFetchingNextPage && <FeedbackSkeleton count={1} />}
-                    {listData.length > 0 && !hasNextPage && <p className="text-center">Đã hiển thị tất cả phản ánh của bạn</p>}
+                    {listData.length > 0 && !hasNextPage && <p className="text-center">Đã hiển thị tất cả ý kiến của bạn</p>}
                 </div>
             </Box>
         </Page>

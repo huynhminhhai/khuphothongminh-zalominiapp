@@ -5,3 +5,4 @@ export { default as InforResidentItemMain } from "./InforResidentItemMain";
 export { default as InforResidentItemSub } from "./InforResidentItemSub";
 export { default as MemberResidentSection } from "./MemberResidentSection";
 export { default as ResidentInfoList } from "./ResidentInfoList";
+export { default as ResidentInfoListForUser } from "./ResidentInfoListForUser";

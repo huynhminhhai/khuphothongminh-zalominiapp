@@ -145,7 +145,7 @@ const SurveyManagementPage: React.FC = () => {
                                         khaoSatId: row.original.khaoSatId,
                                         tinhTrangId: Number(value),
                                     });
-                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái tin tức này?')
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái khảo sát này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled=

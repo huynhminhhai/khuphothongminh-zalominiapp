@@ -11,17 +11,16 @@ const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: 
     icon: <div className="relative"><Icon icon="line-md:home-simple-twotone" /></div>,
     activeIcon: <Icon icon="line-md:home-simple-twotone" />,
   },
-  // "/notification": {
-  //   label: "Thông báo",
-  //   icon: (
-  //     <div className="relative">
-  //       <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#c46574" />
-  //       <Icon icon="line-md:bell-filled-loop" />
-  //     </div>
-  //   ),
-  //   activeIcon: <Icon icon="line-md:bell-filled-loop" />,
-  //   requiresLogin: true, // Yêu cầu đăng nhập
-  // },
+  "/notification": {
+    label: "Thông báo",
+    icon: (
+      <div className="relative">
+        <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#c46574" />
+        <Icon icon="line-md:bell-twotone-loop" />
+      </div>
+    ),
+    activeIcon: <Icon icon="line-md:bell-twotone-loop" />,
+  },
   "/management": {
     label: "Quản lý",
     icon: <div className="relative"><Icon icon="line-md:folder-zip-twotone" /></div>,
@@ -59,7 +58,7 @@ export const Navigation: FC = () => {
 
   const visibleTabs = Object.keys(tabs).filter((path: TabKeys) => {
 
-    if (path === "/" || path === "/account") {
+    if (path === "/" || path === "/account" || path === "/notification") {
       return true;
     }
 

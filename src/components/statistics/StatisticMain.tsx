@@ -24,7 +24,7 @@ const StatisticMain: React.FC<any> = () => {
                     <div className="relative z-2">
                         <div className="grid grid-cols-2 gap-2 gap-y-3">
                             <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                <span className="opacity-90">Hộ nghèo:</span> <span className="text-[16px] font-semibold opacity-100">
+                                <span className="opacity-90">Hộ nghèo:</span> <span className="text-[14px] font-semibold opacity-100">
                                     {
                                         isLoading ? (
                                             <Icon icon="line-md:loading-twotone-loop" />
@@ -37,7 +37,7 @@ const StatisticMain: React.FC<any> = () => {
                                 </span>
                             </h5>
                             <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                <span className="opacity-90">Hộ cận nghèo:</span> <span className="text-[16px] font-semibold opacity-100">
+                                <span className="opacity-90">Hộ cận nghèo:</span> <span className="text-[14px] font-semibold opacity-100">
                                     {
                                         isLoading ? (
                                             <Icon icon="line-md:loading-twotone-loop" />
@@ -50,7 +50,7 @@ const StatisticMain: React.FC<any> = () => {
                                 </span>
                             </h5>
                             <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                <span className="opacity-90">Gia đình văn hóa:</span> <span className="text-[16px] font-semibold opacity-100">
+                                <span className="opacity-90">Gia đình văn hóa:</span> <span className="text-[14px] font-semibold opacity-100">
                                     {
                                         isLoading ? (
                                             <Icon icon="line-md:loading-twotone-loop" />
@@ -63,7 +63,7 @@ const StatisticMain: React.FC<any> = () => {
                                 </span>
                             </h5>
                             <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                <span className="opacity-90">Phản ánh đã xử lý:</span> <span className="text-[16px] font-semibold opacity-100">
+                                <span className="opacity-90">Phản ánh đã xử lý:</span> <span className="text-[14px] font-semibold opacity-100">
                                     {
                                         isLoading ? (
                                             <Icon icon="line-md:loading-twotone-loop" />

@@ -1,9 +1,7 @@
-import { Icon } from "@iconify/react"
-import SecondaryButton from "components/button/SecondaryButton"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { Box } from "zmp-ui"
-import ResidentInfoList from "./ResidentInfoList"
+import ResidentInfoListForUser from "./ResidentInfoListForUser"
 
 type InforResidentItemMainType = {
     data: any
@@ -18,7 +16,7 @@ const InforResidentItemMain: React.FC<InforResidentItemMainType> = ({ data }) =>
         <Box>
             <Box>
                 <Box px={4}>
-                    <ResidentInfoList residentDetailData={thongTinDanCu} isShow={true} />
+                    <ResidentInfoListForUser residentDetailData={thongTinDanCu} isShow={true} />
                 </Box>
             </Box>
             {/* <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-2">

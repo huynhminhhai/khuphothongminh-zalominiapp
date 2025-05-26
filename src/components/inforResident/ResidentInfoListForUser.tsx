@@ -27,12 +27,12 @@ export const InforItemMain = ({ label, value }: { label: string, value: string }
     )
 }
 
-interface ResidentInfoListProps {
+interface ResidentInfoListForUserProps {
     residentDetailData: any;
     isShow?: boolean
 }
 
-const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData, isShow=false }) => {
+const ResidentInfoListForUser: React.FC<ResidentInfoListForUserProps> = ({ residentDetailData, isShow=false }) => {
 
     const { ngheNghieps } = useStoreApp()
 
@@ -43,13 +43,9 @@ const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData,
         { label: "Ngày sinh", value: formatDate(residentDetailData.ngaySinh) },
         { label: "Số điện thoại", value: residentDetailData.dienThoai },
         { label: "Email", value: residentDetailData.email },
-        { label: "Thường trú", value: formatAddress(residentDetailData.noiThuongTru), condition: !!residentDetailData.noiThuongTru },
-        { label: "Tạm trú", value: formatAddress(residentDetailData.noiTamTru), condition: !!residentDetailData.noiTamTru },
+        { label: "Địa chỉ", value: formatAddress(residentDetailData.noiThuongTru), condition: !!residentDetailData.noiThuongTru },
         { label: "Nghề nghiệp", value: ngheNghieps.find((item: any) => item.value === Number(residentDetailData?.ngheNghiep))?.label },
         { label: "Nơi làm việc", value: residentDetailData.noiLamViec },
-        { label: "Dân tộc", value: residentDetailData.tenDanToc },
-        { label: "Tôn giáo", value: residentDetailData.tenTonGiao },
-        { label: "Quốc gia", value: residentDetailData.tenQuocGia },
         { label: "Bảo hiểm y tế", value: residentDetailData.baoHiemYTe ? residentDetailData.baoHiemYTe.maSo : "" },
     ];
 
@@ -69,4 +65,4 @@ const ResidentInfoList: React.FC<ResidentInfoListProps> = ({ residentDetailData,
     );
 };
 
-export default ResidentInfoList;
+export default ResidentInfoListForUser;

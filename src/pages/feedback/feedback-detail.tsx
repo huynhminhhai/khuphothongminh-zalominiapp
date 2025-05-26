@@ -39,7 +39,7 @@ const FeedbackDetailPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[30px]">
             <Box>
-                <HeaderSub title="Chi tiết phản ánh" />
+                <HeaderSub title="Chi tiết ý kiến" />
                 {
                     isLoading ?
                         <NewsDetailSkeleton count={1} /> :
@@ -121,7 +121,7 @@ const FeedbackDetailPage: React.FC = () => {
                                         <Box pt={4} px={4} className="relative">
                                             <Box pb={2} mb={3} className="border-b-[1px]">
                                                 <h3 className="text-[18px] leading-[26px] font-semibold">
-                                                    Ban quản lý ấp/khu phố trả lời
+                                                    Ban điều hành khu phố/ấp phản hồi
                                                 </h3>
                                                 {/* <Box className="text-gray-color font-medium">
                                                     <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
@@ -163,8 +163,8 @@ const FeedbackDetailPage: React.FC = () => {
                             :
                             <Box px={4} pb={10}>
                                 <EmptyData
-                                    title="Phản ánh không tồn tại!"
-                                    desc="Không thể tìm thấy phản ánh bạn yêu cầu"
+                                    title="Ý kiến không tồn tại!"
+                                    desc="Không thể tìm thấy ý kiến bạn yêu cầu"
                                 />
                             </Box>
                 }

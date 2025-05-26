@@ -46,8 +46,16 @@ import logo1 from './logo.png'
 import logopng from './logo-png.png'
 import household from './household.png'
 import marker from './marker.png'
+import alerts from './alerts.png'
+import document from './document.png'
+import schedule from './schedule.png'
+import vnpt from './vnpt.webp'
 
 const images = {
+    vnpt,
+    alerts,
+    document,
+    schedule,
     marker,
     household,
     logo,

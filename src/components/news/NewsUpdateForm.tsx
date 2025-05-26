@@ -134,8 +134,8 @@ const NewsUpdateForm = () => {
                     <div className="col-span-12">
                         <FormTextEditorField
                             name="noiDung"
-                            label="Nội dung tin tức"
-                            placeholder="Nhập nội dung tin tức..."
+                            label="Nội dung"
+                            placeholder="Nhập nội dung..."
                             control={control}
                             error={errors.noiDung?.message}
                             required
@@ -153,7 +153,7 @@ const NewsUpdateForm = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật tin tức"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật thông tin cần biết"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -161,7 +161,7 @@ const NewsUpdateForm = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn cập nhật tin tức này không?"
+                message="Bạn có chắc chắn muốn cập nhật thông tin cần biết này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

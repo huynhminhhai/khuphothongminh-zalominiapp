@@ -36,7 +36,7 @@ const AccountPage: React.FC = () => {
                             <Box m={4}>
                                 <div onClick={() => navigate('/profile-account')} className="flex items-center gap-3 bg-white rounded-lg p-4" >
                                     <div className="flex-1">
-                                        <Avatar className="border-[2px] border-secondary-color" src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.avatar} size={80} />
+                                        <Avatar className="border-[2px] border-secondary-color" src={account?.anhDaiDien ? getFullImageUrl(account.anhDaiDien) : images.vnpt} size={80} />
                                     </div>
                                     <div className="flex flex-col gap-1 w-full">
                                         <div className="text-[18px] leading-6 font-semibold text-primary-color">{account?.hoTen ? account.hoTen : 'Chưa cập nhật'}</div>

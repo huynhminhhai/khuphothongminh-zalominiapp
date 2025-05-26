@@ -44,7 +44,7 @@ const NewsOthers: React.FC<NewsOthersProps> = ({ idNews }) => {
                         }
                     </>
                     :
-                    <>Chưa có tin tức</>
+                    <>Chưa có thông tin cần biết nào!</>
             }
         </Box>
     )

@@ -67,7 +67,7 @@ const ResidentCraftManagementPage: React.FC = () => {
 
             // Hiển thị thông báo
             openSnackbar({
-                text: 'Xóa thông tin hộ dân thành công',
+                text: 'Xóa thông tin hộ gia đình thành công',
                 type: 'success',
                 duration: 5000,
             });
@@ -208,7 +208,7 @@ const ResidentCraftManagementPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa thông tin hộ dân này không?"
+                message="Bạn có chắc chắn muốn xóa thông tin hộ hộ gia đình này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

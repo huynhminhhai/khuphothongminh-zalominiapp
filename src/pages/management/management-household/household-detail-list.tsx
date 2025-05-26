@@ -213,7 +213,7 @@ const HouseholdDetailListPage: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa thông tin hộ dân này không?"
+                message="Bạn có chắc chắn muốn xóa thông tin hộ gia đình này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

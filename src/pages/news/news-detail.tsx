@@ -22,17 +22,17 @@ const NewsDetailPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Chi tiết tin tức" />
+                <HeaderSub title="Chi tiết thông tin cần biết" />
                 {
                     isLoading ?
                         <NewsDetailSkeleton count={1} /> :
                         data ?
                             <Box p={4}>
                                 <Box pb={4} className="border-b-[1px] border-primary-color text-primary-color">
-                                    <div className="flex items-center gap-2 mb-3">
+                                    {/* <div className="flex items-center gap-2 mb-3">
                                         <div className="h-[24px] w-[3px] bg-primary-color border-primary-color block"></div>
                                         <h3 className="text-[16px] leading-[1] font-semibold">Tin tức</h3>
-                                    </div>
+                                    </div> */}
                                     <h2 className="title-page mb-3 text-primary-cborder-primary-color">
                                         {data.tieuDe || data.moTa}
                                     </h2>
@@ -49,13 +49,13 @@ const NewsDetailPage: React.FC = () => {
                             :
                             <Box px={4} pb={10}>
                                 <EmptyData
-                                    title="Bài viết không tồn tại!"
-                                    desc="Không thể tìm thấy bài viết bạn yêu cầu"
+                                    title="Thông tin không tồn tại!"
+                                    desc="Không thể tìm thấy thông tin cần biết này."
                                 />
                             </Box>
                 }
                 <Box px={4}>
-                    <TitleSection title="Tin tức khác" mB={0} handleClick={() => navigate('/news')} />
+                    <TitleSection title="Thông tin cần biết khác" mB={0} handleClick={() => navigate('/news')} />
                     <NewsOthers idNews={Number(newsId)} />
                 </Box>
 

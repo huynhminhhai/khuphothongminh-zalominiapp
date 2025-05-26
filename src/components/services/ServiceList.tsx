@@ -16,7 +16,7 @@ export type ServicesType = {
 
 const SERVICES: ServicesType[] = [
     {
-        label: 'Thông tin hộ dân',
+        label: 'Thông tin hộ gia đình',
         url: '/resident',
         icon: images.home,
         isRequireApId: true,
@@ -48,7 +48,7 @@ const SERVICES: ServicesType[] = [
     //     requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCuBanDieuHanh, quyen: PermissionActions.XEM },
     // },
     {
-        label: 'Tin tức',
+        label: 'Thông tin cần biết',
         url: '/news',
         icon: images.news,
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, quyen: PermissionActions.XEM },
@@ -62,7 +62,7 @@ const SERVICES: ServicesType[] = [
         isRequireApId: true,
     },
     {
-        label: 'Phản ánh',
+        label: 'Gửi ý kiến',
         url: '/feedback',
         icon: images.idea,
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
@@ -73,13 +73,13 @@ const SERVICES: ServicesType[] = [
     //     icon: images.invoice,
     //     requiredPermission: { maChucNang: "Lấy danh sách giao dịch thu chi có phân trang", quyen: PermissionActions.XEM },
     // },
-    {
-        label: 'Tình hình tài chính',
-        url: '/transactions',
-        icon: images.money,
-        isRequireApId: true,
-        // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
-    },
+    // {
+    //     label: 'Tình hình tài chính',
+    //     url: '/transactions',
+    //     icon: images.money,
+    //     isRequireApId: true,
+    //     // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
+    // },
 ]
 
 const ServiceList: React.FC<any> = () => {

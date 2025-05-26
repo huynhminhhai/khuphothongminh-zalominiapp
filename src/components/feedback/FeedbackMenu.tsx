@@ -23,13 +23,13 @@ const FeedbackMenu: React.FC = () => {
                     >
                         <div className="flex items-center justify-center gap-1">
                             <Icon fontSize={16} icon='line-md:edit' />
-                            <span>Gửi phản ánh</span>
+                            <span>Gửi ý kiến</span>
                         </div>
                     </Button>
                     <Button variant="secondary" size="small" fullWidth onClick={() => navigate('/feedback-history')}>
                         <div className="flex items-center justify-center gap-1">
                             <Icon fontSize={16} icon='line-md:telegram' />
-                            <span>Phản ánh đã gửi</span>
+                            <span>Ý kiến đã gửi</span>
                         </div>
                     </Button>
                 </div>
