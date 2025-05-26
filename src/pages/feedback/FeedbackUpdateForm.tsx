@@ -179,7 +179,7 @@ const FeedbackUpdateForm: React.FC = () => {
                     {/* <div className="col-span-12">
                         <FormInputField
                             name="title"
-                            label="Tiêu đề phản ánh"
+                            label="Tiêu đề"
                             placeholder="Nhập tiêu đề"
                             control={control}
                             error={errors.title?.message}
@@ -189,7 +189,7 @@ const FeedbackUpdateForm: React.FC = () => {
                     <div className="col-span-12">
                         <FormSelectField
                             name="linhVucPhanAnhId"
-                            label="Lĩnh vức phản ánh"
+                            label="Lĩnh vực"
                             placeholder="Chọn loại lĩnh vực"
                             control={control}
                             options={feedbackLinhVucOption}
@@ -200,8 +200,8 @@ const FeedbackUpdateForm: React.FC = () => {
                     <div className="col-span-12">
                         <FormInputAreaField
                             name="noiDung"
-                            label="Nội dung phản ánh"
-                            placeholder="Nhập nội dung phản ánh..."
+                            label="Nội dung"
+                            placeholder="Nhập nội dung ý kiến..."
                             control={control}
                             error={errors.noiDung?.message}
                             required
@@ -298,7 +298,7 @@ const FeedbackUpdateForm: React.FC = () => {
                     <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiPhanAnh"
-                            label="Công khai phản ánh"
+                            label="Công khai ý kiến"
                             control={control}
                             required
                         // size="medium"
@@ -337,13 +337,13 @@ const FeedbackUpdateForm: React.FC = () => {
                         feedbackDetail?.tinhTrangId !== feedbackStatusOptions[3]?.value &&
                         <div className="col-span-12">
                             <span className="text-[#dc2626] italic">
-                                Phản ánh đang được xử lý không thể cập nhật
+                                Ý kiến đang được phản hồi không thể cập nhật
                             </span>
                         </div>
                     }
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={isPending || feedbackDetail?.tinhTrangId !== feedbackStatusOptions[3]?.value} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật phản ánh"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending || feedbackDetail?.tinhTrangId !== feedbackStatusOptions[3]?.value} fullWidth label={isPending ? "Đang xử lý..." : "Cập nhật ý kiến"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -351,7 +351,7 @@ const FeedbackUpdateForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn gửi phản ánh này không?"
+                message="Bạn có chắc chắn muốn cập nhật ý kiến này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

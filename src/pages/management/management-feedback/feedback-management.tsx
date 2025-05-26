@@ -88,7 +88,7 @@ const FeedbackManagementPage: React.FC = () => {
     const removeFeedback = (id: number) => {
         openConfirmModal(() => {
             deleteFeedback(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa phản ánh này?');
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa ý kiến này?');
     }
 
     const columns: ColumnDef<any>[] = [
@@ -137,7 +137,7 @@ const FeedbackManagementPage: React.FC = () => {
             cell: ({ row }) => {
 
                 return (
-                    <div >Kiến nghị: {row.original.tenLinhVucPhanAnh}</div>
+                    <div >Ý kiến: {row.original.tenLinhVucPhanAnh}</div>
                 )
             }
         },
@@ -158,7 +158,7 @@ const FeedbackManagementPage: React.FC = () => {
                                         phanAnhId: row.original.phanAnhId,
                                         tinhTrangId: Number(value),
                                     });
-                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn cập nhật trạng thái ý kiến này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={
@@ -200,7 +200,7 @@ const FeedbackManagementPage: React.FC = () => {
                             ) : (
                                 <Icon className="text-red-700" fontSize={16} icon='material-symbols:close' />
                             )}
-                            <span className="text-[13px] flex-1">Phản ánh</span>
+                            <span className="text-[13px] flex-1">Ý kiến</span>
                         </div>
                     </div>
                 )
@@ -268,7 +268,7 @@ const FeedbackManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có phản ánh nào!"
+                        title="Hiện chưa có ý kiến nào!"
                     />
                 </Box>
             );
@@ -299,7 +299,7 @@ const FeedbackManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý phản ánh" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý ý kiến" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={false}

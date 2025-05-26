@@ -63,7 +63,7 @@ const StatisticMain: React.FC<any> = () => {
                                 </span>
                             </h5>
                             <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                <span className="opacity-90">Phản ánh đã xử lý:</span> <span className="text-[14px] font-semibold opacity-100">
+                                <span className="opacity-90">Ý kiến đã phản hồi:</span> <span className="text-[14px] font-semibold opacity-100">
                                     {
                                         isLoading ? (
                                             <Icon icon="line-md:loading-twotone-loop" />

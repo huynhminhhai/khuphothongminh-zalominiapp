@@ -30,13 +30,10 @@ const FeedbackList: React.FC<FeedbackListProps> = ({data}) => {
                         <img src={images.empty} alt="Không có dữ liệu" />
                     </Box>
                     <Box mt={4}>
-                        <h3 className="text-[18px] leading-[1] font-medium text-center">Bạn chưa gửi phản ánh nào !</h3>
-                        <p className="text-[14px] leading-[20px] text-[#555] mt-2 text-center">
-                            Nếu bạn có vấn đề cần phản ánh. Hãy gửi phản ánh với địa phương qua ứng dụng này.
-                        </p>
+                        <h3 className="text-[18px] leading-[1] font-medium text-center">Chưa có ý kiến nào!</h3>
                     </Box>
                     <Box mt={4}>
-                        <Button size="medium" fullWidth onClick={() => navigate('/feedback-add')}>Gửi phản ánh</Button>
+                        <Button size="medium" fullWidth onClick={() => navigate('/feedback-add')}>Gửi ý kiến</Button>
                     </Box>
                 </Box>
             }

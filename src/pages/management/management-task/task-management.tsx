@@ -149,7 +149,7 @@ const TaskManagementPage: React.FC = () => {
                                         nhiemVuId: row.original.nhiemVuId,
                                         tinhTrangId: Number(value),
                                     });
-                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái phản ánh này?')
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn cập nhật trạng thái nhiệm vụ này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={

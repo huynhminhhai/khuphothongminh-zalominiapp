@@ -48,7 +48,7 @@ const FeedbackDetailPage: React.FC = () => {
                                 <Box px={4} className="relative">
                                     <Box pb={4} mb={4} className="border-b-[1px]">
                                         <h3 className="title-page mb-2">
-                                            Kiến nghị về: {data?.tenLinhVucPhanAnh}
+                                            Ý kiến về: {data?.tenLinhVucPhanAnh}
                                         </h3>
                                         <Box className="font-medium">
                                             <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>

@@ -107,7 +107,7 @@ const MeetingManagementPage: React.FC = () => {
     const removeMeeting = (id: number) => {
         openConfirmModal(() => {
             deleteMeeting(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa phản ánh này?');
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa cuộc họp này?');
     }
 
     const handleCopy = async (linkOnl: string) => {

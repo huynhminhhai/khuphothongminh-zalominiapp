@@ -59,7 +59,7 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
     const removeFeedback = (id: number) => {
         openConfirmModal(() => {
             deleteFeedback(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa phản ánh này?');
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa ý kiến này?');
     }
 
     return (

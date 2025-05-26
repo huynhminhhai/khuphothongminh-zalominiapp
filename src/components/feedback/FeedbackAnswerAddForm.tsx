@@ -88,7 +88,7 @@ const FeedbackAnswerAddForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn phản hồi phản ánh này không?"
+                message="Bạn có chắc chắn muốn phản hồi ý kiến này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

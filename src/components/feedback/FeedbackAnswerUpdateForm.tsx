@@ -160,14 +160,14 @@ const FeedbackAnswerAddForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn cập nhật phản hồi phản ánh này không?"
+                message="Bạn có chắc chắn muốn cập nhật phản hồi ý kiến này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />
             <ConfirmModal
                 visible={isConfirmVisibleDelete}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn xóa phản hồi phản ánh này không?"
+                message="Bạn có chắc chắn muốn xóa phản hồi ý kiến này không?"
                 onConfirm={handleConfirmDelete}
                 onCancel={handleCancelDelete}
             />

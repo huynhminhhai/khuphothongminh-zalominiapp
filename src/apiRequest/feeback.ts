@@ -163,7 +163,7 @@ export const useGetFeedbackStatus = () => {
                 const res = await feebackApiRequest.getFeebackStatus();
                 return res.data
             } catch (error) {
-                console.error("Lỗi khi lấy danh mục phản ánh:", error);
+                console.error("Lỗi khi lấy danh mục ý kiến:", error);
                 throw error;
             }
         },
@@ -187,7 +187,7 @@ export const useCreateFeeback = () => {
         },
         onSuccess: () => {
 
-            showSuccess('Gửi phản ánh thành công');
+            showSuccess('Gửi ý kiến thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
             queryClient.invalidateQueries({ queryKey: ["myFeedbackList"] });
@@ -237,7 +237,7 @@ export const useDeleteFeedback = () => {
             return await feebackApiRequest.deleteFeedback(id);
         },
         onSuccess: () => {
-            showSuccess('Xóa phản ánh thành công');
+            showSuccess('Xóa ý kiến thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
             queryClient.invalidateQueries({ queryKey: ["myFeedbackList"] });
@@ -263,7 +263,7 @@ export const useUpdateFeedbackStatus = () => {
         },
         onSuccess: () => {
 
-            showSuccess('Cập nhật trạng thái phản ánh thành công');
+            showSuccess('Cập nhật trạng thái ý kiến thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
@@ -288,7 +288,7 @@ export const useUpdateFeedback = () => {
             return await feebackApiRequest.updateFeedback(formData);
         },
         onSuccess: () => {
-            showSuccess('Cập nhật phản ánh thành công');
+            showSuccess('Cập nhật ý kiến thành công');
 
             queryClient.invalidateQueries({ queryKey: ["feedbackDetail"] });
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
