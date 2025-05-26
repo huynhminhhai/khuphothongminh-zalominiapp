@@ -10,7 +10,7 @@ const TaskPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Nhiệm vụ" />
+                <HeaderSub title="Nhiệm vụ của tôi" />
                 <Box>
                     <TaskList />
                 </Box>

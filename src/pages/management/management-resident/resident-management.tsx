@@ -187,7 +187,7 @@ const ResidentManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có dân cư nào!"
+                        title="Hiện chưa có thành viên hộ gia đình nào!"
                         desc="Nhấn vào nút Thêm để bắt đầu!"
                     />
                 </Box>
@@ -219,7 +219,7 @@ const ResidentManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý thông tin thành viên hộ gia đình" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý thông tin thành viên hgd" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.THEM)}

@@ -1,6 +1,7 @@
-import { useGetFeedbackList } from "apiRequest/feeback"
+import { useGetFeedbackList, useGetMyFeedbackList } from "apiRequest/feeback"
 import { EmptyData } from "components/data"
 import { FeedbackItem, FeedbackMenu } from "components/feedback"
+import FeedbackItemHistory from "components/feedback/FeedbackItemHistory"
 import { HeaderSub } from "components/header-sub"
 import { FeedbackSkeleton } from "components/skeleton"
 import React, { useState } from "react"
@@ -18,10 +19,11 @@ const FeedbackPage: React.FC = () => {
         pageSize: 5,
         ApId: account?.apId,
         MaXa: account?.maXa,
-        keyword: ''
+        keyword: '',
+        NguoiTao: account?.nguoiDungId
     });
 
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetFeedbackList(param);
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyFeedbackList(param);
 
     const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
 
@@ -50,7 +52,7 @@ const FeedbackPage: React.FC = () => {
                                             {listData
                                                 .filter((item) => item.congKhaiPhanAnh === true)
                                                 .map((item, index) => (
-                                                    <FeedbackItem key={index} data={item} />
+                                                    <FeedbackItemHistory key={index} data={item} />
                                                 ))}
                                         </>
                                     )}

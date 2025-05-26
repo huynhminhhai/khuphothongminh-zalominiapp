@@ -16,7 +16,7 @@ import { ProfileResidentPage } from "pages/profile";
 import { TaskDetailPage, TaskPage } from "pages/task";
 import { TransactionDetailPage, TransactionsPage } from "pages/transactions";
 import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-finnace";
-import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage, RegisterApPage } from "pages/account";
+import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage, RegisterApPage, WelcomePage } from "pages/account";
 import { LoadingFullScreen } from "./loading";
 import { useStoreApp } from "store/store";
 import { NotificationPage } from "pages/notification";
@@ -43,7 +43,7 @@ const AuthWrapper = ({ children }) => {
       if (!storedData || !storedData.accessToken) {
         setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
         setAccount(null);
-        navigate("/login");
+        navigate("/welcome");
         return;
       }
 
@@ -66,7 +66,7 @@ const AuthWrapper = ({ children }) => {
           // Token đã hết hạn
           setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
           setAccount(null);
-          navigate("/login");
+          navigate("/welcome");
           return;
         }
 
@@ -87,7 +87,7 @@ const AuthWrapper = ({ children }) => {
       console.error("Lỗi khi load dữ liệu từ storage:", error);
       setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
       setAccount(null);
-      navigate("/login");
+      navigate("/welcome");
     }
   };
 
@@ -110,7 +110,7 @@ const AuthWrapper = ({ children }) => {
         // Hết hạn → logout
         setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
         setAccount(null);
-        navigate("/login");
+        navigate("/welcome");
       } else if (minutesLeft <= 15 && !refreshTokenMutation.isPending) {
         // Gần hết hạn → tự động refresh
         refreshTokenMutation.mutate();
@@ -141,6 +141,7 @@ const MyApp = () => {
               <Routes>
 
                 <Route path="/login" element={<LoginPage></LoginPage>}></Route>
+                <Route path="/welcome" element={<WelcomePage></WelcomePage>}></Route>
                 <Route path="/403" element={<ForbiddenPage></ForbiddenPage>}></Route>
 
                 <Route

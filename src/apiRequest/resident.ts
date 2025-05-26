@@ -219,7 +219,7 @@ export const useCreateResident = () => {
             return await residentApiRequest.createResident(formData);
         },
         onSuccess: () => {
-            showSuccess('Tạo dân cư thành công');
+            showSuccess('Tạo thành viên hộ gia đình thành công');
 
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
             queryClient.invalidateQueries({ queryKey: ["chuhosList"] });
@@ -246,7 +246,7 @@ export const useDeleteResident = () => {
             return await residentApiRequest.deleteResident(id);
         },
         onSuccess: () => {
-            showSuccess('Xóa dân cư thành công');
+            showSuccess('Xóa thành viên hộ gia đình thành công');
 
             queryClient.invalidateQueries({ queryKey: ["residentList"] });
         },
@@ -269,7 +269,7 @@ export const useUpdateResident = () => {
             return await residentApiRequest.updateResident(formData);
         },
         onSuccess: () => {
-            showSuccess('Cập nhật thông tin dân cư thành công');
+            showSuccess('Cập nhật thông tin thành viên hộ gia đình thành công');
 
             queryClient.invalidateQueries({ queryKey: ["residentDetail"] });
             queryClient.invalidateQueries({ queryKey: ["residentList"] });

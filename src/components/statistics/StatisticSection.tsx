@@ -11,7 +11,7 @@ const StatisticSection: React.FC<any> = () => {
 
     return (
         <Box>
-            <Box px={4} pb={4}>
+            <Box px={3} pb={4}>
                 {
                     hasPermission(permissionsList.homeBangDieuKhien, PermissionActions.XEM) &&
                     <StatisticList />

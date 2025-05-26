@@ -10,7 +10,7 @@ const StatisticMain: React.FC<any> = () => {
     const { data, isLoading } = useGetSoLieuHienThi();
 
     return (
-        <Box mt={3}>
+        <Box>
             <div className="bg-blue-50 text-[#153568] w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
                 <div className="absolute top-[50%] left-0 transform translate-y-[-50%] w-[100%]">
                     <motion.img

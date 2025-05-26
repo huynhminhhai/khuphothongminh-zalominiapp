@@ -93,21 +93,8 @@ const ManagementPage: React.FC = () => {
                     <Box mx={4} mb={2} mt={3}>
                         <div className="grid grid-cols-12 gap-3">
                             <div className="col-span-12">
-                                <ManagementTitle title="Tổ chức, dân cư" />
+                                <ManagementTitle title="Hộ gia đình, thành viên" />
                             </div>
-                            {
-                                hasPermission(permissionsList.khuPhoToChucDanCuBanDieuHanh, PermissionActions.XEM) &&
-                                <div className="col-span-4">
-                                    <ManagementItem
-                                        title="Tổ chức"
-                                        prefix={<img src={images.team}
-                                            alt='news'
-                                            className="w-[30px] h-auto"
-                                        />}
-                                        onClick={() => navigate('/team-management')}
-                                    />
-                                </div>
-                            }
 
                             {
                                 hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.XEM) &&
@@ -127,7 +114,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Dân cư"
+                                        title="Thành viên hộ gia đình"
                                         prefix={<img src={images.resident}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -289,6 +276,27 @@ const ManagementPage: React.FC = () => {
                             </div>
                         </Box>
                     </>
+                }
+
+                {
+                    hasPermission(permissionsList.khuPhoToChucDanCuBanDieuHanh, PermissionActions.XEM) &&
+                    <Box mx={4} mb={2} mt={3}>
+                        <div className="grid grid-cols-12 gap-3">
+                            <div className="col-span-12">
+                                <ManagementTitle title="Ban điều hành khu phố/ấp" />
+                            </div>
+                            <div className="col-span-4">
+                                <ManagementItem
+                                    title="Ban điều hành"
+                                    prefix={<img src={images.team}
+                                        alt='news'
+                                        className="w-[30px] h-auto"
+                                    />}
+                                    onClick={() => navigate('/team-management')}
+                                />
+                            </div>
+                        </div>
+                    </Box>
                 }
             </Box>
         </Page>

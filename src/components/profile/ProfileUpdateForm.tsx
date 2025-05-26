@@ -633,7 +633,7 @@ const ProfileUpdateForm: React.FC = () => {
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
                             <PrimaryButton
                                 fullWidth
-                                label={isPending ? 'Đang xử lý...' : 'Cập nhật dân cư'}
+                                label={isPending ? 'Đang xử lý...' : 'Cập nhật thành viên hộ gia đình'}
                                 handleClick={handleSubmit(onSubmit)}
                             />
                         </Box>

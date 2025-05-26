@@ -126,7 +126,7 @@ export const useLogout = () => {
 
             showSuccess('Đăng xuất thành công')
 
-            navigate('/login');
+            navigate('/welcome');
 
 
         } catch (error) {

@@ -78,7 +78,7 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
                     <img className="w-[100%] h-[200px] object-cover" src={imageFiles[0]?.tapTin ? getFullImageUrl(imageFiles[0].tapTin) : images.feedback} alt={data.noiDung} />
                 </Box>
                 <Box mt={2}>
-                    <h3 className="text-[16px] leading-[20px] font-medium line-clamp-2 mb-2">{data.noiDung}</h3>
+                    <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-2">{data.noiDung}</h3>
                     <div className="text-gray-color font-medium flex items-center gap-1">
                         <Icon fontSize={20} icon='qlementine-icons:location-16' />
                         <div className="flex-1">

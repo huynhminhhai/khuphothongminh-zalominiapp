@@ -245,7 +245,7 @@ const TeamUpdateForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn cập nhật thông tin nhân sự này không?"
+                message="Bạn có chắc chắn muốn cập nhật thông tin thành viên ban điều hành này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

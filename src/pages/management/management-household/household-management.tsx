@@ -242,7 +242,7 @@ const HouseholdManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có dân cư nào!"
+                        title="Hiện chưa có hộ gia đình nào!"
                         desc="Nhấn vào nút Thêm để bắt đầu!"
                     />
                 </Box>

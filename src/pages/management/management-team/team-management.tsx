@@ -166,7 +166,7 @@ const TeamManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có dân cư nào!"
+                        title="Hiện chưa có thành viên ban điều hành nào!"
                         desc="Nhấn vào nút Thêm để bắt đầu!"
                     />
                 </Box>
@@ -198,7 +198,7 @@ const TeamManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Tổ chức" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Ban điều hành khu phố/ấp" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoToChucDanCuBanDieuHanh, PermissionActions.THEM)}

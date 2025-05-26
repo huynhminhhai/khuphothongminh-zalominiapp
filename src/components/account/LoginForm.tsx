@@ -7,7 +7,6 @@ import { FormInputField } from "components/form"
 import { Icon } from "@iconify/react"
 import { useLoginWithZalo } from "services/loginWithZalo"
 import { useLogin } from "apiRequest/auth"
-import images from "assets/images"
 
 const defaultValues: FormDataLogin = {
     username: '',
@@ -15,8 +14,6 @@ const defaultValues: FormDataLogin = {
 }
 
 const LoginForm: React.FC = () => {
-
-    const { loginWithZalo } = useLoginWithZalo()
 
     const [loading, setLoading] = useState(false);
     const [isHide, setIsHide] = useState<boolean>(true)
@@ -83,17 +80,6 @@ const LoginForm: React.FC = () => {
                         <Button disabled={loading} fullWidth onClick={handleSubmit(onSubmit)} className="!rounded-3xl">
                             {loading ? "Đang xử lý..." : "Đăng nhập"}
                         </Button>
-                    </div>
-
-                    <div className="col-span-12 mt-4">
-                        <button disabled={loading} onClick={() => loginWithZalo()} className="flex items-center justify-center gap-2 bg-blue-100 h-[48px] rounded-3xl w-full">
-                            <img width={30} src={images.zalo} alt="zalo" />
-                            <span className="text-[15px] font-medium text-blue-700">{
-                                loading
-                                    ? "Đang xử lý..."
-                                    : "Đăng nhập với Zalo"
-                            }</span>
-                        </button>
                     </div>
                 </div>
             </Box>

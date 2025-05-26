@@ -563,7 +563,7 @@ const ProfileAddForm: React.FC = () => {
               <PrimaryButton
                 fullWidth
                 disabled={isPending}
-                label={isPending ? 'Đang xử lý...' : 'Thêm dân cư'}
+                label={isPending ? 'Đang xử lý...' : 'Thêm thành viên hộ gia đình'}
                 handleClick={handleSubmit(onSubmit)}
               />
             </Box>

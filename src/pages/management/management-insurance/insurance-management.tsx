@@ -229,7 +229,7 @@ const InsuranceManagementPage: React.FC = () => {
         if (!residentList?.data?.length) {
             return (
                 <Box px={4}>
-                    <EmptyData title="Hiện chưa có dân cư nào!" desc="Nhấn vào nút Thêm để bắt đầu!" />
+                    <EmptyData title="Hiện chưa có thẻ BHYT nào!" desc="Nhấn vào nút Thêm để bắt đầu!" />
                 </Box>
             );
         }

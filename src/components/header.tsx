@@ -37,9 +37,10 @@ export const HeaderHome: FC = () => {
                 </h5>
               </Box>
             </Box>
-            <h5 className="mt-1 text-[12px] font-medium leading-[16px] tracking-widest text-white">
+            <h5 className="mt-1 text-[11px] font-medium leading-[16px] tracking-widest text-white">
               Ứng dụng đang được phát triển, hoàn thiện
             </h5>
+
           </Box>
         ) as unknown as string
       }

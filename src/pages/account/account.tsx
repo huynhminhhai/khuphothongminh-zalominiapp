@@ -102,7 +102,7 @@ const AccountPage: React.FC = () => {
                         //     </List>
                         // </Box>
                     }
-                    <Box m={4}>
+                    {/* <Box m={4}>
                         <List className="bg-white rounded-lg">
                             <ManagementTitle title="Cài đặt" />
                             <Item
@@ -118,7 +118,7 @@ const AccountPage: React.FC = () => {
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />
                         </List>
-                    </Box>
+                    </Box> */}
                 </Box>
             </Box>
         </Page>

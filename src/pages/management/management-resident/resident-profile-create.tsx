@@ -7,7 +7,7 @@ const ResidentProfileAddPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
-                <HeaderSub title="Thêm dân cư" />
+                <HeaderSub title="Thêm thành viên hộ gia đình" />
                 <ProfileCreateForm />
             </Box>
         </Page>
