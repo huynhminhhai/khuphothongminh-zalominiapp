@@ -42,7 +42,7 @@ const WelcomePage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col gap-8 bg-white !mt-0 !min-h-screen">
             <Box>
                 <img
-                    className="h-[400px] w-full object-cover"
+                    className="h-[300px] w-full object-cover"
                     style={{
                         clipPath: 'ellipse(120% 100% at 30% 0%)'
                     }}

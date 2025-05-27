@@ -16,7 +16,7 @@ export type ServicesType = {
 
 const SERVICES: ServicesType[] = [
     {
-        label: 'Thông tin hộ gia đình',
+        label: 'Hộ gia đình',
         url: '/resident',
         icon: images.home,
         isRequireApId: true,

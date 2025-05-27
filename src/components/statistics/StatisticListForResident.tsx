@@ -5,11 +5,11 @@ import { Icon } from "@iconify/react"
 import { motion } from "framer-motion";
 import images from "assets/images";
 import { useGetSoLieuHienThi } from "apiRequest/app";
+import { useStoreApp } from "store/store";
 
-const StatisticList: React.FC<any> = () => {
+const StatisticListForResident: React.FC<any> = () => {
 
-    const { familyNumberQuery, residentNumberQuery } = useGetResidentData();
-    const { data, isLoading } = useGetSoLieuHienThi();
+    const { account } = useStoreApp();
 
     return (
         <Box mb={3}>
@@ -28,12 +28,10 @@ const StatisticList: React.FC<any> = () => {
                         </div>
                         <div className="flex items-center gap-3">
                             <Box>
-                                <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Hộ gia đình</h5>
-                                <h4 className="text-[20px] leading-[1] font-semibold">
+                                <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Phường/Xã</h5>
+                                <h4 className="text-[15px] leading-[1] font-semibold">
                                     {
-                                        (familyNumberQuery.isLoading || isLoading)
-                                            ? <Icon icon='line-md:loading-twotone-loop' />
-                                            : (data ? data.tongSoHoGiaDinh : familyNumberQuery.data || 0)
+                                        account?.tenXa || 'Chưa cập nhật'
                                     }
                                 </h4>
                             </Box>
@@ -55,8 +53,12 @@ const StatisticList: React.FC<any> = () => {
                         </div>
                         <div className="flex items-center gap-3">
                             <Box>
-                                <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Thành viên hgd</h5>
-                                <h4 className="text-[20px] leading-[1] font-semibold">{residentNumberQuery.isLoading ? <Icon icon='line-md:loading-twotone-loop' /> : residentNumberQuery.data}</h4>
+                                <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Khu phố/Ấp</h5>
+                                <h4 className="text-[15px] leading-[1] font-semibold">
+                                    {
+                                        account?.tenAp || 'Chưa cập nhật'
+                                    }
+                                </h4>
                             </Box>
                         </div>
                     </div>
@@ -66,4 +68,4 @@ const StatisticList: React.FC<any> = () => {
     )
 }
 
-export default StatisticList
+export default StatisticListForResident

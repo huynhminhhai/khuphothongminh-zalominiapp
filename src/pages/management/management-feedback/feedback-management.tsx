@@ -178,34 +178,34 @@ const FeedbackManagementPage: React.FC = () => {
                 );
             }
         },
-        {
-            id: 'published',
-            header: 'Công khai',
-            cell: ({ row }) => {
+        // {
+        //     id: 'published',
+        //     header: 'Công khai',
+        //     cell: ({ row }) => {
 
-                return (
-                    <div className="flex items-center justify-start gap-2">
-                        <div className="flex items-center gap-1">
-                            {row.original.congKhaiThongTinCaNhan ? (
-                                <Icon className="text-green-700" fontSize={16} icon='mdi:tick' />
-                            ) : (
-                                <Icon className="text-red-700" fontSize={16} icon='material-symbols:close' />
-                            )}
-                            <span className="text-[13px] flex-1">Thông tin cá nhân</span>
-                        </div>
+        //         return (
+        //             <div className="flex items-center justify-start gap-2">
+        //                 <div className="flex items-center gap-1">
+        //                     {row.original.congKhaiThongTinCaNhan ? (
+        //                         <Icon className="text-green-700" fontSize={16} icon='mdi:tick' />
+        //                     ) : (
+        //                         <Icon className="text-red-700" fontSize={16} icon='material-symbols:close' />
+        //                     )}
+        //                     <span className="text-[13px] flex-1">Thông tin cá nhân</span>
+        //                 </div>
 
-                        <div className="flex items-center gap-1">
-                            {row.original.congKhaiPhanAnh ? (
-                                <Icon className="text-green-700" fontSize={16} icon='mdi:tick' />
-                            ) : (
-                                <Icon className="text-red-700" fontSize={16} icon='material-symbols:close' />
-                            )}
-                            <span className="text-[13px] flex-1">Ý kiến</span>
-                        </div>
-                    </div>
-                )
-            }
-        },
+        //                 <div className="flex items-center gap-1">
+        //                     {row.original.congKhaiPhanAnh ? (
+        //                         <Icon className="text-green-700" fontSize={16} icon='mdi:tick' />
+        //                     ) : (
+        //                         <Icon className="text-red-700" fontSize={16} icon='material-symbols:close' />
+        //                     )}
+        //                     <span className="text-[13px] flex-1">Ý kiến</span>
+        //                 </div>
+        //             </div>
+        //         )
+        //     }
+        // },
         {
             id: 'toaDo',
             header: 'Tọa độ',

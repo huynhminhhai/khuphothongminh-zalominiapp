@@ -12,8 +12,6 @@ const StatisticList: React.FC<any> = () => {
     const { data, isLoading } = useGetSoLieuHienThi();
     const { data: soLuongTaiKhoanTrongAp, isLoading: isLoadingSoLuongTaiKhoanTrongAp } = useGetSoLuongTaiKhoanTrongAp();
 
-    console.log(soLuongTaiKhoanTrongAp)
-
     return (
         <Box>
             <div className="grid grid-cols-2 gap-3">
@@ -67,7 +65,7 @@ const StatisticList: React.FC<any> = () => {
 
             </div>
             <Box mt={3}>
-                <div className="bg-blue-50 text-[#153568] w-[100%] p-3 py-4 rounded-xl relative overflow-hidden">
+                <div className="bg-blue-50 text-[#153568] w-[100%] p-2 py-4 rounded-xl relative overflow-hidden">
                     <div className="absolute top-[50%] left-0 transform translate-y-[-50%] w-[100%]">
                         <motion.img
                             src={images.shapeWave}
@@ -80,7 +78,7 @@ const StatisticList: React.FC<any> = () => {
                         <div className="relative z-2">
                             <div className="grid grid-cols-2 gap-2 gap-y-3">
                                 <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                    <span className="opacity-90">Hộ nghèo:</span> <span className="text-[16px] font-semibold opacity-100">
+                                    <span className="opacity-90">Hộ nghèo:</span> <span className="text-[14px] font-semibold opacity-100">
                                         {
                                             isLoading ? (
                                                 <Icon icon="line-md:loading-twotone-loop" />
@@ -91,7 +89,7 @@ const StatisticList: React.FC<any> = () => {
                                     </span>
                                 </h5>
                                 <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                    <span className="opacity-90">Hộ cận nghèo:</span> <span className="text-[16px] font-semibold opacity-100">
+                                    <span className="opacity-90">Hộ cận nghèo:</span> <span className="text-[14px] font-semibold opacity-100">
                                         {
                                             isLoading ? (
                                                 <Icon icon="line-md:loading-twotone-loop" />
@@ -104,7 +102,7 @@ const StatisticList: React.FC<any> = () => {
                                     </span>
                                 </h5>
                                 <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                    <span className="opacity-90">Đạt văn hóa:</span> <span className="text-[16px] font-semibold opacity-100">
+                                    <span className="opacity-90">Đạt văn hóa:</span> <span className="text-[14px] font-semibold opacity-100">
                                         {
                                             isLoading ? (
                                                 <Icon icon="line-md:loading-twotone-loop" />
@@ -117,7 +115,7 @@ const StatisticList: React.FC<any> = () => {
                                     </span>
                                 </h5>
                                 <h5 className="text-[13px] leading-[1] font-semibold flex items-center gap-1">
-                                    <span className="opacity-90">Người dùng:</span> <span className="text-[16px] font-semibold opacity-100">
+                                    <span className="opacity-90">Người dùng:</span> <span className="text-[14px] font-semibold opacity-100">
                                         {
                                             isLoadingSoLuongTaiKhoanTrongAp ? (
                                                 <Icon icon="line-md:loading-twotone-loop" />

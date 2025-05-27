@@ -31,7 +31,7 @@ const FeedbackSection: React.FC<any> = () => {
     return (
         <Box>
             <Box px={4} pt={4} pb={0}>
-                <TitleSection title="Phản ánh gần đây (từ 1022)" handleClick={() => navigate('/feedback')} mB={4} />
+                <TitleSection title="Phản ánh gần đây (từ 1022)" handleClick={() => navigate('/')} mB={4} />
                 <Box>
                     {
                         !data?.data && data?.data.length > 0 ?

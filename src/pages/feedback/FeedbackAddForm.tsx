@@ -235,7 +235,7 @@ const FeedbackAddForm: React.FC = () => {
                             }}
                         />
                     </div>
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiThongTinCaNhan"
                             label="Công khai thông tin cá nhân"
@@ -252,7 +252,7 @@ const FeedbackAddForm: React.FC = () => {
                             required
                         // size="medium"
                         />
-                    </div>
+                    </div> */}
 
                     {/* <div className="col-span-12">
                         <FormImageUploader
