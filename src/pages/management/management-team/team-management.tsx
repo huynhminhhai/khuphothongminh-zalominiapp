@@ -198,7 +198,7 @@ const TeamManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Ban điều hành khu phố/ấp" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Ban điều hành Khu phố/Ấp" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoToChucDanCuBanDieuHanh, PermissionActions.THEM)}

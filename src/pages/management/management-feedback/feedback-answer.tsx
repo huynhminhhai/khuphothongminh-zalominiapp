@@ -104,7 +104,7 @@ const FeedbackAnswerPage: React.FC = () => {
                                 <Box p={4}>
                                     <Box pb={2}>
                                         <h3 className="text-[18px] leading-[26px] font-semibold">
-                                        Ban điều hành khu phố/ấp phản hồi
+                                        Ban điều hành Khu phố/Ấp phản hồi
                                         </h3>
                                     </Box>
                                     {

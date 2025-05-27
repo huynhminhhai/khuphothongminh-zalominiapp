@@ -283,7 +283,7 @@ const ManagementPage: React.FC = () => {
                     <Box mx={4} mb={2} mt={3}>
                         <div className="grid grid-cols-12 gap-3">
                             <div className="col-span-12">
-                                <ManagementTitle title="Ban điều hành khu phố/ấp" />
+                                <ManagementTitle title="Ban điều hành Khu phố/Ấp" />
                             </div>
                             <div className="col-span-4">
                                 <ManagementItem

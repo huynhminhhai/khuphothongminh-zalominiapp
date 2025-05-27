@@ -50,7 +50,7 @@ const AccountPage: React.FC = () => {
                                 <List className="bg-white rounded-lg">
                                     <Item
                                         onClick={() => navigate('/register-ap')}
-                                        title="Đăng ký thông tin khu phố/ấp"
+                                        title="Đăng ký thông tin Khu phố/Ấp"
                                         prefix={<img src={images.progress} width={30} />}
                                         suffix={<Icon fontSize={20} icon="formkit:right" />}
                                     />
