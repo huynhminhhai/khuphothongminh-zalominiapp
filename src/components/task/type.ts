@@ -157,3 +157,17 @@ export function compareNguoiThucHienNhiemVus(detailData, formData) {
 
     return result;
 }
+
+export const schemaTienDoNhiemVu = yup.object().shape({
+    tinhTrangId: yup.number().typeError('Không được để trống').required('Không được để trống').notOneOf([0], 'Chưa chọn mục này'),
+    ghiChu: yup.string().required('Không được để trống'),
+});
+
+export type FormDataTienDoNhiemVu = {
+    tienDoThucHienNhiemVuId?: number;
+    nhiemVuId ?: number;
+    ghiChu: string;
+    tinhTrangId: number;
+    nguoiTao?: number;
+    fileDinhKems?: File[]
+}

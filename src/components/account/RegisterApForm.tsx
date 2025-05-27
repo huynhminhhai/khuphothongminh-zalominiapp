@@ -133,7 +133,7 @@ const RegisterApForm: React.FC = () => {
                             disabled={!isRegisteredWithAnotherRole}
                         />
                     </div>
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <FormInputField
                             type="number"
                             name="soGiayTo"
@@ -142,7 +142,7 @@ const RegisterApForm: React.FC = () => {
                             control={control}
                             error={errors.soGiayTo?.message}
                         />
-                    </div>
+                    </div> */}
 
                     <div className="col-span-12">
                         <FormSelectField

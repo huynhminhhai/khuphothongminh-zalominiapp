@@ -13,7 +13,7 @@ import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
-import { TaskDetailPage, TaskPage } from "pages/task";
+import { MyTaskDetailPage, TaskDetailPage, TaskPage } from "pages/task";
 import { TransactionDetailPage, TransactionsPage } from "pages/transactions";
 import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-finnace";
 import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage, RegisterApPage, WelcomePage } from "pages/account";
@@ -190,6 +190,7 @@ const MyApp = () => {
                         {/* TASK */}
                         <Route path="/task" element={<TaskPage></TaskPage>}></Route>
                         <Route path="/task-detail" element={<TaskDetailPage></TaskDetailPage>}></Route>
+                        <Route path="/my-task-detail" element={<MyTaskDetailPage></MyTaskDetailPage>}></Route>
 
                         {/* TRANSACTIONS */}
                         <Route path="/transactions" element={<TransactionsPage></TransactionsPage>}></Route>

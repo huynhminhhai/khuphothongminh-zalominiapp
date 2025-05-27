@@ -16,6 +16,12 @@ export type TaskQueryParams = {
     TieuDe?: string;
 };
 
+export type TienDoThucHienNhiemVuParams = {
+    page: number,
+    pageSize: number,
+    nhiemVuId: number,
+}
+
 const taskApiRequest = {
     getTaskList: async (param: TaskQueryParams) => {
         const queryString = buildQueryString({
@@ -74,7 +80,32 @@ const taskApiRequest = {
     },
     deleteFileTask: async (id: number) => {
         return await http.delete<any>(`/taptinnhiemvu/${id}`)
-    }
+    },
+    getDanhSachTienDoNhiemVu: async (param: TienDoThucHienNhiemVuParams) => {
+
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            nhiemVuId: param.nhiemVuId
+        });
+
+        return await http.get<any>(`/tiendothuchiennhiemvu${queryString}`);
+    },
+    getDanhSachTienDoNhiemVuCuaToi: async (param: TienDoThucHienNhiemVuParams) => {
+        const queryString = buildQueryString({
+            current: param.page,
+            size: param.pageSize,
+            nhiemVuId: param.nhiemVuId
+        });
+
+        return await http.get<any>(`/tiendothuchiennhiemvu/cuatoi${queryString}`);
+    },
+    createTienDoNhiemVu: async (formData: any) => {
+        return await http.postFormData<any>("/tiendothuchiennhiemvu", formData);
+    },
+    deleteTienDoNhiemVu: async (id: number) => {
+        return await http.delete<any>(`/tiendothuchiennhiemvu/${id}`)
+    },
 }
 
 /**
@@ -315,6 +346,102 @@ export const useDeleteFileTask = () => {
             showSuccess('Xóa tập tin thành công')
 
             queryClient.invalidateQueries({ queryKey: ["taskDetail"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* GET TIEN DO THUC HIEN NHIEM VU
+**/
+export const useGetTienDoThucHienNhiemVu = (param: TienDoThucHienNhiemVuParams) => {
+
+    return useQuery({
+        queryKey: ['tienDoThucHienNhiemVu', param],
+        queryFn: async () => {
+            try {
+
+                const res = await taskApiRequest.getDanhSachTienDoNhiemVu(param);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+/**
+* GET TIEN DO THUC HIEN NHIEM VU CUA TOI
+**/
+export const useGetTienDoThucHienNhiemVuCuaToi = (param: TienDoThucHienNhiemVuParams) => {
+
+    return useQuery({
+        queryKey: ['tienDoThucHienNhiemVuCuaToi', param],
+        queryFn: async () => {
+            try {
+
+                const res = await taskApiRequest.getDanhSachTienDoNhiemVuCuaToi(param);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+/**
+* POST TIEN DO NHIEM VU
+**/
+export const useCreateTienDoNhiemVu = () => {
+    const { showSuccess, showError } = useCustomSnackbar();
+    const queryClient = useQueryClient();
+    const navigator = useNavigate()
+
+    return useMutation({
+        mutationFn: async (formData: any) => {
+            console.log(formData)
+            return await taskApiRequest.createTienDoNhiemVu(formData);
+        },
+        onSuccess: () => {
+            showSuccess('Cập nhật tiến độ nhiệm vụ thành công')
+
+            queryClient.invalidateQueries({ queryKey: ["tienDoThucHienNhiemVuCuaToi"] });
+            queryClient.invalidateQueries({ queryKey: ["tienDoThucHienNhiemVu"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+            showError(error)
+        },
+    });
+};
+
+/**
+* DELETE TASK
+**/
+export const useDeleteTienDoNhiemVu = () => {
+    const queryClient = useQueryClient();
+    const { showSuccess, showError } = useCustomSnackbar();
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await taskApiRequest.deleteTienDoNhiemVu(id);
+        },
+        onSuccess: () => {
+            showSuccess('Xóa tiến độ nhiệm vụ thành công')
+
+            queryClient.invalidateQueries({ queryKey: ["tienDoThucHienNhiemVuCuaToi"] });
+            queryClient.invalidateQueries({ queryKey: ["tienDoThucHienNhiemVu"] });
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

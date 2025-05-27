@@ -20,7 +20,7 @@ const TaskItem: React.FC<TaskItemProps> = ({data}) => {
 
     return (
         <Box
-            onClick={() => navigate(`/task-detail?id=${data.nhiemVuId}`)}
+            onClick={() => navigate(`/my-task-detail?id=${data.nhiemVuId}`)}
             className="task-item border-b-[1px]"
         >
             <Box py={4} flex alignItems="center" justifyContent="space-between">

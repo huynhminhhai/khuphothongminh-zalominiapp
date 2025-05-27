@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
-import { useAddFileTask, useDeleteFileTask, useGetTaskDetail, useGetTienDoThucHienNhiemVu } from "apiRequest/task"
+import { useDeleteTienDoNhiemVu, useGetTaskDetail, useGetTienDoThucHienNhiemVuCuaToi } from "apiRequest/task"
+import { PrimaryButton } from "components/button"
 import { EmptyData } from "components/data"
 import { Divider } from "components/divider"
 import { HeaderSub } from "components/header-sub"
@@ -12,11 +13,11 @@ import React, { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { openUrlInWebview } from "services/zalo"
 import { formatDate } from "utils/date"
-import { convertToFormData, getFullImageUrl, isImage } from "utils/file"
+import { getFullImageUrl, isImage } from "utils/file"
 import { getTinhTrangTaskColor } from "utils/renderColor"
 import { Box, Page } from "zmp-ui"
 
-const TaskDetailPage: React.FC = () => {
+const MyTaskDetailPage: React.FC = () => {
 
     const [searchParams] = useSearchParams();
     const [modalUpdateVisible, setModalUpdateVisible] = useState<boolean>(false);
@@ -34,9 +35,8 @@ const TaskDetailPage: React.FC = () => {
     })
 
     const { data: detailData, isLoading } = useGetTaskDetail(Number(taskId));
-    const { data: tienDoThucHienNhiemVu, isLoading: isLoadingTienDo } = useGetTienDoThucHienNhiemVu(param);
-    const { mutateAsync: addFileTask, isPending } = useAddFileTask();
-    const { mutate: deleteFileTask } = useDeleteFileTask();
+    const { data: tienDoThucHienNhiemVuCuaToi, isLoading: isLoadingTienDo } = useGetTienDoThucHienNhiemVuCuaToi(param);
+    const { mutate: deleteTienDoNhiemVu } = useDeleteTienDoNhiemVu();
 
     const { color, bg } = getTinhTrangTaskColor(detailData?.tinhTrang?.tenTinhTrang);
 
@@ -59,25 +59,11 @@ const TaskDetailPage: React.FC = () => {
         setConfirmAction(null);
     };
 
-    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (!files || files.length === 0) return;
-
-        const fileTasks: File[] = [];
-
-        Array.from(files).forEach((file: File) => {
-            fileTasks.push(file);
-        });
-
-        try {
-            const dataSubmit = convertToFormData({ TapTinFormFiles: fileTasks, NhiemVuId: taskId })
-
-            await addFileTask(dataSubmit);
-
-        } catch (error) {
-            console.error("Lỗi khi thêm file:", error);
-        }
-    };
+    const removeFeedback = (id: number) => {
+        openConfirmModal(() => {
+            deleteTienDoNhiemVu(id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa tiến độ nhiệm vụ này?');
+    }
 
     const columns: ColumnDef<any>[] = [
         {
@@ -140,6 +126,24 @@ const TaskDetailPage: React.FC = () => {
                 )
             }
         },
+        {
+            id: 'actions',
+            header: 'Thao tác',
+            cell: ({ row }) => (
+                <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
+                    
+                    {
+                        // hasPermission(permissionsList.khuPhoNhiemVuNhiemVuCuaToi, PermissionActions.XOA) &&
+                        <button
+                            onClick={() => removeFeedback(row.original.tienDoThucHienNhiemVuId)}
+                            className="px-3 py-1 bg-red-700 text-white rounded"
+                        >
+                            <Icon icon='material-symbols:delete' fontSize={18} />
+                        </button>
+                    }
+                </div>
+            ),
+        },
     ];
 
     const renderContent = () => {
@@ -151,7 +155,7 @@ const TaskDetailPage: React.FC = () => {
             );
         }
 
-        if (!tienDoThucHienNhiemVu.length) {
+        if (!tienDoThucHienNhiemVuCuaToi.length) {
             return (
                 <Box px={4} className="text-center">
                     Chưa có tiến độ nhiệm vụ!
@@ -161,7 +165,7 @@ const TaskDetailPage: React.FC = () => {
 
         return <Box>
             {
-                <CardTanStack data={tienDoThucHienNhiemVu} columns={columns} />
+                <CardTanStack data={tienDoThucHienNhiemVuCuaToi} columns={columns} />
             }
         </Box>
     };
@@ -169,7 +173,7 @@ const TaskDetailPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
-                <HeaderSub title="Chi tiết nhiệm vụ" />
+                <HeaderSub title="Chi tiết nhiệm vụ của tôi" />
                 <Box>
                     {
                         isLoading ?
@@ -232,49 +236,6 @@ const TaskDetailPage: React.FC = () => {
                                         <div className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
                                         </div>
                                     </Box>
-
-                                    <Divider />
-                                    <Box px={4} pt={4} pb={8}>
-                                        <div className="text-[18px] font-medium mb-4 flex items-center justify-between">
-                                            Tập tin đính kèm
-                                            <Box p={2} className="bg-secondary-color rounded-full" onClick={() => document.getElementById("hiddenFileInput")?.click()}>
-                                                <Icon color="#ffffff" icon='hugeicons:file-add' />
-                                                <input disabled={isPending} multiple type="file" id="hiddenFileInput" style={{ display: "none" }} onChange={handleFileChange} />
-                                            </Box>
-                                        </div>
-                                        <Box className="text-secondary-color">
-                                            {detailData?.tapTinNhiemVus && detailData.tapTinNhiemVus.length > 0 ? (
-                                                detailData.tapTinNhiemVus.map((item, index) => (
-                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
-                                                        <div
-                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
-
-                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                        >
-                                                            <div className="flex items-center gap-1">
-                                                                {isImage(item.tapTin) ? (
-                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
-                                                                ) : (
-                                                                    <Icon icon="codex:file" fontSize={22} />
-                                                                )}
-                                                                <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <Box onClick={() => {
-                                                            openConfirmModal(() => {
-                                                                deleteFileTask(item.tapTinNhiemVuId);
-                                                            }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa tập tin này?');
-                                                        }}>
-                                                            <Icon icon='mingcute:close-square-fill' fontSize={26} className="text-[#c46574]" />
-                                                        </Box>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <div>Không có tập tin</div>
-                                            )}
-                                        </Box>
-                                    </Box>
                                     <Divider />
                                     <Box>
                                         <div className="px-4 pt-4 text-[18px] font-semibold mb-4">Tiến độ thực hiện nhiệm vụ</div>
@@ -282,6 +243,11 @@ const TaskDetailPage: React.FC = () => {
                                             {renderContent()}
                                         </Box>
                                     </Box>
+                                    <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-1">
+                                        <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
+                                            <PrimaryButton fullWidth label={"Cập nhật tiến độ"} handleClick={() => setModalUpdateVisible(true)} />
+                                        </Box>
+                                    </div>
                                 </Box>
                                 :
                                 <EmptyData title="Không có dữ liệu" />
@@ -307,4 +273,4 @@ const TaskDetailPage: React.FC = () => {
     )
 }
 
-export default TaskDetailPage
+export default MyTaskDetailPage
