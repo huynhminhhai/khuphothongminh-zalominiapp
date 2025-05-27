@@ -12,6 +12,7 @@ export type ServicesType = {
     isCheckLogin?: boolean,
     requiredPermission?: { maChucNang: string; quyen:  "XEM" | "XEMCONGKHAI" | "SUA" | "XOA" | "THEM" | "XUATBAN" | "BAOCAO" | "TIEPNHAN" | "XOACUATOI" | "THUCHIEN" };
     isRequireApId?: boolean,
+    isComingSoon?: boolean
 }
 
 const SERVICES: ServicesType[] = [
@@ -80,6 +81,20 @@ const SERVICES: ServicesType[] = [
     //     isRequireApId: true,
     //     // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
     // },
+    {
+        label: 'Văn bản',
+        url: '/document',
+        icon: images.document,
+        isComingSoon: true
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
+    },
+    {
+        label: 'Thu phí rác',
+        url: '/garbage-fee',
+        icon: images.garbageFee,
+        isComingSoon: true
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
+    },
 ]
 
 const ServiceList: React.FC<any> = () => {

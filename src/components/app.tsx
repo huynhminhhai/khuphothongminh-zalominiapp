@@ -26,7 +26,7 @@ import { getDataFromStorage } from "services/zalo";
 import ForbiddenPage from "pages/403";
 import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
 import { InsuranceAddPage, InsuranceAUpdatePage, InsurancePage } from "pages/insurance";
-import { RegisterApModal } from "./modal";
+import { IsComingSoonModal, RegisterApModal } from "./modal";
 import { useRefreshToken } from "apiRequest/auth";
 
 
@@ -137,6 +137,7 @@ const MyApp = () => {
             <ZMPRouter>
               <ScrollToTop />
               <RegisterApModal />
+              <IsComingSoonModal />
               <LoadingFullScreen isLoading={isLoadingFullScreen} />
               <Routes>
 

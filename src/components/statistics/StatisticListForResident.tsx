@@ -29,7 +29,7 @@ const StatisticListForResident: React.FC<any> = () => {
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Phường/Xã</h5>
-                                <h4 className="text-[14px] leading-[1] font-semibold">
+                                <h4 className="text-[13px] leading-[1] font-semibold">
                                     {
                                         account?.tenXa || 'Chưa cập nhật'
                                     }
@@ -54,7 +54,7 @@ const StatisticListForResident: React.FC<any> = () => {
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[13px] leading-[1] font-semibold mb-[6px] opacity-90">Khu phố/Ấp</h5>
-                                <h4 className="text-[14px] leading-[1] font-semibold">
+                                <h4 className="text-[13px] leading-[1] font-semibold">
                                     {
                                         account?.tenAp || 'Chưa cập nhật'
                                     }
