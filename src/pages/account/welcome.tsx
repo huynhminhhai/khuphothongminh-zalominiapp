@@ -60,15 +60,12 @@ const WelcomePage: React.FC = () => {
                     <Box p={4}>
                         <div className="col-span-12 mt-2">
                             <button onClick={() => loginWithZalo()} className="flex items-center justify-center gap-2 bg-white h-[48px] rounded-3xl w-full border-[2px] border-primary-color">
-                                <span className="text-[14px] font-semibold text-primary-color">Đăng nhập dành cho hộ gia đình</span>
+                                <span className="text-[14px] font-semibold text-primary-color">Tiếp tục với vai trò hộ gia đình</span>
                             </button>
-                            <div className="text-center italic text-[12px]">
-                                (Đăng nhập với Zalo)
-                            </div>
                         </div>
                         <div className="col-span-12 mt-4">
                             <button onClick={() => navigate('/login')} className="flex items-center justify-center gap-2 bg-primary-color h-[48px] rounded-3xl w-full border-[2px] border-primary-color">
-                                <span className="text-[14px] font-medium text-white">Đăng nhập dành cho ban điều hành</span>
+                                <span className="text-[14px] font-medium text-white">Tiếp tục với vai trò ban điều hành</span>
                             </button>
                         </div>
 

@@ -18,40 +18,40 @@ export type FormDataFeedback = {
 
 export interface FormDataPhanAnh {
     phanAnhId?: number;
-    apId: number;
-    linhVucPhanAnhId: number; 
+    apId?: number;
+    linhVucPhanAnhId?: number; 
     noiDung: string;
-    diaChi: string;
-    maXa: string;
-    maHuyen: string;
-    maTinh: string;
+    diaChi?: string;
+    maXa?: string;
+    maHuyen?: string;
+    maTinh?: string;
     latitude?: number | null;
     longitude?: number | null;
-    congKhaiThongTinCaNhan: boolean;
-    congKhaiPhanAnh: boolean;
+    congKhaiThongTinCaNhan?: boolean;
+    congKhaiPhanAnh?: boolean;
     tinhTrangId?: number;
     tapTinPhanAnhFormFiles?: File[];
 }
 
 export const phanAnhSchema = yup.object().shape({
-    apId: yup.number().typeError('Chưa chọn mục này').required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
-    linhVucPhanAnhId: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
+    // apId: yup.number().typeError('Chưa chọn mục này').required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
+    // linhVucPhanAnhId: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
     noiDung: yup.string().required("Chưa nhập nội dung"),
-    diaChi: yup.string().required("Chưa nhập địa chỉ"),
-    maXa: yup.string().required("Chưa chọn mục này"),
-    maHuyen: yup.string().required("Chưa chọn mục này"),
-    maTinh: yup.string().required("Chưa chọn mục này"),
-    latitude: yup
-        .number().nullable(),
-    longitude: yup
-        .number().nullable(),
-    congKhaiThongTinCaNhan: yup.boolean().required(),
-    congKhaiPhanAnh: yup.boolean().required(),
+    // diaChi: yup.string().required("Chưa nhập địa chỉ"),
+    // maXa: yup.string().required("Chưa chọn mục này"),
+    // maHuyen: yup.string().required("Chưa chọn mục này"),
+    // maTinh: yup.string().required("Chưa chọn mục này"),
+    // latitude: yup
+    //     .number().nullable(),
+    // longitude: yup
+    //     .number().nullable(),
+    // congKhaiThongTinCaNhan: yup.boolean().required(),
+    // congKhaiPhanAnh: yup.boolean().required(),
     // tinhTrangId: yup.number().required("Chưa chọn mục này").notOneOf([0], 'Chưa chọn mục này'),
-    tapTinPhanAnhFormFiles: yup
-    .array()
-    .of(yup.mixed<File>().required("Tệp không hợp lệ"))
-    .default([])
-    .ensure()
-    .min(1, "Vui lòng tải lên ít nhất một tệp"),
+    // tapTinPhanAnhFormFiles: yup
+    // .array()
+    // .of(yup.mixed<File>().required("Tệp không hợp lệ"))
+    // .default([])
+    // .ensure()
+    // .min(1, "Vui lòng tải lên ít nhất một tệp"),
 });

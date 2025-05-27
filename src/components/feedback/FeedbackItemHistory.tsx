@@ -67,28 +67,28 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
             pb={4} mb={4} className="border-b-[1px] relative"
         >
             <Box className="relative" onClick={() => navigate(`/feedback-detail?id=${data.phanAnhId}`)}>
-                {status && (
+                {/* {status && (
                     <div
                         className={`${color} ${bg} feedback-tag py-[6px] px-3 rounded-xl absolute bottom-[0px] right-[2px] font-bold text-[12px] leading-[1]`}
                     >
                         {status.tenTinhTrang}
                     </div>
-                )}
+                )} */}
                 <Box className="relative rounded-lg overflow-hidden">
                     <img className="w-[100%] h-[200px] object-cover" src={imageFiles[0]?.tapTin ? getFullImageUrl(imageFiles[0].tapTin) : images.feedback} alt={data.noiDung} />
                 </Box>
                 <Box mt={2}>
                     <h3 className="text-[16px] leading-[20px] font-semibold line-clamp-2 mb-2">{data.noiDung}</h3>
-                    <div className="text-gray-color font-medium flex items-center gap-1">
+                    {/* <div className="text-gray-color font-medium flex items-center gap-1">
                         <Icon fontSize={20} icon='qlementine-icons:location-16' />
                         <div className="flex-1">
                             <div className="line-clamp-1">
                                 {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </Box>
-                <Box mt={2}>
+                <Box mt={3}>
                     <div className="text-gray-color font-medium flex items-center gap-1">
                         <Icon fontSize={20} icon='material-symbols-light:date-range-outline' />
                         <div className="flex-1">

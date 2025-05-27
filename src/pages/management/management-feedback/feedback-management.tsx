@@ -131,13 +131,13 @@ const FeedbackManagementPage: React.FC = () => {
             }
         },
         {
-            id: 'tieuDe',
-            header: 'Tiêu đề',
+            id: 'noiDung',
+            header: 'Nội dung',
             size: 300,
             cell: ({ row }) => {
 
                 return (
-                    <div >Ý kiến: {row.original.tenLinhVucPhanAnh}</div>
+                    <div >{row.original.noiDung}</div>
                 )
             }
         },
@@ -206,21 +206,21 @@ const FeedbackManagementPage: React.FC = () => {
         //         )
         //     }
         // },
-        {
-            id: 'toaDo',
-            header: 'Tọa độ',
-            cell: ({ row }) => {
+        // {
+        //     id: 'toaDo',
+        //     header: 'Tọa độ',
+        //     cell: ({ row }) => {
 
-                return (
-                    <div>
-                        <MapRender
-                            lat={row.original.latitude || undefined}
-                            lng={row.original.longitude || undefined}
-                        />
-                    </div>
-                )
-            }
-        },
+        //         return (
+        //             <div>
+        //                 <MapRender
+        //                     lat={row.original.latitude || undefined}
+        //                     lng={row.original.longitude || undefined}
+        //                 />
+        //             </div>
+        //         )
+        //     }
+        // },
         {
             id: 'actions', // Custom column for actions
             header: 'Thao tác',

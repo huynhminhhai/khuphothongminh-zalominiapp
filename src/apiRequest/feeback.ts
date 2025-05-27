@@ -192,7 +192,7 @@ export const useCreateFeeback = () => {
             queryClient.invalidateQueries({ queryKey: ["feedbackList"] });
             queryClient.invalidateQueries({ queryKey: ["myFeedbackList"] });
 
-            navigate('/feedback-history');
+            navigate('/feedback');
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

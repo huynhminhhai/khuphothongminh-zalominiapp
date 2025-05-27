@@ -48,13 +48,13 @@ const FeedbackDetailPage: React.FC = () => {
                                 <Box px={4} className="relative">
                                     <Box pb={4} mb={4} className="border-b-[1px]">
                                         <h3 className="title-page mb-2">
-                                            Ý kiến về: {data?.tenLinhVucPhanAnh}
+                                            Nội dung ý kiến: 
                                         </h3>
                                         <Box className="font-medium">
                                             <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
-                                            <div>- tại <span className="font-semibold">
+                                            {/* <div>- tại <span className="font-semibold">
                                                 {[data?.diaChi, data?.tenAp, data?.tenXa, data?.tenHuyen, data?.tenTinh].filter(Boolean).join(', ')}
-                                            </span></div>
+                                            </span></div> */}
                                         </Box>
                                     </Box>
                                     <Box pb={4} mb={4} className="border-b-[1px]">

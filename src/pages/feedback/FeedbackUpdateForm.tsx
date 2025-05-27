@@ -17,7 +17,7 @@ import { Icon } from "@iconify/react";
 
 const defaultValues: FormDataPhanAnh = {
     apId: 0,
-    linhVucPhanAnhId: 0,
+    linhVucPhanAnhId: 6,
     noiDung: "",
     diaChi: "",
     maXa: "",
@@ -177,16 +177,6 @@ const FeedbackUpdateForm: React.FC = () => {
             <Box>
                 <div className="grid grid-cols-12 gap-x-3">
                     {/* <div className="col-span-12">
-                        <FormInputField
-                            name="title"
-                            label="Tiêu đề"
-                            placeholder="Nhập tiêu đề"
-                            control={control}
-                            error={errors.title?.message}
-                            required
-                        />
-                    </div> */}
-                    <div className="col-span-12">
                         <FormSelectField
                             name="linhVucPhanAnhId"
                             label="Lĩnh vực"
@@ -196,7 +186,7 @@ const FeedbackUpdateForm: React.FC = () => {
                             error={errors.linhVucPhanAnhId?.message}
                             required
                         />
-                    </div>
+                    </div> */}
                     <div className="col-span-12">
                         <FormInputAreaField
                             name="noiDung"
@@ -207,7 +197,7 @@ const FeedbackUpdateForm: React.FC = () => {
                             required
                         />
                     </div>
-                    <div className="col-span-12">
+                    {/* <div className="col-span-12">
                         <FormSelectField
                             name="maTinh"
                             label="Địa chỉ"
@@ -285,7 +275,7 @@ const FeedbackUpdateForm: React.FC = () => {
                                 setValue("longitude", lng);
                             }}
                         />
-                    </div>
+                    </div> */}
                     {/* <div className="col-span-12">
                         <FormSwitchField
                             name="congKhaiThongTinCaNhan"

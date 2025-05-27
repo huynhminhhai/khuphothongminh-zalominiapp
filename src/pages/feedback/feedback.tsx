@@ -50,7 +50,6 @@ const FeedbackPage: React.FC = () => {
                                     ) : (
                                         <>
                                             {listData
-                                                .filter((item) => item.congKhaiPhanAnh === true)
                                                 .map((item, index) => (
                                                     <FeedbackItemHistory key={index} data={item} />
                                                 ))}

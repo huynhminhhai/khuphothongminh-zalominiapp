@@ -44,14 +44,9 @@ const HomePage: React.FunctionComponent = () => {
                   <MeetingSection />
                 </>
               }
+
               {
-                <>
-                  <Divider />
-                  <FeedbackSection />
-                </>
-              }
-              {
-                account?.maXa && 
+                account?.maXa &&
                 <>
                   <Divider />
                   <SurveySection />
@@ -61,6 +56,12 @@ const HomePage: React.FunctionComponent = () => {
           }
           {
             <NewsSection />
+          }
+          {
+            <>
+              <Divider />
+              <FeedbackSection />
+            </>
           }
         </div>
       </Box>
