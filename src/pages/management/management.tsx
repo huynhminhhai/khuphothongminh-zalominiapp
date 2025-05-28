@@ -189,6 +189,19 @@ const ManagementPage: React.FC = () => {
                                     />
                                 </div>
                             }
+
+                            {
+                                <div className="col-span-4">
+                                    <ManagementItem
+                                        title="Văn bản triển khai"
+                                        prefix={<img src={images.document}
+                                            alt='news'
+                                            className="w-[30px] h-auto"
+                                        />}
+                                        onClick={() => navigate('/document-management')}
+                                    />
+                                </div>
+                            }
                         </div>
                     </Box>
                 }

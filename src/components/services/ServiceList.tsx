@@ -65,13 +65,7 @@ const SERVICES: ServicesType[] = [
         isRequireApId: true,
         isRequireLogin: true
     },
-    {
-        label: 'Gửi ý kiến',
-        url: '/feedback',
-        icon: images.idea,
-        isRequireLogin: true
-        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
-    },
+    
     // {
     //     label: 'Hóa đơn',
     //     url: '/invoice',
@@ -86,10 +80,17 @@ const SERVICES: ServicesType[] = [
     //     // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
     // },
     {
-        label: 'Văn bản',
+        label: 'Văn bản cần biết',
         url: '/document',
         icon: images.document,
-        isComingSoon: true,
+        // isComingSoon: true,
+        isRequireLogin: true
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
+    },
+    {
+        label: 'Gửi ý kiến',
+        url: '/feedback',
+        icon: images.idea,
         isRequireLogin: true
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
@@ -114,7 +115,7 @@ const ServiceList: React.FC<any> = () => {
 
     return (
         <Box>
-            <div className="grid grid-cols-3 gap-x-3 gap-y-4">
+            <div className="grid grid-cols-4 gap-x-3 gap-y-4">
                 {
                     filteredServices.map((item, index) => (
                         <ServiceItem key={index} data={item} />

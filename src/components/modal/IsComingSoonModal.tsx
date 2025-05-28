@@ -10,11 +10,11 @@ const ComingSoonModal = () => {
         <Modal
             visible={isShowModalIsComingSoon}
             onClose={() => setIsShowModalIsComingSoon(false)}
-            title="Chức năng đang phát triển"
+            // title="Chức năng sắp triển khai"
         >
             <div style={{ padding: "20px", textAlign: "center" }}>
                 <p style={{ marginBottom: "20px" }}>
-                    Chức năng này đang trong quá trình phát triển. Vui lòng quay lại sau!
+                    Chức năng này sắp được triển khai. Vui lòng quay lại sau!
                 </p>
                 <Button
                     size="medium"

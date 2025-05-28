@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
+import { DocumentAddPage, DocumentManagementPage, DocumentUpdatePage, FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 import { MyTaskDetailPage, TaskDetailPage, TaskPage } from "pages/task";
@@ -28,6 +28,7 @@ import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
 import { InsuranceAddPage, InsuranceAUpdatePage, InsurancePage } from "pages/insurance";
 import { IsComingSoonModal, LoginModal, RegisterApModal } from "./modal";
 import { useRefreshToken } from "apiRequest/auth";
+import { DocumentDetailPage, DocumentPage } from "pages/document";
 
 
 const AuthWrapper = ({ children }) => {
@@ -215,6 +216,10 @@ const MyApp = () => {
                         {/* NOTIFICATION */}
                         <Route path="/notification" element={<NotificationPage></NotificationPage>}></Route>
 
+                        {/* DOCUMENT */}
+                        <Route path="/document" element={<DocumentPage></DocumentPage>}></Route>
+                        <Route path="/document-detail" element={<DocumentDetailPage></DocumentDetailPage>}></Route>
+
                         {/* MAP */}
                         <Route path="/maps" element={<ResidentMapPage></ResidentMapPage>}></Route>
 
@@ -279,6 +284,11 @@ const MyApp = () => {
                         <Route path="/transactions-detail-add" element={<TransactionsDetailAddPage></TransactionsDetailAddPage>}></Route>
                         <Route path="/transactions-detail-management" element={<TransactionsDetailManagementPage></TransactionsDetailManagementPage>}></Route>
                         <Route path="/transactions-detail-update" element={<TransactionsDetailUpdatePage></TransactionsDetailUpdatePage>}></Route>
+
+                        {/* MANAGEMENT DOCUMENT */}
+                        <Route path="/document-management" element={<DocumentManagementPage></DocumentManagementPage>}></Route>
+                        <Route path="/document-add" element={<DocumentAddPage></DocumentAddPage>}></Route>
+                        <Route path="/document-update" element={<DocumentUpdatePage></DocumentUpdatePage>}></Route>
 
                         {/* MANAGEMENT INVOICE */}
                         <Route path="/invoice-management" element={<InvoiceManagementPage></InvoiceManagementPage>}></Route>

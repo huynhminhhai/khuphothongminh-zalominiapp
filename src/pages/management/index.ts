@@ -77,6 +77,13 @@ export { default as TransactionsDetailManagementPage } from "./management-transa
 export { default as TransactionsDetailUpdatePage } from "./management-transactions/transactions-detail-update";
 
 /**
+* DOCUMENT
+**/
+export { default as DocumentManagementPage } from "./management-document/document-management";
+export { default as DocumentAddPage } from "./management-document/document-create";
+export { default as DocumentUpdatePage } from "./management-document/document-update";
+
+/**
 * INVOICE
 **/
 export { default as InvoiceManagementPage } from "./management-invoice/invoice-management";
