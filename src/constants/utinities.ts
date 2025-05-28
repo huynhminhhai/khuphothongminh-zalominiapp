@@ -951,20 +951,20 @@ export type NotificationType = {
 }
 
 export const NOTIFICATIONDATA: NotificationType[] = [
-    {
-        id: 1,
-        title: "Thông báo cuộc họp",
-        content: "Bạn có một cuộc họp sắp diễn ra. Hãy tham gia và kiểm tra thông tin chi tiết ngay!",
-        created_at: "2025-05-15T09:00:00",
-        status: 1,
-        sendTo: [101]
-    },
-    {
-        id: 3,
-        title: "Thông báo cuộc họp",
-        content: "Cuộc họp sắp tới có một số thay đổi. Vui lòng kiểm tra lại lịch và thông tin cập nhật.",
-        created_at: "2025-05-11T09:00:00",
-        status: 2,
-        sendTo: [101]
-    }
+    // {
+    //     id: 1,
+    //     title: "Thông báo cuộc họp",
+    //     content: "Bạn có một cuộc họp sắp diễn ra. Hãy tham gia và kiểm tra thông tin chi tiết ngay!",
+    //     created_at: "2025-05-15T09:00:00",
+    //     status: 1,
+    //     sendTo: [101]
+    // },
+    // {
+    //     id: 3,
+    //     title: "Thông báo cuộc họp",
+    //     content: "Cuộc họp sắp tới có một số thay đổi. Vui lòng kiểm tra lại lịch và thông tin cập nhật.",
+    //     created_at: "2025-05-11T09:00:00",
+    //     status: 2,
+    //     sendTo: [101]
+    // }
 ]

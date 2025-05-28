@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { getAccessTokenAccount, getPhoneNumberAccount } from "./zalo";
 import { useStoreApp } from "store/store";
 import { useLoginZalo } from "apiRequest/auth";
@@ -11,6 +11,15 @@ export const useLoginWithZalo = () => {
     const { setIsLoadingFullScreen, account } = useStoreApp();
     const { mutateAsync } = useLoginZalo();
 
+    const location = useLocation();
+
+    const reloadPage = async () => {
+        navigate('/loading', { replace: true });
+        setTimeout(() => {
+            navigate(location, { replace: true });
+        }, 100);
+    };
+
     const loginWithZalo = async (redirectUrl?: string) => {
 
         if (account) {
@@ -20,7 +29,7 @@ export const useLoginWithZalo = () => {
         }
 
         setIsLoadingFullScreen(true);
-        
+
         try {
             const phoneNumber = await getPhoneNumberAccount();
 
@@ -33,8 +42,9 @@ export const useLoginWithZalo = () => {
                 }
 
                 await mutateAsync({ token: phoneNumber, userAccessToken: accessToken });
+                await reloadPage()
             }
-            
+
         } catch (error: any) {
             if (error.code === -201) {
                 showWarning('Bạn đã từ chối đăng nhập bằng Zalo')

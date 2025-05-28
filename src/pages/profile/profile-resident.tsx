@@ -25,7 +25,7 @@ const ProfileResidentPage: React.FC = () => {
                             residentDetailData ?
                                 <Box>
                                     <Tabs className="tab-resident">
-                                        <Tabs.Tab key="residentTab" label="Chủ hộ">
+                                        <Tabs.Tab key="residentTab" label="Thành viên">
                                             <Box px={4}>
                                                 <InforItemMain label="Họ tên" value={residentDetailData.hoTen} />
                                                 <ResidentInfoList residentDetailData={residentDetailData} isShow={true} />

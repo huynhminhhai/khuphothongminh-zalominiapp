@@ -26,7 +26,7 @@ import { getDataFromStorage } from "services/zalo";
 import ForbiddenPage from "pages/403";
 import { InvoiceDetailPage, InvoicePage } from "pages/invoice";
 import { InsuranceAddPage, InsuranceAUpdatePage, InsurancePage } from "pages/insurance";
-import { IsComingSoonModal, RegisterApModal } from "./modal";
+import { IsComingSoonModal, LoginModal, RegisterApModal } from "./modal";
 import { useRefreshToken } from "apiRequest/auth";
 
 
@@ -43,7 +43,7 @@ const AuthWrapper = ({ children }) => {
       if (!storedData || !storedData.accessToken) {
         setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
         setAccount(null);
-        navigate("/welcome");
+        navigate("/");
         return;
       }
 
@@ -66,7 +66,7 @@ const AuthWrapper = ({ children }) => {
           // Token đã hết hạn
           setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
           setAccount(null);
-          navigate("/welcome");
+          navigate("/");
           return;
         }
 
@@ -87,7 +87,7 @@ const AuthWrapper = ({ children }) => {
       console.error("Lỗi khi load dữ liệu từ storage:", error);
       setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
       setAccount(null);
-      navigate("/welcome");
+      navigate("/");
     }
   };
 
@@ -110,7 +110,7 @@ const AuthWrapper = ({ children }) => {
         // Hết hạn → logout
         setToken({ accessToken: null, refreshToken: null, hanSuDungToken: null });
         setAccount(null);
-        navigate("/welcome");
+        navigate("/");
       } else if (minutesLeft <= 15 && !refreshTokenMutation.isPending) {
         // Gần hết hạn → tự động refresh
         refreshTokenMutation.mutate();
@@ -121,7 +121,7 @@ const AuthWrapper = ({ children }) => {
   }, []);
 
   // If accessToken is null, we'll redirect to login; otherwise, render children
-  return accessToken !== null ? children : null;
+  return children;
 };
 
 const MyApp = () => {
@@ -138,10 +138,10 @@ const MyApp = () => {
               <ScrollToTop />
               <RegisterApModal />
               <IsComingSoonModal />
+              <LoginModal />
               <LoadingFullScreen isLoading={isLoadingFullScreen} />
               <Routes>
 
-                <Route path="/login" element={<LoginPage></LoginPage>}></Route>
                 <Route path="/welcome" element={<WelcomePage></WelcomePage>}></Route>
                 <Route path="/403" element={<ForbiddenPage></ForbiddenPage>}></Route>
 
@@ -151,6 +151,7 @@ const MyApp = () => {
                     <AuthWrapper>
                       <Routes>
 
+                        <Route path="/login" element={<LoginPage></LoginPage>}></Route>
                         <Route path="/" element={<HomePage></HomePage>}></Route>
 
                         {/* RESIDENT */}

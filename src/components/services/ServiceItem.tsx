@@ -14,11 +14,14 @@ const ServiceItem: React.FC<ServiceItemType> = ({ data }) => {
 
     const navigate = useNavigate()
     const checkRequireApId = useCheckRequireApId();
-    const { setIsShowModalIsComingSoon } = useStoreApp();
+    const { setIsShowModalIsComingSoon, setIsShowModalIsLogin, accessToken } = useStoreApp();
 
 
     const handleClick = () => {
-        if (data.isRequireApId) {
+        if (data.isRequireLogin && !accessToken) {
+            setIsShowModalIsLogin(true);
+        }
+        else if(data.isRequireApId) {
             checkRequireApId(() => navigate(data.url));
         } else if (data.isComingSoon) {
             setIsShowModalIsComingSoon(true);

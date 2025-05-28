@@ -219,7 +219,7 @@ const ResidentManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý thông tin thành viên hgd" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý thông tin thành viên HGD" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.THEM)}

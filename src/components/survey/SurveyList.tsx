@@ -52,7 +52,7 @@ const SurveyList: React.FC = () => {
             <Box>
                 {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
                     <Box px={4}>
-                        <EmptyData title="Hiện chưa có khảo sát nào!" desc=" Khi có khảo sát từ ban điều hành khu phố/ấp, bạn có thể tham gia và đóng góp ý kiến ngay tại đây. Vui lòng quay lại sau!" />
+                        <EmptyData title="Hiện chưa có khảo sát nào!" desc=" Khi có khảo sát từ ban điều hành Khu phố/Ấp, bạn có thể tham gia và đóng góp ý kiến ngay tại đây. Vui lòng quay lại sau!" />
                     </Box>
                 ) : (
                     <>

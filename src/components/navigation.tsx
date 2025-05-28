@@ -15,7 +15,7 @@ const tabs: Record<string, MenuItem & { requiresLogin?: boolean; requiredRole?: 
     label: "Thông báo",
     icon: (
       <div className="relative">
-        <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#c46574" />
+        {/* <Icon icon="radix-icons:dot-filled" className="absolute top-[-10px] right-[-10px]" color="#c46574" /> */}
         <Icon icon="line-md:bell-twotone-loop" />
       </div>
     ),
@@ -40,7 +40,7 @@ export const HAS_BOTTOM_NAVIGATION_PAGES = ["/", "/management", "/account", "/no
 export const Navigation: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { account } = useStoreApp();
+  const { account, accessToken } = useStoreApp();
 
   const hasBottomNav = useMemo(() => {
     return HAS_BOTTOM_NAVIGATION_PAGES.includes(location.pathname);
@@ -58,8 +58,12 @@ export const Navigation: FC = () => {
 
   const visibleTabs = Object.keys(tabs).filter((path: TabKeys) => {
 
-    if (path === "/" || path === "/account" || path === "/notification") {
-      return true;
+    if (path === "/") return true;
+    if (path === "/account") return true;
+
+    // Tab notification chỉ hiển thị khi có accessToken
+    if (path === "/notification") {
+      return !!accessToken;
     }
 
     // Nếu không đăng nhập → không hiện gì cả

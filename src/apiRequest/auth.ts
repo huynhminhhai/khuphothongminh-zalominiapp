@@ -104,8 +104,6 @@ export const useLoginZalo = () => {
             }
 
             queryClient.invalidateQueries({ queryKey: ['account'] });
-
-            navigate('/');
         },
         onError: (error: string) => {
             console.error('Lỗi:', error);
@@ -126,9 +124,7 @@ export const useLogout = () => {
 
             showSuccess('Đăng xuất thành công')
 
-            navigate('/welcome');
-
-
+            navigate('/');
         } catch (error) {
             console.error("Lỗi khi đăng xuất:", error);
             showError('Đăng xuất thất bại, vui lòng thử lại!')
@@ -245,7 +241,7 @@ export const useRegisterAp = () => {
                     setAccount(userInfo);
                 }
 
-                showSuccess('Đăng ký thông tin khu phố/ấp thành công');
+                showSuccess('Đăng ký thông tin Khu phố/Ấp thành công');
 
                 navigator('/');
             } catch (error) {

@@ -49,7 +49,7 @@ const NewsSection: React.FC = () => {
                 >
 
                     {
-                        data.data && data.data.length > 0 ?
+                        data?.data && data?.data.length > 0 ?
                             <Swiper
                                 modules={[Pagination]}
                                 spaceBetween={12}
@@ -59,7 +59,7 @@ const NewsSection: React.FC = () => {
                                 className="max-w-[100%]"
                             >
                                 {
-                                    data.data.map((item: NewsType, index: number) => (
+                                    data?.data?.map((item: NewsType, index: number) => (
                                         <SwiperSlide key={`${item.tinTucId}-${index}`}>
                                             <div onClick={() => navigate(`/news-detail/?id=${item.tinTucId}`)}>
                                                 <img

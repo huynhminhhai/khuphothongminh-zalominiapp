@@ -21,7 +21,7 @@ const InforResidentSection: React.FC = () => {
         <EmptyData title="Chưa có thông tin hộ gia đình" />
     </Box>
 
-    if (userInfo?.apId !== userInfo.thongTinDanCu?.apId) return <EmptyData title="Bạn chưa có thông tin hộ gia đình ở khu phố/ấp này" />
+    if (userInfo?.apId !== userInfo.thongTinDanCu?.apId) return <EmptyData title="Bạn chưa có thông tin hộ gia đình ở Khu phố/Ấp này" />
 
     return (
         <Box>

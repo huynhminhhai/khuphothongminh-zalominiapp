@@ -12,7 +12,8 @@ export type ServicesType = {
     isCheckLogin?: boolean,
     requiredPermission?: { maChucNang: string; quyen:  "XEM" | "XEMCONGKHAI" | "SUA" | "XOA" | "THEM" | "XUATBAN" | "BAOCAO" | "TIEPNHAN" | "XOACUATOI" | "THUCHIEN" };
     isRequireApId?: boolean,
-    isComingSoon?: boolean
+    isComingSoon?: boolean,
+    isRequireLogin?: boolean
 }
 
 const SERVICES: ServicesType[] = [
@@ -21,6 +22,7 @@ const SERVICES: ServicesType[] = [
         url: '/resident',
         icon: images.home,
         isRequireApId: true,
+        isRequireLogin: true
         // requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCu, quyen: PermissionActions.XEM },
     },
     // {
@@ -61,11 +63,13 @@ const SERVICES: ServicesType[] = [
         icon: images.survey,
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEMCONGKHAI },
         isRequireApId: true,
+        isRequireLogin: true
     },
     {
         label: 'Gửi ý kiến',
         url: '/feedback',
         icon: images.idea,
+        isRequireLogin: true
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     // {
@@ -85,14 +89,16 @@ const SERVICES: ServicesType[] = [
         label: 'Văn bản',
         url: '/document',
         icon: images.document,
-        isComingSoon: true
+        isComingSoon: true,
+        isRequireLogin: true
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
         label: 'Thu phí rác',
         url: '/garbage-fee',
         icon: images.garbageFee,
-        isComingSoon: true
+        isComingSoon: true,
+        isRequireLogin: true
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
 ]
@@ -108,7 +114,7 @@ const ServiceList: React.FC<any> = () => {
 
     return (
         <Box>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-3 gap-x-3 gap-y-4">
                 {
                     filteredServices.map((item, index) => (
                         <ServiceItem key={index} data={item} />

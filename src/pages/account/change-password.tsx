@@ -27,6 +27,18 @@ const ChangePasswordPage: React.FC = () => {
                     <Box py={4}>
                         <ChangePasswordForm />
                     </Box>
+                    <Box px={4}>
+                    <div className="col-span-12">
+                                <strong>Yêu cầu mật khẩu:</strong>
+                                <ul>
+                                    <li>+ Tối thiểu 8 ký tự</li>
+                                    <li>+ Có ít nhất 1 chữ viết hoa</li>
+                                    <li>+ Có ít nhất 1 chữ viết thường</li>
+                                    <li>+ Có ít nhất 1 chữ số (0-9)</li>
+                                    <li>+ Có ít nhất 1 ký tự đặc biệt (!, @, #, $, %)</li>
+                                </ul>
+                            </div>
+                    </Box>
                 </Box>
 
             </Box>

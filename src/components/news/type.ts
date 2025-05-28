@@ -4,7 +4,7 @@ export const schemaNews = yup.object().shape({
     tieuDe: yup.string().required('Không được để trống'),
     moTa: yup.string().required('Không được để trống'),
     noiDung: yup.string().required('Không được để trống'),
-    tacGia: yup.string().required('Không được để trống'),
+    // tacGia: yup.string().required('Không được để trống'),
     fileAnhDaiDien: yup
         .mixed<File>()
         .test("required", "Vui lòng chọn một tệp ảnh", (value) => {
@@ -18,7 +18,7 @@ export type FormDataNews = {
     fileAnhDaiDien?: File;
     moTa: string;
     noiDung: string;
-    tacGia: string;
+    tacGia?: string;
     ngayXuatBan?: string;
 };
 

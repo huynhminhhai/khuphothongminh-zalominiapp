@@ -14,7 +14,7 @@ export const HeaderSub: React.FC<HeaderSubProps> = ({title, onBackClick}) => {
             title={
                 (
                     <Box flex alignItems="center">
-                        <h4 className="text-[18px] font-semibold mt-1 mr-6">{title}</h4>
+                        <h4 className="text-[18px] leading-[22px] font-semibold mt-1 mr-6">{title}</h4>
                     </Box>
                 ) as unknown as string
             }

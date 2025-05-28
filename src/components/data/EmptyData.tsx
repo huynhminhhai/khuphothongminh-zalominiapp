@@ -19,7 +19,7 @@ const EmptyData: React.FC<EmptyDataProps> = ({ title, desc, handleClick, textBtn
             <Box mt={4}>
                 {
                     title &&
-                    <h3 className="text-[18px] leading-[1] font-medium text-center">{title}</h3>
+                    <h3 className="text-[18px] leading-[26px] font-medium text-center">{title}</h3>
                 }
                 {
                     desc &&

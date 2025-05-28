@@ -25,13 +25,13 @@ export const HeaderHome: FC = () => {
                 />
               </div>
               <Box>
-                <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{account?.hoTen ? account.hoTen : 'Chưa cập nhật'}</h4>
+                <h4 className="text-[14px] font-semibold leading-[1] text-white uppercase mb-2">{!account ? 'Khách' : account?.hoTen ? account.hoTen : 'Chưa cập nhật'}</h4>
                 <h5 className="text-[12px] font-medium leading-[1] tracking-widest text-white">
                   {account && (
                     <>
                       {account?.dienThoai && maskPhoneNumber(account?.dienThoai)}
                       {" ✦ "}
-                      {account?.tenAp || 'Chưa đăng ký thông tin khu phố/ấp'}
+                      {account?.tenAp || 'Chưa đăng ký thông tin Khu phố/Ấp'}
                     </>
                   )}
                 </h5>

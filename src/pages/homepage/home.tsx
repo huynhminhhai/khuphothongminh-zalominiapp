@@ -57,9 +57,10 @@ const HomePage: React.FunctionComponent = () => {
           {
             <NewsSection />
           }
+          <Divider />
           {
+            account?.maXa &&
             <>
-              <Divider />
               <FeedbackSection />
             </>
           }

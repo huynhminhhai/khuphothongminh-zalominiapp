@@ -148,7 +148,6 @@ const NewsUpdateForm = () => {
                             placeholder="Nhập tên tác giả"
                             control={control}
                             error={errors.tacGia?.message}
-                            required
                         />
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
