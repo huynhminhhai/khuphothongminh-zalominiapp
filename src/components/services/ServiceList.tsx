@@ -88,6 +88,14 @@ const SERVICES: ServicesType[] = [
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
+        label: 'Hỏi đáp',
+        url: '/chatbox',
+        icon: images.question,
+        // isComingSoon: true
+        // isRequireLogin: true
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
+    },
+    {
         label: 'Gửi ý kiến',
         url: '/feedback',
         icon: images.idea,
@@ -98,6 +106,14 @@ const SERVICES: ServicesType[] = [
         label: 'Thu phí rác',
         url: '/garbage-fee',
         icon: images.garbageFee,
+        isComingSoon: true,
+        isRequireLogin: true
+        // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
+    },
+    {
+        label: 'Đóng tiền quỹ',
+        url: '/garbage-fee',
+        icon: images.fund,
         isComingSoon: true,
         isRequireLogin: true
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },

@@ -5,17 +5,20 @@ import SecondaryButton from "components/button/SecondaryButton";
 import { EmptyData } from "components/data";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import http from "services/http";
 import { openUrlInWebview } from "services/zalo";
 import { copyToClipboard } from "utils/copyToClipboard";
 import { formatDate, getHourFromDate, renderDayOfWeek } from "utils/date";
 import { getFullImageUrl, isImage } from "utils/file";
+import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { Avatar, Box, Modal, Page } from "zmp-ui"
 
 const MeetingDetailPage: React.FC = () => {
+
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const { showSuccess, showError } = useCustomSnackbar();
     const [searchParams] = useSearchParams();
@@ -200,7 +203,10 @@ const MeetingDetailPage: React.FC = () => {
                                     </Box>
                                     <Box className="text-[16px]">
                                         <div className="bg-[#f8f8f8] text-[#808080] text-[16px] font-semibold px-4 py-3">Nội dung cuộc họp</div>
-                                        <div className="p-4 font-medium detail-content" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
+                                        <div
+                                            ref={contentRef}
+                                            onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
+                                        className="p-4 font-medium detail-content" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
                                         </div>
                                     </Box>
 

@@ -4,13 +4,17 @@ import { HeaderSub } from "components/header-sub"
 import { NewsOthers } from "components/news"
 import { NewsDetailSkeleton } from "components/skeleton"
 import TitleSection from "components/titleSection"
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { useSearchParams } from "react-router-dom"
 import { formatDate } from "utils/date"
 import { getFullImageUrl } from "utils/file"
+import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview"
+import { openWebview } from "zmp-sdk/apis"
 import { Box, Page, useNavigate } from "zmp-ui"
 
 const NewsDetailPage: React.FC = () => {
+
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const [searchParams] = useSearchParams();
     const navigate = useNavigate()
@@ -42,7 +46,10 @@ const NewsDetailPage: React.FC = () => {
                                     {/* <div className="mb-3">
                                         <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
                                     </div> */}
-                                    <div className="detail-content mb-3" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
+                                    <div
+                                        ref={contentRef}
+                                        onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
+                                        className="detail-content mb-3" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
                                     <Box className="text-end text-black font-semibold">{data.tacGia}</Box>
                                 </Box>
                             </Box>

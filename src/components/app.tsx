@@ -29,6 +29,7 @@ import { InsuranceAddPage, InsuranceAUpdatePage, InsurancePage } from "pages/ins
 import { IsComingSoonModal, LoginModal, RegisterApModal } from "./modal";
 import { useRefreshToken } from "apiRequest/auth";
 import { DocumentDetailPage, DocumentPage } from "pages/document";
+import { ChatBoxPage } from "pages/chatbox";
 
 
 const AuthWrapper = ({ children }) => {
@@ -222,6 +223,9 @@ const MyApp = () => {
 
                         {/* MAP */}
                         <Route path="/maps" element={<ResidentMapPage></ResidentMapPage>}></Route>
+
+                        {/* CHATBOX */}
+                        <Route path="/chatbox" element={<ChatBoxPage></ChatBoxPage>}></Route>
 
                         {/* MANAGEMENT */}
                         <Route path="/management" element={<ManagementPage></ManagementPage>}></Route>

@@ -9,15 +9,18 @@ import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton, NewsDetailSkeleton } from "components/skeleton"
 import { CardTanStack } from "components/table"
 import TaskUpdateFormModal from "components/task/TaskModalUpdateForm"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { openUrlInWebview } from "services/zalo"
 import { formatDate } from "utils/date"
 import { getFullImageUrl, isImage } from "utils/file"
+import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview"
 import { getTinhTrangTaskColor } from "utils/renderColor"
 import { Box, Page } from "zmp-ui"
 
 const MyTaskDetailPage: React.FC = () => {
+
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const [searchParams] = useSearchParams();
     const [modalUpdateVisible, setModalUpdateVisible] = useState<boolean>(false);
@@ -233,7 +236,10 @@ const MyTaskDetailPage: React.FC = () => {
                                     </Box>
                                     <div className="bg-[#f8f8f8] text-[#808080] text-[16px] font-semibold px-4 py-3">Nội dung nhiệm vụ</div>
                                     <Box p={4}>
-                                        <div className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
+                                        <div
+                                            ref={contentRef}
+                                            onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
+                                        className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
                                         </div>
                                     </Box>
                                     <Divider />

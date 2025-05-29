@@ -51,8 +51,12 @@ import document from './document.png'
 import schedule from './schedule.png'
 import vnpt from './vnpt.webp'
 import garbageFee from './garbage-fee.png'
+import fund from './fund.png'
+import question from './question.png'
 
 const images = {
+    question,
+    fund,
     garbageFee,
     vnpt,
     alerts,

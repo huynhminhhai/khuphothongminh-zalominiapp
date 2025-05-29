@@ -59,7 +59,7 @@ const FileSummaryItem: React.FC<any> = ({ file }) => {
             const res = await http.get<any>(`/vanban/tomtat/${id}`);
             setSummaryData(res.data?.tomTat || "Không có nội dung tóm tắt.");
         } catch (err) {
-            setError("Tóm tắt thất bại.");
+            setError("Đọc tóm tắt văn bản thất bại.");
         } finally {
             setLoading(false);
         }

@@ -210,7 +210,7 @@ const SurveyManagementPage: React.FC = () => {
             );
         }
 
-        if (!data.data.length) {
+        if (!data?.data?.length) {
             return (
                 <Box px={4}>
                     <EmptyData

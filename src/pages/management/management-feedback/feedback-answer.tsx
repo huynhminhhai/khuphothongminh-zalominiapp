@@ -5,14 +5,17 @@ import { Divider } from "components/divider";
 import { FeedbackAnswerAddForm, FeedbackAnswerUpdateForm } from "components/feedback";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
-import React from "react"
+import React, { useRef } from "react"
 import { useSearchParams } from "react-router-dom";
 import { openUrlInWebview } from "services/zalo";
 import { formatDate, getHourFromDate } from "utils/date";
 import { getFullImageUrl, isImage } from "utils/file";
+import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview";
 import { Box, Page, Swiper, useNavigate, useSnackbar } from "zmp-ui"
 
 const FeedbackAnswerPage: React.FC = () => {
+
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const [searchParams] = useSearchParams();
     const feedbackId = searchParams.get("id");
@@ -52,7 +55,10 @@ const FeedbackAnswerPage: React.FC = () => {
                                         </Box>
                                     </Box>
                                     <Box pb={3}>
-                                        <div className="detail-content text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
+                                        <div
+                                            ref={contentRef}
+                                            onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
+                                        className="detail-content text-[16px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
                                         </div>
                                     </Box>
                                 </Box>

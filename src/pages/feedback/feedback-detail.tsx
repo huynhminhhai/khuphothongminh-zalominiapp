@@ -6,16 +6,19 @@ import { EmptyData } from "components/data";
 import { Divider } from "components/divider";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
-import React from "react"
+import React, { useRef } from "react"
 import { useSearchParams } from "react-router-dom";
 import { openUrlInWebview } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { formatDate, getHourFromDate } from "utils/date";
 import { getFullImageUrl, isImage } from "utils/file";
+import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview";
 import { getTinhTrangFeedbackColor } from "utils/renderColor";
 import { Box, Page, Swiper, useNavigate } from "zmp-ui"
 
 const FeedbackDetailPage: React.FC = () => {
+
+    const contentRef = useRef<HTMLDivElement>(null);
 
     const [searchParams] = useSearchParams();
     const feedbackId = searchParams.get("id");
@@ -48,7 +51,7 @@ const FeedbackDetailPage: React.FC = () => {
                                 <Box px={4} className="relative">
                                     <Box pb={4} mb={4} className="border-b-[1px]">
                                         <h3 className="title-page mb-2">
-                                            Nội dung ý kiến: 
+                                            Nội dung ý kiến:
                                         </h3>
                                         <Box className="font-medium">
                                             <div>Vào lúc <span className="font-semibold">{getHourFromDate(data?.ngayTao)}</span> ngày <span className="font-semibold">{formatDate(data?.ngayTao)}</span></div>
@@ -58,7 +61,10 @@ const FeedbackDetailPage: React.FC = () => {
                                         </Box>
                                     </Box>
                                     <Box pb={4} mb={4} className="border-b-[1px]">
-                                        <div className="text-[14px] leading-[24px] font-medium detail-content" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
+                                        <div
+                                            ref={contentRef}
+                                            onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
+                                            className="text-[14px] leading-[24px] font-medium detail-content" dangerouslySetInnerHTML={{ __html: data?.noiDung || '' }}>
                                         </div>
                                     </Box>
                                 </Box>
@@ -128,7 +134,10 @@ const FeedbackDetailPage: React.FC = () => {
                                                 </Box> */}
                                             </Box>
                                             <Box pb={2} className="border-b-[1px]" mb={4}>
-                                                <div className="detail-content text-[14px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.ketQuaXuLyPhanAnh?.noiDung || '' }}>
+                                                <div
+                                                    ref={contentRef}
+                                                    onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
+                                                    className="detail-content text-[14px] leading-[24px] font-medium" dangerouslySetInnerHTML={{ __html: data?.ketQuaXuLyPhanAnh?.noiDung || '' }}>
                                                 </div>
                                             </Box>
                                             <Box className="space-y-2">
