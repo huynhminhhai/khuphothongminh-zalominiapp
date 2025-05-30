@@ -1,4 +1,4 @@
-import { useGetNewsPublicDetail } from "apiRequest/news"
+import { useGetNewsDetail } from "apiRequest/news"
 import { EmptyData } from "components/data"
 import { HeaderSub } from "components/header-sub"
 import { NewsOthers } from "components/news"
@@ -12,7 +12,7 @@ import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview"
 import { openWebview } from "zmp-sdk/apis"
 import { Box, Page, useNavigate } from "zmp-ui"
 
-const NewsDetailPage: React.FC = () => {
+const NewsDetailManagementPage: React.FC = () => {
 
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -21,7 +21,7 @@ const NewsDetailPage: React.FC = () => {
 
     const newsId = searchParams.get("id");
 
-    const { data, isLoading } = useGetNewsPublicDetail(Number(newsId));
+    const { data, isLoading } = useGetNewsDetail(Number(newsId));
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
@@ -71,4 +71,4 @@ const NewsDetailPage: React.FC = () => {
     )
 }
 
-export default NewsDetailPage
+export default NewsDetailManagementPage

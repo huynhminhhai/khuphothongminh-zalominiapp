@@ -17,7 +17,7 @@ import { MapPicker } from "components/maps"
 
 const ProfileUpdateForm: React.FC = () => {
 
-    const { ngheNghieps, tinhTrangHoGiaDinhs, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account, setIsLoadingFullScreen } = useStoreApp()
+    const { ngheNghieps, tinhTrangHoGiaDinhs, danTocs, gioiTinhs, moiQuanHeGiaDinhs, tinhs, tonGiaos, account, setIsLoadingFullScreen, fetchResidentTypes } = useStoreApp()
 
     const defaultValues: FormResidentDetail = {
         laChuHo: false,
@@ -177,6 +177,10 @@ const ProfileUpdateForm: React.FC = () => {
         setFormData(data)
     };
 
+    useEffect(() => {
+        fetchResidentTypes();
+    }, [])
+
     /**
     * CALL CHU HO API
     **/
@@ -256,15 +260,17 @@ const ProfileUpdateForm: React.FC = () => {
             }
 
             if ((formData.noiTamTru?.apId as any) === "") {
-                dataSubmit = {...dataSubmit, noiTamTru: {
-                    danCuId: dataSubmit.danCuId,
-                    thongTinCuTruId: dataSubmit.noiTamTru?.thongTinCuTruId,
-                    apId: null as any,
-                    xa: null as any,
-                    huyen: null as any,
-                    tinh: null as any,
-                    diaChi: '',
-                }}
+                dataSubmit = {
+                    ...dataSubmit, noiTamTru: {
+                        danCuId: dataSubmit.danCuId,
+                        thongTinCuTruId: dataSubmit.noiTamTru?.thongTinCuTruId,
+                        apId: null as any,
+                        xa: null as any,
+                        huyen: null as any,
+                        tinh: null as any,
+                        diaChi: '',
+                    }
+                }
             }
 
             await updateResident(dataSubmit);

@@ -37,7 +37,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({ data }) => {
                                     <Icon icon='radix-icons:dot-filled' />
                                 </>
                             }
-                            <div onClick={() => navigate('/meeting-detail?id=1')}>Xem chi tiết</div>
+                            {/* <div onClick={() => navigate('/meeting-detail?id=44')}>Xem chi tiết</div> */}
                         </div>
                     </div>
                 </div>

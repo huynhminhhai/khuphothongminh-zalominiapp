@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react"
-import { useGetDocumentPublicDetail } from "apiRequest/document"
+import { useGetDocumentDetail } from "apiRequest/document"
 import { EmptyData } from "components/data"
 import FileSummaryItem from "components/document/FileSummaryItem"
 import { HeaderSub } from "components/header-sub"
@@ -28,20 +28,20 @@ const FieldTextDisplay: React.FC<FieldTextDisplayProps> = ({ label, content }) =
 };
 
 
-const DocumentDetailPage: React.FC = () => {
+const DocumentDetailManagementPage: React.FC = () => {
 
 
     const [searchParams] = useSearchParams();
 
     const documentId = searchParams.get("id");
 
-    const { data: detailData, isLoading } = useGetDocumentPublicDetail(Number(documentId));
+    const { data: detailData, isLoading } = useGetDocumentDetail(Number(documentId));
 
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
-                <HeaderSub title="Chi tiết văn bản cần biết" />
+                <HeaderSub title="Chi tiết văn bản công khai" />
                 <Box>
                     {
                         isLoading ?
@@ -80,4 +80,4 @@ const DocumentDetailPage: React.FC = () => {
     )
 }
 
-export default DocumentDetailPage
+export default DocumentDetailManagementPage

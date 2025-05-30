@@ -14,6 +14,7 @@ import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 import { debounce } from "lodash";
 import { formatDate, parseDate } from "components/form/DatePicker"
 import { PermissionActions, permissionsList } from "utils/permission"
+import { formatDateYYYYMMDD } from "utils/date"
 
 const NewsManagementPage: React.FC = () => {
 
@@ -172,7 +173,7 @@ const NewsManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/news-detail?id=${row.original.tinTucId}`)}
+                        onClick={() => navigate(`/news-detail-management?id=${row.original.tinTucId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
@@ -280,7 +281,7 @@ const NewsManagementPage: React.FC = () => {
                                 mask
                                 maskClosable
                                 value={parseDate(param.NgayXuatBanTuNgay)}
-                                onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanTuNgay: formatDate(e) }))}
+                                onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanTuNgay: formatDateYYYYMMDD(e) }))}
                             />
                         </div>
                         <div className="col-span-6">
@@ -289,7 +290,7 @@ const NewsManagementPage: React.FC = () => {
                                 mask
                                 maskClosable
                                 value={parseDate(param.NgayXuatBanDenNgay)}
-                                onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanDenNgay: formatDate(e) }))}
+                                onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanDenNgay: formatDateYYYYMMDD(e) }))}
                             />
                         </div>
                     </FilterBar>

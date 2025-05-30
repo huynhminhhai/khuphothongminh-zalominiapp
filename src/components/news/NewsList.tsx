@@ -10,6 +10,7 @@ import { useStoreApp } from "store/store";
 import { FilterBar2 } from "components/table";
 import { debounce } from "lodash";
 import { formatDate, parseDate } from "components/form/DatePicker";
+import { formatDateYYYYMMDD } from "utils/date";
 
 const NewsList: React.FC = () => {
 
@@ -121,7 +122,7 @@ const NewsList: React.FC = () => {
                         mask
                         maskClosable
                         value={parseDate(param.NgayXuatBanTuNgay)}
-                        onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanTuNgay: formatDate(e) }))}
+                        onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanTuNgay: formatDateYYYYMMDD(e) }))}
                     />
                 </div>
                 <div className="col-span-6">
@@ -130,7 +131,7 @@ const NewsList: React.FC = () => {
                         mask
                         maskClosable
                         value={parseDate(param.NgayXuatBanDenNgay)}
-                        onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanDenNgay: formatDate(e) }))}
+                        onChange={(e) => setParam((prev) => ({ ...prev, NgayXuatBanDenNgay: formatDateYYYYMMDD(e) }))}
                     />
                 </div>
             </FilterBar2>

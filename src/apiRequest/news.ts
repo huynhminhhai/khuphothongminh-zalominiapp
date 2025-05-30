@@ -55,6 +55,9 @@ const newsApiRequest = {
     getNewsDetail: async (id: number) => {
         return await http.get<any>(`/tintuc/chitiet/${id}`);
     },
+    getNewsPublicDetail: async (id: number) => {
+        return await http.get<any>(`/tintuc/chitiettinxuatban/${id}`);
+    },
     getNewsStatus: async () => {
         return await http.get<any>(`/tintuc/danhmuc`);
     },
@@ -189,6 +192,30 @@ export const useGetNewsDetail = (id: number) => {
             try {
 
                 const res = await newsApiRequest.getNewsDetail(id);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        enabled: !!id,
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+/**
+* GET NEWS PUBLIC DETAIL
+**/
+export const useGetNewsPublicDetail = (id: number) => {
+
+    return useQuery({
+        queryKey: ['newsDetail', id],
+        queryFn: async () => {
+            try {
+
+                const res = await newsApiRequest.getNewsPublicDetail(id);
 
                 return res.data
             } catch (error) {

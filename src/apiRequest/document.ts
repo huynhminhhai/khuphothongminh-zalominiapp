@@ -62,6 +62,9 @@ const documentApiRequest = {
     getDocumentDetail: async (id: number) => {
         return await http.get<any>(`/vanban/chitiet/${id}`);
     },
+    getDocumentPublicDetail: async (id: number) => {
+        return await http.get<any>(`/vanban/chitietvanbancongkhai/${id}`);
+    },
     deleteDocument: async (id: number) => {
         return await http.delete<any>(`/vanban/${id}`)
     },
@@ -158,6 +161,30 @@ export const useGetDocumentDetail = (id: number) => {
             try {
 
                 const res = await documentApiRequest.getDocumentDetail(id);
+
+                return res.data
+            } catch (error) {
+                console.error(error);
+                throw error;
+            }
+        },
+        enabled: !!id,
+        staleTime: 0,
+        retry: 1,
+    });
+};
+
+/**
+* GET DOCUMENT PUBLIC DETAIL
+**/
+export const useGetDocumentPublicDetail = (id: number) => {
+
+    return useQuery({
+        queryKey: ['documentDetail', id],
+        queryFn: async () => {
+            try {
+
+                const res = await documentApiRequest.getDocumentPublicDetail(id);
 
                 return res.data
             } catch (error) {

@@ -11,7 +11,7 @@ import { debounce } from "lodash"
 import React, { useEffect, useState } from "react"
 import { useStoreApp } from "store/store"
 import { copyToClipboard } from "utils/copyToClipboard"
-import { getHourFromDate, formatDate as formatDateMeeting } from "utils/date"
+import { getHourFromDate, formatDate as formatDateMeeting, formatDateYYYYMMDD } from "utils/date"
 import { PermissionActions, permissionsList } from "utils/permission"
 import { useCustomSnackbar } from "utils/useCustomSnackbar"
 import { Box, Button, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
@@ -290,7 +290,7 @@ const MeetingManagementPage: React.FC = () => {
                                 mask
                                 maskClosable
                                 value={parseDate(param.ThoiGianBatDau)}
-                                onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianBatDau: formatDate(e) }))}
+                                onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianBatDau: formatDateYYYYMMDD(e) }))}
                             />
                         </div>
                         <div className="col-span-6">
@@ -299,7 +299,7 @@ const MeetingManagementPage: React.FC = () => {
                                 mask
                                 maskClosable
                                 value={parseDate(param.ThoiGianKetThuc)}
-                                onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianKetThuc: formatDate(e) }))}
+                                onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianKetThuc: formatDateYYYYMMDD(e) }))}
                             />
                         </div>
                     </FilterBar>

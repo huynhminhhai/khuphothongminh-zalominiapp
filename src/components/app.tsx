@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { DocumentAddPage, DocumentManagementPage, DocumentUpdatePage, FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
+import { DocumentAddPage, DocumentDetailManagementPage, DocumentManagementPage, DocumentUpdatePage, FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsDetailManagementPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 import { MyTaskDetailPage, TaskDetailPage, TaskPage } from "pages/task";
@@ -241,6 +241,7 @@ const MyApp = () => {
                         <Route path="/news-management" element={<NewsManagementPage></NewsManagementPage>}></Route>
                         <Route path="/news-add" element={<NewsAddPage></NewsAddPage>}></Route>
                         <Route path="/news-update" element={<NewsUpdatePage></NewsUpdatePage>}></Route>
+                        <Route path="/news-detail-management" element={<NewsDetailManagementPage></NewsDetailManagementPage>}></Route>
 
                         {/* MANAGEMENT FEEDBACK */}
                         <Route path="/feedback-management" element={<FeedbackManagementPage></FeedbackManagementPage>}></Route>
@@ -293,6 +294,7 @@ const MyApp = () => {
                         <Route path="/document-management" element={<DocumentManagementPage></DocumentManagementPage>}></Route>
                         <Route path="/document-add" element={<DocumentAddPage></DocumentAddPage>}></Route>
                         <Route path="/document-update" element={<DocumentUpdatePage></DocumentUpdatePage>}></Route>
+                        <Route path="/document-detail-management" element={<DocumentDetailManagementPage></DocumentDetailManagementPage>}></Route>
 
                         {/* MANAGEMENT INVOICE */}
                         <Route path="/invoice-management" element={<InvoiceManagementPage></InvoiceManagementPage>}></Route>

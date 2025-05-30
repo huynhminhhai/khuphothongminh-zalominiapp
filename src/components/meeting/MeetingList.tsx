@@ -10,6 +10,7 @@ import { debounce } from "lodash";
 import { Divider } from "components/divider";
 import { FilterBar2 } from "components/table";
 import { formatDate, parseDate } from "components/form/DatePicker";
+import { formatDateYYYYMMDD } from "utils/date";
 
 const MeetingList: React.FC = () => {
 
@@ -123,7 +124,7 @@ const MeetingList: React.FC = () => {
                         mask
                         maskClosable
                         value={parseDate(param.ThoiGianBatDau)}
-                        onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianBatDau: formatDate(e) }))}
+                        onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianBatDau: formatDateYYYYMMDD(e) }))}
                     />
                 </div>
                 <div className="col-span-6">
@@ -132,7 +133,7 @@ const MeetingList: React.FC = () => {
                         mask
                         maskClosable
                         value={parseDate(param.ThoiGianKetThuc)}
-                        onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianKetThuc: formatDate(e) }))}
+                        onChange={(e) => setParam((prev) => ({ ...prev, ThoiGianKetThuc: formatDateYYYYMMDD(e) }))}
                     />
                 </div>
             </FilterBar2>

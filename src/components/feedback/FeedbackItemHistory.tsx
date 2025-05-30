@@ -74,7 +74,7 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
                         {status.tenTinhTrang}
                     </div>
                 )} */}
-                <Box className="relative rounded-lg overflow-hidden">
+                <Box className="relative rounded-lg overflow-hidden border-[1px]">
                     <img className="w-[100%] h-[200px] object-cover" src={imageFiles[0]?.tapTin ? getFullImageUrl(imageFiles[0].tapTin) : images.feedback} alt={data.noiDung} />
                 </Box>
                 <Box mt={2}>

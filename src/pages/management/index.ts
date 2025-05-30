@@ -15,6 +15,7 @@ export { default as SurveyMemberPage } from "./management-surey/survey-member";
 export { default as NewsManagementPage } from "./management-news/news-management";
 export { default as NewsAddPage } from "./management-news/news-create";
 export { default as NewsUpdatePage } from "./management-news/news-update";
+export { default as NewsDetailManagementPage } from "./management-news/news-detail-management";
 
 /**
  * FEEDBACK
@@ -82,6 +83,7 @@ export { default as TransactionsDetailUpdatePage } from "./management-transactio
 export { default as DocumentManagementPage } from "./management-document/document-management";
 export { default as DocumentAddPage } from "./management-document/document-create";
 export { default as DocumentUpdatePage } from "./management-document/document-update";
+export { default as DocumentDetailManagementPage } from "./management-document/document-detail-management";
 
 /**
 * INVOICE

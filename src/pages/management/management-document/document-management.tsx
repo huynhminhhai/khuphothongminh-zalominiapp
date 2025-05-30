@@ -182,7 +182,7 @@ const DocumentManagementPage: React.FC = () => {
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
                     <button
-                        onClick={() => navigate(`/document-detail?id=${row.original.vanBanId}`)}
+                        onClick={() => navigate(`/document-detail-management?id=${row.original.vanBanId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
