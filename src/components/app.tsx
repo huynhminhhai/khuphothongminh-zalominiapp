@@ -95,7 +95,7 @@ const AuthWrapper = ({ children }) => {
 
   useEffect(() => {
     loadAuthData();
-  }, []);
+  }, [accessToken]);
 
   useEffect(() => {
     const interval = setInterval(async () => {
