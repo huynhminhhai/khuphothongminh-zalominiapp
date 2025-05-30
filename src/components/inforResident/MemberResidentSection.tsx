@@ -7,7 +7,7 @@ import MemberListSkeleton from "components/skeleton/info/MemberListSkeleton"
 import { EmptyData } from "components/data"
 import { InforResidentItemSub } from "."
 
-const MemberResidentSection: React.FC<{danCuId: number}> = ({danCuId}) => {
+const MemberResidentSection: React.FC<{danCuId: number, isForUser?: boolean}> = ({danCuId, isForUser = true}) => {
 
     const navigate = useNavigate()
 
@@ -23,7 +23,7 @@ const MemberResidentSection: React.FC<{danCuId: number}> = ({danCuId}) => {
                 <Box>
                     {
                         familyMembers.map((item: any) => (
-                            <InforResidentItemSub key={item.danCuId} data={item} />
+                            <InforResidentItemSub key={item.danCuId} data={item} isForUser={isForUser} />
                         ))
                     }
                 </Box>

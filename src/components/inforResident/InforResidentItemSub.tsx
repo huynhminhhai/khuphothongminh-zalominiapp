@@ -2,12 +2,14 @@ import React, { useState } from "react"
 import { Box } from "zmp-ui"
 import { Icon } from "@iconify/react"
 import ResidentInfoListForUser from "./ResidentInfoListForUser"
+import ResidentInfoList from "./ResidentInfoList"
 
 type InforResidentItemProps = {
-    data: any
+    data: any,
+    isForUser?: boolean
 }
 
-const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
+const InforResidentItem: React.FC<InforResidentItemProps> = ({ data, isForUser }) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const toggleDropdown = () => {
@@ -33,7 +35,12 @@ const InforResidentItem: React.FC<InforResidentItemProps> = ({ data }) => {
                     isOpen && (
                         <Box>
                             <Box>
-                                <ResidentInfoListForUser residentDetailData={data} />
+                                {
+                                    isForUser ?
+                                    <ResidentInfoListForUser residentDetailData={data} />
+                                    :
+                                    <ResidentInfoList residentDetailData={data} />
+                                }
                             </Box>
                         </Box>
                     )

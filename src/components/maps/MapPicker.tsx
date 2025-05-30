@@ -88,10 +88,12 @@ const MapPicker = ({
     onPick,
     lat,
     lng,
+    isShowMyLocation = false,
 }: {
     onPick: (lat: number, lng: number) => void;
     lat?: number;
     lng?: number;
+    isShowMyLocation?: boolean;
 }) => {
     const DEFAULT_POSITION = L.latLng(10.535, 106.415);
 
@@ -175,8 +177,8 @@ const MapPicker = ({
     return (
         <div className="col-span-12 map-picker">
             <div className="mb-2 flex items-center justify-center gap-x-1 text-[14px] font-medium p-2 border-[1px] border-[#b9bdc1] rounded-lg w-full" onClick={() => setShowMap(!showMap)}>
-                Chọn vị trí
-                <Icon fontSize={16} icon={"mdi:map-marker-outline"} />
+                Chọn vị trí trên bản đồ
+                <Icon fontSize={18} icon={"mdi:map-marker-outline"} />
             </div>
             {showMap && (
                 <div
@@ -207,10 +209,13 @@ const MapPicker = ({
 
                         <div className="absolute bottom-[12px] left-[0px] px-2 flex flex-col z-[99999] w-full">
                             <div className='grid grid-cols-12 gap-2'>
-                                <div className='col-span-8'>
-                                    <button onClick={() => handleGetLocation()} className="bg-blue-100 text-blue-700 font-semibold rounded text-sm flex items-center justify-center gap-2 h-[48px] w-full !border-[2px] !border-blue-400">Vị trí hiện tại <Icon fontSize={18} icon="mingcute:map-pin-line" /> </button>
-                                </div>
-                                <div className='col-span-4'>
+                                {
+                                    isShowMyLocation &&
+                                    <div className='col-span-8'>
+                                        <button onClick={() => handleGetLocation()} className="bg-blue-100 text-blue-700 font-semibold rounded text-sm flex items-center justify-center gap-2 h-[48px] w-full !border-[2px] !border-blue-400">Vị trí hiện tại <Icon fontSize={18} icon="mingcute:map-pin-line" /> </button>
+                                    </div>
+                                }
+                                <div className={`col-span-${isShowMyLocation ? 4 : 12}`}>
                                     <button onClick={() => setShowMap(false)} className="bg-gray-100 text-gray-600 font-semibold rounded text-sm flex items-center justify-center gap-2 h-[48px] w-full !border-[2px] !border-[#b9bdc1]">Đóng</button>
                                 </div>
                             </div>

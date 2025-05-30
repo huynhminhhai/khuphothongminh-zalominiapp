@@ -24,8 +24,8 @@ const ProfileAddForm: React.FC = () => {
     ngaySinh: '',
     gioiTinh: 0,
     soGiayTo: '',
-    danToc: '',
-    tonGiao: '',
+    danToc: danTocs[0]?.value ?? '',
+    tonGiao: tonGiaos[0]?.value ?? '',
     quocGia: 'VN',
     ngheNghiep: 1,
     noiLamViec: '',
@@ -244,7 +244,6 @@ const ProfileAddForm: React.FC = () => {
               label="Ngày sinh"
               control={control}
               placeholder="Chọn ngày sinh"
-              required
               error={errors.ngaySinh?.message}
             />
           </div>
@@ -263,22 +262,20 @@ const ProfileAddForm: React.FC = () => {
             <FormSelectField
               name="danToc"
               label="Dân tộc"
-              placeholder="Nhập dân tộc"
+              placeholder="Chọn dân tộc"
               control={control}
               options={danTocs}
               error={errors.danToc?.message}
-              required
             />
           </div>
           <div className="col-span-6">
             <FormSelectField
               name="tonGiao"
               label="Tôn giáo"
-              placeholder="Nhập tôn giáo"
+              placeholder="Chọn tôn giáo"
               control={control}
               options={tonGiaos}
               error={errors.tonGiao?.message}
-              required
             />
           </div>
           <div className="col-span-12">
@@ -413,7 +410,7 @@ const ProfileAddForm: React.FC = () => {
             <FormInputField
               type="number"
               name="noiThuongTru.latitude"
-              placeholder="Nhập latitude"
+              placeholder="Vĩ độ"
               control={control}
               error={errors.noiThuongTru?.latitude?.message}
               disabled={!isHouseHold}
@@ -423,7 +420,7 @@ const ProfileAddForm: React.FC = () => {
             <FormInputField
               type="number"
               name="noiThuongTru.longitude"
-              placeholder="Nhập Longitute"
+              placeholder="Kinh độ"
               control={control}
               error={errors.noiThuongTru?.longitude?.message}
               disabled={!isHouseHold}
@@ -442,7 +439,7 @@ const ProfileAddForm: React.FC = () => {
               />
             </div>
           }
-          <div className="col-span-6">
+          {/* <div className="col-span-6">
             <FormControllerDatePicker
               name="noiThuongTru.tuNgay"
               control={control}
@@ -457,9 +454,9 @@ const ProfileAddForm: React.FC = () => {
               placeholder="Ngày kết thúc"
               error={errors.noiThuongTru?.denNgay?.message}
             />
-          </div>
+          </div> */}
           {/* Nơi tạm trú */}
-          {!isHouseHold && (
+          {/* {!isHouseHold && (
             <>
               <div className="col-span-12">
                 <div className="text-[20px] font-semibold mb-3 mt-2 text-primary-color">Nơi tạm trú</div>
@@ -520,7 +517,7 @@ const ProfileAddForm: React.FC = () => {
                 <FormInputField
                   type="number"
                   name="noiTamTru.latitude"
-                  placeholder="Nhập latitude"
+                  placeholder="Vĩ độ"
                   control={control}
                   error={errors.noiTamTru?.latitude?.message}
                 />
@@ -529,7 +526,7 @@ const ProfileAddForm: React.FC = () => {
                 <FormInputField
                   type="number"
                   name="noiTamTru.longitude"
-                  placeholder="Nhập Longitute"
+                  placeholder="Kinh độ"
                   control={control}
                   error={errors.noiTamTru?.longitude?.message}
                 />
@@ -561,7 +558,7 @@ const ProfileAddForm: React.FC = () => {
                 />
               </div>
             </>
-          )}
+          )} */}
           <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
             <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
               <PrimaryButton

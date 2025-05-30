@@ -32,7 +32,7 @@ const ProfileResidentPage: React.FC = () => {
                                             </Box>
                                         </Tabs.Tab>
                                         <Tabs.Tab key="memberTab" label="Các thành viên khác">
-                                            <MemberResidentSection danCuId={residentDetailData.danCuId} />
+                                            <MemberResidentSection danCuId={residentDetailData.danCuId} isForUser={false} />
                                         </Tabs.Tab>
                                     </Tabs>
                                 </Box> :
