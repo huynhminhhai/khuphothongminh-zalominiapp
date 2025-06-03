@@ -88,7 +88,7 @@ const SERVICES: ServicesType[] = [
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
-        label: 'Hỏi đáp',
+        label: 'Hỏi đáp TTHC',
         url: '/chatbox',
         icon: images.question,
         // isComingSoon: true
@@ -103,7 +103,7 @@ const SERVICES: ServicesType[] = [
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
-        label: 'Thu phí rác',
+        label: 'Đóng tiền rác',
         url: '/garbage-fee',
         icon: images.garbageFee,
         isComingSoon: true,

@@ -4,7 +4,7 @@ import { FormDataNews, schemaNews } from "./type"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { PrimaryButton } from "components/button"
-import { FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
+import { FormControllerDatePicker, FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { useStoreApp } from "store/store"
 import { useCreateNews } from "apiRequest/news"
@@ -101,6 +101,16 @@ const NewsAddForm: React.FC = () => {
                             control={control}
                             error={errors.noiDung?.message}
                             required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormControllerDatePicker
+                            name="ngayXuatBan"
+                            label="Ngày xuất bản"
+                            placeholder="Chọn ngày xuất bản"
+                            control={control}
+                            required={true}
+                            error={errors.ngayXuatBan?.message}
                         />
                     </div>
                     <div className="col-span-12">

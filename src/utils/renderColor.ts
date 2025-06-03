@@ -27,3 +27,16 @@ export const getTinhTrangFeedbackColor = (tenTinhTrang: string): { bg: string; c
             return { bg: 'bg-[#eeedf2]', color: 'text-[#797985]' };
     }
 }
+
+export const getTinhTrangFeedback1022Color = (tenTinhTrang: string): { bg: string; color: string } => {
+    switch (tenTinhTrang) {
+        case "Đang xử lý":
+            return { bg: 'bg-[#ebf0f4]', color: 'text-[#0667e1]' };
+        case "Đã xử lý":
+            return { bg: 'bg-[#eaf0ea]', color: 'text-[#157c0c]' };
+        case "Hoàn thành":
+            return { bg: 'bg-[#eaf0ea]', color: 'text-[#157c0c]' };
+        default:
+            return { bg: 'bg-[#eeedf2]', color: 'text-[#797985]' };
+    }
+}

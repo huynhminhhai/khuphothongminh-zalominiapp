@@ -9,6 +9,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 import { useGetFeedbackListNormal } from "apiRequest/feeback"
 import FeedbackItem from "./FeedbackItem"
+import { useGetFeedback1022ListNormal } from "apiRequest/feedback1022"
+import { FeedbackItem1022 } from "."
 
 const FeedbackSection: React.FC<any> = () => {
 
@@ -22,7 +24,7 @@ const FeedbackSection: React.FC<any> = () => {
         MaXa: account?.maXa,
     });
 
-    const { data, isLoading } = useGetFeedbackListNormal(param);
+    const { data, isLoading } = useGetFeedback1022ListNormal(param);
 
     if (isLoading) {
         return <FeedbackSkeleton count={1} />
@@ -31,10 +33,10 @@ const FeedbackSection: React.FC<any> = () => {
     return (
         <Box>
             <Box px={4} pt={4} pb={0}>
-                <TitleSection title="Phản ánh gần đây (từ 1022)" handleClick={() => navigate('/')} mB={4} />
+                <TitleSection title="Phản ánh gần đây (từ 1022)" handleClick={() => navigate('/feedback-1022')} mB={0} />
                 <Box>
                     {
-                        !data?.data && data?.data.length > 0 ?
+                        data?.data && data?.data.length > 0 ?
                             <Swiper
                                 modules={[Pagination]}
                                 spaceBetween={12}
@@ -46,7 +48,7 @@ const FeedbackSection: React.FC<any> = () => {
                                 {
                                     data.data.map((item: any, index: number) => (
                                         <SwiperSlide key={`${item.tinTucId}-${index}`} className="mb-4">
-                                            <FeedbackItem key={index} data={item} />
+                                            <FeedbackItem1022 key={index} data={item} />
                                         </SwiperSlide>
                                     ))
                                 }

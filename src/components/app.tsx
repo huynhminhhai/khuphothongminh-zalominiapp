@@ -8,7 +8,7 @@ import { NewsDetailPage, NewsPage } from "pages/news";
 import { ResidentAddPage, ResidentCraftPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
 import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
-import { FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
+import { Feedback1022DetailPage, Feedback1022Page, FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
 import { DocumentAddPage, DocumentDetailManagementPage, DocumentManagementPage, DocumentUpdatePage, FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsDetailManagementPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
@@ -182,6 +182,8 @@ const MyApp = () => {
                         <Route path="/feedback-add" element={<FeedbackAddPage></FeedbackAddPage>}></Route>
                         <Route path="/feedback-update" element={<FeedbackUpdatePage></FeedbackUpdatePage>}></Route>
                         <Route path="/feedback-history" element={<FeedbackHistoryPage></FeedbackHistoryPage>}></Route>
+                        <Route path="/feedback-1022" element={<Feedback1022Page></Feedback1022Page>}></Route>
+                        <Route path="/feedback-1022-detail" element={<Feedback1022DetailPage></Feedback1022DetailPage>}></Route>
 
                         {/* SURVEY */}
                         <Route path="/survey" element={<SurveyPage></SurveyPage>}></Route>

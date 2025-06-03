@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup"
 import { useGetNewsDetail, useUpdateNews } from "apiRequest/news"
 import { PrimaryButton } from "components/button"
-import { FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
+import { FormControllerDatePicker, FormImageUploaderSingle, FormInputAreaField, FormInputField, FormTextEditorField } from "components/form"
 import { ConfirmModal } from "components/modal"
 import { FormDataNews, schemaNews } from "components/news/type"
 import React, { useEffect, useState } from "react"
@@ -46,6 +46,7 @@ const NewsUpdateForm = () => {
                 moTa: newsDetail.moTa,
                 noiDung: newsDetail.noiDung,
                 tacGia: newsDetail.tacGia,
+                ngayXuatBan: newsDetail.ngayXuatBan,
                 fileAnhDaiDien: undefined,
             });
 
@@ -82,8 +83,6 @@ const NewsUpdateForm = () => {
 
         try {
             const dataSubmit = {...formData}
-
-            console.log(dataSubmit)
 
             const formDataConverted = convertToFormData(dataSubmit);
 
@@ -139,6 +138,16 @@ const NewsUpdateForm = () => {
                             control={control}
                             error={errors.noiDung?.message}
                             required
+                        />
+                    </div>
+                    <div className="col-span-12">
+                        <FormControllerDatePicker
+                            name="ngayXuatBan"
+                            label="Ngày xuất bản"
+                            placeholder="Chọn ngày xuất bản"
+                            control={control}
+                            required={true}
+                            error={errors.ngayXuatBan?.message}
                         />
                     </div>
                     <div className="col-span-12">

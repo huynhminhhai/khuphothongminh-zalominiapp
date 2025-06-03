@@ -9,7 +9,7 @@ const ChatBoxPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Hỏi đáp" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Hỏi đáp thủ tục hành chính" onBackClick={() => navigate('/')} />
                 <Box>
                     <iframe
                         allow="camera; microphone"
