@@ -42,6 +42,8 @@ export const permissionsList = {
   khuPhoTuyenTruyenPhanAnhTinTucSuKien: 'khu-pho_tuyen-truyen-phan-anh_tin-tuc-su-kien',
   khuPhoTuyenTruyenPhanAnhKhaoSat: 'khu-pho_tuyen-truyen-phan-anh_khao-sat',
   khuPhoTuyenTruyenPhanAnhPhanAnh: 'khu-pho_tuyen-truyen-phan-anh_phan-anh',
+  khuPhoTuyenTruyenPhanAnhVanBan: 'khu-pho_tuyen-truyen-phan-anh_van-ban',
+  khuPhoTuyenTruyenPhanAnhThongBao: 'khu-pho_tuyen-truyen-phan-anh_thong-bao',
 
   khuPhoCongViec: 'khu-pho_cong-viec',
   khuPhoCongViecCuocHop: 'khu-pho_cong-viec_cuoc-hop',

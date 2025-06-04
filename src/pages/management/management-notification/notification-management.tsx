@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react"
 import { ColumnDef } from "@tanstack/react-table"
 import { useDeleteDocument, useGetDocumentListNormal, useUpdateDocumentStatus } from "apiRequest/document"
+import { useDeleteNotification, useGetNotificationListNormal, useUpdateNotificationStatus } from "apiRequest/notification"
 import { useDeleteTransaction, useGetTransactionListNormal, useGetTransactionType } from "apiRequest/transaction"
 import { EmptyData } from "components/data"
 import { parseDate } from "components/form/DatePicker"
@@ -17,7 +18,7 @@ import { convertNumberVND } from "utils/number"
 import { PermissionActions, permissionsList } from "utils/permission"
 import { Box, DatePicker, Input, Page, Select, useNavigate } from "zmp-ui"
 
-const DocumentManagementPage: React.FC = () => {
+const NotificationManagementPage: React.FC = () => {
 
     const navigate = useNavigate()
     const { account, hasPermission } = useStoreApp()
@@ -30,9 +31,6 @@ const DocumentManagementPage: React.FC = () => {
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
     const [filters, setFilters] = useState({
         search: "",
-        soHieu: "",
-        trichYeu: "",
-        tenCoQuanBanHanh: "",
     });
     const [param, setParam] = useState({
         page: 1,
@@ -40,15 +38,10 @@ const DocumentManagementPage: React.FC = () => {
         ApId: account?.apId,
         MaXa: account?.maXa,
         keyword: '',
-        SoHieu: '',
-        TrichYeu: '',
-        TenCoQuanBanHanh: '',
-        NgayBanHanhTuNgay: '',
-        NgayBanHanhDenNgay: ''
     })
 
-    const { data, isLoading } = useGetDocumentListNormal(param);
-    const { mutate: deleteDocument } = useDeleteDocument();
+    const { data, isLoading } = useGetNotificationListNormal(param);
+    const { mutate: deleteNotification } = useDeleteNotification();
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         setFilters((prev) => ({ ...prev, [key]: value }));
@@ -67,9 +60,6 @@ const DocumentManagementPage: React.FC = () => {
     }
 
     useDebouncedParam(filters.search, 'keyword');
-    useDebouncedParam(filters.soHieu, 'SoHieu');
-    useDebouncedParam(filters.trichYeu, 'TrichYeu');
-    useDebouncedParam(filters.tenCoQuanBanHanh, 'TenCoQuanBanHanh');
 
     const handlePageChange = (params: { pageIndex: number; pageSize: number }) => {
         setParam((prevParam) => ({
@@ -107,39 +97,24 @@ const DocumentManagementPage: React.FC = () => {
 
     const removeTransaction = (id: number) => {
         openConfirmModal(() => {
-            deleteDocument(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa văn bản này?');
+            deleteNotification(id);
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa thông báo này?');
     }
 
     const columns: ColumnDef<any>[] = [
         {
-            accessorKey: 'trichYeu',
-            header: 'Trích yếu'
+            accessorKey: 'tieuDe',
+            header: 'Tiêu đề'
         },
         {
-            accessorKey: 'soHieu',
-            header: 'Số ký hiệu'
+            accessorKey: 'noiDung',
+            header: 'Nội dung'
         },
-        // {
-        //     id: 'ngayBanHanh',
-        //     header: 'Ngày ban hành',
-        //     cell: ({ row }) => {
-
-        //         return (
-        //             <div>
-        //                 {
-        //                     row.original.ngayBanHanh ?
-        //                     formatDate(row.original.ngayBanHanh) : ''
-        //                 }
-        //             </div>
-        //         )
-        //     }
-        // },
         {
             id: 'status',
             header: 'Trạng thái',
             cell: ({ row }) => {
-                const { mutate, isPending } = useUpdateDocumentStatus();
+                const { mutate, isPending } = useUpdateNotificationStatus();
 
                 return (
                     <Box width={200}>
@@ -149,26 +124,26 @@ const DocumentManagementPage: React.FC = () => {
                             onChange={(value) => {
                                 openConfirmModal(() => {
                                     mutate({
-                                        vanBanId: row.original.vanBanId,
+                                        thongBaoId: row.original.thongBaoId,
                                         tinhTrangId: Number(value),
                                     });
-                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái văn bản này?')
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái thông báo này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled={
                                 isPending
-                                || !hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhVanBan, PermissionActions.SUA)
+                                || !hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhThongBao, PermissionActions.SUA)
                             }
                         >
                                 <Option
-                                    value={39}
-                                    key={39}
-                                    title={'Không công khai'}
+                                    value={4}
+                                    key={4}
+                                    title={'Thu hồi'}
                                 />
                                 <Option
-                                    value={40}
-                                    key={40}
-                                    title={'Công khai'}
+                                    value={5}
+                                    key={5}
+                                    title={'Gửi'}
                                 />
                         </Select>
                     </Box>
@@ -181,25 +156,25 @@ const DocumentManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    <button
-                        onClick={() => navigate(`/document-detail-management?id=${row.original.vanBanId}`)}
+                    {/* <button
+                        onClick={() => navigate(`/document-detail-management?id=${row.original.thongBaoId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
-                    </button>
+                    </button> */}
                     {
-                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhVanBan, PermissionActions.SUA) &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhThongBao, PermissionActions.SUA) &&
                         <button
-                            onClick={() => navigate(`/document-update?id=${row.original.vanBanId}`)}
+                            onClick={() => navigate(`/notification-update?id=${row.original.thongBaoId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
                         >
                             <Icon icon='ri:edit-line' fontSize={18} />
                         </button>
                     }
                     {
-                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhVanBan, PermissionActions.XOA) &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhThongBao, PermissionActions.XOA) &&
                         <button
-                            onClick={() => removeTransaction(row.original.vanBanId)}
+                            onClick={() => removeTransaction(row.original.thongBaoId)}
                             className="px-3 py-1 bg-red-700 text-white rounded"
                         >
                             <Icon icon='material-symbols:delete' fontSize={18} />
@@ -223,7 +198,7 @@ const DocumentManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có thu/chi nào!"
+                        title="Hiện chưa có thông báo nào!"
                     />
                 </Box>
             );
@@ -254,11 +229,11 @@ const DocumentManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý văn bản triển khai" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý thông báo nhanh" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
-                        showAddButton={hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhVanBan, PermissionActions.THEM)}
-                        onAddButtonClick={() => navigate('/document-add')}
+                        showAddButton={hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhThongBao, PermissionActions.THEM)}
+                        onAddButtonClick={() => navigate('/notification-add')}
                         setViewCard={setViewCard}
                         viewCard={viewCard}
                     >
@@ -267,38 +242,6 @@ const DocumentManagementPage: React.FC = () => {
                                 placeholder="Tìm kiếm nhanh..."
                                 value={filters.search}
                                 onChange={(e) => updateFilter('search', e.target.value)}
-                            />
-                        </div>
-                        <div className="col-span-6">
-                            <Input
-                                placeholder='Số hiệu'
-                                value={filters.soHieu}
-                                onChange={(e) => updateFilter('soHieu', e.target.value)}
-                            />
-                        </div>
-                        <div className="col-span-6">
-                            <Input
-                                placeholder='Trích yếu'
-                                value={filters.trichYeu}
-                                onChange={(e) => updateFilter('trichYeu', e.target.value)}
-                            />
-                        </div>
-                        <div className="col-span-6">
-                            <DatePicker
-                                placeholder="Từ ngày"
-                                mask
-                                maskClosable
-                                value={parseDate(param.NgayBanHanhTuNgay)}
-                                onChange={(e) => setParam((prev) => ({ ...prev, NgayBanHanhTuNgay: formatDateYYYYMMDD(e) }))}
-                            />
-                        </div>
-                        <div className="col-span-6">
-                            <DatePicker
-                                placeholder="Đến ngày"
-                                mask
-                                maskClosable
-                                value={parseDate(param.NgayBanHanhDenNgay)}
-                                onChange={(e) => setParam((prev) => ({ ...prev, NgayBanHanhDenNgay: formatDateYYYYMMDD(e) }))}
                             />
                         </div>
                     </FilterBar>
@@ -318,4 +261,4 @@ const DocumentManagementPage: React.FC = () => {
     )
 }
 
-export default DocumentManagementPage
+export default NotificationManagementPage

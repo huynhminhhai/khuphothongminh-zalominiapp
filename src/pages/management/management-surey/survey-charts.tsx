@@ -19,7 +19,7 @@ const SurveyChartsPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col" style={{ backgroundColor: '#f5f6f7' }}>
             <Box>
-                <HeaderSub title="Tổng quan khảo sát" />
+                <HeaderSub title="Tổng quan kết quả khảo sát" />
                 {
                     isLoading ?
                     <ChartSkeleton count={3} /> :

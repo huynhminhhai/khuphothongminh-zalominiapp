@@ -86,6 +86,13 @@ export { default as DocumentUpdatePage } from "./management-document/document-up
 export { default as DocumentDetailManagementPage } from "./management-document/document-detail-management";
 
 /**
+* NOTIFICATION
+**/
+export { default as NotificationManagementPage } from "./management-notification/notification-management";
+export { default as NotificationAddPage } from "./management-notification/notification-create";
+export { default as NotificationUpdatePage } from "./management-notification/notification-update";
+
+/**
 * INVOICE
 **/
 export { default as InvoiceManagementPage } from "./management-invoice/invoice-management";

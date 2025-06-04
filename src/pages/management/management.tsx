@@ -202,6 +202,19 @@ const ManagementPage: React.FC = () => {
                                     />
                                 </div>
                             }
+
+                            {
+                                <div className="col-span-4">
+                                    <ManagementItem
+                                        title="Thông báo nhanh"
+                                        prefix={<img src={images.alerts}
+                                            alt='news'
+                                            className="w-[30px] h-auto"
+                                        />}
+                                        onClick={() => navigate('/notification-management')}
+                                    />
+                                </div>
+                            }
                         </div>
                     </Box>
                 }

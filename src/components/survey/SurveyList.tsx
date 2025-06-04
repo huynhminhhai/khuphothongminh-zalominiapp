@@ -66,7 +66,7 @@ const SurveyList: React.FC = () => {
             </Box>
             <div ref={loaderRef} className="px-4 pb-4">
                 {isFetchingNextPage && <TaskItemSkeleton count={1} />}
-                {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả khảo</p>}
+                {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả khảo sát</p>}
             </div>
         </Box>
     };

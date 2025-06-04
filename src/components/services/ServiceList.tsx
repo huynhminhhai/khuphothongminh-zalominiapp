@@ -88,7 +88,7 @@ const SERVICES: ServicesType[] = [
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
-        label: 'Hỏi đáp TTHC',
+        label: 'Trợ lý ảo TTHC',
         url: '/chatbox',
         icon: images.question,
         // isComingSoon: true

@@ -137,7 +137,7 @@ const SurveyUpdateForm: React.FC = () => {
     };
 
     const validateForm = () => {
-        if (!formData.title.trim() || !formData.description.trim() || !formData.expiryDate || !formData.startDate) {
+        if (!formData.title.trim() || !formData.expiryDate || !formData.startDate) {
             setDescModal('Tiêu đề, mô tả và ngày hết hạn không thể trống');
             setPopupVisible(true);
             return false;
@@ -171,7 +171,7 @@ const SurveyUpdateForm: React.FC = () => {
     };
 
     const handlePreview = () => {
-        if (!formData.title.trim() || !formData.description.trim() || formData.questions.length === 0) {
+        if (!formData.title.trim() || formData.questions.length === 0) {
             setDescModal('Chưa đầy đủ thông tin để xem trước khảo sát');
             setPopupVisible(true);
             return;
@@ -201,7 +201,7 @@ const SurveyUpdateForm: React.FC = () => {
 
             cauHoiKhaoSats: data.questions.map((q) => ({
 
-                cauHoiKhaoSatId: q.questionId >= 1000000000 ? null : q.questionId,
+                cauHoiKhaoSatId: q.questionId >= 1000000000 ? 0 : q.questionId,
                 khaoSatId: data.id || 0,
                 noiDung: q.question,
                 loaiCauHoiKhaoSatId: typeMap[q.type],
@@ -210,8 +210,8 @@ const SurveyUpdateForm: React.FC = () => {
                     const detailQuestion = detailData.cauHoiKhaoSats.find((dq) => dq.cauHoiKhaoSatId === q.questionId);
                     const detailOption = detailQuestion?.chiTietCauHoiKhaoSats[optIndex];
                     return {
-                        chiTietCauHoiKhaoSatId: detailOption?.chiTietCauHoiKhaoSatId || null,
-                        cauHoiKhaoSatId: q.questionId >= 1000000000 ? null : q.questionId,
+                        chiTietCauHoiKhaoSatId: detailOption?.chiTietCauHoiKhaoSatId || 0,
+                        cauHoiKhaoSatId: q.questionId >= 1000000000 ? 0 : q.questionId,
                         noiDungChiTiet: opt,
                         coYKienKhac: detailOption?.coYKienKhac || false,
                         thuTu: optIndex + 1,
@@ -228,7 +228,7 @@ const SurveyUpdateForm: React.FC = () => {
 
             const payload = mapToApiUpdateFormat(formData, surveyDetail);
 
-            console.log('payload: ', payload)
+            // console.log('payload: ', payload)
 
             await updateSurvey(payload)
         } catch (error) {
@@ -309,7 +309,7 @@ const SurveyUpdateForm: React.FC = () => {
 
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-[2px]">
-                                Mô tả khảo sát <span className="text-red-600">(*)</span>
+                                Mô tả khảo sát
                             </label>
                             <textarea
                                 value={formData.description}

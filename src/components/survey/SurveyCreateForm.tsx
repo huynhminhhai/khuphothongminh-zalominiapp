@@ -103,7 +103,7 @@ const CreateSurveyForm: React.FC = () => {
     };
 
     const validateForm = () => {
-        if (!formData.title.trim() || !formData.description.trim() || !formData.expiryDate || !formData.startDate) {
+        if (!formData.title.trim() || !formData.expiryDate || !formData.startDate) {
             setDescModal('Tiêu đề, mô tả và ngày hết hạn không thể trống');
             setPopupVisible(true);
             return false;
@@ -131,7 +131,7 @@ const CreateSurveyForm: React.FC = () => {
     };
 
     const handlePreview = () => {
-        if (!formData.title.trim() || !formData.description.trim() || formData.questions.length === 0) {
+        if (!formData.title.trim() || formData.questions.length === 0) {
             setDescModal('Chưa đầy đủ thông tin để xem trước khảo sát');
             setPopupVisible(true);
             return;
@@ -158,7 +158,6 @@ const CreateSurveyForm: React.FC = () => {
         });
 
         return {
-
             apId: account?.apId,
             maXa: account?.maXa,
             nguoiTao: account?.nguoiDungId,
@@ -167,14 +166,26 @@ const CreateSurveyForm: React.FC = () => {
             tuNgay: data.startDate,
             denNgay: data.expiryDate,
 
-            cauHoiKhaoSats: data.questions.map((q) => ({
-                noiDung: q.question,
-                loaiCauHoiKhaoSatId: typeMap[q.type],
-                chiTietCauHoiKhaoSats: q.options?.map((opt) => ({
-                    noiDungChiTiet: opt,
-                    coYKienKhac: false,
-                })) || [],
-            })),
+            cauHoiKhaoSats: data.questions.map((q) => {
+                const loaiCauHoiKhaoSatId = typeMap[q.type];
+
+                return {
+                    noiDung: q.question,
+                    loaiCauHoiKhaoSatId,
+                    chiTietCauHoiKhaoSats:
+                        loaiCauHoiKhaoSatId === 1
+                            ? [
+                                {
+                                    noiDungChiTiet: '',
+                                    coYKienKhac: false,
+                                },
+                            ]
+                            : q.options?.map((opt) => ({
+                                noiDungChiTiet: opt,
+                                coYKienKhac: false,
+                            })) || [],
+                };
+            }),
         };
     };
 
@@ -182,6 +193,8 @@ const CreateSurveyForm: React.FC = () => {
         setConfirmVisible(false);
         try {
             const payload = mapToApiFormat(formData);
+
+            // console.log(payload)
 
             await createSurvey(payload)
 
@@ -274,7 +287,7 @@ const CreateSurveyForm: React.FC = () => {
 
                         <div className="mb-4">
                             <label className="block text-sm font-medium mb-[2px]">
-                                Mô tả khảo sát <span className="text-red-600">(*)</span>
+                                Mô tả khảo sát
                             </label>
                             <textarea
                                 value={formData.description}
@@ -319,7 +332,7 @@ const CreateSurveyForm: React.FC = () => {
                                             }}
                                             className="mt-1 p-2 h-[40px] w-full border border-gray-300 rounded-lg"
                                         >
-                                            {/* <option value="text">Câu hỏi nhập nội dung trả lời</option> */}
+                                            <option value="text">Câu hỏi nhập nội dung trả lời</option>
                                             <option value="one-choice">Câu hỏi chọn một đáp án</option>
                                             <option value="multiple-choice">Câu hỏi chọn nhiều đáp án</option>
                                         </select>

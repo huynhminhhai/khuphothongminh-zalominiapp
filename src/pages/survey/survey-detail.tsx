@@ -114,12 +114,21 @@ const SurveyDetailPage: React.FC = () => {
                 if (!question) return [];
 
                 if (question.loaiCauHoiKhaoSatId === 1) { // Text
+
+                    const optionDetail = question.chiTietCauHoiKhaoSats[0]
                     return [{
                         cauHoiKhaoSatId: res.questionId,
-                        chiTietCauHoiKhaoSatId: null,
+                        chiTietCauHoiKhaoSatId: optionDetail?.chiTietCauHoiKhaoSatId || 0,
                         giaTri: res.answer as string,
                     }];
+
+                    // return [{
+                    //     cauHoiKhaoSatId: res.questionId,
+                    //     chiTietCauHoiKhaoSatId: null,
+                    //     giaTri: res.answer as string,
+                    // }];
                 } else if (question.loaiCauHoiKhaoSatId === 2) { // Multiple-choice
+
                     const selectedOptions = res.answer as string[];
                     return selectedOptions.map((opt) => {
                         const optionDetail = question.chiTietCauHoiKhaoSats.find((o) => o.noiDungChiTiet === opt);
@@ -130,6 +139,7 @@ const SurveyDetailPage: React.FC = () => {
                         };
                     });
                 } else if (question.loaiCauHoiKhaoSatId === 3) { // One-choice
+
                     const optionDetail = question.chiTietCauHoiKhaoSats.find((o) => o.noiDungChiTiet === res.answer);
                     return [{
                         cauHoiKhaoSatId: res.questionId,
@@ -163,11 +173,12 @@ const SurveyDetailPage: React.FC = () => {
         try {
             const payload = mapToSurveySubmitFormat();
 
+            // console.log('payload: ', payload)
             await createResultSurvey(payload);
 
             showSuccess('Gửi khảo sát thành công');
 
-            navigator('/survey');
+            // navigator('/survey');
         } catch (error) {
             console.error("Failed to submit survey data:", error);
         }

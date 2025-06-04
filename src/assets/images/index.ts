@@ -53,8 +53,10 @@ import vnpt from './vnpt.webp'
 import garbageFee from './garbage-fee.png'
 import fund from './fund.png'
 import question from './question.png'
+import speaker from './speaker.png'
 
 const images = {
+    speaker,
     question,
     fund,
     garbageFee,

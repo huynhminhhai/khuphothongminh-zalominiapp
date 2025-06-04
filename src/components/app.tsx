@@ -10,7 +10,7 @@ import { HomePage } from "pages/homepage";
 import { MeetingDetailPage, MeetingPage } from "pages/meeting";
 import { Feedback1022DetailPage, Feedback1022Page, FeedbackAddPage, FeedbackDetailPage, FeedbackHistoryPage, FeedbackPage, FeedbackUpdatePage } from "pages/feedback";
 import { SurveyDetailPage, SurveyPage } from "pages/survey";
-import { DocumentAddPage, DocumentDetailManagementPage, DocumentManagementPage, DocumentUpdatePage, FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsDetailManagementPage, NewsManagementPage, NewsUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
+import { DocumentAddPage, DocumentDetailManagementPage, DocumentManagementPage, DocumentUpdatePage, FeedbackAnswerPage, FeedbackManagementPage, HouseholdDetailListPage, HouseholdHoNgheoUpdatePage, HouseholdManagementPage, HouseHoldOverviewPage, InsuranceManagementAddPage, InsuranceManagementPage, InvoiceManagementPage, ManagementPage, MeetingAddtPage, MeetingManagementPage, MeetingUpdatePage, NewsAddPage, NewsDetailManagementPage, NewsManagementPage, NewsUpdatePage, NotificationAddPage, NotificationManagementPage, NotificationUpdatePage, ReportFinanceCreatePage, ReportFinanceManagementPage, ReportFinanceUpdatePage, ResidentCraftManagementPage, ResidentialManagementPage, ResidentManagementPage, ResidentOverviewPage, ResidentProfileAddPage, ResidentProfileUpdatePage, SurveyAddPage, SurveyChartsPage, SurveyManagementPage, SurveyMemberPage, SurveyUpdatePage, TaskAddPage, TaskManagementPage, TaskUpdatePage, TeamAddPage, TeamManagementPage, TeamTermPage, TeamUpdatePage, TransactionsAddPage, TransactionsDetailAddPage, TransactionsDetailManagementPage, TransactionsDetailUpdatePage, TransactionsManagementPage, TransactionsUpdatePage } from "pages/management";
 import { TeamDetailPage, TeamPage } from "pages/team";
 import { ProfileResidentPage } from "pages/profile";
 import { MyTaskDetailPage, TaskDetailPage, TaskPage } from "pages/task";
@@ -19,7 +19,7 @@ import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-fi
 import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage, RegisterApPage, WelcomePage } from "pages/account";
 import { LoadingFullScreen } from "./loading";
 import { useStoreApp } from "store/store";
-import { NotificationPage } from "pages/notification";
+import { NotificationDetailPage, NotificationPage } from "pages/notification";
 import { ResidentMapPage } from "pages/maps";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDataFromStorage } from "services/zalo";
@@ -218,6 +218,7 @@ const MyApp = () => {
 
                         {/* NOTIFICATION */}
                         <Route path="/notification" element={<NotificationPage></NotificationPage>}></Route>
+                        <Route path="/notification-detail" element={<NotificationDetailPage></NotificationDetailPage>}></Route>
 
                         {/* DOCUMENT */}
                         <Route path="/document" element={<DocumentPage></DocumentPage>}></Route>
@@ -297,6 +298,11 @@ const MyApp = () => {
                         <Route path="/document-add" element={<DocumentAddPage></DocumentAddPage>}></Route>
                         <Route path="/document-update" element={<DocumentUpdatePage></DocumentUpdatePage>}></Route>
                         <Route path="/document-detail-management" element={<DocumentDetailManagementPage></DocumentDetailManagementPage>}></Route>
+
+                        {/* MANAGEMENT NOTIFICATION */}
+                        <Route path="/notification-management" element={<NotificationManagementPage></NotificationManagementPage>}></Route>
+                        <Route path="/notification-add" element={<NotificationAddPage></NotificationAddPage>}></Route>
+                        <Route path="/notification-update" element={<NotificationUpdatePage></NotificationUpdatePage>}></Route>
 
                         {/* MANAGEMENT INVOICE */}
                         <Route path="/invoice-management" element={<InvoiceManagementPage></InvoiceManagementPage>}></Route>

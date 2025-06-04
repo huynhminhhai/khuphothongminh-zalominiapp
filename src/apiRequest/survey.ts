@@ -172,8 +172,6 @@ export const useCreateSurvey = () => {
             showSuccess('Tạo khảo sát thành công');
 
             queryClient.invalidateQueries({ queryKey: ["surveyList"] });
-
-            navigator('/survey-management')
         },
         onError: (error: string) => {
             console.error(`Lỗi: ${error}`)

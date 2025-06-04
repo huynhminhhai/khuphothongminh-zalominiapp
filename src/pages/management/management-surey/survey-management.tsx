@@ -151,7 +151,7 @@ const SurveyManagementPage: React.FC = () => {
                             disabled=
                             {
                                 isPending
-                                // || !hasPermission('Cập nhật tình trạng của 1 tin tức', 'SUA')
+                                || !hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, PermissionActions.SUA)
                             }
                         >
                             {surveyStatus?.tinhTrangs && surveyStatus.tinhTrangs.map((item) => (
@@ -179,7 +179,7 @@ const SurveyManagementPage: React.FC = () => {
                         <Icon icon='mdi:eye' fontSize={18} />
                     </button>
                     {
-                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, PermissionActions.SUA) &&
+                        hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, PermissionActions.SUA) && row.original.tinhTrangId === surveyStatus?.tinhTrangs[0].tinhTrangId &&
                         <button
                             onClick={() => navigate(`/survey-update?id=${row.original.khaoSatId}`)}
                             className="px-3 py-1 bg-blue-700 text-white rounded"
