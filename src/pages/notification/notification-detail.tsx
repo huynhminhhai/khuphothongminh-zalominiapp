@@ -1,16 +1,10 @@
 import { Icon } from "@iconify/react"
-import { useGetDocumentPublicDetail } from "apiRequest/document"
-import { useGetNotificationDetail } from "apiRequest/notification"
-import images from "assets/images"
+import { useGetNotificationDetail, useReadNotification } from "apiRequest/notification"
 import { EmptyData } from "components/data"
-import FileSummaryItem from "components/document/FileSummaryItem"
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton"
-import React from "react"
+import React, { useEffect } from "react"
 import { useSearchParams } from "react-router-dom"
-import { openUrlInWebview } from "services/zalo"
-import { formatDate } from "utils/date"
-import { getFullImageUrl, isImage } from "utils/file"
 import { Box, Page } from "zmp-ui"
 
 interface FieldTextDisplayProps {
@@ -38,6 +32,13 @@ const NotificationDetailPage: React.FC = () => {
     const thongBaoId = searchParams.get("id");
 
     const { data: detailData, isLoading } = useGetNotificationDetail(Number(thongBaoId));
+    const { mutate: readNotification, isPending: isReadPending } = useReadNotification();
+
+    useEffect(() => {
+        if (thongBaoId) {
+            readNotification(Number(thongBaoId));
+        }
+    }, [thongBaoId]);
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">

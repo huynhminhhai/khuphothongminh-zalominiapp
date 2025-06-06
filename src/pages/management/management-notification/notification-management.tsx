@@ -156,12 +156,12 @@ const NotificationManagementPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    {/* <button
-                        onClick={() => navigate(`/document-detail-management?id=${row.original.thongBaoId}`)}
+                    <button
+                        onClick={() => navigate(`/notification-detail?id=${row.original.thongBaoId}`)}
                         className="px-3 py-1 bg-gray-700 text-white rounded"
                     >
                         <Icon icon='mdi:eye' fontSize={18} />
-                    </button> */}
+                    </button>
                     {
                         hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhThongBao, PermissionActions.SUA) &&
                         <button

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import { App, ZMPRouter, SnackbarProvider, useNavigate } from "zmp-ui";
 import { RecoilRoot } from "recoil";
-import { Navigation } from "./navigation";
 import ScrollToTop from "./scroll-top";
 import { NewsDetailPage, NewsPage } from "pages/news";
 import { ResidentAddPage, ResidentCraftPage, ResidentEditPage, ResidentMemberPage, ResidentPage } from "pages/resident";
@@ -30,6 +29,7 @@ import { IsComingSoonModal, LoginModal, RegisterApModal } from "./modal";
 import { useRefreshToken } from "apiRequest/auth";
 import { DocumentDetailPage, DocumentPage } from "pages/document";
 import { ChatBoxPage } from "pages/chatbox";
+import Navigation from "./navigation";
 
 
 const AuthWrapper = ({ children }) => {

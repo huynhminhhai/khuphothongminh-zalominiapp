@@ -4,11 +4,13 @@ export interface AppSliceType {
     isShowModalIsComingSoon: boolean;
     isShowModalIsLogin: boolean;
     isResidentMainTab: string;
+    isTrigger: boolean;
     setIsLoadingFullScreen: (loading: boolean) => void;
     setIsResidentMainTab: (residentTab: string) => void;
     setIsShowModalRegisterAp: (show: boolean) => void;
     setIsShowModalIsComingSoon: (show: boolean) => void;
     setIsShowModalIsLogin: (show: boolean) => void;
+    setIsTrigger: (show: boolean) => void;
 }
 
 export const createAppSlice = (set: any): AppSliceType => ({
@@ -17,6 +19,7 @@ export const createAppSlice = (set: any): AppSliceType => ({
     isShowModalIsComingSoon: false,
     isShowModalIsLogin: false,
     isResidentMainTab: 'residentTab',
+    isTrigger: false,
     setIsLoadingFullScreen: (loading: boolean) =>
         set((state: AppSliceType) => ({
             ...state,
@@ -45,6 +48,12 @@ export const createAppSlice = (set: any): AppSliceType => ({
         set((state: AppSliceType) => ({
             ...state,
             isShowModalIsLogin: show,
+        })
+    ),
+    setIsTrigger: (show: boolean) =>
+        set((state: AppSliceType) => ({
+            ...state,
+            isTrigger: show,
         })
     ),
 });

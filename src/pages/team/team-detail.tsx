@@ -26,7 +26,7 @@ const TeamDetailPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Chi tiết nhân sự/cán bộ" />
+                <HeaderSub title="Chi tiết thông tin thành viên BDH" />
                 <Box p={4}>
                     {
                         isLoading ?
@@ -46,24 +46,32 @@ const TeamDetailPage: React.FC = () => {
                                             <Box mt={4}>
                                                 <div className="flex flex-col gap-4">
                                                     <div className="flex items-center gap-3">
-                                                        <Icon fontSize={20} className="text-[#808080]" icon='ix:work-case-filled' />
+                                                        <div>
+                                                            <Icon fontSize={20} className="text-[#808080]" icon='ix:work-case-filled' />
+                                                        </div>
                                                         <span className="text-[14px] font-medium">{[detailData?.tenAp, detailData?.tenXa, detailData?.tenHuyen, detailData?.tenTinh].filter(Boolean).join(', ')}</span>
                                                     </div>
                                                     {
                                                         detailData.dienThoai &&
                                                         <div className="flex items-center gap-3">
-                                                            <Icon fontSize={20} className="text-[#808080]" icon='ri:phone-fill' />
+                                                            <div>
+                                                                <Icon fontSize={20} className="text-[#808080]" icon='ri:phone-fill' />
+                                                            </div>
                                                             <span className="text-[14px] font-medium">{detailData.dienThoai}</span>
                                                         </div>
                                                     }
                                                     
                                                     <div className="flex items-center gap-3">
-                                                        <Icon fontSize={20} className="text-[#808080]" icon='lsicon:calendar-filled' />
-                                                        <span className="text-[14px] font-medium">{formatDate(detailData.tuNgay)} - {formatDate(detailData.denNgay)}</span>
+                                                        <div>
+                                                            <Icon fontSize={20} className="text-[#808080]" icon='lsicon:calendar-filled' />
+                                                        </div>
+                                                        <span className="text-[14px] font-medium">{detailData?.tuNgay && formatDate(detailData.tuNgay)} - {detailData?.denNgay && formatDate(detailData.denNgay)}</span>
                                                     </div>
 
                                                     <div className="flex items-center gap-3">
-                                                        <Icon fontSize={20} className="text-[#808080]" icon='mdi:account' />
+                                                        <div>
+                                                            <Icon fontSize={20} className="text-[#808080]" icon='mdi:account' />
+                                                        </div>
                                                         <span className="text-[14px] font-medium">{detailData.tenDangNhap}</span>
                                                     </div>
                                                 </div>

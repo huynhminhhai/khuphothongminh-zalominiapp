@@ -110,10 +110,10 @@ export const residentSchema = (isHouseHold: boolean) => yup.object().shape({
     //     .required('Ngày sinh là bắt buộc')
     // ,
     gioiTinh: yup.number().required('Giới tính là bắt buộc').notOneOf([0], 'Chưa chọn mục này'),
-    soGiayTo: yup
-        .string()
-        .required('Số giấy tờ là bắt buộc')
-        .matches(/^[0-9]{12}$/, 'Số định danh cá nhân phải bao gồm 12 số'),
+    // soGiayTo: yup
+    //     .string()
+    //     .required('Số giấy tờ là bắt buộc')
+    //     .matches(/^[0-9]{12}$/, 'Số định danh cá nhân phải bao gồm 12 số'),
     // danToc: yup.string().required('Dân tộc là bắt buộc'),
     // tonGiao: yup.string().required('Tôn giáo là bắt buộc'),
     email: yup
@@ -154,7 +154,7 @@ export interface FormResidentDetail {
     hoTen: string;
     ngaySinh?: string;
     gioiTinh: number;
-    soGiayTo: string;
+    soGiayTo?: string;
     danToc?: string;
     tonGiao?: string;
     quocGia?: string;

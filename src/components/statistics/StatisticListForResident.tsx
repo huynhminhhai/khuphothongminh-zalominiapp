@@ -14,8 +14,8 @@ const StatisticListForResident: React.FC<any> = () => {
     return (
         <Box mb={3}>
             <div className="grid grid-cols-2 gap-3">
-                <Box>
-                    <div className={'bg-blue-50 text-[#153568] w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'}>
+                <Box className="h-full">
+                    <div className={'bg-blue-50 text-[#153568] w-[100%] p-3 py-4 rounded-xl relative overflow-hidden h-full'}>
                         <div className="absolute top-[60%] -left-[-2%] transform translate-y-[-50%] w-[100%]">
                             <motion.img
                                 className="scale-[1.5] rotate-[-25deg]"
@@ -29,7 +29,7 @@ const StatisticListForResident: React.FC<any> = () => {
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[12px] leading-[1] font-semibold mb-[6px] opacity-90">Phường/Xã</h5>
-                                <h4 className="text-[13px] leading-[1] font-semibold">
+                                <h4 className="text-[13px] leading-[16px] font-semibold">
                                     {
                                         account?.tenXa || 'Chưa đăng ký'
                                     }
@@ -39,8 +39,8 @@ const StatisticListForResident: React.FC<any> = () => {
                     </div>
                 </Box>
 
-                <Box>
-                    <div className={'bg-blue-50 text-[#153568] w-[100%] p-3 py-4 rounded-xl relative overflow-hidden'}>
+                <Box className="h-full">
+                    <div className={'bg-blue-50 text-[#153568] w-[100%] p-3 py-4 rounded-xl relative overflow-hidden h-full'}>
                         <div className="absolute top-[65%] -left-[-50%] transform translate-y-[-50%] w-[100%]">
                             <motion.img
                                 className="scale-[1.5] rotate-[45deg]"
@@ -54,7 +54,7 @@ const StatisticListForResident: React.FC<any> = () => {
                         <div className="flex items-center gap-3">
                             <Box>
                                 <h5 className="text-[12px] leading-[1] font-semibold mb-[6px] opacity-90">Khu phố/Ấp</h5>
-                                <h4 className="text-[13px] leading-[1] font-semibold">
+                                <h4 className="text-[13px] leading-[16px] font-semibold">
                                     {
                                         account?.tenAp || 'Chưa đăng ký'
                                     }

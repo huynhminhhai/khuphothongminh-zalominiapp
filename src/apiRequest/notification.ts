@@ -1,5 +1,6 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import http from "services/http";
+import { useStoreApp } from "store/store";
 import { buildQueryString } from "utils/handleApi";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { useNavigate, useSnackbar } from "zmp-ui";
@@ -13,7 +14,7 @@ export type NotificationQueryParams = {
     keyword?: string;
 };
 
-const notificationApiRequest = {
+export const notificationApiRequest = {
     getNotificationSentList: async (param: NotificationQueryParams) => {
 
         const queryString = buildQueryString({
@@ -57,6 +58,15 @@ const notificationApiRequest = {
     },
     getNotificationDetail: async (id: number) => {
         return await http.get<any>(`/thongbao/chitiet/id/${id}`);
+    },
+    readNotification: async (id: number) => {
+        return await http.put<any>(`/thongbao/xem/${id}`, {});
+    },
+    unReadNotification: async (id: number) => {
+        return await http.put<any>(`/thongbao/chuaxem/${id}`, {});
+    },
+    readAllNotification: async () => {
+        return await http.put<any>(`/thongbao/xemtatca`, {});
     }
 }
 
@@ -65,8 +75,10 @@ const notificationApiRequest = {
 **/
 export const useGetNotificationList = (param: NotificationQueryParams) => {
 
+    const { isTrigger } = useStoreApp();
+
     return useInfiniteQuery({
-        queryKey: ['notificationList', param.pageSize, param.ApId, param.keyword, param.MaXa, param.NguoiTao],
+        queryKey: ['notificationList', param.pageSize, param.ApId, param.keyword, param.MaXa, param.NguoiTao, isTrigger],
         queryFn: async ({ pageParam = 1 }) => {
             try {
 
@@ -85,6 +97,18 @@ export const useGetNotificationList = (param: NotificationQueryParams) => {
         staleTime: 0,
         retry: 1,
     })
+};
+
+export const useGetNotificationSentListNormal = (param: NotificationQueryParams) => {
+    return useQuery({
+        queryKey: ['notificationListAll', param],
+        queryFn: async () => {
+            const res = await notificationApiRequest.getNotificationSentList(param);
+            return res
+        },
+        staleTime: 0,
+        retry: 1,
+    });
 };
 
 /**
@@ -222,5 +246,60 @@ export const useGetNotificationDetail = (id: number) => {
         enabled: !!id,
         staleTime: 0,
         retry: 1,
+    });
+};
+
+export const useReadNotification = () => {
+    const queryClient = useQueryClient();
+    const { setIsTrigger, isTrigger } = useStoreApp()
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await notificationApiRequest.readNotification(id);
+        },
+        onSuccess: () => {
+            // setIsTrigger(!isTrigger)
+            queryClient.invalidateQueries({ queryKey: ["notificationList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+        },
+    });
+};
+
+
+export const useUnReadNotification = () => {
+    const queryClient = useQueryClient();
+    const { setIsTrigger, isTrigger } = useStoreApp()
+
+    return useMutation({
+        mutationFn: async (id: number) => {
+            return await notificationApiRequest.unReadNotification(id);
+        },
+        onSuccess: () => {
+            // setIsTrigger(!isTrigger)
+            queryClient.invalidateQueries({ queryKey: ["notificationList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+        },
+    });
+};
+
+export const useReadAllNotification = () => {
+    const queryClient = useQueryClient();
+    const { setIsTrigger, isTrigger } = useStoreApp()
+
+    return useMutation({
+        mutationFn: async () => {
+            return await notificationApiRequest.readAllNotification();
+        },
+        onSuccess: () => {
+            // setIsTrigger(!isTrigger)
+            queryClient.invalidateQueries({ queryKey: ["notificationList"] });
+        },
+        onError: (error: string) => {
+            console.error(`Lỗi: ${error}`)
+        },
     });
 };

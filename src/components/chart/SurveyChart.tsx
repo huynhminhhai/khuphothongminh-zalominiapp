@@ -11,6 +11,7 @@ ChartJS.register(Title, Tooltip, Legend, ArcElement, BarElement, CategoryScale, 
 type Answer = {
   answer: string;
   count: number;
+  detail?: string;
 };
 
 type SurveyResult = {
@@ -69,12 +70,16 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
       };
 
       const answers = question.chiTietCauHoiKhaoSats.map((option) => {
-        const result = surveyDetail.ketQuaKhaoSats.find(
-          (res) => res.cauHoiKhaoSatId === question.cauHoiKhaoSatId && res.noiDungCauTraLoi === option.noiDungChiTiet
+        const result = surveyDetail.ketQuaKhaoSats.find((res) =>
+          question.loaiCauHoiKhaoSatId === 1
+            ? res.cauHoiKhaoSatId === question.cauHoiKhaoSatId
+            : res.cauHoiKhaoSatId === question.cauHoiKhaoSatId && res.noiDungCauTraLoi === option.noiDungChiTiet
         );
+
         return {
           answer: option.noiDungChiTiet,
           count: result ? result.luotChon : 0,
+          detail: result ? result.noiDungCauTraLoi : '',
         };
       });
 
@@ -83,9 +88,10 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
         type: typeMap[question.tenLoaiCauHoiKhaoSat] || 'text',
         answers,
       };
-    }).filter((survey) => survey.type !== 'text');
+    });
 
     const data: ChartData[] = surveyResults.map((survey) => {
+      console.log(survey)
       const { type, question, answers } = survey;
       let chartData: ChartData;
 
@@ -96,7 +102,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
             chart: (
               <Doughnut
                 data={{
-                  
+
                   labels: answers.map((a) => `${a.answer}: ${a.count}`),
                   datasets: [
                     {
@@ -166,13 +172,13 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                   scales: {
                     x: {
                       ticks: {
-                        callback: function(val) {
+                        callback: function (val) {
                           const label = this.getLabelForValue(val as number);
                           const maxLineLength = 14;
                           const words = label.split(' ');
                           let lines = [] as string[];
                           let currentLine = '';
-                    
+
                           words.forEach(word => {
                             if ((currentLine + word).length <= maxLineLength) {
                               currentLine += (currentLine ? ' ' : '') + word;
@@ -182,7 +188,7 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
                             }
                           });
                           if (currentLine) lines.push(currentLine);
-                    
+
                           return lines.length > 1 ? lines : label;
                         },
                         maxRotation: 50,
@@ -211,16 +217,41 @@ const SurveyCharts: React.FC<{ surveyDetail: SurveyDetail }> = ({ surveyDetail }
           };
           break;
 
-        case 'text':
+        case 'text': {
+          let parsedAnswers: { giaTri: string; ngayTao: string; hoTenNguoiTao: string }[] = [];
+
+          try {
+            parsedAnswers = JSON.parse(answers[0]?.detail || '[]');
+          } catch (e) {
+            console.error('Lỗi parse noiDungCauTraLoi:', e);
+          }
+
           chartData = {
             question,
             chart: (
-              <div className="text-center p-4">
-                <p>Không có dữ liệu thống kê cho câu hỏi này.</p>
+              <div className='max-h-[300px] overflow-auto'>
+                {parsedAnswers.length === 0 ? (
+                  <p className="text-center text-gray-500">Không có câu trả lời nào.</p>
+                ) : (
+                  <div className="space-y-1">
+                    {parsedAnswers.map((ans, index) => (
+                      <div
+                        key={index}
+                        className="border border-gray-200 rounded-md px-3 py-2 shadow-sm bg-white font-medium"
+                      >
+                        <p className="text-[13px] leading-[18px] text-gray-800">"{ans.giaTri}"</p>
+                        <div className="text-xs text-gray-500 mt-[2px]">
+                          {ans.hoTenNguoiTao} - {new Date(ans.ngayTao).toLocaleString('vi-VN')}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ),
           };
           break;
+        }
 
         default:
           throw new Error(`Unsupported question type: ${type}`);

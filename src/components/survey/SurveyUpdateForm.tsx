@@ -352,7 +352,7 @@ const SurveyUpdateForm: React.FC = () => {
                                             }}
                                             className="mt-1 p-2 h-[40px] w-full border border-gray-300 rounded-lg"
                                         >
-                                            {/* <option value="text">Câu hỏi nhập nội dung trả lời</option> */}
+                                            <option value="text">Câu hỏi nhập nội dung trả lời</option>
                                             <option value="one-choice">Câu hỏi chọn một đáp án</option>
                                             <option value="multiple-choice">Câu hỏi chọn nhiều đáp án</option>
                                         </select>

@@ -4,8 +4,10 @@ import images from "assets/images";
 import { HeaderSub } from "components/header-sub"
 import React from "react"
 import { useLoginWithZalo } from "services/loginWithZalo";
+import { createMiniAppShortcut, openPermissionSettingApp } from "services/zalo";
 import { useStoreApp } from "store/store";
 import { getFullImageUrl } from "utils/file";
+import { openShareSheet } from "zmp-sdk/apis";
 import { Avatar, Box, List, Page, useNavigate } from "zmp-ui"
 
 export const ManagementTitle = ({ title }: any) => {
@@ -53,7 +55,7 @@ const AccountPage: React.FC = () => {
                             </div>
                         </Box>
                     }
-                    
+
                     {
                         !isRegisteredWithAnotherRole &&
                         <Box m={4}>
@@ -121,6 +123,31 @@ const AccountPage: React.FC = () => {
                                 </List>
                             </Box>
                     }
+                    <Box m={4}>
+                        <List className="bg-white rounded-lg">
+                            <ManagementTitle title="Cài đặt" />
+                            <Item
+                                onClick={async () => {
+                                    await openShareSheet({
+                                        type: "link",
+                                        data: {
+                                            link: "https://zalo.me/s/3941810339733563958/",
+                                            chatOnly: false,
+                                        },
+                                    });
+                                }}
+                                title="Chia sẻ ứng dụng"
+                                prefix={<img src={images.share} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                            <Item
+                                onClick={() => createMiniAppShortcut()}
+                                title="Thêm vào màn hình chính"
+                                prefix={<img src={images.shortcut} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                        </List>
+                    </Box>
                 </Box>
             </Box>
         </Page>

@@ -39,7 +39,7 @@ const NewsSection: React.FC = () => {
         <>
             <Divider />
             <Box p={4} className="news-section">
-                <TitleSection title="Thông tin cần biết mới nhất" handleClick={() => navigate('/news')} />
+                <TitleSection title="Thông tin cần biết" handleClick={() => navigate('/news')} />
                 <Box
                     flex
                     flexDirection="column"

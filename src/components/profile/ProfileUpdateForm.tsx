@@ -308,7 +308,6 @@ const ProfileUpdateForm: React.FC = () => {
                             placeholder="Nhập số định danh cá nhân"
                             control={control}
                             error={errors.soGiayTo?.message}
-                            required
                         />
                     </div>
                     <div className="col-span-6">

@@ -78,10 +78,15 @@ export function timeAgo(date: string | Date): string {
 }
 
 export const formatDate = (dateString: string): string => {
-    const date = new Date(dateString);
+    const safeDateString = dateString.replace(" ", "T"); // chuẩn ISO 8601
+    const date = new Date(safeDateString);
+
+    if (isNaN(date.getTime())) return "";
+
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
+
     return `${day}/${month}/${year}`;
 };
 
@@ -97,6 +102,6 @@ export function formatDateYYYYMMDD(date: Date): string {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
-  
+
     return `${year}-${month}-${day}`;
-  }
+}

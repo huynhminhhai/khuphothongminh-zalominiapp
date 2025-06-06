@@ -6,10 +6,11 @@ import { EmptyData } from "components/data"
 import { useStoreApp } from "store/store"
 import { debounce } from "lodash"
 import { useInfiniteScroll } from "utils/useInfiniteScroll"
-import { useGetNotificationList } from "apiRequest/notification"
+import { useGetNotificationList, useReadAllNotification } from "apiRequest/notification"
 import { FilterBar2 } from "components/table"
 import { Divider } from "components/divider"
 import { TaskItemSkeleton } from "components/skeleton"
+import { Icon } from "@iconify/react"
 
 const NotificationList: React.FC = () => {
 
@@ -28,6 +29,7 @@ const NotificationList: React.FC = () => {
     });
 
     const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetNotificationList(param);
+    const { mutate: readAllNotification, isPending: isReadAllPending } = useReadAllNotification();
 
     const listData = data?.pages.reduce((acc, page) => [...acc, ...page], []) || [];
 
@@ -70,10 +72,20 @@ const NotificationList: React.FC = () => {
                 <div className="grid grid-cols-1">
                     {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
                         <Box px={4}>
-                            <EmptyData title="Hiện chưa có thông báo!"/>
+                            <EmptyData title="Hiện chưa có thông báo!" />
                         </Box>
                     ) : (
                         <Box>
+                            <div className="border-b-[1px] border-gray-200">
+                                <button
+                                    disabled={isReadAllPending}
+                                    onClick={() => {
+                                        readAllNotification();
+                                    }}
+                                    className="px-4 py-2 font-medium text-end text-[#4c66af] flex items-center gap-1 justify-end ml-auto w-fit text-[15px]">Đánh dấu đã xem tất cả
+                                    <Icon icon="hugeicons:tick-01" fontSize={18} />
+                                </button>
+                            </div>
                             {listData.map((item, index) => (
                                 <NotificationItem key={index} data={item} />
                             ))}

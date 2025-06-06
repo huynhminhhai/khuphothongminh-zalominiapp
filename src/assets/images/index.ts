@@ -54,8 +54,10 @@ import garbageFee from './garbage-fee.png'
 import fund from './fund.png'
 import question from './question.png'
 import speaker from './speaker.png'
+import share from './share.png'
 
 const images = {
+    share,
     speaker,
     question,
     fund,
