@@ -15,7 +15,7 @@ import { ProfileResidentPage } from "pages/profile";
 import { MyTaskDetailPage, TaskDetailPage, TaskPage } from "pages/task";
 import { TransactionDetailPage, TransactionsPage } from "pages/transactions";
 import { ReportFinanceChartPage, ReportFinanceDetailPage } from "pages/report-finnace";
-import { AccountPage, ChangePasswordPage, LoginPage, ProfileAccountPage, RegisterApPage, WelcomePage } from "pages/account";
+import { AccountPage, ChangePasswordPage, GuidePage, LoginPage, ProfileAccountPage, RegisterApPage, WelcomePage } from "pages/account";
 import { LoadingFullScreen } from "./loading";
 import { useStoreApp } from "store/store";
 import { NotificationDetailPage, NotificationPage } from "pages/notification";
@@ -145,6 +145,7 @@ const MyApp = () => {
               <Routes>
 
                 <Route path="/welcome" element={<WelcomePage></WelcomePage>}></Route>
+                <Route path="/guide" element={<GuidePage></GuidePage>}></Route>
                 <Route path="/403" element={<ForbiddenPage></ForbiddenPage>}></Route>
 
                 <Route

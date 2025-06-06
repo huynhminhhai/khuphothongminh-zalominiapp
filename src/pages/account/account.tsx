@@ -127,6 +127,12 @@ const AccountPage: React.FC = () => {
                         <List className="bg-white rounded-lg">
                             <ManagementTitle title="Cài đặt" />
                             <Item
+                                onClick={() => navigate('/guide')}
+                                title="Hướng dẫn sử dụng"
+                                prefix={<img src={images.guide} width={30} />}
+                                suffix={<Icon fontSize={20} icon="formkit:right" />}
+                            />
+                            <Item
                                 onClick={async () => {
                                     await openShareSheet({
                                         type: "link",

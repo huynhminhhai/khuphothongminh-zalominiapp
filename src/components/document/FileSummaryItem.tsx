@@ -1,18 +1,22 @@
 import { Icon } from "@iconify/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import http from "services/http";
 import { openUrlInWebview } from "services/zalo";
 import { getFullImageUrl } from "utils/file";
 
 interface TypingTextProps {
     text: string;
-    speed?: number; // ms cho mỗi ký tự, mặc định 50ms
+    speed?: number; // ms per character, default 50ms
 }
 
-const TypingText = ({ text, speed = 10 }) => {
-    const [displayed, setDisplayed] = React.useState("");
+export const convertSpacesToEncoded = (text: string): string => {
+    return text.replace(/ /g, '%20');
+};
 
-    React.useEffect(() => {
+const TypingText = ({ text, speed = 10 }: TypingTextProps) => {
+    const [displayed, setDisplayed] = useState("");
+
+    useEffect(() => {
         let index = 0;
         setDisplayed("");
         const interval = setInterval(() => {
@@ -26,8 +30,6 @@ const TypingText = ({ text, speed = 10 }) => {
 
     return <div className="whitespace-pre-line">{displayed}</div>;
 };
-
-
 
 const TypingEffect = () => {
     const letters = ['Đ', 'a', 'n', 'g', '...'];
@@ -46,32 +48,45 @@ const TypingEffect = () => {
     );
 };
 
-const FileSummaryItem: React.FC<any> = ({ file }) => {
+interface FileSummaryItemProps {
+    file: any;
+}
+
+const FileSummaryItem: React.FC<FileSummaryItemProps> = ({ file }) => {
     const [showSummary, setShowSummary] = useState(false);
     const [summaryData, setSummaryData] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [hasSummary, setHasSummary] = useState(false);
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     const fetchSummary = async (id: string) => {
         setLoading(true);
         setError(null);
         try {
             const res = await http.get<any>(`/vanban/tomtat/${id}`);
-            setSummaryData(res.data?.tomTat || "Không có nội dung tóm tắt.");
+            const summary = res.data?.tomTat || null;
+            setSummaryData(summary);
+            setHasSummary(!!summary); // Set hasSummary to true if summary exists
         } catch (err) {
             setError("Đọc tóm tắt văn bản thất bại.");
+            setHasSummary(false);
         } finally {
             setLoading(false);
         }
     };
 
+    useEffect(() => {
+        // Fetch summary when component mounts
+        fetchSummary(file.tapTinVanBanId);
+    }, [file.tapTinVanBanId]);
+
     const handleSummarize = () => {
         setShowSummary(true);
-        fetchSummary(file.tapTinVanBanId);
-    };
-
-    const handleVoiceSummary = () => {
-        alert("Tính năng tóm tắt bằng giọng nói đang phát triển...");
+        // Auto-play video when summary is shown
+        if (videoRef.current && summaryData) {
+            videoRef.current.play();
+        }
     };
 
     return (
@@ -81,32 +96,31 @@ const FileSummaryItem: React.FC<any> = ({ file }) => {
                 onClick={() => openUrlInWebview(getFullImageUrl(file.tapTin))}
             >
                 <div className="flex items-center gap-2">
-                    <div className="flex-1" >
+                    <div className="flex-1">
                         <Icon icon="codex:file" fontSize={22} />
                     </div>
                     <span className="text-sm font-medium">{file.tenTapTin}</span>
                 </div>
             </div>
 
-            <div className="flex gap-3 mt-3">
-                <div className="rounded-lg p-[2px] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 w-full">
-                    <button
-                        onClick={handleSummarize}
-                        className="flex-1 flex items-center justify-center gap-1 rounded-md bg-white px-2 py-2 text-[13px] font-semibold text-primary-color w-full"
-                    >
-                        <Icon icon="mingcute:ai-line" fontSize={16} />
-                        Đọc tóm tắt văn bản
-                    </button>
-                </div>
-                {/* <button
-                    onClick={handleVoiceSummary}
-                    className="flex-1 flex items-center justify-center gap-2 rounded-lg border px-2 py-2 text-[13px] font-semibold"
-                >
-                    <div className="w-full">
-                        Tóm tắt bằng giọng nói
+            {hasSummary && !error && (
+                <div className="flex gap-3 mt-3">
+                    <div className="rounded-lg p-[2px] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 w-full">
+                        <button
+                            onClick={handleSummarize}
+                            className="flex-1 flex items-center justify-center gap-1 rounded-md bg-white px-2 py-2 text-[13px] font-semibold text-primary-color w-full"
+                        >
+                            <Icon icon="mingcute:ai-line" fontSize={16} />
+                            Đọc tóm tắt văn bản
+                        </button>
+                        {summaryData && (
+                            <video ref={videoRef} controls hidden>
+                                <source src={`https://wf.vnpt.me/api/tts?Text=${convertSpacesToEncoded(summaryData)}`} />
+                            </video>
+                        )}
                     </div>
-                </button> */}
-            </div>
+                </div>
+            )}
 
             {showSummary && (
                 <div
@@ -117,11 +131,12 @@ const FileSummaryItem: React.FC<any> = ({ file }) => {
                     ) : error ? (
                         <span className="text-red-500 font-semibold">{error}</span>
                     ) : (
-                        <TypingText text={summaryData as string} />
+                        <>
+                            <TypingText text={summaryData as string} />
+                        </>
                     )}
                 </div>
             )}
-
         </div>
     );
 };

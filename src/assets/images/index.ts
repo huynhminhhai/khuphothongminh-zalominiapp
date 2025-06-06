@@ -55,8 +55,12 @@ import fund from './fund.png'
 import question from './question.png'
 import speaker from './speaker.png'
 import share from './share.png'
+import guide from './guide.png'
+import video from './video-content.png'
 
 const images = {
+    video,
+    guide,
     share,
     speaker,
     question,
