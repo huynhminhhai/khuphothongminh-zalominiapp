@@ -128,7 +128,7 @@ const AccountPage: React.FC = () => {
                             <ManagementTitle title="Cài đặt" />
                             <Item
                                 onClick={() => navigate('/guide')}
-                                title="Hướng dẫn sử dụng"
+                                title="Hướng dẫn các chức năng"
                                 prefix={<img src={images.guide} width={30} />}
                                 suffix={<Icon fontSize={20} icon="formkit:right" />}
                             />

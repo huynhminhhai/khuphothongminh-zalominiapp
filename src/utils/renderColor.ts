@@ -17,9 +17,9 @@ export const getTinhTrangFeedbackColor = (tenTinhTrang: string): { bg: string; c
     switch (tenTinhTrang) {
         case "Khởi tạo":
             return { bg: 'bg-[#eeedf2]', color: 'text-[#797985]' };
-        case "Đang xử lý":
+        case "Chờ phản hồi":
             return { bg: 'bg-[#ebf0f4]', color: 'text-[#0667e1]' };
-        case "Đã xử lý":
+        case "Đã phản hồi":
             return { bg: 'bg-[#eaf0ea]', color: 'text-[#157c0c]' };
         case "Đã xóa":
             return { bg: 'bg-[#f5f1ee]', color: 'text-[#c7373e]' };

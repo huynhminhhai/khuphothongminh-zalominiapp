@@ -67,13 +67,13 @@ const FeedbackItemHistory: React.FC<FeedbackItemHistoryProps> = ({ data }) => {
             pb={4} mb={4} className="border-b-[1px] relative"
         >
             <Box className="relative" onClick={() => navigate(`/feedback-detail?id=${data.phanAnhId}`)}>
-                {/* {status && (
+                {status && (
                     <div
                         className={`${color} ${bg} feedback-tag py-[6px] px-3 rounded-xl absolute bottom-[0px] right-[2px] font-bold text-[12px] leading-[1]`}
                     >
                         {status.tenTinhTrang}
                     </div>
-                )} */}
+                )}
                 <Box className="relative rounded-lg overflow-hidden border-[1px]">
                     <img className="w-[100%] h-[200px] object-cover" src={imageFiles[0]?.tapTin ? getFullImageUrl(imageFiles[0].tapTin) : images.feedback} alt={data.noiDung} />
                 </Box>
