@@ -8,7 +8,7 @@ const NewsUpdatePage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
-                <HeaderSub title="Cập nhật thông tin cần biết" />
+                <HeaderSub title="Cập nhật bản tin Khu phố/Ấp" />
                 <NewsUpdateForm />
             </Box>
         </Page>

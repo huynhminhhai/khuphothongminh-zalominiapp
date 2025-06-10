@@ -10,7 +10,7 @@ const NewsPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Thông tin cần biết" onBackClick={() => navigate('/')} />
+                <HeaderSub title="Bản tin Khu phố/Ấp" onBackClick={() => navigate('/')} />
                 <Box pb={4}>
                     <NewsList />
                 </Box>

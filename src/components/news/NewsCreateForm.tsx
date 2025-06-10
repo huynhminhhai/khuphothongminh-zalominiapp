@@ -124,7 +124,7 @@ const NewsAddForm: React.FC = () => {
                     </div>
                     <div className="fixed bottom-0 left-0 flex justify-center w-[100%] bg-white box-shadow-3">
                         <Box py={3} className="w-[100%]" flex alignItems="center" justifyContent="center">
-                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Thêm thông tin cần biết"} handleClick={handleSubmit(onSubmit)} />
+                            <PrimaryButton disabled={isPending} fullWidth label={isPending ? "Đang xử lý..." : "Thêm bản tin"} handleClick={handleSubmit(onSubmit)} />
                         </Box>
                     </div>
                 </div>
@@ -132,7 +132,7 @@ const NewsAddForm: React.FC = () => {
             <ConfirmModal
                 visible={isConfirmVisible}
                 title="Xác nhận"
-                message="Bạn có chắc chắn muốn thêm thông tin cần biết này không?"
+                message="Bạn có chắc chắn muốn thêm bản tin Khu phố/Ấp này không?"
                 onConfirm={handleConfirm}
                 onCancel={handleCancel}
             />

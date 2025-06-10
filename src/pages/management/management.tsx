@@ -19,7 +19,7 @@ const ManagementItem = ({ title, prefix, onClick }: any) => {
             <div className="w-[60px] h-[60px] rounded-full bg-blue-50 flex-center">
                 {prefix}
             </div>
-            <div className="text-[14px] leading-[18px] font-medium text-center min-h-[36px]">
+            <div className="text-[13px] leading-[18px] font-medium text-center min-h-[36px] whitespace-pre-line">
                 {title}
             </div>
         </motion.div>
@@ -60,7 +60,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.thongKeBaoCaoTongHopTinhHinhDanCu, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Tổng quan"
+                                        title={`Tổng quan\nKhu phố/Ấp`}
                                         prefix={<img src={images.chart}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -74,7 +74,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.bandodancu, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Bản đồ"
+                                        title={`Bản đồ\nhộ gia đình`}
                                         prefix={<img src={images.map}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -114,7 +114,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoToChucDanCuDanCu, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Thành viên hộ gia đình"
+                                        title={`Thành viên\nhộ gia đình`}
                                         prefix={<img src={images.resident}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -152,7 +152,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Thông tin cần biết"
+                                        title={`Bản tin\nKhu phố/Ấp`}
                                         prefix={<img src={images.news}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -166,7 +166,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Khảo sát"
+                                        title={`Khảo sát\ný kiến`}
                                         prefix={<img src={images.survey}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -180,7 +180,7 @@ const ManagementPage: React.FC = () => {
                                 hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, PermissionActions.XEM) &&
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Ý kiến người dân"
+                                        title={`Ý kiến\nngười dân`}
                                         prefix={<img src={images.idea}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -193,7 +193,7 @@ const ManagementPage: React.FC = () => {
                             {
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Văn bản triển khai"
+                                        title={`Văn bản\ntriển khai`}
                                         prefix={<img src={images.document}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -206,7 +206,7 @@ const ManagementPage: React.FC = () => {
                             {
                                 <div className="col-span-4">
                                     <ManagementItem
-                                        title="Thông báo nhanh"
+                                        title={`Thông báo\nnhanh`}
                                         prefix={<img src={images.alerts}
                                             alt='news'
                                             className="w-[30px] h-auto"
@@ -231,7 +231,7 @@ const ManagementPage: React.FC = () => {
                                     hasPermission(permissionsList.khuPhoNhiemVuGiaoNhiemVu, PermissionActions.XEM) &&
                                     <div className="col-span-4">
                                         <ManagementItem
-                                            title="Giao nhiệm vụ"
+                                            title={`Giao\nnhiệm vụ`}
                                             prefix={<img src={images.todo}
                                                 alt='news'
                                                 className="w-[30px] h-auto"
@@ -276,7 +276,7 @@ const ManagementPage: React.FC = () => {
                                     hasPermission(permissionsList.khuPhoNhiemVuNhiemVuCuaToi, PermissionActions.XEM) &&
                                     <div className="col-span-4">
                                         <ManagementItem
-                                            title="Nhiệm vụ của tôi"
+                                            title={`Nhiệm vụ\ncủa tôi`}
                                             prefix={<img src={images.todo}
                                                 alt='news'
                                                 className="w-[30px] h-auto"
@@ -290,7 +290,7 @@ const ManagementPage: React.FC = () => {
                                     hasPermission(permissionsList.khuPhoCongViecCuocHop, PermissionActions.XEM) &&
                                     <div className="col-span-4">
                                         <ManagementItem
-                                            title="Cuộc họp của tôi"
+                                            title={`Cuộc họp\ncủa tôi`}
                                             prefix={<img src={images.meeting}
                                                 alt='news'
                                                 className="w-[30px] h-auto"

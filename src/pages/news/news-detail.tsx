@@ -26,7 +26,7 @@ const NewsDetailPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Chi tiết thông tin cần biết" />
+                <HeaderSub title="Chi tiết bản tin Khu phố/Ấp" />
                 {
                     isLoading ?
                         <NewsDetailSkeleton count={1} /> :
@@ -57,12 +57,12 @@ const NewsDetailPage: React.FC = () => {
                             <Box px={4} pb={10}>
                                 <EmptyData
                                     title="Thông tin không tồn tại!"
-                                    desc="Không thể tìm thấy thông tin cần biết này."
+                                    desc="Không thể tìm thấy tin này."
                                 />
                             </Box>
                 }
                 <Box px={4}>
-                    <TitleSection title="Thông tin cần biết khác" mB={0} handleClick={() => navigate('/news')} />
+                    <TitleSection title="Tin khác" mB={0} handleClick={() => navigate('/news')} />
                     <NewsOthers idNews={Number(newsId)} />
                 </Box>
 

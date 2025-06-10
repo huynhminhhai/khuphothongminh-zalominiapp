@@ -30,7 +30,7 @@ const ResidentOverviewPage = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white" style={{ backgroundColor: '#f5f6f7' }}>
             <Box>
-                <HeaderSub title="Tổng quan" />
+                <HeaderSub title="Tổng quan Khu phố/Ấp" />
                 <Box>
                     <Box px={4} py={2}>
                         <div className="bg-white box-shadow-4 rounded-xl px-3 py-4">

@@ -104,7 +104,7 @@ const NewsManagementPage: React.FC = () => {
     const removeNews = (id: number) => {
         openConfirmModal(() => {
             deleteNews(id);
-        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa thông tin cần biết này?');
+        }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa bản tin Khu phố/Ấp này?');
     }
 
     const columns: ColumnDef<NewsType>[] = [
@@ -145,7 +145,7 @@ const NewsManagementPage: React.FC = () => {
                                         tinTucId: row.original.tinTucId,
                                         tinhTrangId: Number(value),
                                     });
-                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái thông tin cần biết này?')
+                                }, 'Xác nhận thay đổi', 'Bạn có chắc chắn muốn thay đổi trạng thái bản tin Khu phố/Ấp này?')
                             }}
                             className="h-[30px] !bg-gray-100 !border-[0px] !rounded"
                             disabled=
@@ -214,7 +214,7 @@ const NewsManagementPage: React.FC = () => {
             return (
                 <Box px={4}>
                     <EmptyData
-                        title="Hiện chưa có thông tin cần biết nào!"
+                        title="Hiện chưa có bản tin Khu phố/Ấp nào!"
                         desc="Nhấn vào nút Thêm để bắt đầu!"
                     />
                 </Box>
@@ -246,7 +246,7 @@ const NewsManagementPage: React.FC = () => {
     return (
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
-                <HeaderSub title="Quản lý thông tin cần biết" onBackClick={() => navigate('/management')} />
+                <HeaderSub title="Quản lý bản tin Khu phố/Ấp" onBackClick={() => navigate('/management')} />
                 <Box pb={4}>
                     <FilterBar
                         showAddButton={hasPermission(permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, PermissionActions.THEM)}

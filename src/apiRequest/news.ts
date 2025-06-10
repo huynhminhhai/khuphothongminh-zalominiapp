@@ -146,7 +146,7 @@ export const useGetNewsStatus = () => {
                 const res = await newsApiRequest.getNewsStatus();
                 return res.data.tinhTrangs
             } catch (error) {
-                console.error("Lỗi khi lấy danh mục thông tin cần biết:", error);
+                console.error("Lỗi khi lấy danh mục bản tin Khu phố/Ấp:", error);
                 throw error;
             }
         },
@@ -242,7 +242,7 @@ export const useCreateNews = () => {
             return await newsApiRequest.createNews(formData);
         },
         onSuccess: () => {
-            showSuccess('Tạo thông tin cần biết thành công');
+            showSuccess('Tạo bản tin Khu phố/Ấp thành công');
 
             queryClient.invalidateQueries({ queryKey: ["newsList"] });
 
@@ -267,7 +267,7 @@ export const useUpdateNews = () => {
             return await newsApiRequest.updateNews(formData);
         },
         onSuccess: () => {
-            showSuccess('Cập nhật thông tin cần biết thành công');
+            showSuccess('Cập nhật bản tin Khu phố/Ấp thành công');
 
             queryClient.invalidateQueries({ queryKey: ["newsDetail"] });
             queryClient.invalidateQueries({ queryKey: ["newsList"] });
@@ -291,7 +291,7 @@ export const useDeleteNews = () => {
             return await newsApiRequest.deleteNews(id);
         },
         onSuccess: () => {
-            showSuccess('Xóa thông tin cần biết thành công');
+            showSuccess('Xóa bản tin Khu phố/Ấp thành công');
 
             queryClient.invalidateQueries({ queryKey: ["newsList"] });
         },

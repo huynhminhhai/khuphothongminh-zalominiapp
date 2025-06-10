@@ -18,7 +18,7 @@ export type ServicesType = {
 
 const SERVICES: ServicesType[] = [
     {
-        label: 'Hộ gia đình',
+        label: 'Thông tin\nhộ gia đình',
         url: '/resident',
         icon: images.home,
         isRequireApId: true,
@@ -51,14 +51,14 @@ const SERVICES: ServicesType[] = [
     //     requiredPermission: { maChucNang: permissionsList.khuPhoToChucDanCuBanDieuHanh, quyen: PermissionActions.XEM },
     // },
     {
-        label: 'Thông tin cần biết',
+        label: 'Bản tin\nKhu phố/Ấp',
         url: '/news',
         icon: images.news,
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhTinTucSuKien, quyen: PermissionActions.XEM },
     },
     
     {
-        label: 'Khảo sát',
+        label: 'Khảo sát\ný kiến',
         url: '/survey',
         icon: images.survey,
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhKhaoSat, quyen: PermissionActions.XEMCONGKHAI },
@@ -80,7 +80,7 @@ const SERVICES: ServicesType[] = [
     //     // requiredPermission: { maChucNang: permissionsList.khuPhoCongViecTaiChinh, quyen: PermissionActions.XEM },
     // },
     {
-        label: 'Văn bản cần biết',
+        label: 'Văn bản\ncần biết',
         url: '/document',
         icon: images.document,
         // isComingSoon: true,
@@ -88,7 +88,7 @@ const SERVICES: ServicesType[] = [
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
-        label: 'Trợ lý ảo TTHC',
+        label: 'Trợ lý ảo\nTTHC',
         url: '/chatbox',
         icon: images.question,
         // isComingSoon: true
@@ -103,7 +103,7 @@ const SERVICES: ServicesType[] = [
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
-        label: 'Đóng tiền rác',
+        label: 'Đóng tiền\nrác',
         url: '/garbage-fee',
         icon: images.garbageFee,
         isComingSoon: true,
@@ -111,7 +111,7 @@ const SERVICES: ServicesType[] = [
         // requiredPermission: { maChucNang: permissionsList.khuPhoTuyenTruyenPhanAnhPhanAnh, quyen: PermissionActions.XEM },
     },
     {
-        label: 'Đóng tiền quỹ',
+        label: 'Đóng tiền\nquỹ',
         url: '/garbage-fee',
         icon: images.fund,
         isComingSoon: true,
@@ -131,7 +131,7 @@ const ServiceList: React.FC<any> = () => {
 
     return (
         <Box>
-            <div className="grid grid-cols-4 gap-x-3 gap-y-4">
+            <div className="grid grid-cols-4 gap-x-2 gap-y-4">
                 {
                     filteredServices.map((item, index) => (
                         <ServiceItem key={index} data={item} />

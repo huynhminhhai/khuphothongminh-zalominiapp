@@ -71,7 +71,7 @@ const NewsList: React.FC = () => {
             <Box>
                 {(listData.length === 0 && !isFetchingNextPage && !isLoading) ? (
                     <Box px={4}>
-                        <EmptyData title="Hiện chưa có thông tin cần biết nào!" desc="Khi có thông tin, bạn có thể thao tác ngay tại đây. Vui lòng quay lại sau!" />
+                        <EmptyData title="Hiện chưa có bản tin Khu phố/Ấp nào!" desc="Khi có thông tin, bạn có thể thao tác ngay tại đây. Vui lòng quay lại sau!" />
                     </Box>
                 ) : (
                     <>
@@ -86,7 +86,7 @@ const NewsList: React.FC = () => {
             </Box>
             <div ref={loaderRef} className="px-4">
                 {isFetchingNextPage && <NewsSkeleton count={1} />}
-                {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả thông tin</p>}
+                {listData.length > 0 && !hasNextPage && <p className="text-center pt-4">Đã hiển thị tất cả tin</p>}
             </div>
         </Box>
     }

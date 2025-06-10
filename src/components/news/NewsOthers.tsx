@@ -31,9 +31,9 @@ const NewsOthers: React.FC<NewsOthersProps> = ({ idNews }) => {
     }
 
     return (
-        <Box>
+        <Box pb={4}>
             {
-                data.data && data.data.length > 0 ?
+                data.data && data.data.length > 1 ?
                     <>
                         {
                             data.data
@@ -44,7 +44,7 @@ const NewsOthers: React.FC<NewsOthersProps> = ({ idNews }) => {
                         }
                     </>
                     :
-                    <>Chưa có thông tin cần biết nào!</>
+                    <Box p={4} className="text-center">Chưa có tin khác!</Box>
             }
         </Box>
     )

@@ -44,12 +44,12 @@ const ServiceItem: React.FC<ServiceItemType> = ({ data }) => {
                 }}
             >
                 <Box>
-                    <div className="rounded-full flex-center w-[44px] h-[44px] relative">
-                        <img className="w-[44px] h-[44px]" src={data.icon} alt={data.label} />
+                    <div className="rounded-full flex-center w-[40px] h-[40px] relative">
+                        <img className="w-[40px] h-[40px]" src={data.icon} alt={data.label} />
                     </div>
                 </Box>
                 <Box>
-                    <h4 className="text-[14px] leading-[18px] text-center font-medium">{data.label}</h4>
+                    <h4 className="text-[13px] leading-[18px] text-center font-medium whitespace-pre-line">{data.label}</h4>
                 </Box>
             </div>
         </motion.div>

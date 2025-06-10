@@ -39,7 +39,7 @@ const NewsSection: React.FC = () => {
         <>
             <Divider />
             <Box p={4} className="news-section">
-                <TitleSection title="Thông tin cần biết" handleClick={() => navigate('/news')} />
+                <TitleSection title="Bản tin mới nhất" handleClick={() => navigate('/news')} />
                 <Box
                     flex
                     flexDirection="column"
@@ -74,7 +74,7 @@ const NewsSection: React.FC = () => {
                                 }
                             </Swiper>
                             :
-                            <Box py={4} className="text-center">Chưa có thông tin cần biết nào!</Box>
+                            <Box py={4} className="text-center">Chưa có bản tin Khu phố/Ấp nào!</Box>
                     }
 
                 </Box>
