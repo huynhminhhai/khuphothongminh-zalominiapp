@@ -49,7 +49,7 @@ const ServiceItem: React.FC<ServiceItemType> = ({ data }) => {
                     </div>
                 </Box>
                 <Box>
-                    <h4 className="text-[13px] leading-[18px] text-center font-medium whitespace-pre-line">{data.label}</h4>
+                    <h4 className="text-[13px] leading-[16px] text-center font-medium whitespace-pre-line">{data.label}</h4>
                 </Box>
             </div>
         </motion.div>

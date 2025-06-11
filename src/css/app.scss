@@ -707,3 +707,16 @@ div.flex-1.font-medium.line-clamp-2 button.rounded {
   width: 100%;
   background-color: var(--gray-color);
 }
+
+@keyframes wave {
+  0%, 100% {
+      transform: scaleY(0.4);
+  }
+  50% {
+      transform: scaleY(1);
+  }
+}
+
+.animate-wave {
+  animation: wave 1s infinite ease-in-out;
+}

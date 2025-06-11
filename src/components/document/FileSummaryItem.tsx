@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import React, { useEffect, useState, useRef } from "react";
 import http from "services/http";
 import { openUrlInWebview } from "services/zalo";
+import { useStoreApp } from "store/store";
 import { getFullImageUrl } from "utils/file";
 
 interface TypingTextProps {
@@ -48,11 +49,28 @@ const TypingEffect = () => {
     );
 };
 
+const SpeakingEffect = () => {
+    return (
+        <div className="flex items-center gap-[2px] ml-2 speaking-effect">
+            {[1, 2, 3, 4].map((i) => (
+                <div
+                    key={i}
+                    className="w-[2px] bg-primary-color animate-wave"
+                    style={{ animationDelay: `${i * 100}ms`, height: `${8 + i * 4}px` }}
+                />
+            ))}
+        </div>
+    );
+};
+
 interface FileSummaryItemProps {
     file: any;
 }
 
 const FileSummaryItem: React.FC<FileSummaryItemProps> = ({ file }) => {
+
+    const { currentPlayingVideo, setCurrentPlayingVideo, playingVideoId, setPlayingVideoId } = useStoreApp();
+
     const [showSummary, setShowSummary] = useState(false);
     const [summaryData, setSummaryData] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
@@ -79,14 +97,39 @@ const FileSummaryItem: React.FC<FileSummaryItemProps> = ({ file }) => {
     useEffect(() => {
         // Fetch summary when component mounts
         fetchSummary(file.tapTinVanBanId);
+        setPlayingVideoId(null);
     }, [file.tapTinVanBanId]);
 
-    const handleSummarize = () => {
+    const handleSummarize = (videoId: string) => {
         setShowSummary(true);
-        // Auto-play video when summary is shown
-        if (videoRef.current && summaryData) {
-            videoRef.current.play();
+
+        if (!videoRef.current || !summaryData) return;
+
+        // Nếu đang bấm lại chính video đang phát
+        if (currentPlayingVideo === videoRef.current) {
+            if (videoRef.current.paused) {
+                videoRef.current.play();
+                setPlayingVideoId(videoId);
+            } else {
+                videoRef.current.pause();
+                setPlayingVideoId(null); // ✅ reset khi pause
+            }
+            return;
         }
+
+        // Nếu bấm vào video khác
+        if (currentPlayingVideo && currentPlayingVideo !== videoRef.current) {
+            currentPlayingVideo.pause();
+            currentPlayingVideo.currentTime = 0;
+            setPlayingVideoId(null);
+        }
+
+        // Sau đó play video mới
+        videoRef.current.currentTime = 0;
+        videoRef.current.play();
+        setCurrentPlayingVideo(videoRef.current);
+        setPlayingVideoId(videoId); // ✅ set video mới đang phát
+
     };
 
     return (
@@ -107,14 +150,22 @@ const FileSummaryItem: React.FC<FileSummaryItemProps> = ({ file }) => {
                 <div className="flex gap-3 mt-3">
                     <div className="rounded-lg p-[2px] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 w-full">
                         <button
-                            onClick={handleSummarize}
-                            className="flex-1 flex items-center justify-center gap-1 rounded-md bg-white px-2 py-2 text-[13px] font-semibold text-primary-color w-full"
+                            onClick={() => handleSummarize(file.tapTinVanBanId)}
+                            className="flex-1 flex items-center justify-center gap-1 rounded-md bg-white px-2 py-2 text-[13px] font-semibold text-primary-color w-full play-button"
                         >
                             <Icon icon="mingcute:ai-line" fontSize={16} />
                             Đọc tóm tắt văn bản
+                            {
+                                playingVideoId === file.tapTinVanBanId && <SpeakingEffect />
+                            }
                         </button>
                         {summaryData && (
-                            <video ref={videoRef} controls hidden>
+                            <video
+                                ref={videoRef}
+                                controls
+                                hidden
+                                onEnded={() => setPlayingVideoId(null)}
+                            >
                                 <source src={`https://wf.vnpt.me/api/tts?Text=${convertSpacesToEncoded(summaryData)}`} />
                             </video>
                         )}
