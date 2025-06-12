@@ -93,44 +93,6 @@ const FeedbackManagementPage: React.FC = () => {
 
     const columns: ColumnDef<any>[] = [
         {
-            id: 'tapTinPhanAnhs',
-            header: 'Ảnh',
-            size: 300,
-            cell: ({ row }) => {
-
-                const imageFiles = row.original?.tapTinPhanAnhs?.filter(item =>
-                    isImage(item.tapTin)
-                ) || [];
-
-                return (
-                    <Box>
-                        <Swiper className="w-full h-[150px]" style={{ borderRadius: 0 }}>
-                            {imageFiles && imageFiles.length > 0 ? (
-                                imageFiles.map((item, index) => (
-                                    <Swiper.Slide key={index}>
-                                        <img
-                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                            className="slide-img object-cover w-full h-full"
-                                            src={getFullImageUrl(item.tapTin)}
-                                            alt={row.original?.noiDung}
-                                        />
-                                    </Swiper.Slide>
-                                ))
-                            ) : (
-                                <Swiper.Slide>
-                                    <img
-                                        className="slide-img object-cover w-full h-full"
-                                        src={images.feedback}
-                                        alt={row.original?.noiDung}
-                                    />
-                                </Swiper.Slide>
-                            )}
-                        </Swiper>
-                    </Box>
-                )
-            }
-        },
-        {
             id: 'noiDung',
             header: 'Nội dung',
             size: 300,

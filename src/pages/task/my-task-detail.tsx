@@ -4,6 +4,7 @@ import { useDeleteTienDoNhiemVu, useGetTaskDetail, useGetTienDoThucHienNhiemVuCu
 import { PrimaryButton } from "components/button"
 import { EmptyData } from "components/data"
 import { Divider } from "components/divider"
+import { FilePreviewCard, PdfViewer } from "components/file"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton, NewsDetailSkeleton } from "components/skeleton"
@@ -13,7 +14,7 @@ import React, { useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { openUrlInWebview } from "services/zalo"
 import { formatDate } from "utils/date"
-import { getFullImageUrl, isImage } from "utils/file"
+import { getFullImageUrl, isImage, isPDF } from "utils/file"
 import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview"
 import { getTinhTrangTaskColor } from "utils/renderColor"
 import { Box, Page } from "zmp-ui"
@@ -94,21 +95,15 @@ const MyTaskDetailPage: React.FC = () => {
                     <div>
                         {
                             row.original.tapTinTienDoThucHienNhiemVus?.map((item, index) => (
-                                <div key={index} className="flex items-center gap-2 justify-between mb-2">
-                                    <div
-                                        className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
-
-                                        onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                    >
-                                        <div className="flex items-center gap-1">
-                                            {isImage(item.tapTin) ? (
-                                                <Icon icon="mdi:file-image-outline" fontSize={22} />
-                                            ) : (
-                                                <Icon icon="codex:file" fontSize={22} />
-                                            )}
-                                            <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
-                                        </div>
-                                    </div>
+                                <div key={index}>
+                                    {
+                                        isPDF((item?.tapTin)) ?
+                                            <PdfViewer fileUrl={getFullImageUrl(item?.tapTin)} fileName={item?.tenTapTin} /> :
+                                            <FilePreviewCard
+                                                fileName={item?.tenTapTin}
+                                                fileUrl={getFullImageUrl(item?.tapTin)}
+                                            />
+                                    }
                                 </div>
                             ))
                         }
@@ -134,7 +129,7 @@ const MyTaskDetailPage: React.FC = () => {
             header: 'Thao tác',
             cell: ({ row }) => (
                 <div className="flex items-center justify-start space-x-2 whitespace-nowrap">
-                    
+
                     {
                         // hasPermission(permissionsList.khuPhoNhiemVuNhiemVuCuaToi, PermissionActions.XOA) &&
                         <button
@@ -177,7 +172,7 @@ const MyTaskDetailPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
                 <HeaderSub title="Chi tiết nhiệm vụ của tôi" />
-                <Box>
+                <Box pt={4}>
                     {
                         isLoading ?
                             <NewsDetailSkeleton count={1} /> :
@@ -239,8 +234,32 @@ const MyTaskDetailPage: React.FC = () => {
                                         <div
                                             ref={contentRef}
                                             onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
-                                        className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
+                                            className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
                                         </div>
+                                    </Box>
+                                    <Divider />
+                                    <Box px={4} pt={4} pb={4}>
+                                        <div className="text-[14px] font-medium mb-2 flex items-center justify-between">
+                                            Tập tin đính kèm
+                                        </div>
+                                        <Box className="text-secondary-color">
+                                            {
+                                                detailData?.tapTinNhiemVus?.map((item, index) => (
+                                                    <div key={index} className="flex items-center gap-2 justify-between">
+                                                        <div className="flex-1 w-full">
+                                                            {
+                                                                isPDF((item?.tapTin)) ?
+                                                                    <PdfViewer fileUrl={getFullImageUrl(item?.tapTin)} fileName={item?.tenTapTin} /> :
+                                                                    <FilePreviewCard
+                                                                        fileName={item?.tenTapTin}
+                                                                        fileUrl={getFullImageUrl(item?.tapTin)}
+                                                                    />
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </Box>
                                     </Box>
                                     <Divider />
                                     <Box>

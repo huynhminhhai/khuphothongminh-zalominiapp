@@ -147,7 +147,7 @@ const TransactionsList: React.FC = () => {
                     />
                 </div>
             </FilterBar2>
-            <Divider />
+            <Divider size={2} />
             {renderContent()}
         </Box>
     )

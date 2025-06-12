@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Controller, Control } from 'react-hook-form';
 import Label from './Label';
 import ErrorMessage from './ErrorMessage';
@@ -10,6 +10,7 @@ type FormFileInputProps = {
   control: Control<any>;
   error?: string;
   required?: boolean;
+  maxSizeMB?: number; // thêm giới hạn dung lượng tùy chỉnh
 };
 
 const FormFileInput: React.FC<FormFileInputProps> = ({
@@ -18,7 +19,10 @@ const FormFileInput: React.FC<FormFileInputProps> = ({
   control,
   error,
   required = false,
+  maxSizeMB = 10, // mặc định 5MB
 }) => {
+  const [sizeError, setSizeError] = useState<string | null>(null);
+
   return (
     <Controller
       name={name}
@@ -29,7 +33,26 @@ const FormFileInput: React.FC<FormFileInputProps> = ({
 
         const handleAddFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
           const newFiles = Array.from(e.target.files || []);
-          onChange([...files, ...newFiles]);
+          const MAX_SIZE = maxSizeMB * 1024 * 1024;
+
+          const oversizedFiles = newFiles.filter(file => file.size > MAX_SIZE);
+          const validFiles = newFiles.filter(file => file.size <= MAX_SIZE);
+
+          if (oversizedFiles.length > 0) {
+            setSizeError(
+              `${oversizedFiles
+                .map(f => `${f.name} (${(f.size / (1024 * 1024)).toFixed(2)} MB)`)
+                .join(', ')} có kích thước vượt quá ${maxSizeMB}MB`
+            );
+          } else {
+            setSizeError(null);
+          }
+
+          if (validFiles.length > 0) {
+            onChange([...files, ...validFiles]);
+          }
+
+          e.target.value = ''; // reset input để có thể chọn lại cùng file
         };
 
         const handleRemoveFile = (index: number) => {
@@ -55,7 +78,7 @@ const FormFileInput: React.FC<FormFileInputProps> = ({
               <ul className="mt-2 text-sm text-gray-600 list-disc list-inside space-y-1">
                 {files.map((file, idx) => (
                   <li key={idx} className="flex justify-between items-center">
-                    <span>{file.name} ({(file.size / 1024).toFixed(1)} KB)</span>
+                    <span>{file.name} ({(file.size / (1024 * 1024)).toFixed(2)} MB)</span>
                     <button
                       type="button"
                       onClick={() => handleRemoveFile(idx)}
@@ -68,6 +91,7 @@ const FormFileInput: React.FC<FormFileInputProps> = ({
               </ul>
             )}
 
+            {sizeError && <p className="mt-1 text-red-500 text-sm">{sizeError}</p>}
             {error && <ErrorMessage message={error} />}
           </div>
         );

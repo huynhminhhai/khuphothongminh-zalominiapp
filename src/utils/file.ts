@@ -122,3 +122,11 @@ export const loadFile = async ({ tapTin, tenTapTin }: FileInput): Promise<File |
 export const isImage = (fileName: string) => {
   return /\.(jpe?g|png|gif|bmp|webp|svg)$/i.test(fileName);
 };
+
+export const isVideo = (fileName: string) => {
+  return /\.(mp4|webm|ogg|avi|mov|wmv|mkv)$/i.test(fileName);
+};
+
+export const isPDF = (fileName: string) => {
+  return /\.pdf$/i.test(fileName);
+};

@@ -1,9 +1,10 @@
 import { Icon } from "@iconify/react";
+import { FilePreviewCard, ImageViewer, PdfViewer } from "components/file";
 import React, { useEffect, useState, useRef } from "react";
 import http from "services/http";
 import { openUrlInWebview } from "services/zalo";
 import { useStoreApp } from "store/store";
-import { getFullImageUrl } from "utils/file";
+import { getFullImageUrl, isImage, isPDF } from "utils/file";
 
 interface TypingTextProps {
     text: string;
@@ -96,9 +97,9 @@ const FileSummaryItem: React.FC<FileSummaryItemProps> = ({ file }) => {
 
     useEffect(() => {
         // Fetch summary when component mounts
-        fetchSummary(file.tapTinVanBanId);
+        fetchSummary(file?.tapTinVanBanId);
         setPlayingVideoId(null);
-    }, [file.tapTinVanBanId]);
+    }, [file?.tapTinVanBanId]);
 
     const handleSummarize = (videoId: string) => {
         setShowSummary(true);
@@ -134,29 +135,27 @@ const FileSummaryItem: React.FC<FileSummaryItemProps> = ({ file }) => {
 
     return (
         <div className="mb-3">
-            <div
-                className="flex items-center justify-between mb-2 p-3 bg-gray-100 rounded-lg text-secondary-color font-medium"
-                onClick={() => openUrlInWebview(getFullImageUrl(file.tapTin))}
-            >
-                <div className="flex items-center gap-2">
-                    <div className="flex-1">
-                        <Icon icon="codex:file" fontSize={22} />
-                    </div>
-                    <span className="text-sm font-medium">{file.tenTapTin}</span>
-                </div>
-            </div>
+
+            {
+                isPDF((file?.tapTin)) ?
+                    <PdfViewer fileUrl={getFullImageUrl(file?.tapTin)} fileName={file?.tenTapTin} /> :
+                    <FilePreviewCard
+                        fileName={file?.tenTapTin}
+                        fileUrl={getFullImageUrl(file?.tapTin)}
+                    />
+            }
 
             {hasSummary && !error && (
                 <div className="flex gap-3 mt-3">
                     <div className="rounded-lg p-[2px] bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 w-full">
                         <button
-                            onClick={() => handleSummarize(file.tapTinVanBanId)}
+                            onClick={() => handleSummarize(file?.tapTinVanBanId)}
                             className="flex-1 flex items-center justify-center gap-1 rounded-md bg-white px-2 py-2 text-[13px] font-semibold text-primary-color w-full play-button"
                         >
                             <Icon icon="mingcute:ai-line" fontSize={16} />
                             Đọc tóm tắt văn bản
                             {
-                                playingVideoId === file.tapTinVanBanId && <SpeakingEffect />
+                                playingVideoId === file?.tapTinVanBanId && <SpeakingEffect />
                             }
                         </button>
                         {summaryData && (

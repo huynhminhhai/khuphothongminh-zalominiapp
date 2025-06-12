@@ -83,7 +83,7 @@ const SurveyList: React.FC = () => {
                 }
             >
             </FilterBar2>
-            <Divider />
+            <Divider size={2} />
             {renderContent()}
         </Box>
     )

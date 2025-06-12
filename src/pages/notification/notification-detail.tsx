@@ -44,7 +44,7 @@ const NotificationDetailPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
                 <HeaderSub title="Chi tiết thông báo" />
-                <Box>
+                <Box pt={4}>
                     {
                         isLoading ?
                             <NewsDetailSkeleton count={1} /> :

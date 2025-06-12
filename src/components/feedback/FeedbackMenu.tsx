@@ -12,7 +12,7 @@ const FeedbackMenu: React.FC = () => {
     return (
         <Box>
             <Box pb={4} pt={2}>
-                <div className="flex items-center justify-center gap-3">
+                <div className="flex items-center justify-center gap-3 mt-2">
                     <Button
                         variant="primary"
                         size="small"

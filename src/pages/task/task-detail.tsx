@@ -1,23 +1,30 @@
 import { Icon } from "@iconify/react"
+import { useQueryClient } from "@tanstack/react-query"
 import { ColumnDef } from "@tanstack/react-table"
 import { useAddFileTask, useDeleteFileTask, useGetTaskDetail, useGetTienDoThucHienNhiemVu } from "apiRequest/task"
 import { EmptyData } from "components/data"
 import { Divider } from "components/divider"
+import { FilePreviewCard, PdfViewer } from "components/file"
 import { HeaderSub } from "components/header-sub"
 import { ConfirmModal } from "components/modal"
 import { ManagementItemSkeleton, NewsDetailSkeleton } from "components/skeleton"
 import { CardTanStack } from "components/table"
 import TaskUpdateFormModal from "components/task/TaskModalUpdateForm"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { openUrlInWebview } from "services/zalo"
+import { useStoreApp } from "store/store"
 import { formatDate } from "utils/date"
-import { convertToFormData, getFullImageUrl, isImage } from "utils/file"
+import { convertToFormData, getFullImageUrl, isImage, isPDF } from "utils/file"
 import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview"
 import { getTinhTrangTaskColor } from "utils/renderColor"
 import { Box, Page } from "zmp-ui"
 
 const TaskDetailPage: React.FC = () => {
+
+    const { setIsLoadingFullScreen } = useStoreApp();
+
+    const queryClient = useQueryClient();
 
     const contentRef = useRef<HTMLDivElement>(null);
 
@@ -27,7 +34,6 @@ const TaskDetailPage: React.FC = () => {
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [modalContent, setModalContent] = useState({ title: '', message: '' });
 
-
     const taskId = searchParams.get("id");
 
     const [param, setParam] = useState({
@@ -36,12 +42,17 @@ const TaskDetailPage: React.FC = () => {
         nhiemVuId: Number(taskId)
     })
 
-    const { data: detailData, isLoading } = useGetTaskDetail(Number(taskId));
+    const { data: detailData, isLoading, refetch } = useGetTaskDetail(Number(taskId));
     const { data: tienDoThucHienNhiemVu, isLoading: isLoadingTienDo } = useGetTienDoThucHienNhiemVu(param);
     const { mutateAsync: addFileTask, isPending } = useAddFileTask();
-    const { mutate: deleteFileTask } = useDeleteFileTask();
+    const { mutateAsync: deleteFileTask } = useDeleteFileTask();
 
     const { color, bg } = getTinhTrangTaskColor(detailData?.tinhTrang?.tenTinhTrang);
+    const [nhiemVuFiles, setNhiemVuFiles] = useState(detailData?.tapTinNhiemVus || []);
+
+    useEffect(() => {
+        setNhiemVuFiles(detailData?.tapTinNhiemVus || []);
+    }, [detailData]);
 
     const openConfirmModal = (action: () => void, title: string, message: string) => {
         setConfirmAction(() => action);
@@ -63,6 +74,9 @@ const TaskDetailPage: React.FC = () => {
     };
 
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        setIsLoadingFullScreen(true);
+
         const files = event.target.files;
         if (!files || files.length === 0) return;
 
@@ -77,8 +91,12 @@ const TaskDetailPage: React.FC = () => {
 
             await addFileTask(dataSubmit);
 
+            await refetch();
+
         } catch (error) {
             console.error("Lỗi khi thêm file:", error);
+        } finally {
+            setIsLoadingFullScreen(false);
         }
     };
 
@@ -108,21 +126,15 @@ const TaskDetailPage: React.FC = () => {
                     <div>
                         {
                             row.original.tapTinTienDoThucHienNhiemVus?.map((item, index) => (
-                                <div key={index} className="flex items-center gap-2 justify-between mb-2">
-                                    <div
-                                        className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
-
-                                        onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                    >
-                                        <div className="flex items-center gap-1">
-                                            {isImage(item.tapTin) ? (
-                                                <Icon icon="mdi:file-image-outline" fontSize={22} />
-                                            ) : (
-                                                <Icon icon="codex:file" fontSize={22} />
-                                            )}
-                                            <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
-                                        </div>
-                                    </div>
+                                <div key={index}>
+                                    {
+                                        isPDF((item?.tapTin)) ?
+                                            <PdfViewer fileUrl={getFullImageUrl(item?.tapTin)} fileName={item?.tenTapTin} /> :
+                                            <FilePreviewCard
+                                                fileName={item?.tenTapTin}
+                                                fileUrl={getFullImageUrl(item?.tapTin)}
+                                            />
+                                    }
                                 </div>
                             ))
                         }
@@ -173,7 +185,7 @@ const TaskDetailPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
                 <HeaderSub title="Chi tiết nhiệm vụ" />
-                <Box>
+                <Box pt={4}>
                     {
                         isLoading ?
                             <NewsDetailSkeleton count={1} /> :
@@ -235,13 +247,13 @@ const TaskDetailPage: React.FC = () => {
                                         <div
                                             ref={contentRef}
                                             onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
-                                        className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
+                                            className="detail-content font-medium" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
                                         </div>
                                     </Box>
 
                                     <Divider />
-                                    <Box px={4} pt={4} pb={8}>
-                                        <div className="text-[18px] font-medium mb-4 flex items-center justify-between">
+                                    <Box px={4} pt={4} pb={4}>
+                                        <div className="text-[16px] font-medium mb-4 flex items-center justify-between">
                                             Tập tin đính kèm
                                             <Box p={2} className="bg-secondary-color rounded-full" onClick={() => document.getElementById("hiddenFileInput")?.click()}>
                                                 <Icon color="#ffffff" icon='hugeicons:file-add' />
@@ -249,36 +261,34 @@ const TaskDetailPage: React.FC = () => {
                                             </Box>
                                         </div>
                                         <Box className="text-secondary-color">
-                                            {detailData?.tapTinNhiemVus && detailData.tapTinNhiemVus.length > 0 ? (
-                                                detailData.tapTinNhiemVus.map((item, index) => (
-                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2">
-                                                        <div
-                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
-
-                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                        >
-                                                            <div className="flex items-center gap-1">
-                                                                {isImage(item.tapTin) ? (
-                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
-                                                                ) : (
-                                                                    <Icon icon="codex:file" fontSize={22} />
-                                                                )}
-                                                                <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
-                                                            </div>
+                                            {
+                                                nhiemVuFiles?.map((item, index) => (
+                                                    <div key={index} className="flex items-center gap-2 justify-between">
+                                                        <div className="flex-1 w-full">
+                                                            {
+                                                                isPDF((item?.tapTin)) ?
+                                                                    <PdfViewer fileUrl={getFullImageUrl(item?.tapTin)} fileName={item?.tenTapTin} /> :
+                                                                    <FilePreviewCard
+                                                                        fileName={item?.tenTapTin}
+                                                                        fileUrl={getFullImageUrl(item?.tapTin)}
+                                                                    />
+                                                            }
                                                         </div>
 
-                                                        <Box onClick={() => {
-                                                            openConfirmModal(() => {
-                                                                deleteFileTask(item.tapTinNhiemVuId);
-                                                            }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa tập tin này?');
-                                                        }}>
+                                                        <Box
+                                                            mb={2}
+                                                            onClick={() => {
+                                                                openConfirmModal(async () => {
+                                                                    await deleteFileTask(item.tapTinNhiemVuId);
+                                                                    const updatedFiles = nhiemVuFiles.filter(file => file.tapTinNhiemVuId !== item.tapTinNhiemVuId);
+                                                                    setNhiemVuFiles(updatedFiles);
+                                                                }, 'Xác nhận xóa', 'Bạn có chắc chắn muốn xóa tập tin này?');
+                                                            }}>
                                                             <Icon icon='mingcute:close-square-fill' fontSize={26} className="text-[#c46574]" />
                                                         </Box>
                                                     </div>
                                                 ))
-                                            ) : (
-                                                <div>Không có tập tin</div>
-                                            )}
+                                            }
                                         </Box>
                                     </Box>
                                     <Divider />

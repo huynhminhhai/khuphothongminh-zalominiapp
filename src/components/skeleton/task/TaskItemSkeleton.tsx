@@ -11,7 +11,7 @@ const TaskItemSkeleton: React.FC<TaskItemSkeletonProps> = ({ count }) => {
     return (
         <Box>
             {Array.from({ length: count }).map((_, index) => (
-                <Box p={4} key={index}>
+                <Box py={4} key={index}>
                     <Box flex alignItems='center' className='gap-3'>
                         <Skeleton count={1} width={50} height={50} />
                         <div className='flex-1'>

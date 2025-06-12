@@ -203,13 +203,13 @@ const SurveyDetailPage: React.FC = () => {
                     </Button>
                 </Box>
             </Modal>
-            <Box>
+            <Box pt={4}>
                 <HeaderSub title="Thực hiện khảo sát" />
                 {
                     isLoading ? <NewsDetailSkeleton count={1} /> :
                         detailData ?
                             <Box>
-                                <Box p={4} className="text-center font-medium border-t border-b">
+                                <Box px={4} pb={4} className="text-center font-medium border-b">
                                     <h3 className="title-page mb-2">{detailData?.tieuDe}</h3>
                                     <p className="text-[16px] leading-1 mb-1">
                                         Thời hạn: <span className="font-semibold">{formatDate(detailData?.denNgay as string)}</span>

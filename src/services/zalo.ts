@@ -1,4 +1,4 @@
-import { openWebview, openMediaPicker, openChat, getUserInfo, getPhoneNumber, getAccessToken, openPermissionSetting, getStorage, setStorage, removeStorage, createShortcut, getLocation } from "zmp-sdk/apis";
+import { openWebview, openMediaPicker, openChat, getUserInfo, getPhoneNumber, getAccessToken, openPermissionSetting, getStorage, setStorage, removeStorage, createShortcut, getLocation, downloadFile } from "zmp-sdk/apis";
 
 export const openUrlInWebview = async (link: string, style?: 'normal' | 'bottomSheet'): Promise<void> => {
     try {
@@ -177,4 +177,14 @@ export const removeDataFromStorage = async (keys: string[]) => {
     } catch (error) {
         console.error("Lỗi khi xóa dữ liệu khỏi storage:", error);
     }
+};
+
+export const downloadFileHelper = async (url: string) => {
+
+    await downloadFile({
+        url
+    });
+    
+    console.log("Tải tập tin thành công!");
+
 };

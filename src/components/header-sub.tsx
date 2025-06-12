@@ -9,7 +9,7 @@ type HeaderSubProps = {
 export const HeaderSub: React.FC<HeaderSubProps> = ({title, onBackClick}) => {
     return (
         <Header 
-            className="sub"
+            className="sub shadow-sm"
             {...(onBackClick ? { onBackClick } : {})}
             title={
                 (

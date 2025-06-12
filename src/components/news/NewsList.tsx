@@ -11,6 +11,7 @@ import { FilterBar2 } from "components/table";
 import { debounce } from "lodash";
 import { formatDate, parseDate } from "components/form/DatePicker";
 import { formatDateYYYYMMDD } from "utils/date";
+import { Divider } from "components/divider";
 
 const NewsList: React.FC = () => {
 
@@ -135,7 +136,7 @@ const NewsList: React.FC = () => {
                     />
                 </div>
             </FilterBar2>
-            {/* <Divider /> */}
+            <Divider size={2} />
             {renderContent()}
         </Box>
     );

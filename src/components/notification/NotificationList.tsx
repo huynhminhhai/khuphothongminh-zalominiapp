@@ -76,7 +76,7 @@ const NotificationList: React.FC = () => {
                         </Box>
                     ) : (
                         <Box>
-                            <div className="border-b-[1px] border-gray-200">
+                            <div className="border-b-[1px] border-gray-100 pt-1">
                                 <button
                                     disabled={isReadAllPending}
                                     onClick={() => {

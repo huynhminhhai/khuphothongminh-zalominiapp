@@ -30,7 +30,9 @@ import { useRefreshToken } from "apiRequest/auth";
 import { DocumentDetailPage, DocumentPage } from "pages/document";
 import { ChatBoxPage } from "pages/chatbox";
 import Navigation from "./navigation";
+import { pdfjs } from 'react-pdf';
 
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const AuthWrapper = ({ children }) => {
   const { setToken, setAccount, accessToken, fetchResidentTypes } = useStoreApp();

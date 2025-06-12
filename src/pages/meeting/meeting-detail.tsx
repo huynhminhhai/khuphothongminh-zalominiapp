@@ -3,15 +3,15 @@ import { useGetMeetingDetail } from "apiRequest/meeting";
 import images from "assets/images";
 import SecondaryButton from "components/button/SecondaryButton";
 import { EmptyData } from "components/data";
+import { FileViewerList } from "components/file";
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton";
 import React, { useEffect, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom";
 import http from "services/http";
-import { openUrlInWebview } from "services/zalo";
 import { copyToClipboard } from "utils/copyToClipboard";
 import { formatDate, getHourFromDate, renderDayOfWeek } from "utils/date";
-import { getFullImageUrl, isImage } from "utils/file";
+import { getFullImageUrl } from "utils/file";
 import { handleClickAnchorToWebview } from "utils/handleClickAnchorToWebview";
 import { useCustomSnackbar } from "utils/useCustomSnackbar";
 import { Avatar, Box, Modal, Page } from "zmp-ui"
@@ -96,7 +96,7 @@ const MeetingDetailPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white pb-[76px]">
             <Box>
                 <HeaderSub title="Chi tiết cuộc họp" />
-                <Box>
+                <Box pt={4}>
                     {
                         (isLoading || loading) ?
                             <NewsDetailSkeleton count={1} /> :
@@ -178,35 +178,14 @@ const MeetingDetailPage: React.FC = () => {
                                         </div>
                                     </Box>
                                     <Box px={4} pb={4}>
-                                        <Box>
-                                            {detailData?.tapTinCuocHops && detailData.tapTinCuocHops.length > 0 && (
-                                                detailData.tapTinCuocHops.map((item, index) => (
-                                                    <div key={index} className="flex items-center gap-2 justify-between mb-2 text-secondary-color">
-                                                        <div
-                                                            className="px-3 py-2 bg-gray-100 rounded-lg flex-1"
-
-                                                            onClick={() => openUrlInWebview(getFullImageUrl(item.tapTin))}
-                                                        >
-                                                            <div className="flex items-center gap-1">
-                                                                {isImage(item.tapTin) ? (
-                                                                    <Icon icon="mdi:file-image-outline" fontSize={22} />
-                                                                ) : (
-                                                                    <Icon icon="codex:file" fontSize={22} />
-                                                                )}
-                                                                <div className="text-[14px] font-semibold">{item.tenTapTin}</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            )}
-                                        </Box>
+                                        <FileViewerList files={detailData?.tapTinCuocHops} />
                                     </Box>
                                     <Box className="text-[16px]">
                                         <div className="bg-[#f8f8f8] text-[#808080] text-[16px] font-semibold px-4 py-3">Nội dung cuộc họp</div>
                                         <div
                                             ref={contentRef}
                                             onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
-                                        className="p-4 font-medium detail-content" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
+                                            className="p-4 font-medium detail-content" dangerouslySetInnerHTML={{ __html: detailData.noiDung }}>
                                         </div>
                                     </Box>
 

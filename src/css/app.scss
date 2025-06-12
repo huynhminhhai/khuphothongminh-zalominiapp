@@ -720,3 +720,11 @@ div.flex-1.font-medium.line-clamp-2 button.rounded {
 .animate-wave {
   animation: wave 1s infinite ease-in-out;
 }
+
+.react-pdf__Page__annotations.annotationLayer {
+  display: none !important;
+}
+
+.PhotoView-Slider__BannerWrap {
+  top: 58px !important;
+}

@@ -128,7 +128,7 @@ const TransactionsList: React.FC = () => {
                     </Select>
                 </div>
             </FilterBar2>
-            <Divider />
+            <Divider size={2} />
             {renderContent()}
         </Box>
     )

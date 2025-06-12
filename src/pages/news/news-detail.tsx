@@ -27,40 +27,42 @@ const NewsDetailPage: React.FC = () => {
         <Page className="relative flex-1 flex flex-col bg-white">
             <Box>
                 <HeaderSub title="Chi tiết bản tin Khu phố/Ấp" />
-                {
-                    isLoading ?
-                        <NewsDetailSkeleton count={1} /> :
-                        data ?
-                            <Box p={4}>
-                                <Box pb={4} className="border-b-[1px] border-primary-color text-primary-color">
-                                    {/* <div className="flex items-center gap-2 mb-3">
-                                        <div className="h-[24px] w-[3px] bg-primary-color border-primary-color block"></div>
-                                        <h3 className="text-[16px] leading-[1] font-semibold">Tin tức</h3>
-                                    </div> */}
-                                    <h2 className="title-page mb-3 text-primary-cborder-primary-color">
-                                        {data.tieuDe || data.moTa}
-                                    </h2>
-                                    <h4 className="text-[13px] leading-[1] font-semibold">{formatDate(data.ngayXuatBan)}</h4>
+                <Box pt={4}>
+                    {
+                        isLoading ?
+                            <NewsDetailSkeleton count={1} /> :
+                            data ?
+                                <Box px={4}>
+                                    <Box pb={4} className="border-b-[1px] border-primary-color text-primary-color">
+                                        {/* <div className="flex items-center gap-2 mb-3">
+                                            <div className="h-[24px] w-[3px] bg-primary-color border-primary-color block"></div>
+                                            <h3 className="text-[16px] leading-[1] font-semibold">Tin tức</h3>
+                                        </div> */}
+                                        <h2 className="title-page mb-3 text-primary-cborder-primary-color">
+                                            {data.tieuDe || data.moTa}
+                                        </h2>
+                                        <h4 className="text-[13px] leading-[1] font-semibold">{formatDate(data.ngayXuatBan)}</h4>
+                                    </Box>
+                                    <Box mt={4} pb={4} mb={2} className="border-b-[1px] border-primary-color">
+                                        {/* <div className="mb-3">
+                                            <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
+                                        </div> */}
+                                        <div
+                                            ref={contentRef}
+                                            onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
+                                            className="detail-content mb-3" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
+                                        <Box className="text-end text-black font-semibold">{data.tacGia}</Box>
+                                    </Box>
                                 </Box>
-                                <Box mt={4} pb={4} mb={2} className="border-b-[1px] border-primary-color">
-                                    {/* <div className="mb-3">
-                                        <img src={getFullImageUrl(data.anhDaiDien)} alt={data.tieuDe} />
-                                    </div> */}
-                                    <div
-                                        ref={contentRef}
-                                        onClick={(e) => handleClickAnchorToWebview(e as any, contentRef.current)}
-                                        className="detail-content mb-3" dangerouslySetInnerHTML={{ __html: data.noiDung }}></div>
-                                    <Box className="text-end text-black font-semibold">{data.tacGia}</Box>
+                                :
+                                <Box px={4} pb={10}>
+                                    <EmptyData
+                                        title="Thông tin không tồn tại!"
+                                        desc="Không thể tìm thấy tin này."
+                                    />
                                 </Box>
-                            </Box>
-                            :
-                            <Box px={4} pb={10}>
-                                <EmptyData
-                                    title="Thông tin không tồn tại!"
-                                    desc="Không thể tìm thấy tin này."
-                                />
-                            </Box>
-                }
+                    }
+                </Box>
                 <Box px={4}>
                     <TitleSection title="Tin khác" mB={0} handleClick={() => navigate('/news')} />
                     <NewsOthers idNews={Number(newsId)} />

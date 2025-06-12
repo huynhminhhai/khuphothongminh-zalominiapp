@@ -1,14 +1,13 @@
-import { Icon } from "@iconify/react"
 import { useGetDocumentDetail } from "apiRequest/document"
 import { EmptyData } from "components/data"
 import FileSummaryItem from "components/document/FileSummaryItem"
+import { ImageViewer } from "components/file"
 import { HeaderSub } from "components/header-sub"
 import { NewsDetailSkeleton } from "components/skeleton"
 import React from "react"
 import { useSearchParams } from "react-router-dom"
-import { openUrlInWebview } from "services/zalo"
 import { formatDate } from "utils/date"
-import { getFullImageUrl, isImage } from "utils/file"
+import { isImage, isVideo } from "utils/file"
 import { Box, Page } from "zmp-ui"
 
 interface FieldTextDisplayProps {
@@ -32,17 +31,23 @@ const DocumentDetailManagementPage: React.FC = () => {
 
 
     const [searchParams] = useSearchParams();
-
     const documentId = searchParams.get("id");
 
     const { data: detailData, isLoading } = useGetDocumentDetail(Number(documentId));
 
+    const imageFiles = detailData?.tapTinVanBans?.filter(item =>
+        isImage(item.tapTin) || isVideo(item.tapTin)
+    ) || [];
+
+    const otherFiles = detailData?.tapTinVanBans?.filter(item =>
+        !isImage(item.tapTin) && !isVideo(item.tapTin)
+    ) || [];
 
     return (
         <Page className="relative flex-1 flex flex-col bg-white pb-[72px]">
             <Box>
                 <HeaderSub title="Chi tiết văn bản công khai" />
-                <Box>
+                <Box pt={4}>
                     {
                         isLoading ?
                             <NewsDetailSkeleton count={1} /> :
@@ -66,7 +71,12 @@ const DocumentDetailManagementPage: React.FC = () => {
                                     />
                                     <Box mt={4}>
                                         <div className="font-medium text-[15px] text-gray-color mb-[6px]">Tập tin đính kèm</div>
-                                        {detailData?.tapTinVanBans.map((item, index) => (
+                                        {
+                                            imageFiles?.length > 0 && (
+                                                <ImageViewer files={imageFiles} />
+                                            )
+                                        }
+                                        {otherFiles?.map((item, index) => (
                                             <FileSummaryItem key={index} file={item} />
                                         ))}
                                     </Box>
