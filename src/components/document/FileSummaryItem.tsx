@@ -84,9 +84,24 @@ const FileSummaryItem: React.FC<FileSummaryItemProps> = ({ file }) => {
         setError(null);
         try {
             const res = await http.get<any>(`/vanban/tomtat/${id}`);
-            const summary = res.data?.tomTat || null;
-            setSummaryData(summary);
-            setHasSummary(!!summary); // Set hasSummary to true if summary exists
+            const { tomTat, deNghi, thoiHan } = res.data || {};
+    
+            let formatted = '';
+    
+            if (tomTat) {
+                formatted += `${tomTat}\n`;
+            }
+    
+            if (deNghi?.trim()) {
+                formatted += `- Đề nghị: ${deNghi}\n`;
+            }
+    
+            if (thoiHan?.trim()) {
+                formatted += `- Thời hạn: ${thoiHan}\n`;
+            }
+    
+            setSummaryData(formatted.trim());
+            setHasSummary(!!tomTat); // vẫn xác định theo tomTat chính
         } catch (err) {
             setError("Đọc tóm tắt văn bản thất bại.");
             setHasSummary(false);
